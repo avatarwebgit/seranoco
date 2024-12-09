@@ -1,0 +1,65 @@
+@import url(../styles//variables.css);
+.main {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  background-color: transparent;
+  width: 100vw;
+  height: 5rem;
+}
+.content {
+  padding-right: var(--small-pc-padding);
+  padding-left: var(--small-pc-padding);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo_container {
+  width: 25%;
+  height: 100%;
+}
+.logo_img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.navigation_container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.search_container {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header_btn {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background-color: transparent;
+  color: var(--color-black);
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: all 0.25s;
+  padding: 8px 4px;
+  position: relative;
+}
+.header_btn:hover {
+  border-bottom: 1px solid black;
+}
+.mega_menu {
+  transition: all 1s;
+  height: 50vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0);
+  position: absolute;
+  top: 100%;
+  left: 0;
+}

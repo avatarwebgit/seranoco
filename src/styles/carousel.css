@@ -1,0 +1,21 @@
+.swiper-button-next {
+  right: 15%; 
+  background-color: transparent; 
+  border-radius: 50%; 
+  border: none; 
+  width: 40px; 
+  height: 40px; 
+}
+
+.swiper-button-prev {
+  left: 15%; 
+  background-color: transparent; 
+  border-radius: 50%; 
+  border: none; 
+  width: 40px; 
+  height: 40px; 
+}
+swiper-button-next::after,
+.swiper-button-prev::after {
+  color: rgb(0, 0, 0); 
+}

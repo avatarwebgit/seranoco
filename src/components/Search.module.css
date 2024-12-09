@@ -1,0 +1,35 @@
+.main {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+  transition: all 0.25s;
+}
+.search_logo_wrapper {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+}
+.search_logo {
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  cursor: pointer;
+}
+.search_input {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  width: 100%;
+  font-size: 1rem;
+  transition: all 0.25s;
+  padding-left: 3rem;
+}
