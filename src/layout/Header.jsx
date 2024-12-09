@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Favorite, ShoppingBag } from "@mui/icons-material";
 
 import logo from "../assets/svg/Serano-Logo.svg";
 
 import classes from "./Header.module.css";
 import Search from "../components/Search";
+import { Badge, createTheme, IconButton } from "@mui/material";
+import CustomButton from "../components/CustomButton";
+import CustomSection from "./CustomSection";
 const Header = () => {
   const [scrollY, setScrollY] = useState(0);
-    const [isExtended, setIsExtended] = useState(false);
+  const [isExtended, setIsExtended] = useState(false);
 
-  const test = [1, 2, 3, 4];
+  const test = [1, 2, 3, 4, 5, 6, 7];
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#ffffff",
+      },
+    },
+  });
 
   useEffect(() => {
     window.addEventListener("load", () => setScrollY(window.scrollY));
@@ -21,48 +33,108 @@ const Header = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(scrollY);
-  }, [scrollY]);
+  const initialLogoState = {
+    y: 0,
+    x: 0,
+  };
 
-  const initialState = {};
+  const styles = (theme) => ({
+    margin: {
+      margin: theme.spacing.unit * 2,
+    },
+    customBadge: {
+      backgroundColor: "white",
+      color: "white",
+    },
+  });
 
   return (
     <motion.header
       className={classes.main}
-      initial={initialState}
-      animate={{ y: scrollY !== 0 ? 0 : "6vh", height: scrollY !== 0 ? "5rem" : '15rem' }}
+      initial={{ y: 0, height: "5rem" }}
+      animate={{
+        y: scrollY !== 0 ? 0 : "6vh",
+        height: scrollY !== 0 ? "5rem" : "10rem",
+        backgroundColor: scrollY !== 0 ? "rgba(255,255,255,.1)" : "transparent",
+        backdropFilter: scrollY !== 0 ? "blur(20px)" : "none",
+      }}
     >
-      <div className={classes.content}>
-        <span className={classes.card_action_wrapper}></span>
-        <span className={classes.logo_container}>
+      <CustomSection className={classes.content} card={classes.card}>
+        <motion.span
+          className={classes.card_action_wrapper}
+          initial={{ display: "none" }}
+          animate={{ display: scrollY === 0 ? "flex" : "none" }}
+          transition={{ duration: 0 }}
+        >
+          <CustomButton className={classes.login_btn}>
+            <a href="#">Login</a>
+          </CustomButton>
+          <span className={classes.icon_pack_wrapper}>
+            <IconButton>
+              <Badge
+                badgeContent={4}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                color={theme.palette.primary.main}
+                className={{ Badge: classes.badge }}
+              >
+                <Favorite color="action" className={classes.card_icons} />
+              </Badge>
+            </IconButton>
+          </span>
+          <span className={classes.icon_pack_wrapper}>
+            <IconButton>
+              <Badge
+                badgeContent={4}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                color={theme.palette.primary.main}
+                className={{ Badge: classes.badge }}
+              >
+                <ShoppingBag color="action" className={classes.card_icons} />
+              </Badge>
+            </IconButton>
+          </span>
+        </motion.span>
+        <motion.span
+          className={classes.logo_container}
+          initial={initialLogoState}
+          animate={{
+            x: scrollY === 0 ? "35vw" : 0,
+            y: scrollY === 0 ? "-20px" : 0,
+            width: scrollY === 0 ? "25%" : "20%",
+          }}
+          transition={{ duration: 0.25, type: "tween" }}
+        >
           <img className={classes.logo_img} src={logo} alt="Seranoco Logo" />
-        </span>
-        <span className={classes.navigation_container}>
+        </motion.span>
+        <motion.span
+          className={classes.navigation_container}
+          initial={{ alignItems: "center" }}
+          animate={{ alignItems: scrollY === 0 ? "flex-end" : "center" }}
+        >
           {test.map((elem) => {
             return (
-              <div>
+              <div className={classes.header_btn_wrapper}>
                 <button
                   className={classes.header_btn}
                   onClick={() => setIsExtended(!isExtended)}
                 >
                   header button
                 </button>
-                <motion.div
+                {/* <motion.div
                   className={classes.mega_menu}
                   animate={{ opacity: isExtended ? 1 : 0 }}
                   transition={{ duration: 1 }}
                 >
                   d
-                </motion.div>
+                </motion.div> */}
               </div>
             );
           })}
-        </span>
+        </motion.span>
         <span className={classes.search_container}>
-          <Search/>
+          <Search />
         </span>
-      </div>
+      </CustomSection>
     </motion.header>
   );
 };

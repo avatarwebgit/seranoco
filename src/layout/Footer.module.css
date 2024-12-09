@@ -1,1 +1,31 @@
-.main{}
+@import url(../styles/variables.css);
+
+.footer {
+  height: 30vh;
+  padding-right: var(--small-pc-padding);
+  padding-left: var(--small-pc-padding);
+  background-color: var(--color-black);
+  display: flex;
+  justify-content: space-evenly;
+}
+.image_wrapper {
+  width: 25%;
+  height: 100%;
+  background-color: red;
+}
+.first {
+  width: 15%;
+  background-color: blue;
+}
+.second {
+  width: 15%;
+  background-color: blue;
+}
+.third {
+  width: 15%;
+  background-color: blue;
+}
+.four {
+  width: 15%;
+  background-color: blue;
+}

@@ -3,22 +3,25 @@
   position: fixed;
   top: 0;
   z-index: 100;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
   width: 100vw;
   height: 5rem;
 }
+.card{
+  height: 100% !important;
+}
 .content {
-  padding-right: var(--small-pc-padding);
-  padding-left: var(--small-pc-padding);
   height: 100%;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 auto;
 }
 .logo_container {
   width: 25%;
   height: 100%;
+  padding: 0 1rem;
 }
 .logo_img {
   width: 100%;
@@ -26,18 +29,21 @@
   object-fit: contain;
 }
 .navigation_container {
-  width: 50%;
+  width: 55%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 .search_container {
-  width: 25%;
+  width: 20%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.header_btn_wrapper{
+  position: relative;
 }
 .header_btn {
   border: none;
@@ -51,8 +57,17 @@
   padding: 8px 4px;
   position: relative;
 }
-.header_btn:hover {
-  border-bottom: 1px solid black;
+.header_btn::after {
+  content: "";
+  height: 1px;
+  background-color: black;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+}
+.header_btn:hover::after {
+  animation: header_btn_border 0.35s forwards;
 }
 .mega_menu {
   transition: all 1s;
@@ -62,4 +77,35 @@
   position: absolute;
   top: 100%;
   left: 0;
+}
+.icon_pack_wrapper {
+  margin: 0 0.2rem;
+}
+.card_action_wrapper {
+  width: 20%;
+  height: fit-content;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card_icons {
+  font-size: 2rem !important;
+}
+.badge{
+  background-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+@keyframes header_btn_border {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 10%;
+  }
+  100% {
+    width: 100%;
+  }
 }

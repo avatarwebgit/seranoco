@@ -1,0 +1,12 @@
+@import url(../styles/variables.css);
+
+.card {
+  height: unset;
+  width: 100%;
+}
+.content_wrapper {
+  max-width: 2000px;
+  margin: 0 auto;
+  margin-right: var(--small-pc-padding);
+  margin-left: var(--small-pc-padding);
+}
