@@ -1,7 +1,7 @@
 @import url(../styles/variables.css);
 
 .main {
-  height: 20vh;
+  height: fit-content;
   margin: 2rem 0;
   background-attachment: fixed;
 }
@@ -30,7 +30,7 @@
   justify-content: center;
   color: #ffffff;
   width: 20%;
-  height: 100%;
+  padding: 5rem 0;
 }
 .shop_btn {
   margin-top: 1rem !important;
@@ -39,4 +39,56 @@
 }
 .title {
   font-size: 2rem;
+}
+@media only screen and (max-width: 480px) {
+  .main{
+    height: 100vh;
+  }
+  .shop_hero{
+    width: 50%;
+    text-align: center;   
+    height: 100%;
+
+  }
+}
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .main{
+    height: 100vh;
+  }
+  .shop_hero{
+    width: 50%;
+    text-align: center;
+        height: 100%;
+
+  }
+}
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .main{
+    height: fit-content;
+  }
+  .shop_hero{
+    width: 50%;
+    text-align: center;
+    padding: 1rem 0;
+  }
+}
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+  .main{
+    height: 100vh;
+  }
+  .shop_hero{
+    width: 50%;
+    text-align: center;
+  }
+}
+@media only screen and (min-width: 1201px){
+  .main{
+    height: 100vh;
+  }
+  .shop_hero{
+    width: 50%;
+    text-align: center;
+  }
 }

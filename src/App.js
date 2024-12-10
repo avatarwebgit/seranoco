@@ -29,19 +29,19 @@ function App() {
 
   const windowsSize = () => {
     const width = window.innerWidth;
-    if (width <= 576) {
+    if (width <= 480) {
       return "xs";
     }
-    if (width > 576 && width <= 768) {
+    if (width > 481 && width <= 768) {
       return "s";
     }
     if (width > 768 && width <= 1024) {
       return "m";
     }
-    if (width > 1024 && width <= 1440) {
+    if (width > 1024 && width <= 1200) {
       return "l";
     }
-    if (width > 1440) {
+    if (width > 1200) {
       return "xl";
     }
   };
@@ -77,7 +77,7 @@ function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path={`/:lng/`} element={<Home />} />
+        <Route path={`/:lng/`} element={<Home windowSize={windowSize} />} />
         <Route path={`/:lng/category`} element={<CategoryPage />} />
       </Routes>
     </Suspense>

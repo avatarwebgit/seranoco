@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .App-logo {
@@ -35,4 +37,37 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* @media only screen and (max-width: 480px) {
+  * {
+    font-size: 75% !important;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  * {
+    font-size: 85% !important;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  * {
+    font-size: 90% !important;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+  * {
+    font-size: 95% !important;
+  }
+}
+
+@media only screen and (min-width: 1201px) {
+  * {
+    font-size: 100% ; 
+  }
+} */
+* {
+  font-size: calc(10px + 2vmin) !important;
 }

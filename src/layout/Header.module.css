@@ -107,3 +107,32 @@
     width: 100%;
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .navigation_container{
+    display: none;
+  }
+
+  .card_icons{
+    font-size: 1.1rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .card_action_wrapper{
+    width:1%;
+    align-items: flex-start;
+  }
+  .icon_pack_wrapper{
+    padding: 0;
+    margin: 0;
+  }
+}
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+ 
+}
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}

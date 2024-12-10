@@ -8,15 +8,16 @@ import PromotionalShopCard from "../components/PromotionalShopCard";
 import Guid from "../components/Guid";
 
 import classes from "./Home.module.css";
-const Home = () => {
+const Home = ({ windowSize }) => {
+  console.log(windowSize);
   return (
     <section className={classes.home}>
-      <Header />
-      <Carousel />
-      <FilterLinks />
-      <PromotionalShopCard />
-      <Guid/>
-      <Footer />
+      <Header windowSize={windowSize} />
+      <Carousel windowSize={windowSize} />
+      <FilterLinks windowSize={windowSize} />
+      <PromotionalShopCard windowSize={windowSize} />
+      <Guid windowSize={windowSize} />
+      <Footer windowSize={windowSize} />
     </section>
   );
 };

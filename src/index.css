@@ -19,3 +19,9 @@ a:visited {
   background-color: white !important;
   color: black !important;
 }
+@media only screen and (max-width: 480px) {
+  .MuiBadge-badge {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}

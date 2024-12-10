@@ -25,7 +25,7 @@ const Link = ({ title, href, imgUrl, alt }) => {
           <p>{title}</p>
         </span>
         <span className={classes.img_container}>
-          <img src={imgUrl} alt={alt} />
+          <img className={classes.img} src={imgUrl} alt={alt} />
         </span>
       </a>
     </motion.div>

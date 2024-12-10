@@ -28,15 +28,18 @@ const Carusel = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const slides = [img, img, img, img];
-  const thumbs = [shape1, shape2, shape3, shape4];
-  const productImages = [gem, shape2, gem, shape4];
+  const slides = [img, img, img, img, img];
+  const thumbs = [shape1, shape2, shape3, shape4, shape2];
+  const productImages = [gem, shape2, gem, shape4, gem];
 
   return (
     <section>
       <div className={shared.content}>
         {/* ________________ BANNER SLIDER  ________________*/}
-        <Swiper className={classes.top_slider}>
+        <Swiper
+          className={classes.top_slider}
+    
+        >
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className={classes.slide}>
               <div className={classes.slider_image_wrapper}>
@@ -68,12 +71,17 @@ const Carusel = () => {
             swiper:
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
           }}
+     
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className={classes.slide}>
               <div className={classes.slider_image_wrapper}>
                 <span className={classes.product_img_wrapper}>
-                  <img className={classes.product_img} src={productImages.at(index)} alt="" />
+                  <img
+                    className={classes.product_img}
+                    src={productImages.at(index)}
+                    alt=""
+                  />
                 </span>
                 <img
                   src={slide}
@@ -87,13 +95,14 @@ const Carusel = () => {
         {/* ________________ THUMB SLIDER  ________________*/}
         <div className={classes.thumbs_wrapper}>
           <Swiper
-            spaceBetween={5}
-            slidesPerView={5}
+            spaceBetween={10}
+            slidesPerView={4}
             onSwiper={setThumbsSwiper}
             watchSlidesProgress="true"
             modules={[Thumbs]}
             className={classes.thumbs_slider}
-            centeredSlides={true}
+            centeredSlides
+          
           >
             {slides.map((slide, index) => (
               <SwiperSlide key={index}>

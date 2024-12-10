@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Favorite, ShoppingBag } from "@mui/icons-material";
 import { Badge, IconButton } from "@mui/material";
-import { useTranslation } from "react-i18next";
-
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSSR, useTranslation } from "react-i18next";
 
 import logo from "../assets/svg/Serano-Logo.svg";
 import CustomButton from "../components/CustomButton";
@@ -14,8 +11,10 @@ import Search from "../components/Search";
 
 import classes from "./Header.module.css";
 import ChangeLanguage from "../utils/ChangeLanguage";
-const Header = () => {
+const Header = ({ windowSize }) => {
   const [scrollY, setScrollY] = useState(0);
+  const [size, setSize] = useState("");
+  const [isSmall, setIsSmall] = useState(false);
   const [isExtended, setIsExtended] = useState(false);
 
   const test = [1, 2, 3, 4, 5, 6, 7];
@@ -32,9 +31,43 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setSize(windowSize);
+    console.log(windowSize);
+  }, [windowSize]);
+
   const initialLogoState = {
     y: 0,
     x: 0,
+  };
+
+  const returnButtonStyles = () => {
+    if (size === "xs" || size === "s" || size === "m") {
+      setIsSmall(true);
+      return {
+        opacity: scrollY === 0 ? "0" : "1",
+      };
+    } else {
+      setIsSmall(false);
+      return { alignItems: scrollY === 0 ? "flex-end" : "center" };
+    }
+  };
+  const returnLogoStyles = () => {
+    if (size === "xs" || size === "s" || size === "m") {
+      setIsSmall(true);
+      return {
+        x: "25vw",
+        y: 0,
+        width: scrollY === 0 ? "50%" : "50%",
+      };
+    } else {
+      setIsSmall(false);
+      return {
+        x: scrollY === 0 ? "32vw" : 0,
+        y: scrollY === 0 ? "-20px" : 0,
+        width: scrollY === 0 ? "25%" : "20%",
+      };
+    }
   };
 
   return (
@@ -43,7 +76,7 @@ const Header = () => {
       initial={{ y: 0, height: "5rem" }}
       animate={{
         y: scrollY !== 0 ? 0 : "6vh",
-        height: scrollY !== 0 ? "5rem" : "10rem",
+        height: scrollY !== 0 ? "5rem" : "9rem",
         backgroundColor: scrollY !== 0 ? "rgba(255,255,255,.1)" : "transparent",
         backdropFilter: scrollY !== 0 ? "blur(20px)" : "none",
       }}
@@ -55,9 +88,11 @@ const Header = () => {
           animate={{ display: scrollY === 0 ? "flex" : "none" }}
           transition={{ duration: 0 }}
         >
-          <CustomButton className={classes.login_btn}>
-            <a href="#">{t("login")}</a>
-          </CustomButton>
+          {!isSmall && (
+            <CustomButton className={classes.login_btn}>
+              <a href="#">{t("login")}</a>
+            </CustomButton>
+          )}
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
@@ -78,18 +113,14 @@ const Header = () => {
               </Badge>
             </IconButton>
           </span>
-          <span className={classes.icon_pack_wrapper}>
+          {<span className={classes.icon_pack_wrapper}>
             <ChangeLanguage className={classes.card_icons} />
-          </span>
+          </span>}
         </motion.span>
         <motion.span
           className={classes.logo_container}
           initial={initialLogoState}
-          animate={{
-            x: scrollY === 0 ? "35vw" : 0,
-            y: scrollY === 0 ? "-20px" : 0,
-            width: scrollY === 0 ? "25%" : "20%",
-          }}
+          animate={returnLogoStyles}
           transition={{ duration: 0.25, type: "tween" }}
         >
           <img className={classes.logo_img} src={logo} alt="Seranoco Logo" />
@@ -97,16 +128,16 @@ const Header = () => {
         <motion.span
           className={classes.navigation_container}
           initial={{ alignItems: "center" }}
-          animate={{ alignItems: scrollY === 0 ? "flex-end" : "center" }}
+          animate={returnButtonStyles}
         >
-          {test.map((elem,i) => {
+          {test.map((elem, i) => {
             return (
               <div className={classes.header_btn_wrapper}>
                 <button
                   className={classes.header_btn}
                   onClick={() => setIsExtended(!isExtended)}
                 >
-                  {t(`header_button_${i+1}`)}
+                  {t(`header_button_${i + 1}`)}
                 </button>
                 {/* <motion.div
                   className={classes.mega_menu}

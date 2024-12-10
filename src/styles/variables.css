@@ -4,5 +4,35 @@
   --top-slider-height: 5vh;
 
   --color-black: rgb(15, 15, 15);
-  --c-g-1:rgb(43, 42, 42);
+  --c-g-1: rgb(43, 42, 42);
+}
+
+@media only screen and (max-width: 480px) {
+  :root {
+    --small-pc-padding: 0;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  :root {
+    --small-pc-padding: 0;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  :root {
+    --small-pc-padding: 1rem;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+   :root {
+    --small-pc-padding: 6rem;
+  }
+}
+
+@media only screen and (min-width: 1201px) {
+   :root {
+    --small-pc-padding: 6rem;
+  }
 }

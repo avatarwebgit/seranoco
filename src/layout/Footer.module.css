@@ -1,7 +1,6 @@
 @import url(../styles/variables.css);
 
 .footer {
-  height: 20vh;
   padding-right: var(--small-pc-padding);
   padding-left: var(--small-pc-padding);
   background-color: var(--color-black);
@@ -10,7 +9,7 @@
 }
 .image_wrapper {
   width: 20%;
-  height: 100%;
+  height: inherit;
   overflow: hidden;
 }
 .footer_logo {
@@ -26,16 +25,104 @@
 .links > span {
   flex: 1;
   padding: 1.5rem;
-  color: #ffffff;
+  color: #ffffff !important;
   display: flex;
   flex-direction: column;
   text-align: left;
   justify-content: space-between;
 }
 .title {
-  font-size: 1.2rem;
+  font-size: .5rem;
   font-weight: bold;
 }
 .links > span > a {
-  color: #ffffff;
+  color: #ffffff !important;
+}
+@media only screen and (max-width: 480px) {
+  .footer {
+    padding: 0;
+    height: 100vh;
+  }
+  .image_wrapper {
+    display: none;
+    padding: 0 !important;
+  }
+  .links > span {
+    padding: 0;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  .links > span > a {
+    font-weight: lighter;
+    font-size: 2rem;
+  }
+  .links {
+    width: 100%;
+    padding: 0;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .title {
+    font-size: 1.5rem;
+    margin: 0 auto;
+  }
+}
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+   .footer {
+    padding: 0;
+    height: 100vh;
+  }
+  .image_wrapper {
+    display: none;
+    padding: 0 !important;
+    align-items: flex-start;
+  }
+  .links > span {
+    padding: 0;
+    flex-direction: row;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+  .links > span > a {
+    font-weight: lighter;
+  }
+  .links {
+    width: 100%;
+    padding: 0;
+    flex-direction: column;
+    padding: 1rem ;
+  }
+  .title {
+    font-size: 1rem;
+  }
+}
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .footer {
+    padding: 0;
+  }
+  .image_wrapper {
+    display: none;
+    padding: 0 !important;
+    align-items: flex-start;
+  }
+  .links > span {
+    padding: 0;
+    padding: .5rem;
+  }
+  .links > span > a {
+    font-weight: lighter;
+    font-size: .5rem !important;
+    padding: .5rem 0;
+  }
+  .links {
+    width: 100%;
+    padding: 0;
+  }
+  .title {
+    font-size: .8rem !important;
+  }
+}
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
 }

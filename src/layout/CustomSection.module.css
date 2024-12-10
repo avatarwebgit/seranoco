@@ -5,8 +5,8 @@
   width: 100%;
 }
 .content_wrapper {
-  max-width: 2000px;
+  max-width: 1200px;
   margin: 0 auto;
-  margin-right: var(--small-pc-padding);
-  margin-left: var(--small-pc-padding);
+  margin-right: var(--small-pc-padding) !important;
+  margin-left: var(--small-pc-padding) !important;
 }

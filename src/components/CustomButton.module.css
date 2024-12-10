@@ -26,6 +26,7 @@
   font-weight: 700;
   position: relative;
   vertical-align: middle;
+  white-space: nowrap;
 }
 .custom_btn::before,
 .custom_btn::after {
