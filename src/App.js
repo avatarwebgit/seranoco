@@ -1,12 +1,18 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import i18next from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import HttpApi from "i18next-http-backend";
 
 import "./App.css";
 function App() {
   const [windowSize, setWindowSize] = useState("");
-  
+
   const Home = React.lazy(() => import("./pages/Home"));
+  const CategoryPage = React.lazy(() => import("./pages/CategoryPage"));
 
   // const AuthExists = ({ children }) => {
   //   return token ? <Navigate to={"/"} /> : children;
@@ -15,6 +21,11 @@ function App() {
   // const RequireAuth = ({ children }) => {
   //   return token ? children : <Navigate to={"/login"} />;
   // };
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const lng = useSelector((state) => state.localeStore.lng);
 
   const windowsSize = () => {
     const width = window.innerWidth;
@@ -45,10 +56,29 @@ function App() {
     };
   }, []);
 
+  i18next
+    .use(initReactI18next)
+    .use(LanguageDetector)
+    .use(HttpApi)
+    .init({
+      supportedLngs: ["en", "fa"],
+      fallbackLng: "en",
+      backend: {
+        loadPath: "/assets/locales/{{lng}}/translation.json",
+      },
+      detection: {
+        order: ["path", "localStorage", "cookie", "htmlTag", "subdomain"],
+        caches: ["localStorage"],
+      },
+      lookupFromPathIndex: 1,
+      checkWhitelist: true,
+    });
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path={`/:lng/`} element={<Home />} />
+        <Route path={`/:lng/category`} element={<CategoryPage />} />
       </Routes>
     </Suspense>
   );

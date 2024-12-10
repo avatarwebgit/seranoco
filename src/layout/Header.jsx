@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Favorite, ShoppingBag } from "@mui/icons-material";
+import { Badge, IconButton } from "@mui/material";
+import { useTranslation } from "react-i18next";
+
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import logo from "../assets/svg/Serano-Logo.svg";
-
-import classes from "./Header.module.css";
-import Search from "../components/Search";
-import { Badge, createTheme, IconButton } from "@mui/material";
 import CustomButton from "../components/CustomButton";
 import CustomSection from "./CustomSection";
+import Search from "../components/Search";
+
+import classes from "./Header.module.css";
+import ChangeLanguage from "../utils/ChangeLanguage";
 const Header = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isExtended, setIsExtended] = useState(false);
 
   const test = [1, 2, 3, 4, 5, 6, 7];
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#ffffff",
-      },
-    },
-  });
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.addEventListener("load", () => setScrollY(window.scrollY));
@@ -37,16 +36,6 @@ const Header = () => {
     y: 0,
     x: 0,
   };
-
-  const styles = (theme) => ({
-    margin: {
-      margin: theme.spacing.unit * 2,
-    },
-    customBadge: {
-      backgroundColor: "white",
-      color: "white",
-    },
-  });
 
   return (
     <motion.header
@@ -67,15 +56,13 @@ const Header = () => {
           transition={{ duration: 0 }}
         >
           <CustomButton className={classes.login_btn}>
-            <a href="#">Login</a>
+            <a href="#">{t("login")}</a>
           </CustomButton>
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
                 badgeContent={4}
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                color={theme.palette.primary.main}
-                className={{ Badge: classes.badge }}
               >
                 <Favorite color="action" className={classes.card_icons} />
               </Badge>
@@ -86,12 +73,13 @@ const Header = () => {
               <Badge
                 badgeContent={4}
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                color={theme.palette.primary.main}
-                className={{ Badge: classes.badge }}
               >
                 <ShoppingBag color="action" className={classes.card_icons} />
               </Badge>
             </IconButton>
+          </span>
+          <span className={classes.icon_pack_wrapper}>
+            <ChangeLanguage className={classes.card_icons} />
           </span>
         </motion.span>
         <motion.span
@@ -111,14 +99,14 @@ const Header = () => {
           initial={{ alignItems: "center" }}
           animate={{ alignItems: scrollY === 0 ? "flex-end" : "center" }}
         >
-          {test.map((elem) => {
+          {test.map((elem,i) => {
             return (
               <div className={classes.header_btn_wrapper}>
                 <button
                   className={classes.header_btn}
                   onClick={() => setIsExtended(!isExtended)}
                 >
-                  header button
+                  {t(`header_button_${i+1}`)}
                 </button>
                 {/* <motion.div
                   className={classes.mega_menu}

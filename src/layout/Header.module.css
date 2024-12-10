@@ -3,12 +3,10 @@
   position: fixed;
   top: 0;
   z-index: 100;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
   width: 100vw;
   height: 5rem;
 }
-.card{
+.card {
   height: 100% !important;
 }
 .content {
@@ -42,7 +40,7 @@
   align-items: center;
   justify-content: center;
 }
-.header_btn_wrapper{
+.header_btn_wrapper {
   position: relative;
 }
 .header_btn {
@@ -93,7 +91,7 @@
 .card_icons {
   font-size: 2rem !important;
 }
-.badge{
+.badge {
   background-color: #ffffff !important;
   color: #ffffff !important;
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import {motion} from 'framer-motion'
 
 import classes from "./CustomButton.module.css";
 const CustomButton = ({ children }) => {

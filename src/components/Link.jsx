@@ -1,8 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 
 import classes from "./Link.module.css";
+
 const Link = ({ title, href, imgUrl, alt }) => {
+  const lng = useSelector((state) => state.localeStore.lng);
   return (
     <motion.div
       className={classes.main}
@@ -17,7 +20,7 @@ const Link = ({ title, href, imgUrl, alt }) => {
       }}
       transition={{ type: "tween", duration: 0.3 }}
     >
-      <a href={href}>
+      <a href={`/${lng}/category`}>
         <span className={classes.title}>
           <p>{title}</p>
         </span>

@@ -1,0 +1,42 @@
+@import url(../styles/variables.css);
+
+.main {
+  height: 20vh;
+  margin: 2rem 0;
+  background-attachment: fixed;
+}
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background: var(--color-black);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 35%,
+    rgba(0, 0, 0, 0.7) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+.content {
+  height: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  margin-right: var(--small-pc-padding);
+  margin-left: var(--small-pc-padding);
+}
+.shop_hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  width: 20%;
+  height: 100%;
+}
+.shop_btn {
+  margin-top: 1rem !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+.title {
+  font-size: 2rem;
+}

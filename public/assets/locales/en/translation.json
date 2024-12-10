@@ -1,0 +1,23 @@
+{
+  "header_button_1": "button 1",
+  "header_button_2": "button 2",
+  "header_button_3": "button 3",
+  "header_button_4": "button 4",
+  "header_button_5": "button 5",
+  "header_button_6": "button 6",
+  "header_button_7": "button 7",
+
+  "title": "Tile",
+  "caption": "Description",
+
+  "shop_now": "SHOP NOW",
+  "login": "Login",
+  "home": "Home",
+
+  "filter_color": "Shop by Color",
+  "filter_shape": "Shop by Shape",
+  "new_product": "New Products",
+  "wholesales": "Wholesales",
+  "limited_edition": "Limited Edition",
+  "birth_stones": "Birth Stones"
+}
