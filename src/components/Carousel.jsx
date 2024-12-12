@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import {
   Navigation,
@@ -7,6 +7,8 @@ import {
   A11y,
   Thumbs,
 } from "swiper/modules";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 import img from "../assets/images/SlideBack.png";
 import gem from "../assets/images/Gem.png";
@@ -24,22 +26,41 @@ import "../styles/carousel.css";
 
 import shared from "../styles/shared.css";
 import classes from "./Caruosel.module.css";
-const Carusel = () => {
+import { Button } from "@mui/material";
+const Carusel = ({ windowSize }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isSmallSize, setIsSmallSize] = useState(false);
+
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (windowSize === "xs" || windowSize === "s") {
+      setIsSmallSize(true);
+    } else {
+      setIsSmallSize(false);
+    }
+  }, [windowSize]);
 
   const slides = [img, img, img, img, img];
   const thumbs = [shape1, shape2, shape3, shape4, shape2];
   const productImages = [gem, shape2, gem, shape4, gem];
 
+  const returnThumbStyles = (index) => {
+    if (index !== activeIndex) {
+      const x = activeIndex - index;
+      return { y: index - 2 === activeIndex ? -((x ) * 5) : 0 };
+    }
+    if (index === activeIndex) {
+      return { y: index === activeIndex ? 0 : 0 };
+    }
+  };
+
   return (
     <section>
       <div className={shared.content}>
         {/* ________________ BANNER SLIDER  ________________*/}
-        <Swiper
-          className={classes.top_slider}
-    
-        >
+        <Swiper className={classes.top_slider}>
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className={classes.slide}>
               <div className={classes.slider_image_wrapper}>
@@ -71,16 +92,21 @@ const Carusel = () => {
             swiper:
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
           }}
-     
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className={classes.slide}>
               <div className={classes.slider_image_wrapper}>
                 <span className={classes.product_img_wrapper}>
-                  <img
+                  <motion.img
                     className={classes.product_img}
                     src={productImages.at(index)}
                     alt=""
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{
+                      scale: index === activeIndex ? 1 : 0,
+                      opacity: index === activeIndex ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.5, type: "tween" }}
                   />
                 </span>
                 <img
@@ -88,6 +114,15 @@ const Carusel = () => {
                   alt={`Slide ${index + 1}`}
                   style={{ width: "100%", height: "100%" }}
                 />
+                {!isSmallSize && (
+                  <span className={classes.about_product}>
+                    <p className={classes.title}>{t("title")}</p>
+                    <p className={classes.caption}>{t("caption")}</p>
+                    <Button className={classes.shop_btn} variant="outlined">
+                      {t("shop_now")}
+                    </Button>
+                  </span>
+                )}
               </div>
             </SwiperSlide>
           ))}
@@ -95,19 +130,18 @@ const Carusel = () => {
         {/* ________________ THUMB SLIDER  ________________*/}
         <div className={classes.thumbs_wrapper}>
           <Swiper
-            spaceBetween={10}
-            slidesPerView={4}
+            spaceBetween={0}
+            slidesPerView={5}
             onSwiper={setThumbsSwiper}
             watchSlidesProgress="true"
             modules={[Thumbs]}
             className={classes.thumbs_slider}
-            centeredSlides
-          
+            // centeredSlides
           >
             {slides.map((slide, index) => (
               <SwiperSlide key={index}>
                 {({ isActive }) => (
-                  <div
+                  <motion.div
                     style={{
                       opacity: activeIndex === index ? 1 : 0.5,
                       transform:
@@ -116,14 +150,15 @@ const Carusel = () => {
                     }}
                     onClick={() => thumbsSwiper.slideTo(index)}
                     className={classes.thumb}
+                    animate={returnThumbStyles(index)}
                   >
-                    <img
+                    <motion.img
                       src={thumbs[index]}
                       alt={`Thumbnail ${index + 1}`}
                       style={{ width: "100%", height: "auto" }}
                       className={classes.thumb_img}
                     />
-                  </div>
+                  </motion.div>
                 )}
               </SwiperSlide>
             ))}

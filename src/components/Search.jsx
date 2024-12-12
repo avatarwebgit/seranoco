@@ -5,33 +5,22 @@ import classes from "./Search.module.css";
 
 const Search = () => {
   const [isFullSize, setIsFullSize] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
 
   const handleMouseEnter = () => {
     setIsFullSize(true);
   };
 
-  const handleMouseLeave = () => {
-    if (!isFocused) {
-      setIsFullSize(false);
-    } else {
-      setIsFullSize(true)
-    }
-  };
-
-  const handleFocus = () => {
-    // setIsFullSize(true);
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    // setIsFullSize(false);
-    setIsFocused(true);
-  };
-
   const initial = {
     width: 0,
   };
+
+  useEffect(() => {
+    if (isFullSize) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+  }, [isFullSize]);
 
   return (
     <motion.div
@@ -39,16 +28,13 @@ const Search = () => {
       initial={initial}
       animate={{ width: isFullSize ? "100%" : 0 }}
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       transition={{ duration: 0.25, type: "tween" }}
     >
       <motion.input
         className={classes.search_input}
         type="text"
         placeholder={isFullSize ? "Search..." : ""}
-        onFocus={handleFocus}
-        onBlur={handleMouseLeave}
-        whileHover={handleMouseEnter}
+        onFocus={handleMouseEnter}
         style={{ backgroundColor: isFullSize ? "white" : "transparent" }}
         transition={{ duration: 0.25, type: "tween" }}
       />
@@ -71,6 +57,12 @@ const Search = () => {
           transition={{ duration: 0.25, type: "tween" }}
         />
       </motion.div>
+      <motion.div
+        className={classes.backdrop}
+        initial={{ display: "none" }}
+        animate={{ display: isFullSize ? "block" : "none" }}
+        onClick={() => setIsFullSize(false)}
+      />
     </motion.div>
   );
 };

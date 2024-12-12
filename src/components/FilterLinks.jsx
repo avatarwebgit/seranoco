@@ -8,39 +8,39 @@ const FilterLinks = () => {
   return (
     <CustomSection className={classes.main}>
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
       <Link
-        imgUrl={"https://picsum.photos/id/237/200/300"}
+        imgUrl={"https://picsum.photos/id/237/600/300"}
         title={"hello world"}
       />
     </CustomSection>

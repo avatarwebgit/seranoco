@@ -1,9 +1,29 @@
 import React from "react";
 
 import classes from "./CustomButton.module.css";
+import { Login } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { useSelector } from "react-redux";
 const CustomButton = ({ children }) => {
+  const lng = useSelector((state) => state.localeStore.lng);
   return (
-    <button class={`${classes.draw} ${classes.custom_btn}`}>{children}</button>
+    <IconButton
+      class={`${classes.draw} ${classes.custom_btn}`}
+      style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
+    >
+      <span className={classes.icon_wrapper}>
+        <Login
+          sx={{
+            width: "25px",
+            height: "25px",
+            transform: lng === "fa" ? "rotate(180deg)" : "",
+          }}
+          color="action"
+          className={classes.card_icons}
+        />
+      </span>
+      {children}
+    </IconButton>
   );
 };
 

@@ -6,6 +6,8 @@ import { localeActions } from "../store/store";
 import { IconButton } from "@mui/material";
 import { Language } from "@mui/icons-material";
 
+import { ReactComponent as Earth } from "../assets/svg/earth.svg";
+
 const ChangeLanguage = ({ className }) => {
   const lng = useSelector((state) => state.localeStore.lng);
   const dispatch = useDispatch();
@@ -27,7 +29,11 @@ const ChangeLanguage = ({ className }) => {
 
   return (
     <IconButton onClick={handleChangeLanguage}>
-      <Language color="action" className={className} />
+      <Earth
+        style={{ width: "25px", height: "25px" }}
+        color="action"
+        className={className}
+      />
     </IconButton>
   );
 };

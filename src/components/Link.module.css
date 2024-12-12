@@ -11,14 +11,22 @@
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  color: #ffffff;
+  color: #000000;
+  z-index: 10;
 }
 .img_container {
   width: 100%;
   height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }
 .img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: .7rem;
 }
