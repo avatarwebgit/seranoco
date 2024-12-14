@@ -40,7 +40,7 @@
   justify-content: center;
 }
 .header_btn_wrapper {
-  position: relative;
+  /* position: relative; */
 }
 .header_btn {
   border: none;
@@ -52,10 +52,14 @@
   border-bottom: 1px solid transparent;
   transition: all 0.25s;
   padding: 8px 4px;
-  position: relative;
+  white-space: nowrap;
+}
+.header_btn_skeleton {
+  width: 10% !important;
+  height: 2rem !important;
 }
 .header_btn::after {
-  content: "";
+  content: '';
   height: 1px;
   background-color: black;
   position: absolute;
@@ -63,17 +67,60 @@
   left: 0;
   width: 0;
 }
-.header_btn:hover::after {
-  animation: header_btn_border 0.35s forwards;
+.header_btn:hover ~ .mega_paper {
+  animation: fade_in 0.5s forwards;
+  display: flex;
 }
-.mega_menu {
+.mega_paper:hover,
+.mega_paper > * {
+  opacity: 1;
+  visibility: visible;
+  animation: fade_in 0.5s forwards;
+  display: flex;
+}
+.mega_paper {
   transition: all 1s;
-  height: 50vh;
+  height: 90vh;
   width: 100vw;
-  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.91);
+  backdrop-filter: blur(20px) !important;
   position: absolute;
   top: 100%;
   left: 0;
+  opacity: 0;
+  transition: all 0.25s;
+  visibility: hidden;
+  display: none;
+}
+.sub_menu_wrapper {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+  width: 15%;
+  text-align: center;
+  cursor: pointer;
+  color: #ffffff;
+}
+.sub_menu_text {
+  padding: 8px 4px;
+}
+.sub_menu_wrapper:hover {
+  background-color: #c3c3c3;
+  transition: all 0.25s;
+}
+.sub_menu_wrapper:hover ~ .link_menu_wrapper {
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+.link_menu_wrapper {
+  width: 85%;
+  height: 100%;
+  background-color: #c3c3c3;
+  opacity: 0;
+  display: none;
 }
 .icon_pack_wrapper {
   margin: 0 0.2rem;
@@ -128,16 +175,35 @@
 .menu_input {
   width: 90%;
 }
+.dn {
+  display: none;
+}
+.db {
+  display: block;
+}
 
-@keyframes header_btn_border {
+@keyframes fade_in {
   0% {
-    width: 0%;
-  }
-  50% {
-    width: 10%;
+    visibility: visible;
+    opacity: 0;
+    transform: translateY(10px);
   }
   100% {
-    width: 100%;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade_out {
+  0% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
   }
 }
 
