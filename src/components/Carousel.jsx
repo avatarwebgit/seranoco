@@ -9,25 +9,19 @@ import {
 } from 'swiper/modules';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-
-import img from '../assets/images/SlideBack.png';
-import gem from '../assets/images/Gem.png';
-import shape1 from '../assets/images/Shape1.png';
-import shape2 from '../assets/images/Shape2.png';
-import shape3 from '../assets/images/Shape3.png';
-import shape4 from '../assets/images/Shape4.png';
+import { Button } from '@mui/material';
+import { Skeleton } from '@mui/material';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
-import '../styles/carousel.css';
+import { sliderContents } from '../services/api';
 
+import '../styles/carousel.css';
 import shared from '../styles/shared.css';
 import classes from './Caruosel.module.css';
-import { Button } from '@mui/material';
-import { sliderContents } from '../services/api';
 const Carusel = ({ windowSize }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -44,17 +38,13 @@ const Carusel = ({ windowSize }) => {
     }
   }, [windowSize]);
 
-  const slides = [img, img, img, img, img];
-  const thumbs = [shape1, shape2, shape3, shape4, shape2];
-  const productImages = [gem, shape2, gem, shape4, gem];
-
   const getImages = async () => {
     setSwiperData(null);
     const serverRes = await sliderContents();
     if (serverRes.response.ok) {
       setSwiperData(serverRes.result.data);
+      console.log(serverRes.result.data);
     }
-    console.log(serverRes.result.data);
   };
 
   useEffect(() => {
@@ -63,7 +53,7 @@ const Carusel = ({ windowSize }) => {
 
   return (
     <section>
-      {swiperData && (
+      {swiperData ? (
         <div className={shared.content}>
           {/* ________________ BANNER SLIDER  ________________*/}
           <Swiper className={classes.top_slider}>
@@ -71,7 +61,7 @@ const Carusel = ({ windowSize }) => {
               <SwiperSlide key={index} className={classes.slide}>
                 <div className={classes.slider_image_wrapper}>
                   <span className={classes.product_img_wrapper}>
-                    <img src={productImages.at(index)} alt='' />
+                    <img src={slide.image} alt='' />
                   </span>
                   <img
                     src={slide.thumbnail}
@@ -122,8 +112,8 @@ const Carusel = ({ windowSize }) => {
                   />
                   {!isSmallSize && (
                     <span className={classes.about_product}>
-                      <p className={classes.title}>{swiperData.title}</p>
-                      <p className={classes.caption}>{swiperData.text}</p>
+                      <p className={classes.title}>{slide.title}</p>
+                      <p className={classes.caption}>{slide.text}</p>
                       <Button className={classes.shop_btn} variant='outlined'>
                         {t('shop_now')}
                       </Button>
@@ -137,14 +127,13 @@ const Carusel = ({ windowSize }) => {
           <div className={classes.thumbs_wrapper}>
             <Swiper
               spaceBetween={0}
-              slidesPerView={swiperData.lenght < 5 ? swiperData.lenght : 5}
+              slidesPerView={swiperData.length < 5 ? swiperData.length : 5}
               onSwiper={setThumbsSwiper}
               watchSlidesProgress='true'
               modules={[Thumbs]}
               className={classes.thumbs_slider}
-              // centeredSlides
             >
-              {slides.map((slide, index) => (
+              {swiperData.map((slide, index) => (
                 <SwiperSlide key={index}>
                   {({ isActive }) => (
                     <motion.div
@@ -175,6 +164,12 @@ const Carusel = ({ windowSize }) => {
             </Swiper>
           </div>
         </div>
+      ) : (
+        <Skeleton
+          variant='rectangular'
+          className={classes.skeleton_main}
+          animation='wave'
+        />
       )}
     </section>
   );

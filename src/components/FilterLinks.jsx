@@ -1,48 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import CustomSection from "../layout/CustomSection";
-import Link from "./Link";
+import CustomSection from '../layout/CustomSection';
+import Link from './Link';
 
-import classes from "./FilterLinks.module.css";
+import filterByShape from '../assets/images/filter_by_shape.webp';
+import filterByColor from '../assets/images/filter_by_color.webp';
+import { homePageCategories } from '../services/api';
+
+import classes from './FilterLinks.module.css';
+import { useSelector } from 'react-redux';
 const FilterLinks = () => {
+  const [linkData, setLinkData] = useState(null);
+  const { t } = useTranslation();
+
+  const lng = useSelector(state => state.localeStore.lng);
+
+  const getHomeCategories = async () => {
+    const serverRes = await homePageCategories(lng);
+    if (serverRes.response.ok) {
+      setLinkData(serverRes.result.data);
+    }
+  };
+
+  useEffect(() => {
+    getHomeCategories();
+  }, []);
+
   return (
     <CustomSection className={classes.main}>
+      <Link imgUrl={filterByColor} title={t('shop_by_color')} />
+      <Link imgUrl={filterByShape} title={t('shop_by_shape')} />
       <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
+        imgUrl={null}
+        title={t('new_product')}
+        className={classes.new}
+        helper_className={classes.helper}
+        hepler_text={t('new')}
       />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
-      <Link
-        imgUrl={"https://picsum.photos/id/237/600/300"}
-        title={"hello world"}
-      />
+      {}
+      {linkData &&
+        linkData.map(elem => {
+          return (
+            <Link
+              imgUrl={elem.primary_image}
+              title={lng === 'en' ? elem.name : elem.name_fa}
+            />
+          );
+        })}
     </CustomSection>
   );
 };

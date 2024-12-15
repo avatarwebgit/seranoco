@@ -1,32 +1,42 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
-import classes from "./Link.module.css";
+import classes from './Link.module.css';
 
-const Link = ({ title, href, imgUrl, alt }) => {
-  const lng = useSelector((state) => state.localeStore.lng);
+const Link = ({
+  title,
+  href,
+  imgUrl,
+  alt,
+  className,
+  helper_className,
+  hepler_text,
+}) => {
+  const lng = useSelector(state => state.localeStore.lng);
   return (
     <motion.div
       className={classes.main}
-      initial={{ y: 0 }}
+      initial={{ y: 0, boxShadow: '0px 10px 5px rgb(214, 214, 214)' }}
       whileHover={{
         boxShadow: [
-          "0px 5px 5px rgb(194, 194, 194)",
-          "0px 5px 20px rgb(96, 96, 96)",
-          "0px 5px 15px rgb(150, 150, 150)",
+          '0px 10px 5px rgb(214, 214, 214)',
+          '0px 10px 8px rgb(96, 96, 96)',
+          '0px 10px 6px rgb(191, 191, 191)',
         ],
-        y: [0, -20, -10],
       }}
-      transition={{ type: "tween", duration: 0.3 }}
+      transition={{ type: 'tween', duration: 0.5 }}
     >
-      <a href={`/${lng}/category`}>
+      <a href={`/${lng}/${href}`}>
         <span className={classes.title}>
           <p>{title}</p>
         </span>
-        <span className={classes.img_container}>
-          <img className={classes.img} src={imgUrl} alt={alt} />
+        <span className={`${classes.img_container} ${className}`}>
+          {imgUrl && (
+            <img className={`${classes.img} `} src={imgUrl} alt={alt} />
+          )}
         </span>
+        <p className={helper_className}>{hepler_text}</p>
       </a>
     </motion.div>
   );

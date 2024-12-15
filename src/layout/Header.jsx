@@ -164,7 +164,7 @@ const Header = ({ windowSize }) => {
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
-                badgeContent={4}
+                badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
                 <Heart width={25} height={25} />
@@ -174,7 +174,7 @@ const Header = ({ windowSize }) => {
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
-                badgeContent={4}
+                badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
                 <Basket width={25} height={25} />
@@ -216,6 +216,7 @@ const Header = ({ windowSize }) => {
                   return lng === 'en' ? a.id - b.id : b.id - a.id;
                 })
                 .map((elem, i) => {
+
                   const isFullUrl = elem.url.charAt(0) === '/' ? false : true;
                   return (
                     <div className={classes.header_btn_wrapper} key={i}>
@@ -231,7 +232,7 @@ const Header = ({ windowSize }) => {
                           aria-expanded={open ? 'true' : undefined}
                           onMouseEnter={event => handleClick(event)}
                         >
-                          {elem.title}
+                          {elem.label}
                         </motion.button>
                       </a>
 
@@ -250,11 +251,13 @@ const Header = ({ windowSize }) => {
                         </motion.div>
                       )} */}
                       {elem.children &&
-                        elem.children.map((subLink, i) => {
+                        elem.children.map((sublink, i) => {
                           return (
                             <motion.div className={classes.mega_paper} key={i}>
                               <div className={classes.sub_menu_wrapper}>
-                                <p className={classes.sub_menu_text}>test</p>
+                                <p className={classes.sub_menu_text}>
+                                  {sublink.label}
+                                </p>
                               </div>
                               <div className={classes.link_menu_wrapper}>
                                 <span></span>

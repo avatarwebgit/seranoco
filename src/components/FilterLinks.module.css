@@ -1,12 +1,31 @@
+@import url(../styles/variables.css);
 .main {
   height: fit-content;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-auto-rows: 50vh;
   gap: 1rem;
-  margin-top: 2rem;
-  margin-bottom: 4rem;
+  margin: 2rem 0;
   padding: 2rem;
+}
+.new {
+  background-color: var(--primary);
+  height: 70%;
+  top: 25%;
+  padding: 0.5rem;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+.helper {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: inherit;
+  font-weight: 900;
+  color: #ffffff;
+  font-size: large;
 }
 @media only screen and (max-width: 480px) {
   .main {

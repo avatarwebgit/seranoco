@@ -17,10 +17,13 @@
   "login": "Login",
   "home": "Home",
 
-  "filter_color": "Shop by Color",
-  "filter_shape": "Shop by Shape",
+  "shop_by_color": "Shop by Color",
+  "shop_by_shape": "Shop by Shape",
   "new_product": "New Products",
   "wholesales": "Wholesales",
   "limited_edition": "Limited Edition",
-  "birth_stones": "Birth Stones"
+  "birth_stones": "Birth Stones",
+
+  "new":"New",
+  "trending_new":"New"
 }

@@ -1,4 +1,5 @@
 :root {
+  --primary:rgb(0,153,130);
   --small-pc-padding: 6rem;
 
   --top-slider-height: 5vh;
@@ -6,8 +7,6 @@
   --color-black: rgb(15, 15, 15);
   --c-g-1: rgb(43, 42, 42);
 
-  --bg: hsl(190deg 20% 10%);
-  --border-angle: 0deg;
 }
 
 @media only screen and (max-width: 480px) {

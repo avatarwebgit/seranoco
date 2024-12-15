@@ -15,10 +15,14 @@
   "shop_now": "اکنون خرید کنید",
   "login": "ورود ",
   "home": "صفحه اصلی",
-  "filter_color": "خرید بر اساس رنگ",
-  "filter_shape": "خرید بر اساس شکل",
+  "shop_by_color": "خرید بر اساس رنگ",
+  "shop_by_shape": "خرید بر اساس شکل",
   "new_product": "محصولات جدید",
   "wholesales": "عمده فروشی",
   "limited_edition": "نسخه محدود",
-  "birth_stones": "سنگ های تولد"
+  "birth_stones": "سنگ های تولد",
+
+  "new": "جدید",
+
+  "trending_new": "جدید ترین محصولات"
 }

@@ -10,6 +10,7 @@ const CustomButton = ({ children }) => {
     <IconButton
       className={`${classes.draw} ${classes.custom_btn}`}
       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
+      disableRipple
     >
       <span className={classes.icon_wrapper}>
         <Login
@@ -18,7 +19,7 @@ const CustomButton = ({ children }) => {
             height: '25px',
             transform: lng === 'fa' ? 'rotate(180deg)' : '',
           }}
-          color='action'
+          color='#000000'
           className={classes.card_icons}
         />
       </span>

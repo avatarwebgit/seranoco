@@ -18,7 +18,7 @@
   /* margin: 1em; */
   padding: 5px 7.5px;
   box-shadow: inset 0 0 0 1px transparent;
-  color: var(--black);
+  color: var(--black) !important;
   font-size: 0.5rem !important;
   font-weight: 200;
   position: relative;
@@ -54,6 +54,7 @@
 }
 .draw:hover {
   color: var(--black);
+  background-color: transparent !important;
 }
 .draw:hover::before,
 .draw:hover::after {

@@ -27,7 +27,7 @@
   height: 15vh;
   position: absolute;
   top: 50%;
-  left: 11%;
+  left: 17%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -41,15 +41,16 @@
   font-size: 1.1rem !important;
 }
 .shop_btn {
-  font-size: 0.5rem !important;
+  font-size: 0.7rem !important;
   margin-top: 0.5rem !important;
   color: #000000 !important;
   background-color: transparent !important;
   padding: 8px !important;
   border: 2px solid black !important;
-  border-radius: 10px;
-  cursor:pointer  !important;
+  cursor: pointer !important;
   transition: all 0.25s !important;
+  font-family: mulishBold !important;
+  font-weight: 900 !important;
 }
 .shop_btn:hover > .box {
   border: 0.35rem solid white !important;
@@ -83,12 +84,17 @@
   justify-content: center;
 }
 .thumbs_slider {
-  width: 100% !important;
+  width: fit-content !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center;
 }
 .thumb {
-  width: 40px;
+  width: 50px;
   transition: all 0.25s;
   cursor: pointer;
+  padding: 0.3rem;
 }
 .thumb_img {
   width: 100%;
@@ -125,7 +131,10 @@
 .thumbnail:not(.active) {
   opacity: 0.5;
 }
-
+.skeleton_main {
+  width: 100% !important;
+  height: 100vh !important;
+}
 .thumbnail-swiper .swiper-slide {
   display: flex;
   justify-content: center;
