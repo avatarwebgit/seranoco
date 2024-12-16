@@ -3,10 +3,10 @@
 .card {
   height: unset;
   width: 100%;
+  margin: 0 10%;
 }
 .content_wrapper {
-  max-width: 1200px;
+  min-width: 1000px;
+  width: 80%;
   margin: 0 auto;
-  margin-right: var(--small-pc-padding) !important;
-  margin-left: var(--small-pc-padding) !important;
 }

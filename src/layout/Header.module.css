@@ -1,12 +1,13 @@
-@import url(../styles//variables.css);
+@import url(../styles/variables.css);
 .main {
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   z-index: 100;
-  width: 100vw;
+  width: 100%;
 }
 .card {
   height: 100% !important;
+  margin: 0 auto;
 }
 .content {
   height: 100%;
@@ -19,6 +20,7 @@
   width: 25%;
   height: 100%;
   padding: 0 1rem;
+  cursor: pointer;
 }
 .logo_img {
   width: 100%;

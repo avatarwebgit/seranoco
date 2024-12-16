@@ -1,4 +1,4 @@
-const baseUrl = 'http://admin.seranoco.com/api';
+const baseUrl = 'https://admin.seranoco.com/api';
 
 // header: /menus
 // logo && footer :/information

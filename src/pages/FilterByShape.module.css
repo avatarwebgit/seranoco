@@ -1,0 +1,17 @@
+.main {
+  height: fit-content;
+}
+.multi_select_wrapper {
+}
+.grid_form {
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  justify-content: center;
+  align-content: center;
+}
+.size_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+

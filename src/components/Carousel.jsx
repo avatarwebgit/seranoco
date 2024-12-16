@@ -6,6 +6,7 @@ import {
   Scrollbar,
   A11y,
   Thumbs,
+  Autoplay,
 } from 'swiper/modules';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +44,6 @@ const Carusel = ({ windowSize }) => {
     const serverRes = await sliderContents();
     if (serverRes.response.ok) {
       setSwiperData(serverRes.result.data);
-      console.log(serverRes.result.data);
     }
   };
 
@@ -56,18 +56,37 @@ const Carusel = ({ windowSize }) => {
       {swiperData ? (
         <div className={shared.content}>
           {/* ________________ BANNER SLIDER  ________________*/}
-          <Swiper className={classes.top_slider}>
+          <Swiper
+            modules={[Autoplay]}
+            className={classes.top_slider}
+            spaceBetween={0}
+            slidesPerView={1}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+          >
             {swiperData.map((slide, index) => (
               <SwiperSlide key={index} className={classes.slide}>
                 <div className={classes.slider_image_wrapper}>
-                  <span className={classes.product_img_wrapper}>
-                    <img src={slide.image} alt='' />
+                  <span
+                    className={classes.product_img_wrapper}
+                    style={{
+                      width: '100vw',
+                      height: '100vh',
+                    }}
+                  >
+                    <img
+                      src={slide.image}
+                      alt=''
+                      style={{
+                        width: '100vw',
+                        height: '100vh',
+                        objectFit: 'cover',
+                      }}
+                    />
                   </span>
-                  <img
-                    src={slide.thumbnail}
-                    alt={`Slide ${index + 1}`}
-                    style={{ width: '100%', height: '100%' }}
-                  />
                 </div>
               </SwiperSlide>
             ))}
@@ -95,7 +114,7 @@ const Carusel = ({ windowSize }) => {
                   <span className={classes.product_img_wrapper}>
                     <motion.img
                       className={classes.product_img}
-                      src={slide.image}
+                      src={slide.image_2}
                       alt=''
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{
@@ -106,7 +125,7 @@ const Carusel = ({ windowSize }) => {
                     />
                   </span>
                   <img
-                    src={slide.thumbnail}
+                    src={slide.image}
                     alt={`Slide ${index + 1}`}
                     style={{ width: '100%', height: '100%' }}
                   />
@@ -152,7 +171,7 @@ const Carusel = ({ windowSize }) => {
                       transition={{ type: 'tween' }}
                     >
                       <motion.img
-                        src={slide.image_2}
+                        src={slide.thumbnail}
                         alt={`Thumbnail ${index + 1}`}
                         style={{ width: '100%', height: 'auto' }}
                         className={classes.thumb_img}

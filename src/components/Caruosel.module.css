@@ -14,6 +14,11 @@
   height: var(--top-slider-height);
   overflow: hidden;
 }
+.banner_img_wrapper{
+  width: 100%;
+  height: var(--top-slider-height);
+  background-color: red;
+}
 .slider_image_wrapper {
   height: 100vh;
   width: 100vw;

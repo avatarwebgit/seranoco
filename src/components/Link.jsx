@@ -15,7 +15,7 @@ const Link = ({
 }) => {
   const lng = useSelector(state => state.localeStore.lng);
   return (
-    <motion.div
+    <motion.a
       className={classes.main}
       initial={{ y: 0, boxShadow: '0px 10px 5px rgb(214, 214, 214)' }}
       whileHover={{
@@ -26,19 +26,16 @@ const Link = ({
         ],
       }}
       transition={{ type: 'tween', duration: 0.5 }}
+      href={`/${lng}/${href}`}
     >
-      <a href={`/${lng}/${href}`}>
-        <span className={classes.title}>
-          <p>{title}</p>
-        </span>
-        <span className={`${classes.img_container} ${className}`}>
-          {imgUrl && (
-            <img className={`${classes.img} `} src={imgUrl} alt={alt} />
-          )}
-        </span>
-        <p className={helper_className}>{hepler_text}</p>
-      </a>
-    </motion.div>
+      <span className={classes.title}>
+        <p>{title}</p>
+      </span>
+      <span className={`${classes.img_container} ${className}`}>
+        {imgUrl && <img className={`${classes.img} `} src={imgUrl} alt={alt} />}
+      </span>
+      <p className={helper_className}>{hepler_text}</p>
+    </motion.a>
   );
 };
 

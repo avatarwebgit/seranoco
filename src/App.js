@@ -1,5 +1,12 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import i18next from 'i18next';
@@ -10,12 +17,15 @@ import HttpApi from 'i18next-http-backend';
 import fa_translation_file from './assets/locales/fa/translation.json';
 import en_translation_file from './assets/locales/en/translation.json';
 
+import Loading from './layout/Loading';
+
 import './App.css';
 function App() {
   const [windowSize, setWindowSize] = useState('');
 
   const Home = React.lazy(() => import('./pages/Home'));
-  const CategoryPage = React.lazy(() => import('./pages/CategoryPage'));
+  const Categories = React.lazy(() => import('./pages/Categories'));
+  const FilterByShape = React.lazy(() => import('./pages/FilterByShape'));
 
   // const AuthExists = ({ children }) => {
   //   return token ? <Navigate to={"/"} /> : children;
@@ -26,6 +36,8 @@ function App() {
   // };
 
   const lng = useSelector(state => state.localeStore.lng);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const windowsSize = () => {
     const width = window.innerWidth;
@@ -63,7 +75,6 @@ function App() {
     .init({
       supportedLngs: ['en', 'fa'],
       fallbackLng: 'en',
-      debug: true,
       resources: {
         en: {
           translation: en_translation_file, // English translations
@@ -83,10 +94,15 @@ function App() {
   }, [lng]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path={`/:lng/`} element={<Home windowSize={windowSize} />} />
-        <Route path={`/:lng/category`} element={<CategoryPage />} />
+        <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
+        <Route path={'/'} element={<Navigate to={'/en'} replace />} />
+
+        <Route path={` `} element={<Navigate to={`/en`} replace />} />
+        <Route path={`/:lng/categories`} element={<Categories />} />
+        <Route path={`/:lng/filters`} element={<FilterByShape />} />
+        <Route path={`/test`} element={<Loading />} />
       </Routes>
     </Suspense>
   );

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
 
 import CustomSection from '../layout/CustomSection';
 import Link from './Link';
@@ -9,7 +11,6 @@ import filterByColor from '../assets/images/filter_by_color.webp';
 import { homePageCategories } from '../services/api';
 
 import classes from './FilterLinks.module.css';
-import { useSelector } from 'react-redux';
 const FilterLinks = () => {
   const [linkData, setLinkData] = useState(null);
   const { t } = useTranslation();
@@ -29,7 +30,11 @@ const FilterLinks = () => {
 
   return (
     <CustomSection className={classes.main}>
-      <Link imgUrl={filterByColor} title={t('shop_by_color')} />
+      <Link
+        imgUrl={filterByColor}
+        title={t('shop_by_color')}
+        href={'categories'}
+      />
       <Link imgUrl={filterByShape} title={t('shop_by_shape')} />
       <Link
         imgUrl={null}
@@ -45,6 +50,7 @@ const FilterLinks = () => {
             <Link
               imgUrl={elem.primary_image}
               title={lng === 'en' ? elem.name : elem.name_fa}
+              key={nanoid()}
             />
           );
         })}

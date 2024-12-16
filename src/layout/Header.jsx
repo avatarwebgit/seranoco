@@ -5,8 +5,8 @@ import { Badge, Box, Drawer, IconButton, Input } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Skeleton } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-// import logo from '../assets/svg/Serano-Logo.svg';
 import CustomButton from '../components/CustomButton';
 import CustomSection from './CustomSection';
 import Search from '../components/Search';
@@ -25,13 +25,17 @@ const Header = ({ windowSize }) => {
   const [size, setSize] = useState('');
   const [isSmall, setIsSmall] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isFixed, setIsFixed] = useState(true);
   const [headerData, setHeaderData] = useState(null);
   const [logo, setLogo] = useState(null);
 
   const test = [1, 2, 3, 4, 5, 6, 7];
 
-  const { t } = useTranslation();
   const lng = useSelector(state => state.localeStore.lng);
+
+  const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.addEventListener('load', () => setScrollY(window.scrollY));
@@ -45,7 +49,8 @@ const Header = ({ windowSize }) => {
 
   useEffect(() => {
     setSize(windowSize);
-  }, [windowSize]);
+    setIsFixed(location.pathname.split('/').length <= 2 ? true : false);
+  }, [windowSize, location.pathname]);
 
   const initialLogoState = {
     y: 0,
@@ -78,7 +83,7 @@ const Header = ({ windowSize }) => {
     } else {
       setIsSmall(false);
       return {
-        x: scrollY === 0 ? '31vw' : 0,
+        x: scrollY === 0 ? '33vw' : 0,
         y: scrollY === 0 ? '-20px' : 0,
         width: scrollY === 0 ? '25%' : '20%',
       };
@@ -98,7 +103,7 @@ const Header = ({ windowSize }) => {
   // API calls
   const getHeaderLinks = async () => {
     setHeaderData(null);
-    const serverRes = await getHeaderMenus(lng);
+    const serverRes = await getHeaderMenus(i18n.language);
     if (serverRes.response.ok) {
       setHeaderData(serverRes.result);
     }
@@ -106,7 +111,7 @@ const Header = ({ windowSize }) => {
 
   const getHeaderLogo = async () => {
     setLogo(null);
-    const serverRes = await basicInformation(lng);
+    const serverRes = await basicInformation(i18n.language);
     if (serverRes.response.ok) {
       setLogo(serverRes.result?.data.at(0).image);
     }
@@ -115,7 +120,7 @@ const Header = ({ windowSize }) => {
   useEffect(() => {
     getHeaderLinks();
     getHeaderLogo();
-  }, []);
+  }, [lng]);
 
   return (
     <motion.header
@@ -128,6 +133,7 @@ const Header = ({ windowSize }) => {
           scrollY !== 0 ? 'rgba(255,255,255,0.5)' : 'transparent',
         backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'none',
       }}
+      style={{ position: isFixed ? 'fixed' : 'sticky' }}
     >
       <CustomSection className={classes.content} card={classes.card}>
         <motion.span
@@ -164,7 +170,7 @@ const Header = ({ windowSize }) => {
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
-                badgeContent={1}
+                // badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
                 <Heart width={25} height={25} />
@@ -174,7 +180,7 @@ const Header = ({ windowSize }) => {
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
-                badgeContent={1}
+                // badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
                 <Basket width={25} height={25} />
@@ -192,6 +198,7 @@ const Header = ({ windowSize }) => {
           initial={initialLogoState}
           animate={returnLogoStyles}
           transition={{ duration: 0.25, type: 'tween' }}
+          onClick={() => navigate(`/${lng}`)}
         >
           {logo && (
             <motion.img
@@ -216,12 +223,19 @@ const Header = ({ windowSize }) => {
                   return lng === 'en' ? a.id - b.id : b.id - a.id;
                 })
                 .map((elem, i) => {
+                  let isFullUrl;
+                  if (elem.url) {
+                    isFullUrl = elem.url.charAt(0) === '/' ? false : true;
+                  } else {
+                    isFullUrl = null;
+                  }
 
-                  const isFullUrl = elem.url.charAt(0) === '/' ? false : true;
                   return (
                     <div className={classes.header_btn_wrapper} key={i}>
                       <a
-                        href={`${isFullUrl ? elem.url : '/en' + elem.url}`}
+                        href={`${
+                          isFullUrl ? elem.url : '/en' + elem.url || '#'
+                        }`}
                         className={classes.header_btn}
                       >
                         <motion.button
