@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import classes from './SizeBox.module.css';
-const SizeBox = ({ value, onClick }) => {
+const SizeBox = ({ value, onClick,id }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   return (
@@ -13,14 +13,12 @@ const SizeBox = ({ value, onClick }) => {
       <input
         className={classes.input}
         type='checkbox'
-        name={value}
+        name={id}
         id={value}
         onChange={e => setIsChecked(e.target.checked)}
       />
       <label htmlFor={value} className={classes.label}>
-        <div className={classes.img_wrapper}>
-          <p>{value}</p>
-        </div>
+          {value}
       </label>
     </div>
   );

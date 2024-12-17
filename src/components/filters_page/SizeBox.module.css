@@ -1,30 +1,22 @@
 .main {
   margin: 0.1rem;
-  padding: 4px 8px;
+  padding: 3px 8px;
   transition: all 0.5s;
   opacity: 0.5;
   border: 1px solid rgb(143, 143, 143);
+
 }
 .label {
   cursor: pointer;
-  width: 40px;
-  height: 15px;
-}
-.img_wrapper {
-  width: inherit;
-  height: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 0.4rem;
+  font-weight: 600;
+  display: flex ;
+  align-items: center ;
+  justify-content: center ;
 }
 .input {
   display: none;
 }
-.img_wrapper p {
-  width: fit-content;
-  height: fit-content;
-  font-size: 0.6rem;
-}
-.active{
-    background-color: #6fa8d1;
+.active {
+  background-color: #6fa8d1;
 }
