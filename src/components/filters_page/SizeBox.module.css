@@ -1,3 +1,4 @@
+@import url(../../styles/variables.css);
 .main {
   margin: 0.1rem;
   padding: 3px 8px;
@@ -18,5 +19,5 @@
   display: none;
 }
 .active {
-  background-color: #6fa8d1;
+  background-color: var(--color-blue-p);
 }

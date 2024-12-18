@@ -11,23 +11,20 @@
 }
 .label {
   cursor: pointer;
-  width: fit-content;
-  height: fit-content;
   transition: all 0.5s;
   position: relative;
   display: block;
   z-index: 10;
-  opacity: .5;
+  opacity: 0.5;
+  width: 35px !important;
+  height: 35px !important;
 }
 .label:hover {
   transform: scale(1.1);
 }
 .img_wrpper {
-  width: 35px !important;
-  height: 35px !important;
   position: absolute;
   z-index: -1;
-
 }
 .img {
   width: 100%;
@@ -42,4 +39,5 @@
 }
 .name {
   font-size: 0.6rem;
+  white-space: nowrap;
 }
