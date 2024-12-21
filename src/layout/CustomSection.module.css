@@ -2,11 +2,9 @@
 
 .card {
   height: unset;
-  width: 100%;
-  margin: 0 10%;
+  margin: 0;
 }
 .content_wrapper {
-  min-width: 1000px;
-  width: 80%;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto !important;
 }

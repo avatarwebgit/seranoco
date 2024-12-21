@@ -24,6 +24,22 @@
   "limited_edition": "Limited Edition",
   "birth_stones": "Birth Stones",
 
-  "new":"New",
-  "trending_new":"New"
+  "new": "New",
+  "trending_new": "New",
+  "noItem": "There is no Item.",
+
+  "type": "Type",
+  "details": "Details",
+  "color": "Color",
+  "size": "Size mm",
+  "weight": "Ct Weight",
+  "quality": "Quality",
+  "cut": "Cut",
+  "report": "Report",
+  "country": "Country",
+  "agta": "AGTA",
+  "price": "Price",
+  "quantity": "Quantity",
+  "total_price": "Total Price",
+  "add_to_card": "Add To Card"
 }

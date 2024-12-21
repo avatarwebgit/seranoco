@@ -52,7 +52,7 @@
   }
   .links > span {
     padding: 0;
-    align-items: center;
+    align-items: left;
     margin-bottom: 2rem;
   }
   .links > span > a {
@@ -68,6 +68,7 @@
   .title {
     font-size: 1.1rem;
     margin: 0 auto;
+    margin-bottom: 7px;
   }
 }
 @media only screen and (min-width: 481px) and (max-width: 768px) {

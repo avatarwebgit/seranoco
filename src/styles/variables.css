@@ -1,11 +1,15 @@
 :root {
-  --primary:rgb(0,153,130);
+  --primary: rgb(0, 153, 130);
+  --color-blue-p: rgb(111, 168, 209);
   --small-pc-padding: 6rem;
-
   --top-slider-height: 5vh;
 
   --color-black: rgb(15, 15, 15);
   --c-g-1: rgb(43, 42, 42);
+  --c-h-1: #4c5a63;
+
+  --color-grey-1: #6c757d;
+  --color-grey-2: rgb(221, 221, 221);
 
 }
 

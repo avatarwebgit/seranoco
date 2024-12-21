@@ -16,8 +16,10 @@ import ChangeLanguage from '../utils/ChangeLanguage';
 import { basicInformation, getHeaderMenus } from '../services/api';
 
 import close from '../assets/svg/close.svg';
-import { ReactComponent as Heart } from '../assets/svg/heart.svg';
-import { ReactComponent as Basket } from '../assets/svg/basket.svg';
+import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
+import { ReactComponent as Basket } from '../assets/svg/basket_white.svg';
+import { ReactComponent as Heart_black } from '../assets/svg/heart.svg';
+import { ReactComponent as Basket_black } from '../assets/svg/basket.svg';
 
 import classes from './Header.module.css';
 const Header = ({ windowSize }) => {
@@ -28,6 +30,7 @@ const Header = ({ windowSize }) => {
   const [isFixed, setIsFixed] = useState(true);
   const [headerData, setHeaderData] = useState(null);
   const [logo, setLogo] = useState(null);
+  const [isHomePage, setIsHomePage] = useState(true);
 
   const test = [1, 2, 3, 4, 5, 6, 7];
 
@@ -62,28 +65,45 @@ const Header = ({ windowSize }) => {
       setIsSmall(true);
       return {
         opacity: scrollY === 0 ? '0' : '1',
-        marginTop: !scrollY === 0 ? '0' : '2rem',
       };
     } else {
       setIsSmall(false);
       return {
         alignItems: scrollY === 0 ? 'flex-end' : 'center',
-        marginTop: scrollY === 0 ? '0rem' : '0',
       };
     }
   };
   const returnLogoStyles = () => {
-    if (size === 'xs' || size === 's' || size === 'm') {
+    if (size === 'xs') {
       setIsSmall(true);
       return {
-        x: '25vw',
-        y: 0,
+        x: scrollY === 0 ? '25vw' : '1vw',
+        y: scrollY === 0 ? 1 : 5,
+        width: scrollY === 0 ? '50%' : '50%',
+      };
+    } else if (size === 's') {
+      setIsSmall(true);
+      return {
+        x: scrollY === 0 ? '29vw' : '1vw',
+        y: scrollY === 0 ? 1 : 5,
+        width: scrollY === 0 ? '50%' : '50%',
+      };
+    } else if (size === 'm') {
+      return {
+        x: scrollY === 0 ? '30vw' : '1vw',
+        y: scrollY === 0 ? 1 : 5,
+        width: scrollY === 0 ? '50%' : '50%',
+      };
+    } else if (size === 'l') {
+      return {
+        x: scrollY === 0 ? '31vw' : '1vw',
+        y: scrollY === 0 ? 1 : 5,
         width: scrollY === 0 ? '50%' : '50%',
       };
     } else {
       setIsSmall(false);
       return {
-        x: scrollY === 0 ? '33vw' : 0,
+        x: scrollY === 0 ? '26vw' : 0,
         y: scrollY === 0 ? '-20px' : 0,
         width: scrollY === 0 ? '25%' : '20%',
       };
@@ -122,20 +142,34 @@ const Header = ({ windowSize }) => {
     getHeaderLogo();
   }, [lng]);
 
+  useEffect(() => {
+    if (location.pathname === `/${lng}`) {
+      setIsHomePage(true);
+    } else {
+      setIsHomePage(false);
+    }
+  }, [location.pathname, lng]);
+
   return (
     <motion.header
       className={classes.main}
       initial={{ y: 0, height: '5rem' }}
       animate={{
-        y: scrollY !== 0 ? 0 : '6vh',
-        height: scrollY !== 0 ? '4rem' : isSmall ? '5rem' : '5rem',
+        y: scrollY !== 0 ? 0 : '5vh',
+        height: scrollY !== 0 ? '3.5rem' : isSmall ? '4rem' : '5rem',
         backgroundColor:
-          scrollY !== 0 ? 'rgba(255,255,255,0.5)' : 'transparent',
+          scrollY !== 0 ? 'rgba(255,255,255,0.5)' : 'rgba(0, 0, 0, 0)',
         backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'none',
       }}
       style={{ position: isFixed ? 'fixed' : 'sticky' }}
+      transition={{ type: 'spring', duration: 0.3, ease: 'linear' }}
     >
-      <CustomSection className={classes.content} card={classes.card}>
+      <CustomSection
+        className={classes.content}
+        card={`${classes.card} ${
+          isHomePage ? classes.transparent : classes.black
+        }`}
+      >
         <motion.span
           className={classes.card_action_wrapper}
           initial={{ display: 'flex', alignItems: 'flex-start' }}
@@ -152,18 +186,28 @@ const Header = ({ windowSize }) => {
           }}
           transition={{ duration: 0 }}
         >
-          {isSmall ? (
-            ''
-          ) : (
+          {!isSmall && (
             <CustomButton className={classes.login_btn}>
-              <a href='#'>{t('login')}</a>
+              <a
+                className={classes.login_text}
+                href='#'
+                style={{ color: 'white' }}
+              >
+                {t('login')}
+              </a>
             </CustomButton>
           )}
 
           {isSmall && (
             <span className={classes.icon_pack_wrapper}>
               <IconButton>
-                <Login sx={{ width: '30px', height: '30px' }} />
+                <Login
+                  sx={{
+                    width: isSmall ? '0px' : '20px',
+                    height: isSmall ? '0px' : '20px',
+                    color: 'white',
+                  }}
+                />
               </IconButton>
             </span>
           )}
@@ -173,7 +217,17 @@ const Header = ({ windowSize }) => {
                 // badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
-                <Heart width={25} height={25} />
+                {isHomePage ? (
+                  <Heart_black
+                    width={isSmall ? '0px' : '23px'}
+                    height={isSmall ? '0px' : '23px'}
+                  />
+                ) : (
+                  <Heart
+                    width={isSmall ? '0px' : '20px'}
+                    height={isSmall ? '0px' : '20px'}
+                  />
+                )}
               </Badge>
             </IconButton>
           </span>
@@ -183,13 +237,28 @@ const Header = ({ windowSize }) => {
                 // badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
-                <Basket width={25} height={25} />
+                {isHomePage ? (
+                  <Basket_black
+                    width={isSmall ? '0px' : '23px'}
+                    height={isSmall ? '0px' : '23px'}
+                  />
+                ) : (
+                  <Basket
+                    width={isSmall ? '0px' : '23px'}
+                    height={isSmall ? '0px' : '23px'}
+                  />
+                )}
               </Badge>
             </IconButton>
           </span>
           {!isSmall && (
             <span className={classes.icon_pack_wrapper}>
-              <ChangeLanguage className={classes.card_icons} />
+              <ChangeLanguage
+                className={classes.card_icons}
+                width={'20px'}
+                height={'20px'}
+                isHomePage={isHomePage}
+              />
             </span>
           )}
         </motion.span>
@@ -245,6 +314,7 @@ const Header = ({ windowSize }) => {
                           aria-haspopup='true'
                           aria-expanded={open ? 'true' : undefined}
                           onMouseEnter={event => handleClick(event)}
+                          style={{ color: isHomePage ? '#000000' : '#ffffff' }}
                         >
                           {elem.label}
                         </motion.button>
@@ -267,19 +337,25 @@ const Header = ({ windowSize }) => {
                       {elem.children &&
                         elem.children.map((sublink, i) => {
                           return (
-                            <motion.div className={classes.mega_paper} key={i}>
-                              <div className={classes.sub_menu_wrapper}>
-                                <p className={classes.sub_menu_text}>
-                                  {sublink.label}
-                                </p>
-                              </div>
-                              <div className={classes.link_menu_wrapper}>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                              </div>
-                            </motion.div>
+                            <>
+                              <motion.div
+                                className={classes.mega_paper}
+                                key={i}
+                              >
+                                <div className={classes.sub_menu_wrapper}>
+                                  <p className={classes.sub_menu_text}>
+                                    {sublink.label}
+                                  </p>
+                                </div>
+                                <div className={classes.link_menu_wrapper}>
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                                </div>
+                                <div className={classes.backdrop} />
+                              </motion.div>
+                            </>
                           );
                         })}
                     </div>
@@ -298,13 +374,21 @@ const Header = ({ windowSize }) => {
         <motion.span
           className={`${classes.search_container}`}
           initial={{ alignItems: 'flex-start' }}
-          animate={{ alignItems: scrollY === 0 ? 'flex-start' : 'center' }}
+          animate={{ marginTop: scrollY === 0 ? '2rem' : '2rem' }}
+          transition={{ type: 'spring', damping: 100, stiffness: 1000 }}
         >
           {isSmall ? (
             <>
-              <ChangeLanguage />
+              <ChangeLanguage
+                width={isSmall ? '18px' : '30px'}
+                height={isSmall ? '18px' : '30px'}
+                isHomePage={isHomePage}
+              />
               <IconButton onClick={() => closeDrawer(true)}>
-                <Menu className={classes.card_icons} />
+                <Menu
+                  className={classes.card_icons}
+                  sx={{ width: '20px', height: '20px', color: 'white' }}
+                />
               </IconButton>
               <Drawer
                 anchor={'right'}
@@ -332,7 +416,7 @@ const Header = ({ windowSize }) => {
                       className={classes.menu_input}
                       endAdornment={
                         <>
-                          <MUISearch />
+                          <MUISearch sx={{ color: 'white' }} />
                         </>
                       }
                     />
@@ -342,7 +426,7 @@ const Header = ({ windowSize }) => {
               </Drawer>
             </>
           ) : (
-            <Search />
+            <Search isHomePage={isHomePage} />
           )}
         </motion.span>
       </CustomSection>

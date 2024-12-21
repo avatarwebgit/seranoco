@@ -43,7 +43,7 @@ const Footer = () => {
             <span>
               <p className={classes.title}>{footerData.footer_2}</p>
             </span>
-            <span>
+            <span className={classes.support}>
               <p className={classes.title}>{footerData.footer_3}</p>
               <a href='#'>Terms Of Use</a>
               <a href='#'>Terms And Conditions</a>

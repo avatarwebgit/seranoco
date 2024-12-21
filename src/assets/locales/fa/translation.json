@@ -24,5 +24,21 @@
 
   "new": "جدید",
 
-  "trending_new": "جدید ترین محصولات"
+  "trending_new": "جدید ترین محصولات",
+  "noItem": "هیچ موردی وجود ندارد.",
+
+  "type": " نوع",
+  "details": "جزئیات",
+  "color": "رنگ",
+  "size": "اندازه MM",
+  "weight": "وزن",
+  "quality": "کیفیت",
+  "cut": "برش ",
+  "report": "گزارش ",
+  "country": "کشور",
+  "agta": "AGTA",
+  "price": "قیمت",
+  "quantity": "مقدار",
+  "total_price": "قیمت کل",
+  "add_to_card": "اضافه کردن"
 }

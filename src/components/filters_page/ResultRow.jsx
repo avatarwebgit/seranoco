@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 const ResultRow = ({ dataProp }) => {
   const [data, setData] = useState(null);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (dataProp) {
@@ -15,7 +15,7 @@ const ResultRow = ({ dataProp }) => {
 
   return (
     <section className={classes.main}>
-      {data && (
+      {data && data.length > 0 && (
         <div className={classes.title_wrapper}>
           <p className={`${classes.o0} ${classes.title_text}`}>{t('type')}</p>
           <p className={classes.title_text}>{t('type')}</p>
@@ -35,6 +35,7 @@ const ResultRow = ({ dataProp }) => {
         </div>
       )}
       {data &&
+        data.length > 0 &&
         data.map(el => {
           return (
             <div className={classes.detail_row} key={el.id}>

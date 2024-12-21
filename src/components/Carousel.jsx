@@ -18,9 +18,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
+import '../styles/carousel.css';
 import { sliderContents } from '../services/api';
 
-import '../styles/carousel.css';
 import shared from '../styles/shared.css';
 import classes from './Caruosel.module.css';
 const Carusel = ({ windowSize }) => {

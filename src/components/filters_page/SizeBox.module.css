@@ -5,19 +5,48 @@
   transition: all 0.5s;
   opacity: 0.5;
   border: 1px solid rgb(143, 143, 143);
-
 }
 .label {
   cursor: pointer;
   font-size: 0.4rem;
   font-weight: 600;
-  display: flex ;
-  align-items: center ;
-  justify-content: center ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .input {
   display: none;
 }
 .active {
   background-color: var(--color-blue-p);
+}
+@media only screen and (max-width: 480px) {
+  .main {
+    padding: 6px 16px;
+    background-color: var(--color-grey-2);
+  }
+  .label {
+    font-size: 0.7rem;
+    color: black;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .main {
+    padding: 6px 16px;
+    background-color: var(--color-grey-2);
+  }
+  .label {
+    font-size: 0.7rem;
+    color: black;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+
+@media only screen and (min-width: 1201px) {
 }
