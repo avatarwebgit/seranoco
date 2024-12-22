@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { useSSR, useTranslation } from 'react-i18next';
+import { Pagination as PaginationComponent } from '@mui/material';
 
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
@@ -13,7 +14,14 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import SizeBox from '../components/filters_page/SizeBox';
 import Divider from '../components/filters_page/Divider';
 
-import { getShapes, getSizes, getColors, getProduct } from '../services/api';
+import {
+  getShapes,
+  getSizes,
+  getColors,
+  getProduct,
+  useShapes,
+  getPaginatedProductsByShape,
+} from '../services/api';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -27,12 +35,14 @@ import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
-import FixedNavigation from '../layout/FixedNavigation';
 import BannerCarousel from '../components/BannerCarousel';
+import { nanoid } from '@reduxjs/toolkit';
 const FilterByShape = ({ windowSize }) => {
-  const [shapesData, setShapesData] = useState([]);
+  const { data: shapesData, loading, isError } = useShapes();
+  const [detailData, setDetailData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
+  const [groupColors, setGroupColors] = useState([]);
   const [shapeFormEntries, setShapeFormEntries] = useState([]);
   const [dimensionEntries, setDimensionEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +52,7 @@ const FilterByShape = ({ windowSize }) => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [productDetails, setProductDetails] = useState([]);
   const [isSmallPage, setIsSmallPage] = useState(false);
+  const [page, setPage] = useState(1);
 
   const formRef = useRef();
   const sizeRef = useRef();
@@ -60,13 +71,6 @@ const FilterByShape = ({ windowSize }) => {
     sliderRef.current.swiper.slideNext();
   }, []);
 
-  const handleSendFormStatus = e => {
-    const form = formRef.current;
-    const formData = new FormData(form);
-    const formEntries = Object.fromEntries(formData.entries());
-    setShapeFormEntries(formEntries);
-  };
-
   const handleSendDimensionsStatus = e => {
     const form = sizeRef.current;
     const formData = new FormData(form);
@@ -83,7 +87,6 @@ const FilterByShape = ({ windowSize }) => {
       sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
     }
   };
-
   const handleCheckboxChange = (e, slideId) => {
     if (e.target.checked) {
       setSelectedIds(prevIds => [...prevIds, slideId]);
@@ -93,29 +96,22 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   //api call
-  const getAllShapes = async () => {
-    setIsLoading(true);
-    try {
-      const serverRes = await getShapes();
-      if (serverRes.response.ok) {
-        setShapesData(preShpas => serverRes.result.data);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleShapeClick = async shapeId => {
+  const handleShapeClick = async (e, id) => {
+    e.preventDefault();
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
-
+    setColorData([]);
+    setGroupColors([]);
+    setSizeData([]);
     setIsLoading(true);
     try {
-      const serverRes = await getSizes(shapeId, {
+      const serverRes = await getSizes(id, {
         signal: abortControllerRef.current.signal,
       });
+      getProducts(id, page, 10);
+
       if (serverRes.response.ok) {
-        setSizeData(serverRes.result.data);
+        setDetailData(serverRes.result.data);
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
@@ -127,83 +123,72 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   const handleSizeClick = async (shape_id, size_ids) => {
-    abortControllerRef.current.abort();
-    abortControllerRef.current = new AbortController();
-    setIsLoading(true);
-    try {
-      const serverRes = await getColors(shape_id, size_ids, {
-        signal: abortControllerRef.current.signal,
-      });
-      if (serverRes.response.ok) {
-        setColorData(preData => serverRes.result.data);
-      }
-    } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error('Fetch error:', error);
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    // abortControllerRef.current.abort();
+    // abortControllerRef.current = new AbortController();
+    // console.log(shape_id, size_ids);
+    // setIsLoading(true);
+    // try {
+    //   const serverRes = await getColors(shape_id, size_ids, {
+    //     signal: abortControllerRef.current.signal,
+    //   });
+    //   if (serverRes.response.ok) {
+    //     setColorData(preData => serverRes.result.data);
+    //   }
+    // } catch (error) {
+    //   if (error.name !== 'AbortError') {
+    //     console.error('Fetch error:', error);
+    //   }
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const handleColorClick = async (shape_id, size_ids, color_ids) => {
-    abortControllerRef.current.abort();
-    abortControllerRef.current = new AbortController();
-    setIsLoading(true);
-    try {
-      const serverRes = await getProduct(shape_id, size_ids, color_ids, {
-        signal: abortControllerRef.current.signal,
-      });
-      if (serverRes.response.ok) {
-        setProductDetails((prevData = []) => {
-          const newItems = Array.isArray(serverRes.result.data)
-            ? serverRes.result.data
-            : [];
-          const updatedData = prevData.filter(prevItem =>
-            newItems.some(newItem => newItem.id === prevItem.id),
-          );
-          const filteredNewItems = newItems.filter(
-            newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
-          );
-          return [...updatedData, ...filteredNewItems];
-        });
-      }
-    } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error('Fetch error:', error);
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    // abortControllerRef.current.abort();
+    // abortControllerRef.current = new AbortController();
+    // setIsLoading(true);
+    // try {
+    //   const serverRes = await getProduct(shape_id, size_ids, color_ids, {
+    //     signal: abortControllerRef.current.signal,
+    //   });
+    //   if (serverRes.response.ok) {
+    //     setProductDetails((prevData = []) => {
+    //       const newItems = Array.isArray(serverRes.result.data)
+    //         ? serverRes.result.data
+    //         : [];
+    //       const updatedData = prevData.filter(prevItem =>
+    //         newItems.some(newItem => newItem.id === prevItem.id),
+    //       );
+    //       const filteredNewItems = newItems.filter(
+    //         newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
+    //       );
+    //       return [...updatedData, ...filteredNewItems];
+    //     });
+    //   }
+    // } catch (error) {
+    //   if (error.name !== 'AbortError') {
+    //     console.error('Fetch error:', error);
+    //   }
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
-  useEffect(() => {
-    getAllShapes();
-  }, []);
+  // useEffect(() => {
+  //   if (Object.values(dimensionEntries).length > 0) {
+  //     handleSizeClick(shapeFormEntries, Object.keys(dimensionEntries));
+  //   }
+  // }, [dimensionEntries]);
 
-  useEffect(() => {
-    if (Object.values(dimensionEntries).length > 0) {
-      handleSizeClick(
-        Object.values(shapeFormEntries).at(0),
-        Object.keys(dimensionEntries),
-      );
-    }
-  }, [dimensionEntries]);
-
-  useEffect(() => {
-    console.log(productDetails);
-  }, [productDetails]);
-
-  useEffect(() => {
-    console.log(selectedIds);
-    if (Object.values(selectedIds).length > 0) {
-      handleColorClick(
-        Object.values(shapeFormEntries).at(0),
-        Object.keys(dimensionEntries),
-        selectedIds,
-      );
-    }
-  }, [selectedIds]);
+  // useEffect(() => {
+  //   if (shapeFormEntries.length > 0) {
+  //     handleColorClick(
+  //       shapeFormEntries,
+  //       Object.keys(dimensionEntries),
+  //       selectedIds,
+  //     );
+  //   }
+  // }, [selectedIds]);
 
   useEffect(() => {
     if (windowSize === 'xs' || windowSize === 's' || windowSize === 'm') {
@@ -214,6 +199,30 @@ const FilterByShape = ({ windowSize }) => {
       setSlidesPerView(13);
     }
   }, [windowSize]);
+
+  useEffect(() => {
+    if (detailData) {
+      setColorData(detailData.colors);
+      setSizeData(detailData.sizes);
+      setGroupColors(detailData.group_colors);
+    }
+  }, [detailData]);
+
+  const getProducts = async (id, page, per_page) => {
+    const productsRes = await getPaginatedProductsByShape(id, page, per_page);
+    if (productsRes.response.ok) {
+      setProductDetails(productsRes.result.data.products.data);
+    }
+  };
+
+  useEffect(() => {
+    getProducts(shapeFormEntries, page, 10);
+  }, [page]);
+
+  const handlePaginationChange = (e, value) => {
+    setPage(value);
+    console.log(e, value);
+  };
 
   return (
     <div className={classes.main}>
@@ -228,159 +237,166 @@ const FilterByShape = ({ windowSize }) => {
           <Card className={classes.multi_select_wrapper}>
             <form
               ref={formRef}
-              onClick={handleSendFormStatus}
+              // onClick={handleSendFormStatus}
               className={classes.grid_form}
             >
               {shapesData.map((elem, i) => {
                 return (
-                  <CustomSelect
-                    title={`${i}`}
-                    src={elem.image}
-                    key={elem.id}
-                    id={elem.id}
-                    description={elem.description}
-                    onClick={() => handleShapeClick(elem.id)}
-                  />
+                  <div key={nanoid()}>
+                    {elem.image && (
+                      <CustomSelect
+                        title={`${i}`}
+                        src={elem.image}
+                        key={elem.id}
+                        id={elem.id}
+                        description={elem.description}
+                        onClick={e => {
+                          handleShapeClick(e, elem.id);
+                          setShapeFormEntries(elem.id);
+                        }}
+                      />
+                    )}
+                  </div>
                 );
               })}
             </form>
           </Card>
 
-          {Object.values(shapeFormEntries).at(0) && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{
-                opacity: shapeFormEntries ? 1 : 0,
-                y: shapeFormEntries ? 0 : 10,
-              }}
-            >
-              <Divider text={'Size MM'} />
-              <Card className={classes.size_wrapper}>
-                <form
-                  ref={sizeRef}
-                  onClick={handleSendDimensionsStatus}
-                  className={classes.grid_form}
-                >
-                  {sizeData.length > 0
-                    ? sizeData.map((elem, i) => {
-                        return (
-                          <SizeBox
-                            value={`${elem.description}`}
-                            key={elem.id}
-                            id={elem.id}
-                          />
-                        );
-                      })
-                    : !isLoading && (
-                        <p className={classes.alert}>{t('noItem')}</p>
-                      )}
-                </form>
-              </Card>
-            </motion.div>
-          )}
+          {/* {Object.values(shapeFormEntries).at(0) && ( */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{
+              opacity: shapeFormEntries ? 1 : 0,
+              y: shapeFormEntries ? 0 : 10,
+            }}
+          >
+            <Divider text={'Size mm'} />
+            <Card className={classes.size_wrapper}>
+              <form
+                ref={sizeRef}
+                onClick={handleSendDimensionsStatus}
+                className={classes.grid_form}
+              >
+                {sizeData?.length > 0
+                  ? sizeData.map((elem, i) => {
+                      return (
+                        <SizeBox
+                          value={`${elem.description}`}
+                          key={elem.id}
+                          id={elem.id}
+                        />
+                      );
+                    })
+                  : !isLoading && (
+                      <p className={classes.alert}>{t('noItem')}</p>
+                    )}
+              </form>
+            </Card>
+            {isLoading && <LoadingSpinner />}
+          </motion.div>
+          {/* )} */}
 
-          {Object.values(dimensionEntries).length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{
-                opacity: dimensionEntries ? 1 : 0,
-                y: dimensionEntries ? 0 : 10,
-              }}
-            >
-              <Divider text={'Colors'} />
-              <Card className={classes.size_wrapper}>
-                {colorData && (
-                  <>
-                    <button className={classes.prev_btn} onClick={handlePrev}>
-                      <ArrowBackIos />
-                    </button>
-                    <button className={classes.next_btn} onClick={handleNext}>
-                      <ArrowForwardIos />
-                    </button>
-                  </>
-                )}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{
+              opacity: dimensionEntries ? 1 : 0,
+              y: dimensionEntries ? 0 : 10,
+            }}
+          >
+            <Divider text={'Colors'} />
+            <Card className={classes.size_wrapper}>
+              {isLoading && <LoadingSpinner />}
+              {colorData?.length > 0 && (
+                <>
+                  <button className={classes.prev_btn} onClick={handlePrev}>
+                    <ArrowBackIos />
+                  </button>
+                  <button className={classes.next_btn} onClick={handleNext}>
+                    <ArrowForwardIos />
+                  </button>
+                </>
+              )}
 
-                <Swiper
-                  modules={[Navigation, Thumbs, Pagination]}
-                  className={classes.swiper}
-                  spaceBetween={isSmallPage ? 5 : 10}
-                  slidesPerView={slidesPerView}
-                  onSlideChange={swiper => {
-                    setActiveIndex(swiper.activeIndex);
-                  }}
-                  onSwiper={swiper => {
-                    setActiveIndex(swiper.activeIndex);
-                  }}
-                  thumbs={{
-                    swiper:
-                      thumbsSwiper && !thumbsSwiper.destroyed
-                        ? thumbsSwiper
-                        : null,
-                  }}
-                  ref={sliderRef}
-                  pagination={{
-                    clickable: true,
-                    dynamicBullets: true,
-                    enabled: isSmallPage,
-                  }}
-                >
-                  {colorData &&
-                    colorData.colors
-                      ?.sort((a, b) => a.group_id - b.group_id)
-                      .map((slide, index) => (
-                        <SwiperSlide key={index} className={classes.slide}>
-                          <label
-                            htmlFor={slide.id}
-                            className={classes.color_slider_label}
-                          >
-                            <div className={classes.slider_image_wrapper}>
-                              <img
-                                src={slide.image}
-                                alt=''
-                                className={classes.slider_img}
-                              />
-                            </div>
-                          </label>
-                          <input
-                            type='checkbox'
-                            name={slide.id}
-                            id={slide.id}
-                            className={classes.slider_input}
-                            onChange={e => handleCheckboxChange(e, slide.id)}
-                          />
-                          <p className={classes.color_name}>
-                            {slide.description}
-                          </p>
-                        </SwiperSlide>
-                      ))}
-                </Swiper>
-
-                <Swiper
-                  modules={[Navigation, Thumbs]}
-                  className={classes.swiper_thumb}
-                  spaceBetween={10}
-                  slidesPerView={slidesPerView}
-                  centerInsufficientSlides={true}
-                >
-                  {colorData &&
-                    colorData.group_colors
-                      ?.sort((a, b) => a.id - b.id)
-                      .map((slide, index) => (
-                        <SwiperSlide key={index} className={classes.slide}>
-                          <div className={classes.slider_thumb_wrapper}>
+              <Swiper
+                modules={[Navigation, Thumbs, Pagination]}
+                className={classes.swiper}
+                spaceBetween={isSmallPage ? 5 : 10}
+                slidesPerView={slidesPerView}
+                onSlideChange={swiper => {
+                  setActiveIndex(swiper.activeIndex);
+                }}
+                onSwiper={swiper => {
+                  setActiveIndex(swiper.activeIndex);
+                }}
+                thumbs={{
+                  swiper:
+                    thumbsSwiper && !thumbsSwiper.destroyed
+                      ? thumbsSwiper
+                      : null,
+                }}
+                ref={sliderRef}
+                pagination={{
+                  clickable: true,
+                  dynamicBullets: true,
+                  enabled: isSmallPage,
+                }}
+              >
+                {colorData?.length > 0 &&
+                  colorData
+                    ?.sort((a, b) => a.group_id - b.group_id)
+                    .map((slide, index) => (
+                      <SwiperSlide key={index} className={classes.slide}>
+                        <label
+                          htmlFor={slide.id}
+                          className={classes.color_slider_label}
+                        >
+                          <div className={classes.slider_image_wrapper}>
                             <img
                               src={slide.image}
                               alt=''
                               className={classes.slider_img}
-                              onClick={() => handleThumbClick(slide.id)}
                             />
                           </div>
-                        </SwiperSlide>
-                      ))}
-                </Swiper>
-              </Card>
-            </motion.div>
-          )}
+                        </label>
+                        <input
+                          type='checkbox'
+                          name={slide.id}
+                          id={slide.id}
+                          className={classes.slider_input}
+                          onChange={e => handleCheckboxChange(e, slide.id)}
+                        />
+                        <p className={classes.color_name}>
+                          {slide.description}
+                        </p>
+                      </SwiperSlide>
+                    ))}
+              </Swiper>
+
+              <Swiper
+                modules={[Navigation, Thumbs]}
+                className={classes.swiper_thumb}
+                spaceBetween={10}
+                slidesPerView={slidesPerView}
+                centerInsufficientSlides={true}
+              >
+                {groupColors?.length > 0 &&
+                  groupColors
+                    ?.sort((a, b) => a.id - b.id)
+                    .map((slide, index) => (
+                      <SwiperSlide key={index} className={classes.slide}>
+                        <div className={classes.slider_thumb_wrapper}>
+                          <img
+                            src={slide.image}
+                            alt=''
+                            className={classes.slider_img}
+                            onClick={() => handleThumbClick(slide.id)}
+                          />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+              </Swiper>
+            </Card>
+          </motion.div>
           <motion.div>
             <Card>
               {windowSize === 'm' ||
@@ -395,11 +411,15 @@ const FilterByShape = ({ windowSize }) => {
                 </>
               )}
             </Card>
+            <PaginationComponent
+              count={10}
+              page={page}
+              onChange={handlePaginationChange}
+              
+            />
           </motion.div>
-          {isLoading && <LoadingSpinner />}
         </Body>
       )}
-
       <Footer />
     </div>
   );

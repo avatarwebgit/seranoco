@@ -6,7 +6,7 @@ import { localeActions } from '../store/store';
 import { IconButton } from '@mui/material';
 
 import { ReactComponent as Earth } from '../assets/svg/earth_white.svg';
-import { ReactComponent as Earth_black } from '../assets/svg/earth.svg';
+import { ReactComponent as EarthBlack } from '../assets/svg/earth.svg';
 
 const ChangeLanguage = props => {
   const lng = useSelector(state => state.localeStore.lng);
@@ -36,7 +36,7 @@ const ChangeLanguage = props => {
       {!props.isHomePage ? (
         <Earth color='action' className={`${props.className}`} {...props} />
       ) : (
-        <Earth_black
+        <EarthBlack
           color='action'
           className={`${props.className}`}
           {...props}

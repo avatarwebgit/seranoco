@@ -27,6 +27,7 @@
   height: 100%;
   padding: 0 1rem;
   cursor: pointer;
+  max-height: 2.5rem !important;
 }
 .logo_img {
   width: 100%;

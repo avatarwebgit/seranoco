@@ -22,6 +22,7 @@ import { ReactComponent as Heart_black } from '../assets/svg/heart.svg';
 import { ReactComponent as Basket_black } from '../assets/svg/basket.svg';
 
 import classes from './Header.module.css';
+import { nanoid } from '@reduxjs/toolkit';
 const Header = ({ windowSize }) => {
   const [scrollY, setScrollY] = useState(0);
   const [size, setSize] = useState('');
@@ -73,6 +74,7 @@ const Header = ({ windowSize }) => {
       };
     }
   };
+
   const returnLogoStyles = () => {
     if (size === 'xs') {
       setIsSmall(true);
@@ -140,7 +142,7 @@ const Header = ({ windowSize }) => {
   useEffect(() => {
     getHeaderLinks();
     getHeaderLogo();
-  }, [lng]);
+  }, []);
 
   useEffect(() => {
     if (location.pathname === `/${lng}`) {
@@ -300,7 +302,7 @@ const Header = ({ windowSize }) => {
                   }
 
                   return (
-                    <div className={classes.header_btn_wrapper} key={i}>
+                    <div className={classes.header_btn_wrapper} key={nanoid()}>
                       <a
                         href={`${
                           isFullUrl ? elem.url : '/en' + elem.url || '#'
@@ -337,7 +339,7 @@ const Header = ({ windowSize }) => {
                       {elem.children &&
                         elem.children.map((sublink, i) => {
                           return (
-                            <>
+                            <div key={nanoid()}>
                               <motion.div
                                 className={classes.mega_paper}
                                 key={i}
@@ -355,7 +357,7 @@ const Header = ({ windowSize }) => {
                                 </div>
                                 <div className={classes.backdrop} />
                               </motion.div>
-                            </>
+                            </div>
                           );
                         })}
                     </div>
@@ -366,7 +368,7 @@ const Header = ({ windowSize }) => {
                   <Skeleton
                     className={classes.header_btn_skeleton}
                     variant='text'
-                    key={i}
+                    key={nanoid()}
                   />
                 );
               })}
