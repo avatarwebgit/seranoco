@@ -7,6 +7,7 @@
 .multi_select_wrapper {
   display: flex;
   flex-direction: column;
+  margin-top: 3rem !important;
 }
 .grid_form {
   display: flex;
@@ -138,6 +139,20 @@
   width: 100%;
   font-size: 0.5rem;
 }
+.reset_btn {
+  font-size: 0.5rem;
+  width: fit-content;
+  white-space: nowrap;
+  background-color: #ffffff;
+  padding: 5px ;
+  transition: all .25s;
+  cursor: pointer;
+  margin: 1rem 0;
+  margin-left: 80%;
+}
+.reset_btn:hover{
+  background-color: var(--color-grey-2);
+}
 @media only screen and (max-width: 480px) {
   .next_btn,
   .prev_btn {
@@ -146,9 +161,6 @@
   .swiper {
     height: 5rem;
     width: 100%;
-  }
-  .main {
-    margin-top: 5rem;
   }
   .slide {
     height: 85%;
@@ -166,9 +178,6 @@
   .swiper {
     height: 5rem;
     width: 100%;
-  }
-  .main {
-    margin-top: 5rem;
   }
   .slide {
     height: 85%;

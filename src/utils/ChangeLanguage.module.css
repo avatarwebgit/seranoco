@@ -1,17 +1,58 @@
-.svg {
-  width: 25px !important;
-  height: 25px !important;
+.main {
+  /* width: 30px !important;
+  height: 30px !important; */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: center !important;
+  position: relative;
+}
+.current_lng_text {
+  font-size: 0.6rem;
+  font-weight: 900;
+}
+.dropdown_wrapper {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  transform: translate(0%, -50%);
+  width: 30px;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: all 0.2s;
+  transform-origin: top;
+  box-shadow: 5px 5px 5px rgba(2, 2, 2, 0.418);
+}
+.lng_item {
+  font-size: 0.5rem;
+  font-weight: 500;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.lng_item:hover {
+  background-color: rgb(202, 202, 202);
+}
+.text {
+  width: 40px;
+  font-size: 0.5rem;
 }
 @media only screen and (max-width: 480px) {
-  .svg {
-    width: 10px !important;
-    height: 10px !important;
+  .main {
+    border-width: 1px !important;
+    margin-top: 0 !important;
   }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
-  .svg {
-    width: 15px !important;
-    height: 15px !important;
+  .main {
+    border-width: 1px !important;
+    margin-top: 0 !important;
   }
 }

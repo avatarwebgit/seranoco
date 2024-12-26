@@ -1,47 +1,75 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import i18next from '../utils/i18next';
 import { localeActions } from '../store/store';
-import { IconButton } from '@mui/material';
+import { duration, Icon, IconButton } from '@mui/material';
 
-import { ReactComponent as Earth } from '../assets/svg/earth_white.svg';
+import { ReactComponent as EarthWhite } from '../assets/svg/earth_white.svg';
 import { ReactComponent as EarthBlack } from '../assets/svg/earth.svg';
 
+import classes from './ChangeLanguage.module.css';
 const ChangeLanguage = props => {
+  const [isOpen, setIsOpen] = useState(false);
   const lng = useSelector(state => state.localeStore.lng);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
   const location = useLocation();
 
-  const handleChangeLanguage = d => {
-    const newLang = lng === 'fa' ? 'en' : 'fa';
-    dispatch(localeActions[newLang]());
-    toggle(newLang);
+  const handleChangeLngFa = () => {
+    dispatch(localeActions.fa());
+    i18next.changeLanguage('fa');
+    toggle('fa');
+    setIsOpen(false);
+  };
+
+  const handleChangeLngEn = () => {
+    dispatch(localeActions.en());
+    i18next.changeLanguage('en');
+    toggle('en');
+    setIsOpen(false);
   };
 
   const toggle = newLang => {
-    i18n.changeLanguage(newLang);
     const currentPath = location.pathname.split('/').slice(2).join('/');
-    if (currentPath === ``) {
-      return navigate(`/${newLang}`);
+    const searchParams = location.search;
+    if (currentPath === '') {
+      return navigate(`/${newLang}${searchParams}`);
     } else {
-      navigate(`/${newLang}/${currentPath}`);
+      return navigate(`/${newLang}/${currentPath}${searchParams}`);
     }
   };
 
   return (
-    <IconButton onClick={handleChangeLanguage}>
-      {!props.isHomePage ? (
-        <Earth color='action' className={`${props.className}`} {...props} />
+    <IconButton
+      className={`${classes.main} ${
+        props.ishomepage ? classes.black : classes.white
+      } ${props.className}`}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      {props.ishomepage ? (
+        <EarthBlack width={30} height={30} />
       ) : (
-        <EarthBlack
-          color='action'
-          className={`${props.className}`}
-          {...props}
-        />
+        <EarthWhite width={30} height={30} />
       )}
+
+      <motion.div
+        className={classes.dropdown_wrapper}
+        initial={{ display: 'none' }}
+        animate={{
+          display: isOpen ? 'flex' : 'none',
+        }}
+        transition={{ duration: 0.2 }}
+      >
+        <span className={classes.lng_item} onClick={handleChangeLngEn}>
+          <p className={classes.text}>En</p>
+        </span>
+        <span className={classes.lng_item} onClick={handleChangeLngFa}>
+          <p className={classes.text}>Fa</p>
+        </span>
+      </motion.div>
     </IconButton>
   );
 };

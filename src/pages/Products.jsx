@@ -3,21 +3,26 @@ import { useSearchParams } from 'react-router-dom';
 import { Breadcrumbs, Typography, Link } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { Skeleton } from '@mui/material';
+import { SwiperSlide, Swiper } from 'swiper/react';
 
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 import Divider from '../components/products/Divider';
-
+import LoadingSpinner from '../components/common/LoadingSpinner';
 import Card from '../components/filters_page/Card';
+import CustomeTab from '../components/common/CustomTab';
 
-import classes from './Products.module.css';
-import data from '../assets/data/test.json';
 import { getProductDetails } from '../services/api';
 
+import classes from './Products.module.css';
+import { Navigation, Scrollbar, Thumbs } from 'swiper/modules';
+import { nanoid } from '@reduxjs/toolkit';
 const Products = () => {
   const [params, setParams] = useSearchParams();
+
   const [zoomStyles, setZoomStyles] = useState({});
   const [detailsData, setDetailsData] = useState(null);
   const [isInViewbox, setIsInViewbox] = useState(false);
@@ -32,6 +37,7 @@ const Products = () => {
   }, []);
 
   const handleMouseMove = e => {
+    if (!detailsData) return;
     setIsInViewbox(true);
     const { left, top, width, height } =
       imageRef.current.getBoundingClientRect();
@@ -50,6 +56,7 @@ const Products = () => {
   };
 
   const handleMouseLeave = () => {
+    if (!detailsData) return;
     setIsInViewbox(false);
     setZoomStyles({
       transform: `scale(1)`,
@@ -62,6 +69,7 @@ const Products = () => {
     const getDetails = async () => {
       const serverRes = await getProductDetails(params.get('id'));
       setDetailsData(serverRes.result);
+      console.log(serverRes.result);
     };
     getDetails();
   }, [params]);
@@ -69,7 +77,7 @@ const Products = () => {
   return (
     <div className={classes.main}>
       <BannerCarousel />
-      <Header />
+      <Header />(
       <Body>
         <Card className={classes.main_card}>
           <Breadcrumbs aria-label='breadcrumb' separator='>'>
@@ -83,78 +91,116 @@ const Products = () => {
             >
               {t('shop_by_shape')}
             </Link>
-            <Typography sx={{ color: 'text.primary' }} variant='caption'>
-              {detailsData && detailsData.result.product.name}
-            </Typography>
+            {detailsData ? (
+              <Typography color='inherit' href={`/${lng}/shopbyshape`}>
+                {detailsData && detailsData.product.name}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant='text'
+                sx={{ width: '10rem' }}
+                animation='wave'
+              />
+            )}
           </Breadcrumbs>
+          {detailsData ? (
+            <Typography
+              className={classes.product_title}
+              color='inherit'
+              href={`/${lng}/shopbyshape`}
+              variant='h3'
+            >
+              {detailsData && detailsData.product.name}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant='text'
+              sx={{ width: '10rem' }}
+              animation='wave'
+              className={classes.product_title}
+            />
+          )}
 
           <div className={classes.content}>
             <div
               className={classes.image_container}
-              onMouseMove={handleMouseMove}
+              // onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
               <div className={classes.zoom_box} style={zoomStyles}>
-                <img
-                  ref={imageRef}
-                  src={data.primary_image}
-                  alt='Zoomable'
-                  className={`${classes.zoom_image} ${
-                    isInViewbox ? '' : classes.dn
-                  }`}
-                />
-                <img
-                  className={`${classes.idle_image} ${
-                    !isInViewbox ? '' : classes.dn
-                  }`}
-                  src={data.primary_image}
-                  alt=''
-                />
+                {detailsData ? (
+                  <>
+                    <img
+                      ref={imageRef}
+                      src={detailsData.product.primary_image}
+                      alt='Zoomable'
+                      className={`${classes.zoom_image} ${
+                        isInViewbox ? '' : classes.dn
+                      }`}
+                    />
+                    <img
+                      className={`${classes.idle_image} ${
+                        !isInViewbox ? '' : classes.dn
+                      }`}
+                      src={detailsData.product.primary_image}
+                      alt=''
+                    />
+                  </>
+                ) : (
+                  <Skeleton
+                    className={`${classes.idle_image}`}
+                    variant='rectangular'
+                    animation='wave'
+                  />
+                )}
               </div>
               <div className={classes.tip_wrapper}>
                 <p className={classes.tip_text}>{t('zoom_tip')}</p>
               </div>
             </div>
-            <div
-              className={classes.detail_container}
-              style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
-            >
-              <span>
-                <p>{t('type')}</p>
-                <p>test</p>
-              </span>
-              <span>
-                <p>{t('shape')}</p>
-                <p>test</p>
-              </span>
-              <span>
-                <p>{t('size')}</p>
-                <p>test</p>
-              </span>
-              <span>
-                <p>{t('color')}</p>
-                <p>test</p>
-              </span>
-              <span>
-                <p>{t('quality')}</p>
-                <p>test</p>
-              </span>
-              <span>
-                <p>{t('cut')}</p>
-                <p>test</p>
-              </span>
-              <span>
-                <p>{t('sold_by')}</p>
-                <p>test</p>
-              </span>
-            </div>
+
+  
           </div>
 
+          {detailsData && <CustomeTab dataProp={detailsData} />}
+
           <Divider title={t('related')} />
-          <Divider title={t('views')} />
-          <Divider title={t('specifications')} />
+          {/* {detailsData ? (
+            <Swiper
+              modules={[Navigation, Scrollbar, Thumbs]}
+              spaceBetween={0}
+              slidesPerView={5}
+              navigation
+              loop={true}
+            >
+              {detailsData.related_products.map((el, i) => (
+                <SwiperSlide
+                  key={i}
+                  style={{ backgroundColor: 'red' }}
+                  className={classes.swiper_slide}
+                >
+                  <div className={classes.related_slide_wrapper}>
+                    <span className={classes.related_img_wrapper}>
+                      <img
+                        src={el.primary_image}
+                        alt=''
+                        className={classes.related_img}
+                      />
+                    </span>
+                    <span>
+                      <p>{el.name}</p>
+                    </span>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <Skeleton />
+          )} */}
+          <Divider title={t('views')} />       
         </Card>
       </Body>
+      )
       <Footer />
     </div>
   );

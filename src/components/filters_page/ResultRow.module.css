@@ -7,6 +7,11 @@
   width: 100%;
   height: fit-content;
 }
+.skeleton {
+  height: 3rem !important;
+  width: 100% !important;
+  margin: 2.5px 0 !important;
+}
 .title_wrapper {
   width: 100%;
   display: flex;
@@ -25,13 +30,15 @@
 .o0 {
   opacity: 0;
 }
+.dn {
+  display: none !important;
+}
 .detail_row {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
-  margin-bottom: 2.5px;
-  margin-top: 2.5px;
+  margin: 2.5px 0;
   overflow: hidden;
   background-color: var(--color-grey-2);
   height: 2.2rem;

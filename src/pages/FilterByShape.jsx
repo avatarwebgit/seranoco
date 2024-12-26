@@ -211,7 +211,7 @@ const FilterByShape = ({ windowSize }) => {
       setColorData(detailData.colors);
       setSizeData(detailData.sizes);
       setGroupColors(detailData.group_colors);
-      console.log(detailData)
+      console.log(detailData);
     }
   }, [detailData]);
 
@@ -241,15 +241,22 @@ const FilterByShape = ({ windowSize }) => {
     scrollToTarget(productsWrapperRef);
   };
 
+  const handleResetSelections = () => {
+    setShapeFormEntries([]);
+    setDimensionEntries([]);
+    setSelectedIds([]);
+    setSizeData([]);
+    setColorData([]);
+    setGroupColors([]);
+    setProductDetails([]);
+  };
+
   return (
     <div className={classes.main}>
       <BannerCarousel />
       <Header windowSize={windowSize} />
       {shapesData && (
         <Body>
-          {!isSmallPage && (
-            <Divider text={'Shapes'} className={classes.divider_start} />
-          )}
           <Card className={classes.multi_select_wrapper}>
             {isLoadingShapes && <LoadingSpinner />}
 
@@ -268,6 +275,7 @@ const FilterByShape = ({ windowSize }) => {
                           handleShapeClick(e, elem.id);
                           setShapeFormEntries(elem.id);
                         }}
+                        isSelected={shapeFormEntries}
                       />
                     )}
                   </div>
@@ -373,8 +381,8 @@ const FilterByShape = ({ windowSize }) => {
               {groupColors?.length > 0 &&
                 groupColors
                   ?.sort((a, b) => a.id - b.id)
-                .map((slide, index) => {
-                  console.log(slide)
+                  .map((slide, index) => {
+                    console.log(slide);
                     return (
                       <SwiperSlide key={index} className={classes.slide}>
                         <div className={classes.slider_thumb_wrapper}>
@@ -389,6 +397,14 @@ const FilterByShape = ({ windowSize }) => {
                     );
                   })}
             </Swiper>
+            {(sizeData?.length > 0 || colorData?.length > 0) && (
+              <button
+                className={classes.reset_btn}
+                onClick={handleResetSelections}
+              >
+                {t('reset_selections')}
+              </button>
+            )}
           </Card>
           <Card
             className={classes.products_result_wrapper}
@@ -407,7 +423,7 @@ const FilterByShape = ({ windowSize }) => {
               </>
             )}
             {isFilteredProductsLoading && <LoadingSpinner />}
-            {lastPage > 1 && (
+            {lastPage > 1 && productDetails.length > 0 && (
               <div
                 className={classes.pagination_wrapper}
                 style={{

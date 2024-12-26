@@ -38,7 +38,38 @@ a:visited {
 }
 .swiper-pagination {
   position: absolute;
-  bottom: 0 !important; 
+  bottom: 0 !important;
+}
+.css-sc8y68-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+  border-radius: 50% !important;
+  min-width: none !important;
+  min-height: none !important;
+}
+.css-jhr02i-MuiBreadcrumbs-separator {
+  margin: 0 0px !important;
+  font-size: 0.5rem !important;
+  min-height: 0 !important;
+  height: 1rem !important;
+}
+.css-nv1n36-MuiTypography-root-MuiLink-root,
+.css-ll7100-MuiTypography-root {
+  font-size: 0.5rem !important;
+  height: fit-content !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 1rem !important;
+}
+.css-ll7100-MuiTypography-root {
+  color: #000000 !important;
+  font-size: 0.6rem !important;
+}
+.MuiBreadcrumbs-li {
+  padding: 0 4px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.MuiBox-root{
+  padding: 0 !important;
 }
 @media only screen and (max-width: 480px) {
   .MuiBadge-badge {

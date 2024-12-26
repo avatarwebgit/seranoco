@@ -66,11 +66,13 @@ const Header = ({ windowSize }) => {
       setIsSmall(true);
       return {
         opacity: scrollY === 0 ? '0' : '1',
+        marginTop: scrollY === 0 ? '5px' : '0px',
       };
     } else {
       setIsSmall(false);
       return {
         alignItems: scrollY === 0 ? 'flex-end' : 'center',
+        marginTop: scrollY === 0 ? '5px' : '0px',
       };
     }
   };
@@ -79,35 +81,25 @@ const Header = ({ windowSize }) => {
     if (size === 'xs') {
       setIsSmall(true);
       return {
-        x: scrollY === 0 ? '25vw' : '1vw',
-        y: scrollY === 0 ? 1 : 5,
-        width: scrollY === 0 ? '50%' : '50%',
+        left: scrollY === 0 ? '50%' : '25%',
       };
     } else if (size === 's') {
       setIsSmall(true);
       return {
-        x: scrollY === 0 ? '29vw' : '1vw',
-        y: scrollY === 0 ? 1 : 5,
-        width: scrollY === 0 ? '50%' : '50%',
+        left: scrollY === 0 ? '50%' : '25%',
       };
     } else if (size === 'm') {
       return {
-        x: scrollY === 0 ? '30vw' : '1vw',
-        y: scrollY === 0 ? 1 : 5,
-        width: scrollY === 0 ? '50%' : '50%',
+        left: scrollY === 0 ? '50%' : '10%',
       };
     } else if (size === 'l') {
       return {
-        x: scrollY === 0 ? '31vw' : '1vw',
-        y: scrollY === 0 ? 1 : 5,
-        width: scrollY === 0 ? '50%' : '50%',
+        left: scrollY === 0 ? '50%' : '10%',
       };
     } else {
       setIsSmall(false);
       return {
-        x: scrollY === 0 ? '26vw' : 0,
-        y: scrollY === 0 ? '-20px' : 0,
-        width: scrollY === 0 ? '25%' : '20%',
+        left: scrollY === 0 ? '50%' : '10%',
       };
     }
   };
@@ -186,7 +178,7 @@ const Header = ({ windowSize }) => {
                 : 'none',
             alignItems: scrollY === 0 ? 'flex-start' : 'center',
           }}
-          transition={{ duration: 0 }}
+          transition={{ delay: scrollY === 0 ? 0.5 : 0, duration: 0 }}
         >
           {!isSmall && (
             <CustomButton className={classes.login_btn}>
@@ -200,19 +192,19 @@ const Header = ({ windowSize }) => {
             </CustomButton>
           )}
 
-          {isSmall && (
+          {/* {isSmall && (
             <span className={classes.icon_pack_wrapper}>
               <IconButton>
                 <Login
                   sx={{
-                    width: isSmall ? '0px' : '20px',
-                    height: isSmall ? '0px' : '20px',
+                    width: isSmall ? '0px' : '30px',
+                    height: isSmall ? '0px' : '30px',
                     color: 'white',
                   }}
                 />
               </IconButton>
             </span>
-          )}
+          )} */}
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
@@ -221,13 +213,13 @@ const Header = ({ windowSize }) => {
               >
                 {isHomePage ? (
                   <Heart_black
-                    width={isSmall ? '0px' : '23px'}
-                    height={isSmall ? '0px' : '23px'}
+                    width={isSmall ? '0px' : '30px'}
+                    height={isSmall ? '0px' : '30px'}
                   />
                 ) : (
                   <Heart
-                    width={isSmall ? '0px' : '20px'}
-                    height={isSmall ? '0px' : '20px'}
+                    width={isSmall ? '0px' : '30px'}
+                    height={isSmall ? '0px' : '30px'}
                   />
                 )}
               </Badge>
@@ -241,13 +233,13 @@ const Header = ({ windowSize }) => {
               >
                 {isHomePage ? (
                   <Basket_black
-                    width={isSmall ? '0px' : '23px'}
-                    height={isSmall ? '0px' : '23px'}
+                    width={isSmall ? '0px' : '30px'}
+                    height={isSmall ? '0px' : '30px'}
                   />
                 ) : (
                   <Basket
-                    width={isSmall ? '0px' : '23px'}
-                    height={isSmall ? '0px' : '23px'}
+                    width={isSmall ? '0px' : '30px'}
+                    height={isSmall ? '0px' : '30px'}
                   />
                 )}
               </Badge>
@@ -257,9 +249,7 @@ const Header = ({ windowSize }) => {
             <span className={classes.icon_pack_wrapper}>
               <ChangeLanguage
                 className={classes.card_icons}
-                width={'20px'}
-                height={'20px'}
-                isHomePage={isHomePage}
+                ishomepage={isHomePage}
               />
             </span>
           )}
@@ -268,7 +258,7 @@ const Header = ({ windowSize }) => {
           className={classes.logo_container}
           initial={initialLogoState}
           animate={returnLogoStyles}
-          transition={{ duration: 0.25, type: 'tween' }}
+          transition={{ duration: 0.2, type: 'tween' }}
           onClick={() => navigate(`/${lng}`)}
         >
           {logo && (
@@ -384,7 +374,7 @@ const Header = ({ windowSize }) => {
               <ChangeLanguage
                 width={isSmall ? '18px' : '30px'}
                 height={isSmall ? '18px' : '30px'}
-                isHomePage={isHomePage}
+                ishomepage={isHomePage}
               />
               <IconButton onClick={() => closeDrawer(true)}>
                 <Menu

@@ -42,7 +42,7 @@
 .input {
   display: none;
 }
-.input:checked ~ .label {
+.active {
   opacity: 1;
 }
 .name {

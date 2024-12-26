@@ -28,7 +28,8 @@
   "trending_new": "New",
   "noItem": "There is no Item.",
 
-  "type": "Type",
+  "shape": "shape",
+  "type": "Stone Type",
   "details": "Details",
   "color": "Color",
   "size": "Size mm",
@@ -41,5 +42,20 @@
   "price": "Price",
   "quantity": "Quantity",
   "total_price": "Total Price",
-  "add_to_card": "Add To Card"
+  "add_to_card": "Add To Card",
+
+  "page": "Page",
+  "select_shape": "Select A Shape",
+
+  "zoom_tip": "The color on your screen may not reflect actual stone color due to the variations in computer monitors",
+
+  "sold_by": "Sold By",
+  "specifications": "Specifications",
+
+  "related": "Related Bestsellers",
+  "views": "People Who Viewed These Items Ultimately Bought",
+  "reset_selections":"Reset Selections",
+
+  "more_info":"More Information",
+  "description":"Description"
 }

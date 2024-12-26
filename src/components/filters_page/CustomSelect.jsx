@@ -3,11 +3,23 @@ import { Tooltip } from '@mui/material';
 
 import classes from './CustomSelect.module.css';
 import { Skeleton } from '@mui/material';
-const CustomSelect = ({ id, src, alt, onClick, description, name }) => {
+const CustomSelect = ({
+  id,
+  src,
+  alt,
+  onClick,
+  description,
+  name,
+  isSelected,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    console.log(isSelected === id);
+  }, [isSelected]);
+
   return (
-    <div className={classes.wrapper }>
+    <div className={classes.wrapper}>
       <Tooltip
         placement='top'
         title={description}
@@ -21,7 +33,11 @@ const CustomSelect = ({ id, src, alt, onClick, description, name }) => {
           id={id}
           value={id}
         />
-        <label htmlFor={id} className={classes.label}>
+        <label
+          htmlFor={id}
+          className={`${classes.label}`}
+          style={{ opacity: isSelected===id?'1': '0.5' }}
+        >
           <div className={classes.img_wrapper}>
             <img
               className={`${classes.img}`}

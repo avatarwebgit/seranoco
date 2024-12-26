@@ -1,10 +1,11 @@
 @import url(../styles/variables.css);
 .main {
-  position: fixed !important;
+  position: fixed;
   top: 0;
   z-index: 100;
   margin: 0 auto;
-  min-width: 100vw;
+  width: 100%;
+  /* min-width: 100vw; */
 }
 .card {
   height: 100% !important;
@@ -21,13 +22,21 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
+  position: relative;
+  max-width: 1200px;
+
 }
 .logo_container {
-  width: 25%;
+  width: 50%;
   height: 100%;
   padding: 0 1rem;
   cursor: pointer;
-  max-height: 2.5rem !important;
+  max-height: 2rem !important;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  transition: all 0.25s;
 }
 .logo_img {
   width: 100%;
@@ -35,11 +44,12 @@
   object-fit: contain;
 }
 .navigation_container {
-  width: 55%;
+  width: 60%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  margin-left: auto;
 }
 .search_container {
   width: 20%;
@@ -234,6 +244,9 @@
 }
 
 @media only screen and (max-width: 480px) {
+  .content {
+    justify-content: flex-end;
+  }
   .navigation_container {
     display: none;
   }
@@ -255,6 +268,9 @@
   }
 }
 @media only screen and (min-width: 481px) and (max-width: 768px) {
+  .content {
+    justify-content: flex-end;
+  }
   .navigation_container {
     display: none;
   }

@@ -1,15 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-import i18next from './utils/i18next';
 
 import Loading from './layout/Loading';
 
@@ -29,6 +20,7 @@ function App() {
   const Home = React.lazy(() => import('./pages/Home'));
   const Categories = React.lazy(() => import('./pages/Categories'));
   const FilterByShape = React.lazy(() => import('./pages/FilterByShape'));
+  const Products = React.lazy(() => import('./pages/Products'));
 
   // const AuthExists = ({ children }) => {
   //   return token ? <Navigate to={"/"} /> : children;
@@ -82,6 +74,10 @@ function App() {
           <Route
             path={`/:lng/shopByShape`}
             element={<FilterByShape windowSize={windowSize} />}
+          />
+          <Route
+            path={`/:lng/products/*`}
+            element={<Products windowSize={windowSize} />}
           />
           <Route path={`/test`} element={<Loading />} />
         </Routes>

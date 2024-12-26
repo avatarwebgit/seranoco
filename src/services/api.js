@@ -17,6 +17,8 @@ const baseUrl = 'https://admin.seranoco.com/api';
 //filter by shape ,color : /attribute/get/colors
 //filter by shape ,getproduct :/get/products
 
+//details page : ,getdetails :/get/product/${alias}
+
 export const getHeaderMenus = async lng => {
   const response = await fetch(`${baseUrl}/menus`, {
     method: 'GET',
@@ -74,11 +76,10 @@ export const getShapes = async () => {
     method: 'GET',
   });
   const result = await response.json();
-  console.log(result);
   return { response, result };
 };
 
-export const getSizes = async id => {
+export const getAllAtrributes = async id => {
   const response = await fetch(`${baseUrl}/attribute/get/size`, {
     method: 'POST',
     headers: {
@@ -102,14 +103,23 @@ export const getColors = async (shape_id, size_ids) => {
   return { response, result };
 };
 
-export const getProduct = async (shape_id, size_ids, color_ids) => {
-  const response = await fetch(`${baseUrl}/get/products`, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
+export const getProduct = async (
+  shape_id,
+  size_ids,
+  color_ids,
+  page,
+  per_page,
+) => {
+  const response = await fetch(
+    `${baseUrl}/get/products?page=${page}&per_page=${per_page}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ shape_id, size_ids, color_ids }),
     },
-    body: JSON.stringify({ shape_id, size_ids, color_ids }),
-  });
+  );
   const result = await response.json();
   return { response, result };
 };
@@ -121,6 +131,15 @@ export const getPaginatedProductsByShape = async (id, page, per_page) => {
       method: 'GET',
     },
   );
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getProductDetails = async alias => {
+  const response = await fetch(`${baseUrl}/get/product/${alias}`, {
+    method: 'GET',
+  });
+
   const result = await response.json();
   return { response, result };
 };
