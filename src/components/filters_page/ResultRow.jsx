@@ -51,7 +51,11 @@ const ResultRow = ({ dataProp }) => {
         {data &&
           data.map(el => {
             return (
-              <Link key={el.id} to={`/en/products?id=${el.alias}`}>
+              <Link
+                key={el.id}
+                to={`/en/products/id=${el.alias}`}
+                target='_blank'
+              >
                 <div
                   className={`${classes.detail_row}  ${
                     isLoading ? classes.dn : ''

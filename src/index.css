@@ -1,3 +1,4 @@
+@import url(../src/styles/variables.css);
 * {
   margin: 0;
   padding: 0;
@@ -29,7 +30,7 @@ a:visited {
   justify-content: center !important;
 }
 .css-aixiz9-MuiButtonBase-root-MuiIconButton-root {
-  padding: 8px;
+  padding: 8px !important;
 }
 .MuiIconButton-sizeMedium {
 }
@@ -68,8 +69,17 @@ a:visited {
   display: flex !important;
   align-items: center !important;
 }
-.MuiBox-root{
+.MuiBox-root {
   padding: 0 !important;
+}
+.css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: black !important;
+}
+.css-1qltlow-MuiTabs-indicator {
+  background-color: var(--color-grey-1) !important;
+}
+.MuiButtonBase-root{
+  font-size: .5rem !important;
 }
 @media only screen and (max-width: 480px) {
   .MuiBadge-badge {

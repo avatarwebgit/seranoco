@@ -56,5 +56,11 @@
   "reset_selections": "پاک کردن انتخواب شده ها",
 
   "more_info": "اطلاعات بیشتر",
-  "description": "توضیحات"
+  "description": "توضیحات",
+
+  "serial_number": "کد محصول",
+  "payment": "مبلغ",
+  "total_weight": "وزن کل",
+
+  "add_to_favorite": " اضافه کردن به لیست مورد علاقه ها "
 }

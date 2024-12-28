@@ -76,7 +76,7 @@ function App() {
             element={<FilterByShape windowSize={windowSize} />}
           />
           <Route
-            path={`/:lng/products/*`}
+            path={`/:lng/products/:id`}
             element={<Products windowSize={windowSize} />}
           />
           <Route path={`/test`} element={<Loading />} />

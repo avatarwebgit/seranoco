@@ -90,16 +90,16 @@ const Header = ({ windowSize }) => {
       };
     } else if (size === 'm') {
       return {
-        left: scrollY === 0 ? '50%' : '10%',
+        left: scrollY === 0 ? '50%' : '25%',
       };
     } else if (size === 'l') {
       return {
-        left: scrollY === 0 ? '50%' : '10%',
+        left: scrollY === 0 ? '50%' : '25%',
       };
     } else {
       setIsSmall(false);
       return {
-        left: scrollY === 0 ? '50%' : '10%',
+        left: scrollY === 0 ? '50%' : '25%',
       };
     }
   };

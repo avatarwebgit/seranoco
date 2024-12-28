@@ -54,8 +54,13 @@
 
   "related": "Related Bestsellers",
   "views": "People Who Viewed These Items Ultimately Bought",
-  "reset_selections":"Reset Selections",
+  "reset_selections": "Reset Selections",
 
-  "more_info":"More Information",
-  "description":"Description"
+  "more_info": "More Information",
+  "description": "Description",
+  "serial_number": "Serial No",
+  "payment": "Payment",
+  "total_weight": "Total Weight",
+
+  "add_to_favorite":"Add To Wish List"
 }

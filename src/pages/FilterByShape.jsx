@@ -208,6 +208,7 @@ const FilterByShape = ({ windowSize }) => {
 
   useEffect(() => {
     if (detailData) {
+      console.log(detailData.colors);
       setColorData(detailData.colors);
       setSizeData(detailData.sizes);
       setGroupColors(detailData.group_colors);
@@ -347,26 +348,30 @@ const FilterByShape = ({ windowSize }) => {
                   ?.sort((a, b) => a.group_id - b.group_id)
                   .map((slide, index) => (
                     <SwiperSlide key={index} className={classes.slide}>
-                      <label
-                        htmlFor={slide.id}
-                        className={classes.color_slider_label}
-                      >
-                        <div className={classes.slider_image_wrapper}>
-                          <img
-                            src={slide.image}
-                            alt=''
-                            className={classes.slider_img}
-                          />
-                        </div>
-                      </label>
-                      <input
-                        type='checkbox'
-                        name={slide.id}
-                        id={slide.id}
-                        className={classes.slider_input}
-                        onChange={e => handleCheckboxChange(e, slide.id)}
-                      />
-                      <p className={classes.color_name}>{slide.description}</p>
+                      <div>
+                        <label
+                          htmlFor={slide.id}
+                          className={classes.color_slider_label}
+                        >
+                          <div className={classes.slider_image_wrapper}>
+                            <img
+                              src={slide.image}
+                              alt=''
+                              className={classes.slider_img}
+                            />
+                          </div>
+                        </label>
+                        <input
+                          type='checkbox'
+                          name={slide.id}
+                          id={slide.id}
+                          className={classes.slider_input}
+                          onChange={e => handleCheckboxChange(e, slide.id)}
+                        />
+                        <p className={classes.color_name}>
+                          {slide.description}
+                        </p>
+                      </div>
                     </SwiperSlide>
                   ))}
             </Swiper>
@@ -382,7 +387,6 @@ const FilterByShape = ({ windowSize }) => {
                 groupColors
                   ?.sort((a, b) => a.id - b.id)
                   .map((slide, index) => {
-                    console.log(slide);
                     return (
                       <SwiperSlide key={index} className={classes.slide}>
                         <div className={classes.slider_thumb_wrapper}>

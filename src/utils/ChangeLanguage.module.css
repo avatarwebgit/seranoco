@@ -1,11 +1,11 @@
 .main {
-  /* width: 30px !important;
-  height: 30px !important; */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   justify-self: center !important;
   position: relative;
+  width: 50px !important;
+  height: 50px !important;
 }
 .current_lng_text {
   font-size: 0.6rem;
@@ -46,13 +46,15 @@
 @media only screen and (max-width: 480px) {
   .main {
     border-width: 1px !important;
-    margin-top: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
   }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
   .main {
     border-width: 1px !important;
-    margin-top: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
   }
 }
