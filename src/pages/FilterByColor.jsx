@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import classes from './FilterByColor.module.css';
 import BannerCarousel from '../components/BannerCarousel';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
@@ -35,7 +36,6 @@ import 'swiper/css/scrollbar';
 import '../styles/carousel.css';
 import { scrollToTarget } from '../utils/helperFunctions';
 import TableGrid from '../components/common/TableGrid';
-import classes from './FilterByShape.module.css';
 const FilterByShape = ({ windowSize }) => {
   const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
   const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
@@ -109,6 +109,7 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   const handleCheckboxChange = (e, slideId) => {
+    console.log(slideId)
     if (e.target.checked) {
       setSelectedIds(prevIds => [...prevIds, slideId]);
     } else {
@@ -127,6 +128,7 @@ const FilterByShape = ({ windowSize }) => {
     if (fetchedColorData) {
       setColorData(fetchedColorData?.data.colors);
       setGroupColors(fetchedColorData?.data.group_colors);
+      handleShapeClick('', '46');
     }
   }, [fetchedColorData]);
 
@@ -215,7 +217,7 @@ const FilterByShape = ({ windowSize }) => {
         Object.keys(dimensionEntries),
         selectedIds,
       );
-    //   getProduct([], [], selectedIds, page, ItemsPerPage);
+      getProduct([], [], selectedIds, page, ItemsPerPage);
     }
     prevDimensionEntriesRef.current = dimensionEntries;
     prevSelectedIdsRef.current = selectedIds;
@@ -281,36 +283,7 @@ const FilterByShape = ({ windowSize }) => {
 
       {colorData && (
         <Body>
-          {shapesData && (
-            <Card className={classes.multi_select_wrapper}>
-              {isLoadingShapes && <LoadingSpinner />}
-
-              <form ref={formRef} className={classes.grid_form}>
-                {shapesData &&
-                  shapesData.map((elem, i) => {
-                    return (
-                      <div key={nanoid()}>
-                        {elem.image && (
-                          <CustomSelect
-                            title={`${i}`}
-                            src={elem.image}
-                            key={elem.id}
-                            id={elem.id}
-                            description={elem.description}
-                            onClick={e => {
-                              handleShapeClick(e, elem.id);
-                              setShapeFormEntries(elem.id);
-                            }}
-                            isSelected={shapeFormEntries}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
-              </form>
-            </Card>
-          )}
-          {shapeFormEntries.length > 0 && (
+          {
             <Card
               className={`${classes.size_wrapper} ${classes.colors_wrapper}`}
             >
@@ -413,16 +386,47 @@ const FilterByShape = ({ windowSize }) => {
                       );
                     })}
               </div>
-              {shapeFormEntries?.length === 0 && (
-                <p className={classes.alert}>{t('select_shape')}</p>
+              {selectedIds?.length === 0 && (
+                <p className={classes.alert}>{t('select_color')}</p>
               )}
+            </Card>
+          }
+          {selectedIds?.length > 0 && <Divider text={t('shape')} />}
+
+          {Object.values(selectedIds).length > 0 && (
+            <Card className={classes.multi_select_wrapper}>
+              {isLoadingShapes && <LoadingSpinner />}
+
+              <form ref={formRef} className={classes.grid_form}>
+                {shapesData &&
+                  shapesData.map((elem, i) => {
+                    return (
+                      <div key={nanoid()}>
+                        {elem.image && (
+                          <CustomSelect
+                            title={`${i}`}
+                            src={elem.image}
+                            key={elem.id}
+                            id={elem.id}
+                            description={elem.description}
+                            onClick={e => {
+                              handleShapeClick(e, elem.id);
+                              setShapeFormEntries(elem.id);
+                            }}
+                            isSelected={shapeFormEntries}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+              </form>
             </Card>
           )}
 
           {selectedIds?.length > 0 && <Divider text={'Size mm'} />}
           {isLoading && <LoadingSpinner />}
 
-          {shapeFormEntries.length > 0 && (
+          {selectedIds.length > 0 && (
             <Card className={classes.size_wrapper}>
               <form ref={sizeRef} className={classes.grid_form}>
                 {sizeData?.length > 0 &&
@@ -447,9 +451,9 @@ const FilterByShape = ({ windowSize }) => {
               )}
             </Card>
           )}
-          <Card className={`${classes.size_wrapper} ${classes.colors_wrapper}`}>
+          <Card className={`${classes.size_wrapper}`}>
             {isLoadingColors && <LoadingSpinner />}
-            {shapeFormEntries.length > 0 && (
+            {selectedIds?.length > 0 && (
               <>
                 <button
                   className={classes.prev_btn}
@@ -465,7 +469,7 @@ const FilterByShape = ({ windowSize }) => {
                 </button>
               </>
             )}
-            {shapeFormEntries.length > 0 && (
+            {selectedIds.length > 0 && (
               <Swiper
                 spaceBetween={isSmallPage ? 5 : 9}
                 slidesPerView={1}
@@ -487,10 +491,16 @@ const FilterByShape = ({ windowSize }) => {
                 <SwiperSlide>
                   <TableGrid dataProp={productDetails} />
                 </SwiperSlide>
+                <SwiperSlide>
+                  <TableGrid dataProp={productDetails} />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <TableGrid dataProp={productDetails} />
+                </SwiperSlide>
               </Swiper>
             )}
           </Card>
-          {shapeFormEntries.length > 0 && (
+          {selectedIds.length > 0 && (
             <Card
               className={classes.products_result_wrapper}
               ref={productsWrapperRef}

@@ -7,10 +7,10 @@
 .multi_select_wrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 3rem !important;
 }
 
 .colors_wrapper {
+  margin-top: 3rem !important;
 }
 
 .grid_form {
@@ -49,9 +49,9 @@
   flex-wrap: wrap;
 }
 .thumbnail {
-  height: 15px;
+  height: 10px;
   width: 50px;
-  margin: 5px 8px;
+  margin: 5px 3px;
   transition: all 0.5s;
   border: 2px solid #ffffff;
   position: relative;
