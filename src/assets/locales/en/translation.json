@@ -28,7 +28,7 @@
   "trending_new": "New",
   "noItem": "There is no Item.",
 
-  "shape": "shape",
+  "shape": "Shapes",
   "type": "Stone Type",
   "details": "Details",
   "color": "Color",
@@ -45,7 +45,8 @@
   "add_to_card": "Add To Card",
 
   "page": "Page",
-  "select_shape": "Select A Shape",
+  "select_shape": "Please Select A Shape ",
+  "select_color": "Please Select A Color ",
 
   "zoom_tip": "The color on your screen may not reflect actual stone color due to the variations in computer monitors",
 

@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import classes from './ResultRow.module.css';
+
 const ResultRow = ({ dataProp }) => {
   const [data, setData] = useState(null);
   const [isLoadingImage, setIsLoadingImage] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [quantities, setQuantities] = useState({});
 
   const { t } = useTranslation();
 
@@ -22,87 +24,133 @@ const ResultRow = ({ dataProp }) => {
     }
   }, [dataProp, isLoadingImage]);
 
-  // useEffect(() => {
-  //   console.log(isLoading);
-  // }, [isLoading]);
+  const handleAddQuantity = el => {
+    setQuantities(prevQuantities => {
+      const newQuantity = prevQuantities[el.id] ? prevQuantities[el.id] + 1 : 1;
+      // Ensure the quantity does not exceed the available quantity
+      return newQuantity <= el.quantity
+        ? { ...prevQuantities, [el.id]: newQuantity }
+        : prevQuantities;
+    });
+  };
+
+  const handleReduceQuantity = el => {
+    setQuantities(prevQuantities => {
+      const newQuantity = prevQuantities[el.id] ? prevQuantities[el.id] - 1 : 0;
+      return newQuantity >= 0
+        ? { ...prevQuantities, [el.id]: newQuantity }
+        : prevQuantities;
+    });
+  };
 
   return (
     <>
-      <section className={`${classes.main}`}>
-        {data && data.length > 0 && (
-          <div className={classes.title_wrapper}>
-            <p className={`${classes.o0} ${classes.title_text}`}>{t('type')}</p>
-            <p className={classes.title_text}>{t('type')}</p>
-            <p className={classes.title_text}>{t('details')}</p>
-            <p className={classes.title_text}>{t('color')}</p>
-            <p className={classes.title_text}>{t('size')}</p>
-            <p className={classes.title_text}>{t('weight')}</p>
-            <p className={classes.title_text}>{t('quality')}</p>
-            <p className={classes.title_text}>{t('cut')}</p>
-            <p className={classes.title_text}>{t('report')}</p>
-            <p className={classes.title_text}>{t('country')}</p>
-            <p className={classes.title_text}>{t('agta')}</p>
-            <p className={classes.title_text}>{t('price')}</p>
-            <p className={classes.title_text}>{t('quantity')}</p>
-            <p className={classes.title_text}>{t('total_price')}</p>
-            <p className={`${classes.o0} ${classes.title_text}`}>{t('type')}</p>
-          </div>
-        )}
-        {data &&
-          data.map(el => {
-            return (
-              <Link
-                key={el.id}
-                to={`/en/products/id=${el.alias}`}
-                target='_blank'
-              >
-                <div
-                  className={`${classes.detail_row}  ${
-                    isLoading ? classes.dn : ''
-                  }`}
-                  key={el.id}
-                >
-                  <div className={classes.img_wrapper}>
-                    <img
-                      src={el.primary_image}
-                      alt=''
-                      onLoad={() => setIsLoadingImage(false)}
-                    />
+      <table className={`${classes.main}`}>
+        <thead>
+          {data && data.length > 0 && (
+            <tr>
+              <th className={classes.title_text} style={{ opacity: 0 }}>
+                {t('type')}
+              </th>
+              <th className={classes.title_text}>{t('type')}</th>
+              <th className={classes.title_text}>{t('details')}</th>
+              <th className={classes.title_text}>{t('color')}</th>
+              <th className={classes.title_text}>{t('size')}</th>
+              <th className={classes.title_text}>{t('weight')}</th>
+              <th className={classes.title_text}>{t('quality')}</th>
+              <th className={classes.title_text}>{t('cut')}</th>
+              <th className={classes.title_text}>{t('report')}</th>
+              <th className={classes.title_text}>{t('country')}</th>
+              <th className={classes.title_text}>{t('agta')}</th>
+              <th className={classes.title_text}>{t('price')}</th>
+              <th className={classes.title_text}>{t('quantity')}</th>
+              <th className={classes.title_text}>{t('total_price')}</th>
+              <th className={classes.title_text}>{t('action')}</th>
+              <th className={classes.title_text} style={{ opacity: 0 }}>
+                {t('action')}
+              </th>
+            </tr>
+          )}
+        </thead>
+        <tbody>
+          {data &&
+            data.map(el => (
+              <tr className={classes.tr} key={el.id}>
+                {/* Image Column */}
+                <td className={classes.img_wrapper}>
+                  <img
+                    src={el.primary_image}
+                    alt={el.details}
+                    onLoad={() => setIsLoadingImage(false)}
+                  />
+                </td>
+                <td />
+                {/* Detail Column */}
+                <td className={classes.detail_text}>
+                  <Link
+                    to={`/en/products/id=${el.alias}`}
+                    target='_blank'
+                    className={classes.link}
+                  >
+                    {el.details}
+                  </Link>
+                </td>
+                {/* Color */}
+                <td className={classes.detail_text}>{el.color}</td>
+                {/* Size */}
+                <td className={classes.detail_text}>{el.size}</td>
+                {/* Weight */}
+                <td className={classes.detail_text}>{el.weight}</td>
+                {/* Quality */}
+                <td className={classes.detail_text}>{el.quality}</td>
+                {/* Cut */}
+                <td className={classes.detail_text}>{el.cut}</td>
+                {/* Report */}
+                <td className={classes.detail_text}>{el.report}</td>
+                {/* Country */}
+                <td className={classes.detail_text}>{el.country}</td>
+                {/* AGTA */}
+                <td className={classes.detail_text}>{el.agta}</td>
+                {/* Price */}
+                <td className={classes.detail_text}>{el.price}</td>
+                {/* Quantity Controls */}
+                <td className={classes.detail_text}>
+                  <div className={classes.quantity_controls}>
+                    <p className={classes.totoal_quantity}>
+                      {quantities[el.id] || 0}
+                    </p>
+                    <span className={classes.button_wrapper}>
+                      <button
+                        className={classes.action_btn}
+                        onClick={() => handleAddQuantity(el)}
+                        disabled={el.quantity === 0}
+                      >
+                        +
+                      </button>
+                      <button
+                        className={classes.action_btn}
+                        onClick={() => handleReduceQuantity(el)}
+                        disabled={quantities[el.id] === 0}
+                      >
+                        -
+                      </button>
+                    </span>
                   </div>
-                  <p className={classes.detail_text}>{el.name}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{el.size}</p>
-                  <p className={classes.detail_text}>{el.weight}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
-                  <p className={classes.detail_text}>{}</p>
+                </td>
+                {/* Total Price */}
+                <td className={classes.detail_text}>
+                  {quantities[el.id] * el.price || 0}
+                </td>
+                {/* Action Button */}
+                <td>
                   <button className={classes.add_to_card}>
                     {t('add_to_card')}
                   </button>
-                </div>
-              </Link>
-            );
-          })}
-        {/* {data?.length === 0 &&
-          data?.map(el => {
-            return (
-              <Skeleton
-                className={`${classes.skeleton} ${
-                  !isLoading ? classes.dn : ''
-                }`}
-                variant='rectangular'
-                animation='wave'
-                key={el.id}
-              />
-            );
-          })} */}
-      </section>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </>
   );
 };

@@ -14,10 +14,6 @@ const CustomSelect = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    console.log(isSelected === id);
-  }, [isSelected]);
-
   return (
     <div className={classes.wrapper}>
       <Tooltip

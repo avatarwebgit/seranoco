@@ -33,9 +33,13 @@ const FilterLinks = () => {
       <Link
         imgUrl={filterByColor}
         title={t('shop_by_color')}
-        href={'categories'}
+        href={'shopbycolor'}
       />
-      <Link imgUrl={filterByShape} title={t('shop_by_shape')} href={'shopbyshape'}/>
+      <Link
+        imgUrl={filterByShape}
+        title={t('shop_by_shape')}
+        href={'shopbyshape'}
+      />
       <Link
         imgUrl={null}
         title={t('new_product')}

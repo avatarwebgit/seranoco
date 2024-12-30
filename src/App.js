@@ -19,6 +19,7 @@ function App() {
 
   const Home = React.lazy(() => import('./pages/Home'));
   const Categories = React.lazy(() => import('./pages/Categories'));
+  const FilterByColor = React.lazy(() => import('./pages/FilterByColor'));
   const FilterByShape = React.lazy(() => import('./pages/FilterByShape'));
   const Products = React.lazy(() => import('./pages/Products'));
 
@@ -71,6 +72,10 @@ function App() {
           <Route path={'/'} element={<Navigate to={'/en'} replace />} />
 
           <Route path={` `} element={<Navigate to={`/en`} replace />} />
+          <Route
+            path={`/:lng/shopByColor`}
+            element={<FilterByColor windowSize={windowSize} />}
+          />
           <Route
             path={`/:lng/shopByShape`}
             element={<FilterByShape windowSize={windowSize} />}

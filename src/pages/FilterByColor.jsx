@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Pagination as PaginationComponent } from '@mui/material';
 import { nanoid } from '@reduxjs/toolkit';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
-import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { ArrowBackIos, ArrowForwardIos, Try } from '@mui/icons-material';
 
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
@@ -24,6 +24,7 @@ import {
   getProduct,
   useShapes,
   useColors,
+  getProductsByColor,
 } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
@@ -58,6 +59,7 @@ const FilterByShape = ({ windowSize }) => {
     useState(false);
   const [ItemsPerPage, setItemsPerPage] = useState(9);
   const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(1);
+  const [tableData, setTableData] = useState([]);
 
   const formRef = useRef();
   const sizeRef = useRef();
@@ -108,8 +110,18 @@ const FilterByShape = ({ windowSize }) => {
     }
   };
 
+  const handleResetSelections = () => {
+    setShapeFormEntries([]);
+    setDimensionEntries([]);
+    setSelectedIds([]);
+    setSizeData([]);
+    setColorData([]);
+    setGroupColors([]);
+    setProductDetails([]);
+  };
+
   const handleCheckboxChange = (e, slideId) => {
-    console.log(slideId)
+    console.log(slideId);
     if (e.target.checked) {
       setSelectedIds(prevIds => [...prevIds, slideId]);
     } else {
@@ -212,6 +224,7 @@ const FilterByShape = ({ windowSize }) => {
         JSON.stringify(prevDimensionEntriesRef.current) ||
       JSON.stringify(selectedIds) !== JSON.stringify(prevSelectedIdsRef.current)
     ) {
+      handleFetchTableData(selectedIds, 1, 1000);
       handleGetFilterProducts(
         shapeFormEntries,
         Object.keys(dimensionEntries),
@@ -251,7 +264,6 @@ const FilterByShape = ({ windowSize }) => {
       setProductDetails(productsRes.result.data.data);
       setLastPage(productsRes.result.data.last_page);
       setPage(productsRes.result.data.current_page);
-      console.log(productsRes.result);
     }
   };
 
@@ -266,15 +278,53 @@ const FilterByShape = ({ windowSize }) => {
     scrollToTarget(productsWrapperRef);
   };
 
-  const handleResetSelections = () => {
-    setShapeFormEntries([]);
-    setDimensionEntries([]);
-    setSelectedIds([]);
-    setSizeData([]);
-    setColorData([]);
-    setGroupColors([]);
-    setProductDetails([]);
-  };
+ const handleFetchTableData = async (colorIds, page, per_page) => {
+   const extractUniqueColors = data => {
+     const colorSet = new Set();
+
+     data.forEach(item => {
+       Object.keys(item).forEach(key => {
+         item[key].forEach(product => {
+           colorSet.add(product.color); 
+         });
+       });
+     });
+
+     return [...colorSet]; 
+   };
+
+   let groupedByColor = {};
+
+   try {
+     const serverRes = await getProductsByColor(colorIds, page, per_page);
+
+     if (serverRes.response.ok) {
+
+       const uniqueColors = extractUniqueColors(serverRes.result.data.data);
+
+       uniqueColors.forEach(colorCategory => {
+         groupedByColor[colorCategory] = [];
+
+         serverRes.result.data.data.forEach(item => {
+           Object.keys(item).forEach(key => {
+             item[key].forEach(product => {
+               if (product.color === colorCategory) {
+                 groupedByColor[colorCategory].push(product);
+               }
+             });
+           });
+         });
+       });
+
+       setTableData(groupedByColor);
+
+       console.log('Grouped data by color: ', groupedByColor);
+     }
+   } catch (error) {
+     console.error('Error fetching products: ', error);
+   }
+ };
+
 
   return (
     <div className={classes.main}>

@@ -18,6 +18,7 @@ const baseUrl = 'https://admin.seranoco.com/api';
 //filter by shape ,getproduct :/get/products
 
 //details page : ,getdetails :/get/product/${alias}
+//get products by color : /get/ProductsByColor
 
 export const getHeaderMenus = async lng => {
   const response = await fetch(`${baseUrl}/menus`, {
@@ -103,6 +104,15 @@ export const getColors = async (shape_id, size_ids) => {
   return { response, result };
 };
 
+export const getAllColors = async () => {
+  const response = await fetch(`${baseUrl}/attribute/get/colors`, {
+    method: 'GET',
+    headers: {},
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
 export const getProduct = async (
   shape_id,
   size_ids,
@@ -139,6 +149,22 @@ export const getProductDetails = async alias => {
   const response = await fetch(`${baseUrl}/get/product/${alias}`, {
     method: 'GET',
   });
+
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getProductsByColor = async (color_ids, page, per_page) => {
+  const response = await fetch(
+    `${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ color_ids }),
+    },
+  );
 
   const result = await response.json();
   return { response, result };
@@ -262,15 +288,18 @@ export const useSizes = () => {
 
 // Fetch Colors (POST)
 export const useColors = () => {
-  return useMutation({
-    mutationFn: async ({ shape_id, size_ids }) => {
-      const response = await fetch(`${baseUrl}/attribute/get/color`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ shape_id, size_ids }),
+  return useQuery({
+    queryKey: ['AllColors'],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/attribute/get/colors`, {
+        method: 'GET',
+        headers: {},
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch colors');
+      }
+
       const result = await response.json();
       return result;
     },
