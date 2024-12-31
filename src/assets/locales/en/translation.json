@@ -32,7 +32,7 @@
   "type": "Stone Type",
   "details": "Details",
   "color": "Color",
-  "size": "Size mm",
+  "size": "Size (mm)",
   "weight": "Ct Weight",
   "quality": "Quality",
   "cut": "Cut",

@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import classes from './FilterByColor.module.css';
 import BannerCarousel from '../components/BannerCarousel';
-import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { useTranslation } from 'react-i18next';
 import { Pagination as PaginationComponent } from '@mui/material';
 import { nanoid } from '@reduxjs/toolkit';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
-import { ArrowBackIos, ArrowForwardIos, Try } from '@mui/icons-material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
@@ -18,6 +16,8 @@ import Card from '../components/filters_page/Card';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import SizeBox from '../components/filters_page/SizeBox';
 import Divider from '../components/filters_page/Divider';
+
+import { productDetailActions } from '../store/store';
 
 import {
   getAllAtrributes,
@@ -37,6 +37,7 @@ import 'swiper/css/scrollbar';
 import '../styles/carousel.css';
 import { scrollToTarget } from '../utils/helperFunctions';
 import TableGrid from '../components/common/TableGrid';
+import classes from './FilterByColor.module.css';
 const FilterByShape = ({ windowSize }) => {
   const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
   const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
@@ -60,17 +61,24 @@ const FilterByShape = ({ windowSize }) => {
   const [ItemsPerPage, setItemsPerPage] = useState(9);
   const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(1);
   const [tableData, setTableData] = useState([]);
+  const [selectedSizesObject, setSelectedSizesObject] = useState([]);
 
   const formRef = useRef();
   const sizeRef = useRef();
   const sliderRef = useRef();
   const gridSliderRef = useRef();
   const productsWrapperRef = useRef();
-
   const abortControllerRef = useRef(new AbortController());
+
   const { t } = useTranslation();
 
+  const dispatch = useDispatch();
+
   const lng = useSelector(state => state.localeStore.lng);
+
+  const shapeId = useSelector(state => state.detailsStore.shapeId);
+  const colorIds = useSelector(state => state.detailsStore.colorIds);
+  const sizeIds = useSelector(state => state.detailsStore.sizeIds);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
@@ -92,11 +100,16 @@ const FilterByShape = ({ windowSize }) => {
     gridSliderRef.current.swiper.slideNext();
   }, []);
 
-  const handleSendDimensionsStatus = e => {
+  const handleSendDimensionsStatus = (e, elem) => {
     const form = sizeRef.current;
     const formData = new FormData(form);
     const formEntries = Object.fromEntries(formData.entries());
     setDimensionEntries(formEntries);
+    if (e.target.checked) {
+      setSelectedSizesObject(prev => [...prev, elem]);
+    } else {
+      setSelectedSizesObject(prev => prev.filter(item => item.id !== elem.id));
+    }
   };
 
   const handleThumbClick = groupId => {
@@ -121,7 +134,6 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   const handleCheckboxChange = (e, slideId) => {
-    console.log(slideId);
     if (e.target.checked) {
       setSelectedIds(prevIds => [...prevIds, slideId]);
     } else {
@@ -156,9 +168,9 @@ const FilterByShape = ({ windowSize }) => {
         signal: abortControllerRef.current.signal,
       });
       if (serverRes.response.ok) {
-        setDetailData(serverRes.result.data);
+        setSizeData(serverRes.result.data.sizes);
       }
-      getProducts(id, [], [], 1, ItemsPerPage);
+      // getProducts(id, [], [], 1, ItemsPerPage);
     } catch (error) {
       if (error.name !== 'AbortError') {
         console.error('Fetch error:', error);
@@ -219,22 +231,38 @@ const FilterByShape = ({ windowSize }) => {
   const prevSelectedIdsRef = useRef(selectedIds);
 
   useEffect(() => {
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
     if (
       JSON.stringify(dimensionEntries) !==
         JSON.stringify(prevDimensionEntriesRef.current) ||
       JSON.stringify(selectedIds) !== JSON.stringify(prevSelectedIdsRef.current)
     ) {
-      handleFetchTableData(selectedIds, 1, 1000);
+      handleFetchTableData(selectedIds, 1, 1000, {
+        signal: abortControllerRef.current.signal,
+      });
       handleGetFilterProducts(
         shapeFormEntries,
         Object.keys(dimensionEntries),
         selectedIds,
+        {
+          signal: abortControllerRef.current.signal,
+        },
       );
-      getProduct([], [], selectedIds, page, ItemsPerPage);
     }
+    dispatch(productDetailActions.addShapeId(shapeFormEntries));
+    dispatch(productDetailActions.addColorIds(selectedIds));
+    dispatch(productDetailActions.addSizeIds(Object.keys(dimensionEntries)));
+
     prevDimensionEntriesRef.current = dimensionEntries;
     prevSelectedIdsRef.current = selectedIds;
   }, [dimensionEntries, selectedIds, shapeFormEntries]);
+
+  useEffect(() => {
+    setProductDetails([]);
+    getProducts(shapeId, sizeIds, colorIds, page, ItemsPerPage);
+    console.log(shapeId, sizeIds, colorIds, page, ItemsPerPage);
+  }, [shapeId, colorIds, sizeIds, page, ItemsPerPage]);
 
   useEffect(() => {
     if (windowSize === 'xs' || windowSize === 's' || windowSize === 'm') {
@@ -246,12 +274,6 @@ const FilterByShape = ({ windowSize }) => {
     }
   }, [windowSize]);
 
-  useEffect(() => {
-    if (detailData) {
-      setSizeData(detailData.sizes);
-    }
-  }, [detailData]);
-
   const getProducts = async (shapeId, sizeIds, colorIds, page, per_page) => {
     const productsRes = await getProduct(
       shapeId,
@@ -261,6 +283,7 @@ const FilterByShape = ({ windowSize }) => {
       per_page,
     );
     if (productsRes.response.ok) {
+      console.log(productsRes);
       setProductDetails(productsRes.result.data.data);
       setLastPage(productsRes.result.data.last_page);
       setPage(productsRes.result.data.current_page);
@@ -278,53 +301,17 @@ const FilterByShape = ({ windowSize }) => {
     scrollToTarget(productsWrapperRef);
   };
 
- const handleFetchTableData = async (colorIds, page, per_page) => {
-   const extractUniqueColors = data => {
-     const colorSet = new Set();
+  const handleFetchTableData = async (colorIds, page, per_page) => {
+    try {
+      const serverRes = await getProductsByColor(colorIds, page, per_page);
 
-     data.forEach(item => {
-       Object.keys(item).forEach(key => {
-         item[key].forEach(product => {
-           colorSet.add(product.color); 
-         });
-       });
-     });
-
-     return [...colorSet]; 
-   };
-
-   let groupedByColor = {};
-
-   try {
-     const serverRes = await getProductsByColor(colorIds, page, per_page);
-
-     if (serverRes.response.ok) {
-
-       const uniqueColors = extractUniqueColors(serverRes.result.data.data);
-
-       uniqueColors.forEach(colorCategory => {
-         groupedByColor[colorCategory] = [];
-
-         serverRes.result.data.data.forEach(item => {
-           Object.keys(item).forEach(key => {
-             item[key].forEach(product => {
-               if (product.color === colorCategory) {
-                 groupedByColor[colorCategory].push(product);
-               }
-             });
-           });
-         });
-       });
-
-       setTableData(groupedByColor);
-
-       console.log('Grouped data by color: ', groupedByColor);
-     }
-   } catch (error) {
-     console.error('Error fetching products: ', error);
-   }
- };
-
+      if (serverRes.response.ok) {
+        setTableData(serverRes.result.data);
+      }
+    } catch (error) {
+      console.error('Error fetching products: ', error);
+    }
+  };
 
   return (
     <div className={classes.main}>
@@ -486,7 +473,9 @@ const FilterByShape = ({ windowSize }) => {
                         value={`${elem.description}`}
                         key={elem.id}
                         id={elem.id}
-                        onClick={handleSendDimensionsStatus}
+                        onClick={e => {
+                          handleSendDimensionsStatus(e, elem);
+                        }}
                       />
                     );
                   })}
@@ -539,13 +528,25 @@ const FilterByShape = ({ windowSize }) => {
                 style={{ width: '90%' }}
               >
                 <SwiperSlide>
-                  <TableGrid dataProp={productDetails} />
+                  <TableGrid
+                    dataProp={tableData}
+                    sizeProp={sizeData}
+                    selectedSizeProp={selectedSizesObject}
+                  />
                 </SwiperSlide>
                 <SwiperSlide>
-                  <TableGrid dataProp={productDetails} />
+                  <TableGrid
+                    dataProp={tableData}
+                    sizeProp={sizeData}
+                    selectedSizeProp={selectedSizesObject}
+                  />
                 </SwiperSlide>
                 <SwiperSlide>
-                  <TableGrid dataProp={productDetails} />
+                  <TableGrid
+                    dataProp={tableData}
+                    sizeProp={sizeData}
+                    selectedSizeProp={selectedSizesObject}
+                  />
                 </SwiperSlide>
               </Swiper>
             )}

@@ -7,8 +7,24 @@ import classes from './Search.module.css';
 const Search = ({ isHomePage }) => {
   const [isFullSize, setIsFullSize] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsFullSize(true);
+  const searchRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsFullSize(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleMouseOut = () => {
+    setIsFullSize(false);
   };
 
   const initial = {
@@ -25,22 +41,22 @@ const Search = ({ isHomePage }) => {
 
   return (
     <motion.div
+      ref={searchRef}
       className={classes.main}
       initial={initial}
       animate={{ width: isFullSize ? '100%' : 0 }}
-      onMouseEnter={handleMouseEnter}
       transition={{ duration: 0.25, type: 'tween' }}
     >
       <motion.input
         className={classes.search_input}
         type='text'
         placeholder={isFullSize ? 'Search...' : ''}
-        onFocus={handleMouseEnter}
         style={{ backgroundColor: isFullSize ? 'white' : 'transparent' }}
         transition={{ duration: 0.25, type: 'tween' }}
       />
       <motion.div
         className={classes.search_logo_wrapper}
+        onClick={() => setIsFullSize(true)}
         initial={{ border: '1px solid transparent' }}
         animate={{
           border: !isFullSize
@@ -66,7 +82,7 @@ const Search = ({ isHomePage }) => {
         className={classes.backdrop}
         initial={{ display: 'none' }}
         animate={{ display: isFullSize ? 'block' : 'none' }}
-        onClick={() => setIsFullSize(false)}
+        onClick={handleMouseOut}
       />
     </motion.div>
   );

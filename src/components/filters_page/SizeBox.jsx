@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import classes from './SizeBox.module.css';
-const SizeBox = ({ value, onClick,id }) => {
+const SizeBox = ({ value, onClick,id, entry }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   return (

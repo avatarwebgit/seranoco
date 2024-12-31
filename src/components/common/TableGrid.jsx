@@ -1,51 +1,127 @@
 import React, { useEffect, useState } from 'react';
-import classes from './TableGrid.module.css';
+import { nanoid } from '@reduxjs/toolkit';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
-const TableGrid = ({ dataProp }) => {
+import { productDetailActions } from '../../store/store';
+
+import classes from './TableGrid.module.css';
+const TableGrid = ({ dataProp, sizeProp, selectedSizeProp }) => {
   const [data, setData] = useState(null);
+  const [sizeData, setSizeData] = useState(null);
+
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(dataProp);
+    console.log(sizeProp);
     if (dataProp) {
-      //   console.log(dataProp);
-      setData(dataProp);
+      setData(dataProp.reverse());
+      if (selectedSizeProp.length > 0) {
+        setSizeData(selectedSizeProp);
+      } else if (selectedSizeProp.length === 0 && sizeProp.length > 0) {
+        setSizeData(sizeProp);
+      }
     }
-  }, [dataProp]);
+  }, [dataProp, selectedSizeProp, sizeProp]);
 
-  const sizes = data?.map(item => item.size) || [];
+  const isSizeAvailableForColor = (color, size) => {
+    const colorGroup = data.find(group => group[color]);
+
+    if (colorGroup) {
+      const item = colorGroup[color].find(item => item.size === size);
+      if (item) {
+        return item.quantity > 0;
+      }
+    }
+    return false;
+  };
+
+  const handleProductClick = (color, size, sizeId) => {
+    const colorGroup = data.find(group => group[color]);
+    if (colorGroup) {
+      const item = colorGroup[color].find(item => item.size === size);
+      if (item) {
+        console.log(`Product:`, item);
+        console.log(`Size ID: ${sizeId}`);
+        dispatch(productDetailActions.addSizeIds([sizeId]));
+      }
+    }
+  };
 
   return (
-    <div className={classes.main}>
-      <table>
-        <thead className={classes.table_head}>
-          <tr>
-            <th>
-              <div></div>
-            </th>
-            {data?.map((el, index) => (
-              <th key={index}>
-                <div className={classes.img_container}>
-                  <img src={el.primary_image} alt='' />
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className={classes.table_body}>
-          {sizes.map((size, index) => (
-            <tr key={index}>
-              <td>
-                <div className={classes.title}>{size}</div>
-              </td>
-
-              {data?.map((el, productIndex) => (
-                <td className={classes.data_text} key={productIndex}>
-                  {el.size === size ? 'Avalable' : 'Not Available'}{' '}
-                </td>
-              ))}
+    <div>
+      {data && sizeData && (
+        <table className={classes.table}>
+          <thead>
+            <tr className={classes.tr}>
+              <th className={classes.th}>{t('size')}</th>
+              {data &&
+                data.map(el => {
+                  return (
+                    <th
+                      className={`${classes.th} ${classes.image_wrapper}`}
+                      key={nanoid()}
+                    >
+                      <img
+                        className={classes.img}
+                        src={Object.values(el)[0][0].image}
+                        loading='lazy'
+                        alt=''
+                      />
+                    </th>
+                  );
+                })}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className={classes.tbody}>
+            {sizeData &&
+              [...sizeData].map((size, index) => (
+                <tr className={classes.tr} key={nanoid()}>
+                  <td className={classes.td}>{size.description}</td>
+
+                  {data &&
+                    data.map(el => {
+                      const id = nanoid();
+                      const color = Object.keys(el)[0];
+                      const isAvailable = isSizeAvailableForColor(
+                        color,
+                        size.description,
+                      );
+                      return (
+                        <td key={nanoid()} className={classes.td}>
+                          {isAvailable ? (
+                            <span>
+                              <input type='checkbox' name={id} id={id} />
+                              <label
+                                htmlFor={id}
+                                className={`${classes.available} ${classes.label}`}
+                                onClick={() =>
+                                  handleProductClick(
+                                    color,
+                                    size.description,
+                                    size.id,
+                                  )
+                                }
+                              >
+                                Available
+                              </label>
+                            </span>
+                          ) : (
+                            <button className={classes.outOfStock}>
+                              Not Available
+                            </button>
+                          )}
+                        </td>
+                      );
+                    })}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
