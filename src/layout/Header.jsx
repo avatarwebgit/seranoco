@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { Menu, Search as MUISearch, Login } from '@mui/icons-material';
 import { Badge, Box, Drawer, IconButton, Input } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import { drawerActions } from '../store/store';
 
 import CustomButton from '../components/CustomButton';
 import CustomSection from './CustomSection';
@@ -40,6 +42,7 @@ const Header = ({ windowSize }) => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.addEventListener('load', () => setScrollY(window.scrollY));
@@ -114,6 +117,18 @@ const Header = ({ windowSize }) => {
     setAnchorEl(event.currentTarget);
   };
 
+  useEffect(() => {
+    if (location.pathname === `/${lng}`) {
+      setIsHomePage(true);
+    } else {
+      setIsHomePage(false);
+    }
+  }, [location.pathname, lng]);
+
+  const handleOpenDrawer = () => {
+    dispatch(drawerActions.open());
+  };
+
   // API calls
   const getHeaderLinks = async () => {
     setHeaderData(null);
@@ -135,14 +150,6 @@ const Header = ({ windowSize }) => {
     getHeaderLinks();
     getHeaderLogo();
   }, []);
-
-  useEffect(() => {
-    if (location.pathname === `/${lng}`) {
-      setIsHomePage(true);
-    } else {
-      setIsHomePage(false);
-    }
-  }, [location.pathname, lng]);
 
   return (
     <motion.header
@@ -226,7 +233,7 @@ const Header = ({ windowSize }) => {
             </IconButton>
           </span>
           <span className={classes.icon_pack_wrapper}>
-            <IconButton>
+            <IconButton onClick={handleOpenDrawer}>
               <Badge
                 // badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
