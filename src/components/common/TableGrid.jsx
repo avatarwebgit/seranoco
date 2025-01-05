@@ -1,122 +1,158 @@
 import React, { useEffect, useState } from 'react';
 import { nanoid } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import LoadingSpinner from './LoadingSpinner';
 import { productDetailActions } from '../../store/store';
-
 import classes from './TableGrid.module.css';
-const TableGrid = ({ dataProp, sizeProp, selectedSizeProp }) => {
+
+const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
   const [data, setData] = useState(null);
   const [sizeData, setSizeData] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const selectedItems = useSelector(state => state.detailsStore.itemIds);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    console.log(dataProp);
-    console.log(sizeProp);
+    setIsLoading(isLoadingData);
     if (dataProp) {
-      setData(dataProp.reverse());
+      setData(dataProp);
       if (selectedSizeProp.length > 0) {
-        setSizeData(selectedSizeProp);
+        setSizeData(
+          selectedSizeProp.sort(
+            (a, b) =>
+              +a.description.split(' ').at(0) - +b.description.split(' ').at(0),
+          ),
+        );
       } else if (selectedSizeProp.length === 0 && sizeProp.length > 0) {
         setSizeData(sizeProp);
       }
     }
-  }, [dataProp, selectedSizeProp, sizeProp]);
+  }, [dataProp, selectedSizeProp, sizeProp, isLoadingData]);
 
-  const isSizeAvailableForColor = (color, size) => {
-    const colorGroup = data.find(group => group[color]);
-
-    if (colorGroup) {
-      const item = colorGroup[color].find(item => item.size === size);
-      if (item) {
-        return item.quantity > 0;
-      }
+  const handleCheckboxChange = (color, size, alias, isChecked) => {
+    if (isChecked) {
+      console.log(alias);
+      dispatch(productDetailActions.addItem(alias));
+    } else {
+      dispatch(productDetailActions.removeItem(alias));
     }
-    return false;
   };
 
-  const handleProductClick = (color, size, sizeId) => {
-    const colorGroup = data.find(group => group[color]);
-    if (colorGroup) {
-      const item = colorGroup[color].find(item => item.size === size);
-      if (item) {
-        console.log(`Product:`, item);
-        console.log(`Size ID: ${sizeId}`);
-        dispatch(productDetailActions.addSizeIds([sizeId]));
-      }
+  const getAvailabilityLabel = (isNotAvailable, quantity) => {
+    if (isNotAvailable === 1) {
+      return 'Not Available';
+    } else if (quantity > 0) {
+      return 'Available';
+    } else {
+      return 'By Order';
     }
   };
 
   return (
-    <div>
-      {data && sizeData && (
-        <table className={classes.table}>
+    <div className={classes.main}>
+      {data && data.length > 0 && (
+        <table
+          className={classes.table}
+          style={{ width: `${Object.keys(data).length * 10}%` }}
+        >
           <thead>
             <tr className={classes.tr}>
               <th className={classes.th}>{t('size')}</th>
-              {data &&
-                data.map(el => {
-                  return (
-                    <th
-                      className={`${classes.th} ${classes.image_wrapper}`}
-                      key={nanoid()}
-                    >
-                      <img
-                        className={classes.img}
-                        src={Object.values(el)[0][0].image}
-                        loading='lazy'
-                        alt=''
-                      />
-                    </th>
-                  );
-                })}
+              {data.map(el => (
+                <th
+                  className={`${classes.th} ${classes.image_wrapper}`}
+                  key={Object.values(el)[0][0].id}
+                >
+                  <img
+                    className={classes.img}
+                    src={Object.values(el)[0][0].image}
+                    loading='lazy'
+                    alt=''
+                  />
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody className={classes.tbody}>
+            {isLoading && (
+              <span className={classes.backdrop}>
+                <LoadingSpinner size={'50px'} />
+              </span>
+            )}
             {sizeData &&
               [...sizeData].map((size, index) => (
-                <tr className={classes.tr} key={nanoid()}>
+                <tr
+                  className={classes.tr}
+                  key={index}
+                  style={{ opacity: isLoading ? 0.3 : 1 }}
+                >
                   <td className={classes.td}>{size.description}</td>
+                  {data.map(el => {
+                    const color = Object.keys(el)[0];
+                    const item = el[color]?.find(
+                      item => item.size === size.description,
+                    );
+                    const availabilityLabel = item
+                      ? getAvailabilityLabel(
+                          item.is_not_available,
+                          item.quantity,
+                        )
+                      : 'Not Available';
+                    const id = `${color}-${size.description}-${
+                      item?.alias || 'unknown'
+                    }`;
 
-                  {data &&
-                    data.map(el => {
-                      const id = nanoid();
-                      const color = Object.keys(el)[0];
-                      const isAvailable = isSizeAvailableForColor(
-                        color,
-                        size.description,
-                      );
-                      return (
-                        <td key={nanoid()} className={classes.td}>
-                          {isAvailable ? (
-                            <span>
-                              <input type='checkbox' name={id} id={id} />
-                              <label
-                                htmlFor={id}
-                                className={`${classes.available} ${classes.label}`}
-                                onClick={() =>
-                                  handleProductClick(
-                                    color,
-                                    size.description,
-                                    size.id,
-                                  )
-                                }
+                    return (
+                      <td key={id} className={classes.td}>
+                        {(() => {
+                          if (
+                            availabilityLabel === 'Available' ||
+                            availabilityLabel === 'By Order'
+                          ) {
+                            return (
+                              <span
+                                style={{
+                                  backgroundColor:
+                                    availabilityLabel === 'Available'
+                                      ? '#d5f5e3'
+                                      : 'rgba(214,234,248)',
+                                }}
                               >
-                                Available
-                              </label>
-                            </span>
-                          ) : (
-                            <button className={classes.outOfStock}>
-                              Not Available
-                            </button>
-                          )}
-                        </td>
-                      );
-                    })}
+                                <input
+                                  type='checkbox'
+                                  name={id}
+                                  id={id}
+                                  checked={selectedItems.includes(item?.alias)}
+                                  onChange={e =>
+                                    handleCheckboxChange(
+                                      color,
+                                      size.description,
+                                      item?.alias || '',
+                                      e.target.checked,
+                                    )
+                                  }
+                                />
+                                <label
+                                  htmlFor={id}
+                                  className={`${classes.available} ${classes.label}`}
+                                >
+                                  {availabilityLabel}
+                                </label>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <button className={classes.outOfStock}>
+                                {availabilityLabel}
+                              </button>
+                            );
+                          }
+                        })()}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
           </tbody>
