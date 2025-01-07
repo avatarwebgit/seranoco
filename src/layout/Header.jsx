@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, Search as MUISearch, Login } from '@mui/icons-material';
-import { Badge, Box, Drawer, IconButton, Input } from '@mui/material';
+import {
+  Badge,
+  Box,
+  Drawer as MuiDrawer,
+  IconButton,
+  Input,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { nanoid } from '@reduxjs/toolkit';
+
+import close from '../assets/svg/close.svg';
 
 import { drawerActions } from '../store/store';
 
@@ -17,14 +26,13 @@ import ChangeLanguage from '../utils/ChangeLanguage';
 
 import { basicInformation, getHeaderMenus } from '../services/api';
 
-import close from '../assets/svg/close.svg';
 import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
 import { ReactComponent as Basket } from '../assets/svg/basket_white.svg';
 import { ReactComponent as Heart_black } from '../assets/svg/heart.svg';
 import { ReactComponent as Basket_black } from '../assets/svg/basket.svg';
 
 import classes from './Header.module.css';
-import { nanoid } from '@reduxjs/toolkit';
+import AccessAccount from './AccessAccount';
 const Header = ({ windowSize }) => {
   const [scrollY, setScrollY] = useState(0);
   const [size, setSize] = useState('');
@@ -34,6 +42,8 @@ const Header = ({ windowSize }) => {
   const [headerData, setHeaderData] = useState(null);
   const [logo, setLogo] = useState(null);
   const [isHomePage, setIsHomePage] = useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [ModalOpen, setModalOpen] = useState(false);
 
   const test = [1, 2, 3, 4, 5, 6, 7];
 
@@ -65,19 +75,23 @@ const Header = ({ windowSize }) => {
   };
 
   const returnButtonStyles = () => {
+    let style = {};
+
     if (size === 'xs' || size === 's' || size === 'm') {
       setIsSmall(true);
-      return {
+      style = {
         opacity: scrollY === 0 ? '0' : '1',
         marginTop: scrollY === 0 ? '5px' : '0px',
       };
     } else {
       setIsSmall(false);
-      return {
+      style = {
         alignItems: scrollY === 0 ? 'flex-end' : 'center',
         marginTop: scrollY === 0 ? '5px' : '0px',
       };
     }
+
+    return style;
   };
 
   const returnLogoStyles = () => {
@@ -102,7 +116,7 @@ const Header = ({ windowSize }) => {
     } else {
       setIsSmall(false);
       return {
-        left: scrollY === 0 ? '50%' : '25%',
+        left: scrollY === 0 ? '50%' : '15%',
       };
     }
   };
@@ -111,7 +125,10 @@ const Header = ({ windowSize }) => {
     setDrawerOpen(v);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleOpenCart = () => {
+    dispatch(drawerActions.open());
+  };
+
   const open = Boolean(anchorEl);
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -124,10 +141,6 @@ const Header = ({ windowSize }) => {
       setIsHomePage(false);
     }
   }, [location.pathname, lng]);
-
-  const handleOpenDrawer = () => {
-    dispatch(drawerActions.open());
-  };
 
   // API calls
   const getHeaderLinks = async () => {
@@ -150,6 +163,10 @@ const Header = ({ windowSize }) => {
     getHeaderLinks();
     getHeaderLogo();
   }, []);
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <motion.header
@@ -188,14 +205,13 @@ const Header = ({ windowSize }) => {
           transition={{ delay: scrollY === 0 ? 0.5 : 0, duration: 0 }}
         >
           {!isSmall && (
-            <CustomButton className={classes.login_btn}>
-              <a
-                className={classes.login_text}
-                href='#'
-                style={{ color: 'white' }}
-              >
+            <CustomButton
+              className={classes.login_btn}
+              onClick={() => setModalOpen(true)}
+            >
+              <div className={classes.login_text} style={{ color: 'white' }}>
                 {t('login')}
-              </a>
+              </div>
             </CustomButton>
           )}
 
@@ -233,7 +249,7 @@ const Header = ({ windowSize }) => {
             </IconButton>
           </span>
           <span className={classes.icon_pack_wrapper}>
-            <IconButton onClick={handleOpenDrawer}>
+            <IconButton onClick={handleOpenCart}>
               <Badge
                 // badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -261,12 +277,12 @@ const Header = ({ windowSize }) => {
             </span>
           )}
         </motion.span>
-        <motion.span
+        <motion.a
           className={classes.logo_container}
           initial={initialLogoState}
           animate={returnLogoStyles}
           transition={{ duration: 0.2, type: 'tween' }}
-          onClick={() => navigate(`/${lng}`)}
+          href={`/${lng}`}
         >
           {logo && (
             <motion.img
@@ -278,7 +294,7 @@ const Header = ({ windowSize }) => {
               variant={'rectangular'}
             />
           )}
-        </motion.span>
+        </motion.a>
         <motion.span
           className={classes.navigation_container}
           initial={{ alignItems: 'center', marginTop: '0' }}
@@ -378,18 +394,14 @@ const Header = ({ windowSize }) => {
         >
           {isSmall ? (
             <>
-              <ChangeLanguage
-                width={isSmall ? '18px' : '30px'}
-                height={isSmall ? '18px' : '30px'}
-                ishomepage={isHomePage}
-              />
+              <ChangeLanguage width={30} height={30} ishomepage={isHomePage} />
               <IconButton onClick={() => closeDrawer(true)}>
                 <Menu
                   className={classes.card_icons}
                   sx={{ width: '20px', height: '20px', color: 'white' }}
                 />
               </IconButton>
-              <Drawer
+              <MuiDrawer
                 anchor={'right'}
                 open={drawerOpen}
                 onClose={() => closeDrawer(false)}
@@ -422,13 +434,14 @@ const Header = ({ windowSize }) => {
                     <MobileDrawerList />
                   </div>
                 </Box>
-              </Drawer>
+              </MuiDrawer>
             </>
           ) : (
             <Search isHomePage={isHomePage} />
           )}
         </motion.span>
       </CustomSection>
+      <AccessAccount open={ModalOpen} onClose={handleCloseModal} />
     </motion.header>
   );
 };
