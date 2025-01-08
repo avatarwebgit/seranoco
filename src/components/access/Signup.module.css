@@ -1,0 +1,164 @@
+@import url(../../styles/variables.css);
+
+.logo_wrapper {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  margin-bottom: 1rem;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.content_wrapper {
+  width: 35vw;
+  height: 95vh;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.login_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex: 1 1 auto;
+}
+
+.actions > * {
+  width: 100%;
+}
+
+.login_wrapper > * {
+  width: 70% !important;
+}
+
+.oneclick_login_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.ep {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.google_login_wrapper {
+  margin-bottom: 10px;
+  border: 1px solid var(--primary);
+  height: fit-content !important;
+}
+
+.google_login_wrapper * {
+  border: none !important;
+  font-size: 10px !important;
+}
+
+.mobile_login {
+  width: 100% !important;
+  height: fit-content !important;
+  border-radius: 0 !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  display: flex !important;
+  color: var(--c-g-1) !important;
+  min-height: 40px !important;
+}
+
+.mobile_login p {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.login_btn {
+  background-color: var(--primary) !important;
+  color: #000000 !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  margin: 1rem 0 !important;
+}
+
+.error_text,
+.signup_link {
+  font-size: 10px;
+  color: red;
+  width: 100%;
+}
+
+.signup_link {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup_link > p {
+  font-size: 10px;
+  color: #000000;
+}
+
+.signup_link > button {
+  font-size: 10px !important;
+  color: #000000 !important;
+  border: none;
+  outline: none;
+}
+
+.signup_link p:nth-of-type(2) {
+  text-decoration: underline !important;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 480px) {
+  .logo_wrapper {
+    display: none;
+  }
+  .content_wrapper {
+    width: 100vw;
+    height: fit-content;
+  }
+  .error_text {
+    font-size: 8px;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .logo_wrapper {
+    display: none;
+  }
+  .content_wrapper {
+    width: 100vw;
+    height: fit-content;
+  }
+  .error_text {
+    font-size: 8px;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+
+@media only screen and (min-width: 1201px) {
+}
