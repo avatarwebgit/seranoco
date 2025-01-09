@@ -1,13 +1,24 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import BannerCarousel from '../components/BannerCarousel';
-import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { useTranslation } from 'react-i18next';
-import { Pagination as PaginationComponent } from '@mui/material';
-import { nanoid } from '@reduxjs/toolkit';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination as PaginationComponent,
+  Select,
+  Typography,
+} from '@mui/material';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
@@ -18,14 +29,20 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import SizeBox from '../components/filters_page/SizeBox';
 import Divider from '../components/filters_page/Divider';
 
+import { productDetailActions } from '../store/store';
+
 import {
-  getAllAtrributes,
+  getFilteredSizesByColor,
   getProduct,
   useShapes,
   useColors,
+  getProductsByShape,
+  getProductDetailsWithId,
 } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
+import { scrollToTarget } from '../utils/helperFunctions';
+import TableGrid from '../components/common/TableGrid';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -33,17 +50,15 @@ import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
 import '../styles/carousel.css';
-import { scrollToTarget } from '../utils/helperFunctions';
-import TableGrid from '../components/common/TableGrid';
+
 import classes from './FilterByShape.module.css';
 const FilterByShape = ({ windowSize }) => {
   const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
   const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
   const [colorData, setColorData] = useState(null);
-  const [detailData, setDetailData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [groupColors, setGroupColors] = useState([]);
-  const [shapeFormEntries, setShapeFormEntries] = useState([]);
+  const [shapeFormEntries, setShapeFormEntries] = useState(null);
   const [dimensionEntries, setDimensionEntries] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,19 +71,27 @@ const FilterByShape = ({ windowSize }) => {
   const [lastPage, setLastPage] = useState(null);
   const [isFilteredProductsLoading, setIsFilteredProductsLoading] =
     useState(false);
-  const [ItemsPerPage, setItemsPerPage] = useState(9);
+  const [ItemsPerPage, setItemsPerPage] = useState(10);
   const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(1);
+  const [tableData, setTableData] = useState([]);
+  const [selectedSizesObject, setSelectedSizesObject] = useState([]);
+  const [chunkedData, setChunkedData] = useState([]);
+  const [isLoadingSelectedItem, setIsLoadingSelectedItem] = useState(false);
 
   const formRef = useRef();
   const sizeRef = useRef();
   const sliderRef = useRef();
   const gridSliderRef = useRef();
   const productsWrapperRef = useRef();
-
   const abortControllerRef = useRef(new AbortController());
+
   const { t } = useTranslation();
 
+  const dispatch = useDispatch();
+
   const lng = useSelector(state => state.localeStore.lng);
+
+  const itemIds = useSelector(state => state.detailsStore.itemIds);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
@@ -90,11 +113,16 @@ const FilterByShape = ({ windowSize }) => {
     gridSliderRef.current.swiper.slideNext();
   }, []);
 
-  const handleSendDimensionsStatus = e => {
+  const handleSendDimensionsStatus = (e, elem) => {
     const form = sizeRef.current;
     const formData = new FormData(form);
     const formEntries = Object.fromEntries(formData.entries());
     setDimensionEntries(formEntries);
+    if (e.target.checked) {
+      setSelectedSizesObject(prev => [...prev, elem]);
+    } else {
+      setSelectedSizesObject(prev => prev.filter(item => item.id !== elem.id));
+    }
   };
 
   const handleThumbClick = groupId => {
@@ -108,7 +136,8 @@ const FilterByShape = ({ windowSize }) => {
     }
   };
 
-  const handleCheckboxChange = (e, slideId) => {
+  const handleCheckboxChange = (e, slideId, slide) => {
+    console.log(slide);
     if (e.target.checked) {
       setSelectedIds(prevIds => [...prevIds, slideId]);
     } else {
@@ -116,10 +145,19 @@ const FilterByShape = ({ windowSize }) => {
     }
   };
 
+  const handleResetSelections = () => {
+    setShapeFormEntries([]);
+    setDimensionEntries([]);
+    setSelectedIds([]);
+    dispatch(productDetailActions.reset());
+    setTableData([]);
+    setChunkedData([]);
+  };
+
   useEffect(() => {
-    return () => {
-      abortControllerRef.current.abort();
-    };
+    if (itemIds.length > 0) {
+      dispatch(productDetailActions.reset());
+    }
   }, []);
 
   //api call
@@ -130,30 +168,61 @@ const FilterByShape = ({ windowSize }) => {
     }
   }, [fetchedColorData]);
 
+  const memoizedItemIds = useMemo(() => {
+    return itemIds;
+  }, [itemIds]);
+
+  const memoizedTableData = useMemo(() => {
+    return tableData;
+  }, [tableData]);
+
+  const memoizedChunkedData = useMemo(() => {
+    console.log(chunkedData);
+    return chunkedData;
+  }, [chunkedData]);
+
+  const memoizedShapeData = useMemo(() => {
+    return shapesData;
+  }, [shapesData]);
+
   const handleShapeClick = async (e, id) => {
-    // e.preventDefault();
-    abortControllerRef.current.abort();
-    abortControllerRef.current = new AbortController();
     setProductDetails([]);
-    setIsFilteredProductsLoading(true);
     setIsLoading(true);
     try {
-      const serverRes = await getAllAtrributes(id, {
-        signal: abortControllerRef.current.signal,
-      });
-      if (serverRes.response.ok) {
-        setDetailData(serverRes.result.data);
-      }
-      getProducts(id, [], [], 1, ItemsPerPage);
+      //   const allProductsRes = await getPaginatedProductsByShape(
+      //     id,
+      //     page,
+      //     ItemsPerPage,
+      //   );
+      //   if (allProductsRes.response.ok) {
+      //     console.log(allProductsRes.result);
+      //     setProductDetails(allProductsRes.result.data.products.data);
+      //     setLastPage(allProductsRes.result.data.products.last_page);
+      //     setPage(allProductsRes.result.data.products.current_page);
+      //     console.log(allProductsRes.result);
+      //   }
     } catch (error) {
       if (error.name !== 'AbortError') {
         console.error('Fetch error:', error);
       }
     } finally {
-      setIsFilteredProductsLoading(false);
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const getSizes = async () => {
+      const serverRes = await getFilteredSizesByColor(selectedIds);
+      console.log(selectedIds);
+      if (serverRes.response.ok) {
+        setSizeData(serverRes.result.data.sizes);
+        console.log(serverRes);
+      }
+    };
+    if (selectedIds.length > 0) {
+      getSizes();
+    }
+  }, [selectedIds]);
 
   const handleGetFilterProducts = async (
     shape_id = shapeFormEntries,
@@ -162,8 +231,6 @@ const FilterByShape = ({ windowSize }) => {
     page = 1,
     per_page = ItemsPerPage,
   ) => {
-    abortControllerRef.current.abort();
-    abortControllerRef.current = new AbortController();
     setIsFilteredProductsLoading(true);
     try {
       const serverRes = await getProduct(
@@ -205,21 +272,54 @@ const FilterByShape = ({ windowSize }) => {
   const prevSelectedIdsRef = useRef(selectedIds);
 
   useEffect(() => {
-    if (
-      JSON.stringify(dimensionEntries) !==
-        JSON.stringify(prevDimensionEntriesRef.current) ||
-      JSON.stringify(selectedIds) !== JSON.stringify(prevSelectedIdsRef.current)
-    ) {
-      handleGetFilterProducts(
-        shapeFormEntries,
-        Object.keys(dimensionEntries),
-        selectedIds,
-      );
-    //   getProduct([], [], selectedIds, page, ItemsPerPage);
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
+    handleFetchTableData(shapeFormEntries, selectedIds, 1, 1000, {
+      signal: abortControllerRef.current.signal,
+    });
+
+    if (itemIds.length === 0) {
+      if (
+        JSON.stringify(dimensionEntries) !==
+          JSON.stringify(prevDimensionEntriesRef.current) ||
+        JSON.stringify(selectedIds) !==
+          JSON.stringify(prevSelectedIdsRef.current)
+      ) {
+        prevDimensionEntriesRef.current = dimensionEntries;
+        prevSelectedIdsRef.current = selectedIds;
+      }
     }
-    prevDimensionEntriesRef.current = dimensionEntries;
-    prevSelectedIdsRef.current = selectedIds;
-  }, [dimensionEntries, selectedIds, shapeFormEntries]);
+  }, [selectedIds, shapeFormEntries]);
+
+  useEffect(() => {
+    setProductDetails([]);
+
+    const getProductByDetail = async id => {
+      try {
+        const serverRes = await getProductDetailsWithId(id);
+        if (serverRes.response.ok) {
+          setProductDetails(prev => [...prev, serverRes.result.product]);
+        }
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+      }
+    };
+
+    if (memoizedItemIds && memoizedItemIds.length > 0) {
+      setIsLoadingSelectedItem(true);
+      const fetchProductDetails = async () => {
+        try {
+          await Promise.all(memoizedItemIds.map(id => getProductByDetail(id)));
+        } catch (error) {
+          console.error('Error in one of the requests:', error);
+        } finally {
+          setIsLoadingSelectedItem(false);
+        }
+      };
+
+      fetchProductDetails();
+    }
+  }, [memoizedItemIds]);
 
   useEffect(() => {
     if (windowSize === 'xs' || windowSize === 's' || windowSize === 'm') {
@@ -227,74 +327,83 @@ const FilterByShape = ({ windowSize }) => {
       setSlidesPerView(5);
     } else {
       setIsSmallPage(false);
-      setSlidesPerView(10);
+      setSlidesPerView(9);
     }
   }, [windowSize]);
 
-  useEffect(() => {
-    if (detailData) {
-      setSizeData(detailData.sizes);
-    }
-  }, [detailData]);
-
-  const getProducts = async (shapeId, sizeIds, colorIds, page, per_page) => {
-    const productsRes = await getProduct(
-      shapeId,
-      sizeIds,
-      colorIds,
-      page,
-      per_page,
-    );
-    if (productsRes.response.ok) {
-      setProductDetails(productsRes.result.data.data);
-      setLastPage(productsRes.result.data.last_page);
-      setPage(productsRes.result.data.current_page);
-      console.log(productsRes.result);
-    }
-  };
-
-  const handlePaginationChange = (e, value) => {
+  const handlePaginationChange = (e, value, itemsPerPage) => {
     handleGetFilterProducts(
       shapeFormEntries,
       Object.keys(dimensionEntries),
       selectedIds,
       value,
-      ItemsPerPage,
+      itemsPerPage,
     );
     scrollToTarget(productsWrapperRef);
   };
 
-  const handleResetSelections = () => {
-    setShapeFormEntries([]);
-    setDimensionEntries([]);
-    setSelectedIds([]);
-    setSizeData([]);
-    setColorData([]);
-    setGroupColors([]);
-    setProductDetails([]);
+  const handleFetchTableData = async (
+    shpaId,
+    colorIds,
+    page,
+    per_page,
+    signal,
+  ) => {
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
+    try {
+      const serverRes = await getProductsByShape(
+        shpaId,
+        colorIds,
+        page,
+        per_page,
+        { signal: abortControllerRef.current.signal },
+      );
+
+      if (serverRes.response.ok) {
+        setTableData(serverRes.result.data);
+      }
+    } catch (error) {
+      console.error('Error fetching products: ', error);
+    }
   };
+
+  const chunkData = (data, size) => {
+    const result = [];
+    for (let i = 0; i < data.length; i += size) {
+      result.push(data.slice(i, i + size));
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    if (memoizedTableData) {
+      const chunks = chunkData(memoizedTableData, 9);
+      setChunkedData(chunks);
+    }
+  }, [memoizedTableData]);
 
   return (
     <div className={classes.main}>
       <BannerCarousel />
       <Header windowSize={windowSize} />
 
-      {colorData && (
+      {
         <Body>
-          {shapesData && (
-            <Card className={classes.multi_select_wrapper}>
+          {
+            <Card
+              className={`${classes.multi_select_wrapper} ${classes.colors_wrapper}`}
+            >
               {isLoadingShapes && <LoadingSpinner />}
-
               <form ref={formRef} className={classes.grid_form}>
-                {shapesData &&
-                  shapesData.map((elem, i) => {
+                {memoizedShapeData &&
+                  memoizedShapeData.map((elem, i) => {
                     return (
-                      <div key={nanoid()}>
+                      <div key={elem.id}>
                         {elem.image && (
                           <CustomSelect
                             title={`${i}`}
                             src={elem.image}
-                            key={elem.id}
                             id={elem.id}
                             description={elem.description}
                             onClick={e => {
@@ -309,13 +418,17 @@ const FilterByShape = ({ windowSize }) => {
                   })}
               </form>
             </Card>
-          )}
-          {shapeFormEntries.length > 0 && (
+          }
+          {shapeFormEntries && <Divider text={'Colors'} />}
+          {
             <Card
               className={`${classes.size_wrapper} ${classes.colors_wrapper}`}
             >
+              {!shapeFormEntries && shapesData?.length > 0 && (
+                <p className={classes.alert}>{t('select_shape')}</p>
+              )}
               {isLoadingColors && <LoadingSpinner />}
-              {colorData?.length > 0 && (
+              {colorData?.length > 0 && shapeFormEntries && (
                 <>
                   <button className={classes.prev_btn} onClick={handlePrev}>
                     <ArrowBackIos />
@@ -350,12 +463,13 @@ const FilterByShape = ({ windowSize }) => {
                 }}
               >
                 {colorData?.length > 0 &&
+                  shapeFormEntries &&
                   colorData
                     ?.sort((a, b) => {
                       if (a.group_id !== b.group_id) {
                         return a.group_id - b.group_id;
                       }
-                      return a.id - b.id;
+                      return a.priority - b.priority;
                     })
                     .map((slide, index) => (
                       <SwiperSlide key={index} className={classes.slide}>
@@ -377,7 +491,10 @@ const FilterByShape = ({ windowSize }) => {
                             name={slide.id}
                             id={slide.id}
                             className={classes.slider_input}
-                            onChange={e => handleCheckboxChange(e, slide.id)}
+                            checked={selectedIds.includes(slide.id)}
+                            onChange={e =>
+                              handleCheckboxChange(e, slide.id, slide)
+                            }
                           />
                           <p className={classes.color_name}>
                             {slide.description}
@@ -388,13 +505,14 @@ const FilterByShape = ({ windowSize }) => {
               </Swiper>
               <div className={classes.thumbnail_container}>
                 {groupColors?.length > 0 &&
+                  shapeFormEntries &&
                   groupColors
                     ?.sort((a, b) => a.id - b.id)
                     .map((slide, index) => {
                       return (
                         <>
                           <div
-                            key={nanoid()}
+                            key={index}
                             className={`${classes.thumbnail} ${
                               currentActiveGroupColor === slide.id &&
                               classes.thumbnail_active
@@ -413,16 +531,11 @@ const FilterByShape = ({ windowSize }) => {
                       );
                     })}
               </div>
-              {shapeFormEntries?.length === 0 && (
-                <p className={classes.alert}>{t('select_shape')}</p>
-              )}
             </Card>
-          )}
-
-          {selectedIds?.length > 0 && <Divider text={'Size mm'} />}
+          }
+          {shapeFormEntries && <Divider text={'Size mm'} />}
           {isLoading && <LoadingSpinner />}
-
-          {shapeFormEntries.length > 0 && (
+          {shapeFormEntries && (
             <Card className={classes.size_wrapper}>
               <form ref={sizeRef} className={classes.grid_form}>
                 {sizeData?.length > 0 &&
@@ -432,12 +545,14 @@ const FilterByShape = ({ windowSize }) => {
                         value={`${elem.description}`}
                         key={elem.id}
                         id={elem.id}
-                        onClick={handleSendDimensionsStatus}
+                        onClick={e => {
+                          handleSendDimensionsStatus(e, elem);
+                        }}
                       />
                     );
                   })}
               </form>
-              {(sizeData?.length > 0 || colorData?.length > 0) && (
+              {(shapeFormEntries || colorData?.length > 0) && (
                 <button
                   className={classes.reset_btn}
                   onClick={handleResetSelections}
@@ -447,9 +562,9 @@ const FilterByShape = ({ windowSize }) => {
               )}
             </Card>
           )}
-          <Card className={`${classes.size_wrapper} ${classes.colors_wrapper}`}>
+          <Card className={`${classes.size_wrapper}`}>
             {isLoadingColors && <LoadingSpinner />}
-            {shapeFormEntries.length > 0 && (
+            {chunkedData?.length > 1 && (
               <>
                 <button
                   className={classes.prev_btn}
@@ -465,7 +580,7 @@ const FilterByShape = ({ windowSize }) => {
                 </button>
               </>
             )}
-            {shapeFormEntries.length > 0 && (
+            {tableData.length > 0 && (
               <Swiper
                 spaceBetween={isSmallPage ? 5 : 9}
                 slidesPerView={1}
@@ -482,19 +597,93 @@ const FilterByShape = ({ windowSize }) => {
                   dynamicBullets: true,
                   enabled: isSmallPage,
                 }}
-                style={{ width: '90%' }}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                <SwiperSlide>
-                  <TableGrid dataProp={productDetails} />
-                </SwiperSlide>
+                {memoizedChunkedData.map((el, i) => {
+                  return (
+                    <SwiperSlide key={i}>
+                      <TableGrid
+                        dataProp={el}
+                        sizeProp={sizeData}
+                        selectedSizeProp={selectedSizesObject}
+                        isLoadingData={isLoadingSelectedItem}
+                      />
+                    </SwiperSlide>
+                  );
+                })}
               </Swiper>
             )}
           </Card>
-          {shapeFormEntries.length > 0 && (
+          {shapeFormEntries && productDetails && (
             <Card
               className={classes.products_result_wrapper}
               ref={productsWrapperRef}
             >
+              {lastPage > 1 &&
+                productDetails.length > 0 &&
+                !memoizedItemIds.length > 0 && (
+                  <div
+                    className={classes.pagination_wrapper}
+                    style={{
+                      alignSelf: lng === 'fa' ? 'flex-start' : 'flex-end',
+                      direction: lng === 'fa' ? 'rtl' : 'ltr',
+                      marginBottom: '2rem',
+                    }}
+                  >
+                    <InputLabel
+                      sx={{ fontSize: '.8rem' }}
+                      id='demo-simple-select-label'
+                    >
+                      {t('items_per_page')}
+                    </InputLabel>
+                    <FormControl>
+                      <Select
+                        labelId='demo-simple-select-label'
+                        id='demo-simple-select'
+                        value={ItemsPerPage}
+                        label='Age'
+                        onChange={e => {
+                          setItemsPerPage(e.target.value);
+                          handlePaginationChange(e, page, +e.target.value);
+                        }}
+                        sx={{
+                          borderRadius: '5px',
+                          '.MuiOutlinedInput-notchedOutline': {
+                            border: 'none',
+                          },
+                          '&:focus': { outline: 'none', boxShadow: 'none' },
+                        }}
+                      >
+                        <MenuItem value={5}>
+                          <Typography sx={{ fontSize: '.8rem' }}>
+                            &nbsp;5&nbsp;
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem value={10}>
+                          <Typography sx={{ fontSize: '.8rem' }}>
+                            &nbsp; 10&nbsp;
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem value={15}>
+                          <Typography sx={{ fontSize: '.8rem' }}>
+                            &nbsp; 15&nbsp;
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem value={20}>
+                          <Typography sx={{ fontSize: '.8rem' }}>
+                            &nbsp; 20&nbsp;
+                          </Typography>
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                )}
+
               {windowSize === 'm' ||
               windowSize === 'l' ||
               windowSize === 'xl' ? (
@@ -510,36 +699,40 @@ const FilterByShape = ({ windowSize }) => {
                 </>
               )}
               {isFilteredProductsLoading && <LoadingSpinner />}
-              {lastPage > 1 && productDetails.length > 0 && (
-                <div
-                  className={classes.pagination_wrapper}
-                  style={{
-                    alignSelf: lng === 'fa' ? 'flex-start' : 'flex-end',
-                    direction: lng === 'fa' ? 'rtl' : 'ltr',
-                  }}
-                >
-                  <p className={classes.pagination_text}>{t('page')} :</p>
-                  <PaginationComponent
-                    count={lastPage}
-                    page={page}
-                    onChange={handlePaginationChange}
-                    hideNextButton
-                    hidePrevButton
-                    variant='text'
-                    className={classes.pagination_component}
-                    size='small'
-                    sx={{
-                      '& .MuiPaginationItem-root': {
-                        fontSize: '0.7rem',
-                      },
+              {lastPage > 1 &&
+                productDetails.length > 0 &&
+                !memoizedItemIds.length > 0 && (
+                  <div
+                    className={classes.pagination_wrapper}
+                    style={{
+                      alignSelf: lng === 'fa' ? 'flex-start' : 'flex-end',
+                      direction: lng === 'fa' ? 'rtl' : 'ltr',
                     }}
-                  />
-                </div>
-              )}
+                  >
+                    <p className={classes.pagination_text}>{t('page')} :</p>
+                    <PaginationComponent
+                      count={lastPage}
+                      page={page}
+                      onChange={e =>
+                        handlePaginationChange(e, e.target.value, ItemsPerPage)
+                      }
+                      hideNextButton
+                      hidePrevButton
+                      variant='text'
+                      className={classes.pagination_component}
+                      size='small'
+                      sx={{
+                        '& .MuiPaginationItem-root': {
+                          fontSize: '0.7rem',
+                        },
+                      }}
+                    />
+                  </div>
+                )}
             </Card>
           )}
         </Body>
-      )}
+      }
       <Footer />
     </div>
   );

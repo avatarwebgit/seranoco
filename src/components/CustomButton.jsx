@@ -1,16 +1,19 @@
 import React from 'react';
-
-import classes from './CustomButton.module.css';
 import { Login } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { useSelector } from 'react-redux';
-const CustomButton = ({ children }) => {
+import { Link } from 'react-router-dom';
+
+import classes from './CustomButton.module.css';
+const CustomButton = ({ children, onClick }) => {
   const lng = useSelector(state => state.localeStore.lng);
   return (
+    // <Link to={`/${lng}/myaccount`}>
     <IconButton
       className={`${classes.draw} ${classes.custom_btn}`}
       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
       disableRipple
+      onClick={onClick}
     >
       <span className={classes.icon_wrapper}>
         <Login
@@ -25,6 +28,7 @@ const CustomButton = ({ children }) => {
       </span>
       {children}
     </IconButton>
+    // </Link>
   );
 };
 

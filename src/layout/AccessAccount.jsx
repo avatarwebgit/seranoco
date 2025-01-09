@@ -1,77 +1,35 @@
-import React from 'react';
-import { Modal, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { IconButton, Modal } from '@mui/material';
+
+import { ReactComponent as Close } from '../assets/svg/close.svg';
+
+import Login from '../components/access/Login';
+import Signup from '../components/access/Signup';
 
 import classes from './AccessAccount.module.css';
+import { useSelector } from 'react-redux';
+
 const AccessAccount = ({ open, onClose }) => {
+  const isLogin = useSelector(state => state.accessModalStore.login);
+  const isSignup = useSelector(state => state.accessModalStore.signup);
+  const isOTP = useSelector(state => state.accessModalStore.otp);
+
   return (
-    <Modal className={classes.modal_parent} open={open} onClose={onClose}>
-      <div className={classes.content_wrapper}>
-        <div className={classes.login_wrapper}>
-          <div className={classes.actions}>
-            <TextField
-              id='outlined-password-input'
-              label='Email'
-              type='Email'
-              autoComplete='current-password'
-              size='small'
-              sx={{
-                mb: '0.5rem',
-                '& .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
-                '& .MuiInputBase-input': {
-                  color: '#000000',
-                  fontSize: '18px',
-                },
-                '& .MuiInputLabel-root': {
-                  color: 'gray',
-                  fontSize: '14px',
-                },
-                '& .Mui-focused .MuiInputLabel-root': {
-                  color: 'rgb(0, 153, 130)',
-                },
-                '& .Mui-focused .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
-              }}
-            />
-            <TextField
-              id='outlined-password-input'
-              label='Password'
-              type='password'
-              autoComplete='current-password'
-              size='small'
-              sx={{
-                '& .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
-                '& .MuiInputBase-input': {
-                  color: '#000000',
-                  fontSize: '18px',
-                },
-                '& .MuiInputLabel-root': {
-                  color: 'gray',
-                  fontSize: '14px',
-                },
-                '& .Mui-focused .MuiInputLabel-root': {
-                  color: 'rgb(0, 153, 130)',
-                },
-                '& .Mui-focused .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
-              }}
-            />
-          </div>
-        </div>
-        <div className={classes.signup_wrapper}></div>
+    <Modal
+      className={classes.modal_parent}
+      open={open}
+      onClose={onClose}
+      BackdropProps={{
+        style: {
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter:'blur(12px)'
+        },
+      }}
+    >
+      <div className={classes.parent}>
+        <IconButton className={classes.close_btn}></IconButton>
+        {isLogin && <Login />}
+        {isSignup && <Signup />}
       </div>
     </Modal>
   );

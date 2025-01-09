@@ -1,9 +1,8 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 
-const baseUrl = 'https://admin.seranoco.com/api';
+const baseUrl = process.env.REACT_APP_SERVER_BASE_URL;
 
-// get paginated products
-//https:admin.seranoco.com/api/products-paginate?id=46&per_page=10&page=1
+// get paginated products :/api/products-paginate?id=46&per_page=10&page=1
 
 // header: /menus
 // logo && footer :/information
@@ -15,9 +14,9 @@ const baseUrl = 'https://admin.seranoco.com/api';
 //filter by shape ,shapes : /attribute/get/shape
 //filter by shape ,sizes : /attribute/get/size
 //filter by shape ,color : /attribute/get/colors
-//filter by shape ,getproduct :/get/products
+//filter by shape ,getproduct : /get/products
 
-//details page : ,getdetails :/get/product/${alias}
+//details page ,getdetails :/get/product/${alias}
 //get products by color : /get/ProductsByColor
 
 export const getHeaderMenus = async lng => {
@@ -80,13 +79,14 @@ export const getShapes = async () => {
   return { response, result };
 };
 
-export const getAllAtrributes = async id => {
+export const getAllAtrributes = async (id, options) => {
   const response = await fetch(`${baseUrl}/attribute/get/size`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
     },
     body: JSON.stringify({ id }),
+    ...options,
   });
   const result = await response.json();
   return { response, result };
@@ -154,7 +154,21 @@ export const getProductDetails = async alias => {
   return { response, result };
 };
 
-export const getProductsByColor = async (color_ids, page, per_page) => {
+export const getProductDetailsWithId = async id => {
+  const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
+    method: 'GET',
+  });
+
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getProductsByColor = async (
+  color_ids,
+  page,
+  per_page,
+  options,
+) => {
   const response = await fetch(
     `${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`,
     {
@@ -163,9 +177,57 @@ export const getProductsByColor = async (color_ids, page, per_page) => {
         'Content-type': 'application/json',
       },
       body: JSON.stringify({ color_ids }),
+      ...options,
     },
   );
 
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getProductsByShape = async (
+  shape_id,
+  color_ids,
+  page,
+  per_page,
+  options = {},
+) => {
+  const response = await fetch(
+    `${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ color_ids, shape_id }),
+      ...options,
+    },
+  );
+
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getFilteredSizesByColor = async (color_ids, options = {}) => {
+  const response = await fetch(`${baseUrl}/get/filterSizeByColor`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ color_ids }),
+    ...options,
+  });
+
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getCitiesByCountry = async (country_id, options) => {
+  const response = await fetch(`${baseUrl}/get/cities/${country_id}`, {
+    method: 'GET',
+    headers: {},
+    ...options,
+  });
   const result = await response.json();
   return { response, result };
 };
@@ -270,6 +332,31 @@ export const useShapes = () => {
   });
 };
 
+// Fetch Shapes Based on color id (GET)
+export const useFilteredShapes = (color_ids, options) => {
+  return useQuery({
+    queryKey: ['FilteredShapes'],
+    queryFn: async () => {
+      const response = await fetch(
+        `${baseUrl}/attribute/get/shape/with/color`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ color_ids }),
+          ...options,
+        },
+      );
+      const result = await response.json();
+      return result.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+  });
+};
+
 // Fetch Sizes (POST)
 export const useSizes = () => {
   return useMutation({
@@ -337,5 +424,22 @@ export const useAllProductsByShape = () => {
       const result = await response.json();
       return result;
     },
+  });
+};
+
+export const useAllCountries = () => {
+  return useQuery({
+    queryKey: ['allcountries'],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/get/countries`, {
+        method: 'GET',
+      });
+
+      const result = await response.json();
+      return result.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
   });
 };

@@ -6,9 +6,9 @@ import Loading from './layout/Loading';
 
 import './App.css';
 import FixedNavigation from './layout/FixedNavigation';
+import Drawer from './layout/Drawer';
 function App() {
   const [windowSize, setWindowSize] = useState(() => {
-    // Initialize state with the current size
     const width = window.innerWidth;
     if (width <= 480) return 'xs';
     if (width > 481 && width <= 768) return 's';
@@ -18,10 +18,10 @@ function App() {
   });
 
   const Home = React.lazy(() => import('./pages/Home'));
-  const Categories = React.lazy(() => import('./pages/Categories'));
   const FilterByColor = React.lazy(() => import('./pages/FilterByColor'));
   const FilterByShape = React.lazy(() => import('./pages/FilterByShape'));
   const Products = React.lazy(() => import('./pages/Products'));
+  const Profile = React.lazy(() => import('./pages/Profile'));
 
   // const AuthExists = ({ children }) => {
   //   return token ? <Navigate to={"/"} /> : children;
@@ -84,11 +84,15 @@ function App() {
             path={`/:lng/products/:id`}
             element={<Products windowSize={windowSize} />}
           />
-          <Route path={`/test`} element={<Loading />} />
+          <Route
+            path={`/:lng/myaccount`}
+            element={<Profile windowSize={windowSize} />}
+          />
         </Routes>
+        {windowSize === 'xs' && <FixedNavigation />}
+        {windowSize === 's' && <FixedNavigation />}
+        <Drawer size={windowSize} />
       </Suspense>
-      {windowSize === 'xs' && <FixedNavigation />}
-      {windowSize === 's' && <FixedNavigation />}
     </div>
   );
 }

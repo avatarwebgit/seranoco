@@ -1,12 +1,12 @@
 .main {
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  max-width: 1200px;
+  max-width: 1440px;
 }
 @media only screen and (max-width: 480px) {
   .main {

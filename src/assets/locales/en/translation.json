@@ -37,12 +37,14 @@
   "quality": "Quality",
   "cut": "Cut",
   "report": "Report",
-  "country": "Country",
+  "country": "Country Of Origin",
   "agta": "AGTA",
   "price": "Price",
   "quantity": "Quantity",
   "total_price": "Total Price",
   "add_to_card": "Add To Card",
+  "brand": "Brand",
+  "mine": "Mine",
 
   "page": "Page",
   "select_shape": "Please Select A Shape ",
@@ -57,11 +59,66 @@
   "views": "People Who Viewed These Items Ultimately Bought",
   "reset_selections": "Reset Selections",
 
-  "more_info": "More Information",
-  "description": "Description",
+  "more_info": "Technical Information",
+  "description": "More Information",
   "serial_number": "Serial No",
   "payment": "Payment",
   "total_weight": "Total Weight",
 
-  "add_to_favorite":"Add To Wish List"
+  "add_to_favorite": "Add To Wish List",
+
+  "loading": "Loading ...",
+  "items_per_page": "Results Per Page",
+
+  "1_pcs": "Pcs",
+  "pcs": "PCS",
+
+  "m_unit": "€",
+
+  "my_acc": "My Account",
+
+  "profile": {
+    "orders": "Orders",
+    "item_list": "Item Lists",
+    "ticket": "Ticket",
+    "contact": "Contact",
+
+    "acc_info": "Account Information",
+    "favorites": "Favorites",
+
+    "pending": "Pending Payment",
+    "order_status": "Order Status",
+
+    "log_out": "Logout",
+
+    "support": "Support"
+  },
+
+  "shopping_cart": {
+    "cart": "Shopping Cart",
+    "pay": "Proceed",
+    "total": "Total"
+  },
+
+  "access": {
+    "error": "Email or password is wrong please try again.",
+    "error_empty": "Please Enter Email and Password",
+    "create_acc": "Don't have an account?",
+    "have_acc": "Have an account?"
+  },
+
+  "signup": {
+    "sign_up": "Signup",
+    "fname": "First Name",
+    "lname": "Last Name",
+    "uname": "User Name",
+    "password": "Password",
+    "repeat": "Repeat",
+    "pnumber": "Phone Number",
+    "country": "Country",
+    "city": "City",
+    "email": "Email",
+
+    "fillout":"Please fill all required fileds"
+  }
 }

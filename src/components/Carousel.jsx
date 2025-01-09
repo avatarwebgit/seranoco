@@ -146,21 +146,20 @@ const Carusel = ({ windowSize }) => {
           <div className={classes.thumbs_wrapper}>
             <Swiper
               spaceBetween={0}
-              slidesPerView={swiperData.length < 5 ? swiperData.length : 5}
+              slidesPerView={swiperData?.length < 5 ? swiperData.length : 5}
               onSwiper={setThumbsSwiper}
               watchSlidesProgress='true'
               modules={[Thumbs]}
               className={classes.thumbs_slider}
             >
               {swiperData.map((slide, index) => (
-                <SwiperSlide key={index}>
+                <SwiperSlide key={index} className={classes.thumb_wrapper}>
                   {({ isActive }) => (
                     <motion.div
                       style={{
-                        opacity: activeIndex === index ? 1 : 0.5,
+                        opacity: activeIndex === index ? 1 : 0.7,
                         transform:
                           activeIndex === index ? 'scale(1.2)' : 'scale(1)',
-                        transition: 'transform 0.3s ease, opacity 0.3s ease',
                       }}
                       onClick={() => thumbsSwiper.slideTo(index)}
                       className={classes.thumb}

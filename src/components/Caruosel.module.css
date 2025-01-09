@@ -144,6 +144,12 @@
   display: flex;
   justify-content: center;
 }
+.thumb_wrapper{
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 @property --border-angle {
   syntax: '<angle>';
   initial-value: 0deg;

@@ -12,6 +12,7 @@ import store from './store/store'; // Adjust the path as necessary
 
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // Create a new Query Client instance
 const queryClient = new QueryClient({
@@ -37,7 +38,8 @@ persistQueryClient({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <Provider store={store}>
+  <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+    <Provider store={store}>
       <BrowserRouter>
         <PersistQueryClientProvider
           client={queryClient}
@@ -48,5 +50,6 @@ root.render(
           </QueryClientProvider>
         </PersistQueryClientProvider>
       </BrowserRouter>
-  </Provider>,
+    </Provider>
+  </GoogleOAuthProvider>,
 );

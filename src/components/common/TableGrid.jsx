@@ -31,12 +31,11 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
     }
   }, [dataProp, selectedSizeProp, sizeProp, isLoadingData]);
 
-  const handleCheckboxChange = (color, size, alias, isChecked) => {
+  const handleCheckboxChange = (color, size, id, isChecked) => {
     if (isChecked) {
-      console.log(alias);
-      dispatch(productDetailActions.addItem(alias));
+      dispatch(productDetailActions.addItem(id));
     } else {
-      dispatch(productDetailActions.removeItem(alias));
+      dispatch(productDetailActions.removeItem(id));
     }
   };
 
@@ -77,9 +76,9 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
           </thead>
           <tbody className={classes.tbody}>
             {isLoading && (
-              <span className={classes.backdrop}>
+              <tr className={classes.backdrop}>
                 <LoadingSpinner size={'50px'} />
-              </span>
+              </tr>
             )}
             {sizeData &&
               [...sizeData].map((size, index) => (
@@ -88,7 +87,7 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
                   key={index}
                   style={{ opacity: isLoading ? 0.3 : 1 }}
                 >
-                  <td className={classes.td}>{size.description}</td>
+                  <td className={`${classes.td} ${classes.size_data}`}>{size.description}</td>
                   {data.map(el => {
                     const color = Object.keys(el)[0];
                     const item = el[color]?.find(
@@ -116,20 +115,20 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
                                 style={{
                                   backgroundColor:
                                     availabilityLabel === 'Available'
-                                      ? '#d5f5e3'
-                                      : 'rgba(214,234,248)',
+                                      ? '#a9dfbf'
+                                      : '#aed6f1',
                                 }}
                               >
                                 <input
                                   type='checkbox'
                                   name={id}
                                   id={id}
-                                  checked={selectedItems.includes(item?.alias)}
+                                  checked={selectedItems.includes(item?.id)}
                                   onChange={e =>
                                     handleCheckboxChange(
                                       color,
                                       size.description,
-                                      item?.alias || '',
+                                      item?.id || '',
                                       e.target.checked,
                                     )
                                   }

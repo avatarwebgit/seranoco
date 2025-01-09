@@ -137,13 +137,17 @@ const MobileDrawerList = () => {
     setCurrent(e.key);
   };
   return (
-    <Menu
-      onClick={onClick}
-      selectedKeys={[current]}
-      mode='inline'
-      items={items}
-      className={classes.main}
-    />
+    <>
+      {items && (
+        <Menu
+          onClick={onClick}
+          selectedKeys={[current]}
+          mode='inline'
+          items={items}
+          className={classes.main}
+        />
+      )}
+    </>
   );
 };
 

@@ -44,11 +44,13 @@ button {
   transition: all 0.25s ease-in-out;
 }
 .table .td {
-  border: 1px solid var(--color-grey-1);
+  border: 1px solid #000000;
 }
-.table .tr:not(:first-of-type) {
-  background-color: var(--color-grey-2);
+
+.tr:nth-of-type(even) {
+  background-color: var(--color-grey-2-shadow) !important;
 }
+
 .table .td,
 .tr {
   font-size: 0.5rem !important;
@@ -86,7 +88,7 @@ button {
 .table .th,
 .table .td {
   width: auto;
-  min-width: 80px;
+  min-width: 80px !important;
 }
 .table .td input {
   display: none;
@@ -122,4 +124,8 @@ input:checked ~ .label {
 }
 .outOfStock {
   color: red;
+}
+
+.size_data {
+  font-weight: 900 !important;
 }

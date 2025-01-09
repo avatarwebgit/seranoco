@@ -17,12 +17,12 @@ const Link = ({
   return (
     <motion.a
       className={classes.main}
-      initial={{ y: 0, boxShadow: '0px 10px 5px rgb(214, 214, 214)' }}
+      initial={{ y: 0, boxShadow: '0px 10px 5px rgb(238, 238, 238)' }}
       whileHover={{
         boxShadow: [
-          '0px 10px 5px rgb(214, 214, 214)',
-          '0px 10px 8px rgb(96, 96, 96)',
-          '0px 10px 6px rgb(191, 191, 191)',
+          '0px 10px 5px rgb(238, 238, 238)',
+          '0px 10px 8px rgb(209, 209, 209)',
+          '0px 10px 5px rgb(224, 224, 224)',
         ],
       }}
       transition={{ type: 'tween', duration: 0.5 }}

@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Skeleton } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import { useSelector } from 'react-redux';
+
+import { ReactComponent as Plus } from '../../assets/svg/plus.svg';
+import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
 
 import classes from './ResultRow.module.css';
-
 const ResultRow = ({ dataProp }) => {
   const [data, setData] = useState(null);
   const [isLoadingImage, setIsLoadingImage] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [quantities, setQuantities] = useState({});
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const lng = useSelector(state => state.localeStore.lng);
 
   useEffect(() => {
     if (dataProp) {
@@ -27,7 +32,6 @@ const ResultRow = ({ dataProp }) => {
   const handleAddQuantity = el => {
     setQuantities(prevQuantities => {
       const newQuantity = prevQuantities[el.id] ? prevQuantities[el.id] + 1 : 1;
-      // Ensure the quantity does not exceed the available quantity
       return newQuantity <= el.quantity
         ? { ...prevQuantities, [el.id]: newQuantity }
         : prevQuantities;
@@ -51,21 +55,24 @@ const ResultRow = ({ dataProp }) => {
             <tr>
               <th className={classes.title_text} style={{ opacity: 0 }}>
                 {t('type')}
+              </th>{' '}
+              <th className={classes.title_text}>
+                {t('brand')}&nbsp;/&nbsp;{t('mine')}
               </th>
-              <th className={classes.title_text}>{t('type')}</th>
-              <th className={classes.title_text}>{t('details')}</th>
-              <th className={classes.title_text}>{t('color')}</th>
               <th className={classes.title_text}>{t('size')}</th>
-              <th className={classes.title_text}>{t('weight')}</th>
-              <th className={classes.title_text}>{t('quality')}</th>
-              <th className={classes.title_text}>{t('cut')}</th>
-              <th className={classes.title_text}>{t('report')}</th>
+              <th className={classes.title_text}>{t('color')}</th>
               <th className={classes.title_text}>{t('country')}</th>
               <th className={classes.title_text}>{t('agta')}</th>
-              <th className={classes.title_text}>{t('price')}</th>
-              <th className={classes.title_text}>{t('quantity')}</th>
-              <th className={classes.title_text}>{t('total_price')}</th>
-              <th className={classes.title_text}>{t('action')}</th>
+              <th className={classes.title_text}>{t('report')}</th>
+              <th className={classes.title_text}>
+                {t('price')}&nbsp;1{t('1_pcs')} / {t('m_unit')}
+              </th>
+              <th className={classes.title_text}>
+                {t('quantity')} / {t('pcs')}
+              </th>
+              <th className={classes.title_text}>
+                {t('total_price')} / {t('m_unit')}
+              </th>
               <th className={classes.title_text} style={{ opacity: 0 }}>
                 {t('action')}
               </th>
@@ -74,81 +81,92 @@ const ResultRow = ({ dataProp }) => {
         </thead>
         <tbody>
           {data &&
-            data.map(el => (
-              <tr className={classes.tr} key={el.id}>
-                {/* Image Column */}
-                <td className={classes.img_wrapper}>
-                  <img
-                    src={el.primary_image}
-                    alt={el.details}
-                    onLoad={() => setIsLoadingImage(false)}
-                  />
-                </td>
-                <td />
-                {/* Detail Column */}
-                <td className={classes.detail_text}>
-                  <Link
-                    to={`/en/products/id=${el.alias}`}
-                    target='_blank'
-                    className={classes.link}
+            data.map(el => {
+              return (
+                <tr className={classes.tr} key={el.id}>
+                  {/* Image Column */}
+                  <td className={classes.img_wrapper}>
+                    <img
+                      src={el?.primary_image}
+                      alt={el.details}
+                      onLoad={() => setIsLoadingImage(false)}
+                    />
+                  </td>
+                  {/* Detail Column */}
+                  <td className={classes.detail_text}>
+                    <Link
+                      to={`/en/products/id=${el.alias}`}
+                      target='_blank'
+                      className={classes.link}
+                    >
+                      {el.details}
+                    </Link>
+                  </td>
+                  {/* Size */}
+                  <td className={classes.detail_text}>{el.size}</td>{' '}
+                  {/* Color */}
+                  <td className={classes.detail_text}>{el.color}</td>
+                  {/* Quality */}
+                  <td className={classes.detail_text}>{el.quality}</td>
+                  {/* Report */}
+                  <td className={classes.detail_text}>{el.report}</td>
+                  {/* AGTA */}
+                  <td className={classes.detail_text}>{el.agta}</td>
+                  {/* Price */}
+                  <td
+                    className={classes.detail_text}
+                    style={{
+                      direction: lng === 'fa' ? 'rtl' : 'ltr',
+                    }}
                   >
-                    {el.details}
-                  </Link>
-                </td>
-                {/* Color */}
-                <td className={classes.detail_text}>{el.color}</td>
-                {/* Size */}
-                <td className={classes.detail_text}>{el.size}</td>
-                {/* Weight */}
-                <td className={classes.detail_text}>{el.weight}</td>
-                {/* Quality */}
-                <td className={classes.detail_text}>{el.quality}</td>
-                {/* Cut */}
-                <td className={classes.detail_text}>{el.cut}</td>
-                {/* Report */}
-                <td className={classes.detail_text}>{el.report}</td>
-                {/* Country */}
-                <td className={classes.detail_text}>{el.country}</td>
-                {/* AGTA */}
-                <td className={classes.detail_text}>{el.agta}</td>
-                {/* Price */}
-                <td className={classes.detail_text}>{el.price}</td>
-                {/* Quantity Controls */}
-                <td className={classes.detail_text}>
-                  <div className={classes.quantity_controls}>
-                    <p className={classes.totoal_quantity}>
-                      {quantities[el.id] || 0}
-                    </p>
-                    <span className={classes.button_wrapper}>
-                      <button
-                        className={classes.action_btn}
-                        onClick={() => handleAddQuantity(el)}
-                        disabled={el.quantity === 0}
-                      >
-                        +
+                    {el.price}
+                    &nbsp;{t('m_unit')}
+                  </td>
+                  {/* Quantity Controls */}
+                  <td className={classes.detail_text}>
+                    <div className={classes.quantity_controls}>
+                      <p className={classes.totoal_quantity}>
+                        {quantities[el.id] || 0}
+                      </p>
+                      <span className={classes.button_wrapper}>
+                        <IconButton
+                          className={classes.action_btn}
+                          onClick={() => handleAddQuantity(el)}
+                          disabled={el.quantity === 0}
+                        >
+                          <Plus width={20} height={20} />
+                        </IconButton>
+                        <IconButton
+                          className={classes.action_btn}
+                          onClick={() => handleReduceQuantity(el)}
+                          disabled={quantities[el.id] === 0}
+                        >
+                          <Minus width={20} height={20} />
+                        </IconButton>
+                      </span>
+                    </div>
+                  </td>
+                  {/* Total Price */}
+                  <td
+                    className={classes.detail_text}
+                    style={{
+                      direction: lng === 'fa' ? 'rtl' : 'ltr',
+                    }}
+                  >
+                    &nbsp;{quantities[el.id] * el.price || 0}&nbsp;
+                    {t('m_unit')}
+                  </td>
+                  {/* Action Button */}
+                  <td>
+                    <center>
+                      <button className={classes.add_to_card}>
+                        {t('add_to_card')}
                       </button>
-                      <button
-                        className={classes.action_btn}
-                        onClick={() => handleReduceQuantity(el)}
-                        disabled={quantities[el.id] === 0}
-                      >
-                        -
-                      </button>
-                    </span>
-                  </div>
-                </td>
-                {/* Total Price */}
-                <td className={classes.detail_text}>
-                  {quantities[el.id] * el.price || 0}
-                </td>
-                {/* Action Button */}
-                <td>
-                  <button className={classes.add_to_card}>
-                    {t('add_to_card')}
-                  </button>
-                </td>
-              </tr>
-            ))}
+                    </center>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </>

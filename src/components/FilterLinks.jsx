@@ -6,8 +6,8 @@ import { nanoid } from '@reduxjs/toolkit';
 import CustomSection from '../layout/CustomSection';
 import Link from './Link';
 
-import filterByShape from '../assets/images/filter_by_shape.webp';
-import filterByColor from '../assets/images/filter_by_color.webp';
+import filterByShape from '../assets/images/Shop_by_Shape.webp';
+import filterByColor from '../assets/images/Shop_by-color_1.webp';
 import { homePageCategories } from '../services/api';
 
 import classes from './FilterLinks.module.css';

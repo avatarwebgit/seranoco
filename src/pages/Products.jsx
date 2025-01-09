@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { Breadcrumbs, Typography, Link, IconButton, Icon } from '@mui/material';
+import { Typography, IconButton } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
@@ -17,6 +17,8 @@ import Divider from '../components/products/Divider';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Card from '../components/filters_page/Card';
 import CustomeTab from '../components/common/CustomTab';
+import Breadcrumbs from '../components/common/Breadcrumbs';
+
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
 
 import { getProductDetails } from '../services/api';
@@ -77,7 +79,6 @@ const Products = ({ windowSize }) => {
       const id = location.pathname.split('=').at(1);
       const serverRes = await getProductDetails(id);
       setDetailsData(serverRes.result);
-      console.log(serverRes.result);
     };
     getDetails();
   }, [params]);
@@ -97,52 +98,27 @@ const Products = ({ windowSize }) => {
       <Header windowSize={windowSize} />(
       <Body>
         <Card className={classes.main_card}>
-          <Breadcrumbs aria-label='breadcrumb' separator='>'>
-            <Link
-              underline='hover'
-              color='inherit'
-              href='/'
-              sx={{ fontSize: '0.5rem !important' }}
-            >
-              {t('home')}
-            </Link>
-            <Link
-              underline='hover'
-              color='inherit'
-              href={`/${lng}/shopbyshape`}
-              sx={{ fontSize: '0.5rem !important' }}
-            >
-              {t('shop_by_shape')}
-            </Link>
-            {detailsData ? (
-              <Typography
-                color='inherit'
-                href={`/${lng}/shopbyshape`}
-                sx={{ fontSize: '0.5rem' }}
-              >
-                {detailsData.product.name}
-              </Typography>
-            ) : (
-              <Skeleton
-                variant='text'
-                sx={{ width: '10rem' }}
-                animation='wave'
-              />
-            )}
-          </Breadcrumbs>
-
+          {detailsData && (
+            <Breadcrumbs
+              linkDataProp={[
+                { pathname: t('home'), url: ' ' },
+                { pathname: t('shop_by_shape'), url: 'shopbyshape' },
+                { pathname: detailsData.product?.name, url: null },
+              ]}
+            />
+          )}
           <div className={classes.content}>
             <div
               className={classes.image_container}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
+              // onMouseMove={handleMouseMove}
+              // onMouseLeave={handleMouseLeave}
             >
               <div className={classes.zoom_box} style={zoomStyles}>
                 {detailsData ? (
                   <>
                     <img
                       ref={imageRef}
-                      src={detailsData.product.primary_image}
+                      src={detailsData.product?.primary_image}
                       alt='Zoomable'
                       className={`${classes.zoom_image} ${
                         isInViewbox ? '' : classes.dn
@@ -152,7 +128,7 @@ const Products = ({ windowSize }) => {
                       className={`${classes.idle_image} ${
                         !isInViewbox ? '' : classes.dn
                       }`}
-                      src={detailsData.product.primary_image}
+                      src={detailsData.product?.primary_image}
                       alt=''
                     />
                   </>

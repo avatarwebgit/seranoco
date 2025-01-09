@@ -11,8 +11,10 @@
   --color-grey-1: #6c757d;
   --color-grey-1-shadow: #88949e;
   --color-grey-2: rgb(221, 221, 221);
+  --color-grey-2-shadow: rgb(237, 237, 237);
   --color-grey-3: rgb(240, 240, 240);
 
+  --color-blue-1: rgba(133, 188, 227 , 1);
 }
 
 @media only screen and (max-width: 480px) {

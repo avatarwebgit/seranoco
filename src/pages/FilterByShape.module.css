@@ -7,10 +7,10 @@
 .multi_select_wrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 3rem !important;
 }
 
 .colors_wrapper {
+  margin-top: 3rem !important;
 }
 
 .grid_form {
@@ -31,7 +31,7 @@
   border-radius: 3px;
 }
 .swiper {
-  height: 5rem;
+  height: 6rem;
   width: 90%;
   margin: 0 auto !important;
   display: flex;
@@ -49,9 +49,9 @@
   flex-wrap: wrap;
 }
 .thumbnail {
-  height: 15px;
+  height: 10px;
   width: 50px;
-  margin: 5px 8px;
+  margin: 5px 3px;
   transition: all 0.5s;
   border: 2px solid #ffffff;
   position: relative;
@@ -108,7 +108,7 @@
 .color_slider_label {
   display: flex;
   align-items: center;
-  height: 70%;
+  width: 100%;
 }
 .slide:has(.slider_input:checked) {
   background-color: var(--color-grey-2);

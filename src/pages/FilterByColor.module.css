@@ -31,7 +31,7 @@
   border-radius: 3px;
 }
 .swiper {
-  height: 5rem;
+  height: 6rem;
   width: 90%;
   margin: 0 auto !important;
   display: flex;
@@ -55,6 +55,18 @@
   transition: all 0.5s;
   border: 2px solid #ffffff;
   position: relative;
+}
+.thumbnail:hover::after {
+  content: '';
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border: 2px solid transparent;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  transition: all 0.5s;
 }
 .thumbnail::after {
   content: '';
@@ -108,7 +120,7 @@
 .color_slider_label {
   display: flex;
   align-items: center;
-  height: 70%;
+  width: 100%;
 }
 .slide:has(.slider_input:checked) {
   background-color: var(--color-grey-2);

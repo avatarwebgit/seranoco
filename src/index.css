@@ -4,6 +4,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+*::-webkit-scrollbar {
+  background-color: var(--color-grey-2);
+  width: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-grey-1);
+  border-radius: 10px;
+}
 body {
   margin: 0;
   padding: 0;
@@ -50,7 +58,7 @@ a:visited {
   margin: 0 0px !important;
   font-size: 0.5rem !important;
   min-height: 0 !important;
-  height: 1rem !important;
+  height: 0.7rem !important;
 }
 .css-nv1n36-MuiTypography-root-MuiLink-root,
 .css-ll7100-MuiTypography-root {
@@ -78,8 +86,14 @@ a:visited {
 .css-1qltlow-MuiTabs-indicator {
   background-color: var(--color-grey-1) !important;
 }
-.MuiButtonBase-root{
-  font-size: .5rem !important;
+.MuiButtonBase-root {
+  font-size: 0.5rem !important;
+}
+.css-v0ekx6-MuiAccordionActions-root {
+  padding: 0 !important;
+}
+.css-1lj39kh-MuiAccordionDetails-root {
+  padding: 0 !important;
 }
 @media only screen and (max-width: 480px) {
   .MuiBadge-badge {
