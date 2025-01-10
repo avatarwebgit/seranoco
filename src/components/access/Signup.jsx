@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Autocomplete, InputAdornment, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from '@mui/material';
 import { GoogleLogin } from '@react-oauth/google';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import Flag from 'react-world-flags';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import { accesModalActions } from '../../store/store';
 
@@ -39,6 +45,7 @@ const Signup = () => {
       },
     },
   };
+
   const {
     data: countryData,
     isLoading: isLoadingAllCountries,
@@ -49,6 +56,7 @@ const Signup = () => {
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState('');
   const [country, setCountry] = useState('');
   const [cityData, setCityData] = useState([]);
@@ -107,6 +115,37 @@ const Signup = () => {
     }
   };
 
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    const form = formRef.current;
+    const formData = new FormData(form);
+    const formEntries = Object.fromEntries(formData.entries());
+
+    // Check if any required fields are empty
+    const requiredFields = [
+      firstname?.trim(),
+      lastname?.trim(),
+      email?.trim(),
+      password?.trim(),
+      selectedCountry?.label?.trim(),
+      selectedCity?.label?.trim(),
+      phoneNumber?.trim(),
+    ];
+
+    const isValid = requiredFields.every(field => field && field.length > 0);
+
+    if (!isValid) {
+      setIsError(true);
+    } else {
+      setIsError(false);
+      console.log({
+        ...formEntries,
+        selectedCityId: selectedCity.id,
+        selectedCountryId: selectedCountry.id,
+      });
+    }
+  };
   // api calls
 
   useEffect(() => {
@@ -136,241 +175,232 @@ const Signup = () => {
     return () => {};
   }, [selectedCountry]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    const form = formRef.current;
-    const formData = new FormData(form);
-    const formEntries = Object.fromEntries(formData.entries());
-
-    // Check if any required fields are empty
-    const requiredFields = [
-      formData.firstname,
-      formData.lastname,
-      formData.email,
-      formData.password,
-      formData.rPassword,
-      formData.selectedCountry,
-      formData.selectedCity,
-      formData.phonenumber,
-    ];
-    const isValid = requiredFields.every(field => field && field.trim() !== '');
-
-    console.log(formEntries);
-    if (!isValid) {
-      setIsError(true);
-    } else {
-      setIsError(false);
-      console.log(formEntries);
-    }
-  };
-
   return (
     <div className={classes.content_wrapper}>
-      <div className={classes.logo_wrapper}>
-        <img className={classes.logo} src={logo} alt='' />
-      </div>
-      <div className={classes.login_wrapper}>
-        <div className={classes.actions}>
-          <form onSubmit={handleSubmit} ref={formRef}>
-            <div className={classes.ep}>
-              <TextField
-                id='signup-firstname-input'
-                name='firstname'
-                label={t('signup.fname')}
-                type='text'
-                autoComplete='current-password'
-                size='small'
-                sx={inputStyles}
-                onChange={e => {
-                  setFirstname(e.target.value);
-                }}
-                onFocus={() => setIsError(false)}
-                error={isError && !firstname}
-              />
-              <TextField
-                id='signup-lastname-input'
-                name='lastname'
-                label={t('signup.lname')}
-                type='text'
-                autoComplete='current-password'
-                size='small'
-                sx={inputStyles}
-                onChange={e => {
-                  setLastname(e.target.value);
-                }}
-                onFocus={() => setIsError(false)}
-                error={isError && !lastname}
-              />
-              <TextField
-                id='signup-email-input'
-                name='email'
-                label={t('signup.email')}
-                type='email'
-                autoComplete='current-password'
-                size='small'
-                sx={inputStyles}
-                onChange={e => {
-                  setEmail(e.target.value);
-                }}
-                onFocus={() => setIsError(false)}
-                error={isError && !email}
-              />
-              <TextField
-                id='signup-password-input'
-                name='password'
-                label={t('signup.password')}
-                type='password'
-                autoComplete='current-password'
-                size='small'
-                sx={inputStyles}
-                onChange={e => {
-                  setPassword(e.target.value);
-                }}
-                onFocus={() => setIsError(false)}
-                error={isError && !password}
-              />
-              <TextField
-                id='signup-rpassword-input'
-                name='rPassword'
-                label={`${t('signup.repeat')} ${t('signup.password')}`}
-                type='password'
-                autoComplete='current-password'
-                size='small'
-                sx={inputStyles}
-                onChange={e => {
-                  setRepeatPassword(e.target.value);
-                }}
-                onFocus={() => setIsError(false)}
-                error={isError && !repeatPassword}
-              />
-              <Autocomplete
-                id='country-autocomplete'
-                disablePortal
-                size='small'
-                sx={inputStyles}
-                value={selectedCountry}
-                options={countryData || []}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label={t('signup.country')}
-                    error={isError && !selectedCountry}
-                    name='country'
-                  />
-                )}
-                onInputChange={(e, value) => {
-                  setCountry(value);
-                }}
-                onChange={(e, newValue) => {
-                  setSelectedCountry(newValue);
-                }}
-              />
-              <Autocomplete
-                id='city-autocomplete'
-                disablePortal
-                size='small'
-                sx={inputStyles}
-                value={selectedCity}
-                options={cityData || []}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label={t('signup.city')}
-                    error={isError && !selectedCity}
-                    name='city'
-                  />
-                )}
-                onInputChange={(e, value) => {
-                  setCity(value);
-                }}
-                onChange={(e, newValue) => {
-                  setSelectedCity(newValue);
-                }}
-              />
-              <span className={classes.phone_wrapper}>
+      <div className={classes.sheet}>
+        <div className={classes.logo_wrapper}>
+          <img className={classes.logo} src={logo} alt='' />
+        </div>
+        <div className={classes.login_wrapper}>
+          <div className={classes.actions}>
+            <form
+              onSubmit={handleSubmit}
+              ref={formRef}
+              className={classes.form}
+            >
+              <div className={classes.ep}>
                 <TextField
-                  id='phone-code-input'
+                  id='signup-firstname-input'
+                  name='firstname'
+                  label={t('signup.fname')}
                   type='text'
-                  autoComplete='current-password'
                   size='small'
-                  sx={{
-                    width: '30%',
-                    ...inputStyles,
+                  sx={inputStyles}
+                  onChange={e => {
+                    setFirstname(e.target.value);
+                  }}
+                  onFocus={() => setIsError(false)}
+                  error={isError && !firstname}
+                />
+                <TextField
+                  id='signup-lastname-input'
+                  name='lastname'
+                  label={t('signup.lname')}
+                  type='text'
+                  size='small'
+                  sx={inputStyles}
+                  onChange={e => {
+                    setLastname(e.target.value);
+                  }}
+                  onFocus={() => setIsError(false)}
+                  error={isError && !lastname}
+                />
+                <TextField
+                  id='signup-email-input'
+                  name='email'
+                  label={t('signup.email')}
+                  type='email'
+                  size='small'
+                  sx={inputStyles}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                  }}
+                  onFocus={() => setIsError(false)}
+                  error={isError && !email}
+                />
+                <TextField
+                  id='signup-password-input'
+                  name='password'
+                  label={t('signup.password')}
+                  type={showPassword ? 'text' : 'password'}
+                  size='small'
+                  sx={inputStyles}
+                  onChange={e => {
+                    setPassword(e.target.value);
                   }}
                   InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        {selectedCountry && selectedCountry.length !== 0 && (
-                          <Flag
-                            code={selectedCountry.alias}
-                            style={{ width: '20px', height: 'auto' }}
-                          />
-                        )}
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='show'
+                          style={{ width: '20px', height: 'auto' }}
+                          onClick={() => setShowPassword(!showPassword)}
+                          disableRipple
+                        >
+                          {showPassword ? (
+                            <Visibility fontSize='5' />
+                          ) : (
+                            <VisibilityOff fontSize='5' />
+                          )}
+                        </IconButton>
                       </InputAdornment>
                     ),
                   }}
-                  value={phoneCode}
-                  onChange={handleChange}
-                  placeholder='+'
+                  onFocus={() => setIsError(false)}
+                  error={isError && !password}
                 />
                 <TextField
-                  id='phone-number-input'
-                  name='phonenumber'
-                  label={t('signup.pnumber')}
-                  type='text'
-                  autoComplete='current-password'
+                  id='signup-rpassword-input'
+                  name='rPassword'
+                  label={`${t('signup.repeat')} ${t('signup.password')}`}
+                  type='password'
                   size='small'
-                  sx={{
-                    width: '68%',
-                    ...inputStyles,
-                  }}
+                  sx={inputStyles}
                   onChange={e => {
-                    const value = e.target.value;
-                    const numericValue = value.replace(/[^0-9]/g, '');
-                    setPhoneNumber(value);
+                    setRepeatPassword(e.target.value);
                   }}
-                  error={isError && !phoneNumber}
-                  
+                  onFocus={() => setIsError(false)}
+                  error={isError && !repeatPassword}
                 />
-              </span>
+                <Autocomplete
+                  id='country-autocomplete'
+                  disablePortal
+                  size='small'
+                  sx={inputStyles}
+                  value={selectedCountry}
+                  options={countryData || []}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label={t('signup.country')}
+                      error={isError && !selectedCountry}
+                      name='country'
+                    />
+                  )}
+                  onInputChange={(e, value) => {
+                    setCountry(value);
+                  }}
+                  onChange={(e, newValue) => {
+                    setSelectedCountry(newValue);
+                  }}
+                  onFocus={() => setIsError(false)}
+                  disableInteractive={false}
+                />
+                <Autocomplete
+                  id='city-autocomplete'
+                  disablePortal
+                  size='small'
+                  sx={inputStyles}
+                  value={selectedCity}
+                  options={cityData || []}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label={t('signup.city')}
+                      error={isError && !selectedCity}
+                      name='city'
+                    />
+                  )}
+                  onInputChange={(e, value) => {
+                    setCity(value);
+                  }}
+                  onChange={(e, newValue) => {
+                    setSelectedCity(newValue);
+                  }}
+                  onFocus={() => setIsError(false)}
+                />
+                <span className={classes.phone_wrapper}>
+                  <TextField
+                    id='phone-code-input'
+                    type='text'
+                    autoComplete='current-password'
+                    size='small'
+                    sx={{
+                      width: '30%',
+                      ...inputStyles,
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          {selectedCountry && selectedCountry.length !== 0 && (
+                            <Flag
+                              code={selectedCountry.alias}
+                              style={{ width: '20px', height: 'auto' }}
+                            />
+                          )}
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={phoneCode}
+                    onChange={handleChange}
+                    placeholder='+'
+                  />
+                  <TextField
+                    id='phone-number-input'
+                    name='phonenumber'
+                    label={t('signup.pnumber')}
+                    type='text'
+                    autoComplete='current-password'
+                    size='small'
+                    sx={{
+                      width: '68%',
+                      ...inputStyles,
+                    }}
+                    onChange={e => {
+                      const value = e.target.value;
+                      const numericValue = value.replace(/[^0-9]/g, '');
+                      setPhoneNumber(value);
+                    }}
+                    error={isError && !phoneNumber}
+                  />
+                </span>
 
-              <div
-                className={classes.error_text}
-                style={{
-                  direction: lng === 'fa' ? 'rtl' : 'ltr',
-                  opacity: isError ? '1' : '0',
-                }}
-              >
-                {t('signup.fillout')}
+                <div
+                  className={classes.error_text}
+                  style={{
+                    direction: lng === 'fa' ? 'rtl' : 'ltr',
+                    opacity: isError ? '1' : '0',
+                  }}
+                >
+                  {t('signup.fillout')}
+                </div>
+                <Button
+                  variant='contained'
+                  size='large'
+                  className={classes.login_btn}
+                  type='submit'
+                >
+                  {t('signup.sign_up')}
+                </Button>
               </div>
-              <Button
-                variant='contained'
-                size='large'
-                className={classes.login_btn}
-                type='submit'
-              >
-                {t('signup.sign_up')}
-              </Button>
+            </form>
+            <div className={classes.oneclick_login_wrapper}>
+              <div className={classes.google_login_wrapper}>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleFailure}
+                  useOneTap={true}
+                  theme='outline'
+                />
+              </div>
             </div>
-          </form>
-
-          <div className={classes.oneclick_login_wrapper}>
-            <div className={classes.google_login_wrapper}>
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={handleGoogleFailure}
-                useOneTap={true}
-                theme='outline'
-              />
+            <div
+              className={classes.signup_link}
+              style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
+            >
+              <p>{t('access.have_acc')}</p>&nbsp;
+              <button onClick={handleGoToLogin}>{t('login')}</button>&nbsp;
             </div>
-          </div>
-          <div
-            className={classes.signup_link}
-            style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
-          >
-            <p>{t('access.have_acc')}</p>&nbsp;
-            <button onClick={handleGoToLogin}>{t('login')}</button>&nbsp;
           </div>
         </div>
       </div>

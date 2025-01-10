@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import classes from './CustomButton.module.css';
-const CustomButton = ({ children, onClick }) => {
+const CustomButton = ({ children, onClick, ishomepage }) => {
   const lng = useSelector(state => state.localeStore.lng);
   return (
-    // <Link to={`/${lng}/myaccount`}>
     <IconButton
-      className={`${classes.draw} ${classes.custom_btn}`}
+      className={`${classes.draw} ${classes.custom_btn} ${
+        ishomepage ? classes.black : classes.white
+      }`}
       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
       disableRipple
       onClick={onClick}
@@ -22,13 +23,11 @@ const CustomButton = ({ children, onClick }) => {
             height: '25px',
             transform: lng === 'fa' ? 'rotate(180deg)' : '',
           }}
-          color='#000000'
           className={classes.card_icons}
         />
       </span>
-      {children}
+      &nbsp;&nbsp;{children}&nbsp;&nbsp;
     </IconButton>
-    // </Link>
   );
 };
 

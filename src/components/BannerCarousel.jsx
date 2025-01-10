@@ -1,31 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Autoplay } from 'swiper/modules';
 import { SwiperSlide, Swiper } from 'swiper/react';
-import { getNarrowBanners, sliderContents } from '../services/api';
+import { getNarrowBanners } from '../services/api';
 
 import classes from './BannerCarousel.module.css';
+import { Skeleton } from '@mui/material';
 const BannerCarousel = () => {
   const [swiperData, setSwiperData] = useState(null);
-  const [scrollY, setScrollY] = useState(0);
-
-  const getImages = async () => {
-    setSwiperData(null);
-    const serverRes = await sliderContents();
-    if (serverRes.response.ok) {
-      setSwiperData(serverRes.result.data);
-    }
-  };
 
   useEffect(() => {
-    getImages();
     getBanners();
-    window.addEventListener('load', () => setScrollY(window.scrollY));
-    window.addEventListener('scroll', () => setScrollY(window.scrollY));
-
-    return () => {
-      window.removeEventListener('load', () => setScrollY(window.scrollY));
-      window.removeEventListener('scroll', () => setScrollY(window.scrollY));
-    };
   }, []);
 
   const getBanners = async () => {
@@ -37,7 +21,7 @@ const BannerCarousel = () => {
 
   return (
     <>
-      {swiperData && (
+      {swiperData ? (
         <Swiper
           modules={[Autoplay]}
           className={classes.main}
@@ -56,7 +40,7 @@ const BannerCarousel = () => {
                   className={classes.product_img_wrapper}
                   style={{
                     width: '100vw',
-                    height: '100vh',
+                    height: '50px',
                   }}
                 >
                   <img
@@ -64,7 +48,7 @@ const BannerCarousel = () => {
                     alt=''
                     style={{
                       width: '100vw',
-                      height: '100vh',
+                      height: '50px',
                       objectFit: 'cover',
                     }}
                   />
@@ -73,6 +57,12 @@ const BannerCarousel = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+      ) : (
+        <Skeleton
+          sx={{ width: '100vw', height: '50px' }}
+          animation='wave'
+          variant='rectangular'
+        />
       )}
     </>
   );

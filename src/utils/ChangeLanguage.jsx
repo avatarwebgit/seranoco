@@ -50,9 +50,9 @@ const ChangeLanguage = props => {
       onMouseLeave={() => setIsOpen(false)}
     >
       {props.ishomepage ? (
-        <EarthBlack width={25} height={25} />
+        <EarthBlack className={classes.svg} />
       ) : (
-        <EarthWhite width={25} height={25} />
+        <EarthWhite className={classes.svg} />
       )}
 
       <motion.div

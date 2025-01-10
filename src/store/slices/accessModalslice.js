@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { login: true, signup: false, otp: false };
+const initialState = { login: false, signup: true, otp: false };
 
 const accessModal = createSlice({
   name: 'accessModal',

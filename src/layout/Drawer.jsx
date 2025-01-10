@@ -50,13 +50,15 @@ const Drawer = ({ children, size }) => {
           <span className={classes.header_text}>
             <h2>{t('shopping_cart.cart')}</h2>
           </span>
-          <IconButton className={classes.close_btn} onClick={toggleDrawer}>
+          <IconButton
+            className={classes.close_btn}
+            onClick={toggleDrawer}
+            disableRipple={true}
+          >
             <Close className={classes.close_icon} />
           </IconButton>
         </div>
-        <div className={classes.items_wrapper}>
-          {children}
-        </div>
+        <div className={classes.items_wrapper}>{children}</div>
 
         <div className={classes.actions_wrapper}>
           <IconButton className={classes.pay_btn} disableRipple={true}>

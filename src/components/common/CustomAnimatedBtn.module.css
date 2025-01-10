@@ -1,0 +1,28 @@
+@import url(../../styles/variables.css);
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0.5);
+  position: relative;
+  cursor: pointer;
+}
+
+.svg-border {
+  position: absolute;
+}
+
+.neon {
+  filter: url(#neon);
+}
+
+.container span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  white-space: nowrap;
+  font-weight: bold;
+}

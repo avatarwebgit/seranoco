@@ -95,6 +95,12 @@ a:visited {
 .css-1lj39kh-MuiAccordionDetails-root {
   padding: 0 !important;
 }
+.css-w1u3ce>*{
+  font-size: 90% !important;
+}
+.MuiAutocomplete-option{
+  font-size: 10px !important;
+}
 @media only screen and (max-width: 480px) {
   .MuiBadge-badge {
     width: 15px !important;

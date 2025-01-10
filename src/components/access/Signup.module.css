@@ -20,10 +20,14 @@
   height: 95vh;
   background-color: white;
   border-radius: 5px;
-  padding: 10px;
+ 
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+}
+
+.sheet {
+  height: fit-content;
+  overflow-y: scroll; padding: 10px;
 }
 
 .login_wrapper {
@@ -31,7 +35,9 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: fit-content;
+}
+
+.form {
 }
 
 .actions {
@@ -137,28 +143,34 @@
 }
 
 @media only screen and (max-width: 480px) {
-  .logo_wrapper {
-    display: none;
-  }
   .content_wrapper {
     width: 100vw;
-    height: fit-content;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .error_text {
     font-size: 8px;
+  }
+  .login_wrapper > * {
+    width: 90% !important;
   }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
-  .logo_wrapper {
-    display: none;
-  }
   .content_wrapper {
     width: 100vw;
-    height: fit-content;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .error_text {
     font-size: 8px;
+  }
+  .login_wrapper > * {
+    width: 90% !important;
   }
 }
 

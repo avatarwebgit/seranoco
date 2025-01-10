@@ -22,12 +22,14 @@ const AccessAccount = ({ open, onClose }) => {
       BackdropProps={{
         style: {
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
-          backdropFilter:'blur(12px)'
+          backdropFilter: 'blur(12px)',
         },
       }}
     >
       <div className={classes.parent}>
-        <IconButton className={classes.close_btn}></IconButton>
+        <IconButton className={classes.close_btn} disableRipple={true}>
+          <Close width={30} height={30} />
+        </IconButton>
         {isLogin && <Login />}
         {isSignup && <Signup />}
       </div>

@@ -19,10 +19,12 @@ import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
 import '../styles/carousel.css';
-import { sliderContents } from '../services/api';
+import { sliderContents, getNarrowBanners } from '../services/api';
 
 import shared from '../styles/shared.css';
 import classes from './Caruosel.module.css';
+import BannerCarousel from './BannerCarousel';
+import CustomAnimatedBtn from './common/CustomAnimatedBtn';
 const Carusel = ({ windowSize }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -55,42 +57,6 @@ const Carusel = ({ windowSize }) => {
     <section>
       {swiperData ? (
         <div className={shared.content}>
-          {/* ________________ BANNER SLIDER  ________________*/}
-          <Swiper
-            modules={[Autoplay]}
-            className={classes.top_slider}
-            spaceBetween={0}
-            slidesPerView={1}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-            loop={true}
-          >
-            {swiperData.map((slide, index) => (
-              <SwiperSlide key={index} className={classes.slide}>
-                <div className={classes.slider_image_wrapper}>
-                  <span
-                    className={classes.product_img_wrapper}
-                    style={{
-                      width: '100vw',
-                      height: '100vh',
-                    }}
-                  >
-                    <img
-                      src={slide.image}
-                      alt=''
-                      style={{
-                        width: '100vw',
-                        height: '100vh',
-                        objectFit: 'cover',
-                      }}
-                    />
-                  </span>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
           {/* ________________ MAIN SLIDER  ________________*/}
           <Swiper
             modules={[Navigation, Pagination, Scrollbar, A11y, Thumbs]}
@@ -133,9 +99,9 @@ const Carusel = ({ windowSize }) => {
                     <span className={classes.about_product}>
                       <p className={classes.title}>{slide.title}</p>
                       <p className={classes.caption}>{slide.text}</p>
-                      <Button className={classes.shop_btn} variant='outlined'>
+                      <CustomAnimatedBtn >
                         {t('shop_now')}
-                      </Button>
+                      </CustomAnimatedBtn>
                     </span>
                   )}
                 </div>

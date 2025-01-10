@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 import Carousel from '../components/Carousel';
 import Header from '../layout/Header';
@@ -8,10 +9,11 @@ import PromotionalShopCard from '../components/PromotionalShopCard';
 import Guid from '../components/Guid';
 
 import classes from './Home.module.css';
-import Drawer from '../layout/Drawer';
+import BannerCarousel from '../components/BannerCarousel';
 const Home = ({ windowSize }) => {
   return (
     <section className={classes.home}>
+      <BannerCarousel />
       <Header windowSize={windowSize} />
       <Carousel windowSize={windowSize} />
       <FilterLinks windowSize={windowSize} />

@@ -264,6 +264,9 @@ export const useBasicInformation = lng => {
       const result = await response.json();
       return result;
     },
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
   });
 };
 

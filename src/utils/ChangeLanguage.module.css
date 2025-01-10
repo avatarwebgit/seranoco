@@ -18,9 +18,9 @@
   background-color: white;
   color: black;
   position: absolute;
-  top: 50%;
+  top: 100%;
   left: 80%;
-  transform: translate(0%, -50%);
+  transform: translate(0%, -40%);
   width: 30px;
   border-radius: 2px;
   overflow: hidden;
@@ -43,18 +43,22 @@
   width: 40px;
   font-size: 0.5rem;
 }
+.svg {
+  width: 25px;
+  height: 25px;
+}
 @media only screen and (max-width: 480px) {
   .main {
     border-width: 1px !important;
-    width: 18px !important;
-    height: 18px !important;
+    width: 25px !important;
+    height: 25px !important;
   }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
   .main {
     border-width: 1px !important;
-    width: 18px !important;
-    height: 18px !important;
+    width: 25px !important;
+    height: 25px !important;
   }
 }

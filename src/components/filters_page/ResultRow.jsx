@@ -8,6 +8,7 @@ import { ReactComponent as Plus } from '../../assets/svg/plus.svg';
 import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
 
 import classes from './ResultRow.module.css';
+import { nanoid } from '@reduxjs/toolkit';
 const ResultRow = ({ dataProp }) => {
   const [data, setData] = useState(null);
   const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -20,6 +21,7 @@ const ResultRow = ({ dataProp }) => {
 
   useEffect(() => {
     if (dataProp) {
+      console.log(dataProp)
       setData(dataProp);
     }
     if (isLoadingImage) {
@@ -30,6 +32,7 @@ const ResultRow = ({ dataProp }) => {
   }, [dataProp, isLoadingImage]);
 
   const handleAddQuantity = el => {
+    console.log(el)
     setQuantities(prevQuantities => {
       const newQuantity = prevQuantities[el.id] ? prevQuantities[el.id] + 1 : 1;
       return newQuantity <= el.quantity
@@ -39,6 +42,7 @@ const ResultRow = ({ dataProp }) => {
   };
 
   const handleReduceQuantity = el => {
+    console.log(el)
     setQuantities(prevQuantities => {
       const newQuantity = prevQuantities[el.id] ? prevQuantities[el.id] - 1 : 0;
       return newQuantity >= 0

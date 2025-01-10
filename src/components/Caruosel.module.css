@@ -29,9 +29,9 @@
 }
 .about_product {
   /* width: 10vw; */
-  height: 15vh;
+  height: 100vh;
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 17%;
   transform: translateY(-50%);
   display: flex;

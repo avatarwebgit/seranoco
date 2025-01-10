@@ -24,7 +24,7 @@ import Search from '../components/Search';
 import MobileDrawerList from '../components/MobileDrawerList';
 import ChangeLanguage from '../utils/ChangeLanguage';
 
-import { basicInformation, getHeaderMenus } from '../services/api';
+import { useBasicInformation, getHeaderMenus } from '../services/api';
 
 import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
 import { ReactComponent as Basket } from '../assets/svg/basket_white.svg';
@@ -34,6 +34,8 @@ import { ReactComponent as Basket_black } from '../assets/svg/basket.svg';
 import classes from './Header.module.css';
 import AccessAccount from './AccessAccount';
 const Header = ({ windowSize }) => {
+  const { data: basicInformation } = useBasicInformation('en');
+
   const [scrollY, setScrollY] = useState(0);
   const [size, setSize] = useState('');
   const [isSmall, setIsSmall] = useState(false);
@@ -140,7 +142,15 @@ const Header = ({ windowSize }) => {
     } else {
       setIsHomePage(false);
     }
-  }, [location.pathname, lng]);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (isHomePage) {
+      setLogo(basicInformation.data.at(0)?.image);
+    } else {
+      setLogo(basicInformation.data.at(0)?.image_white);
+    }
+  }, [basicInformation, isHomePage]);
 
   // API calls
   const getHeaderLinks = async () => {
@@ -151,17 +161,8 @@ const Header = ({ windowSize }) => {
     }
   };
 
-  const getHeaderLogo = async () => {
-    setLogo(null);
-    const serverRes = await basicInformation(i18n.language);
-    if (serverRes.response.ok) {
-      setLogo(serverRes.result?.data.at(0).image);
-    }
-  };
-
   useEffect(() => {
     getHeaderLinks();
-    getHeaderLogo();
   }, []);
 
   const handleCloseModal = () => {
@@ -173,14 +174,18 @@ const Header = ({ windowSize }) => {
       className={classes.main}
       initial={{ y: 0, height: '5rem' }}
       animate={{
-        y: scrollY !== 0 ? 0 : '5vh',
+        y: isHomePage && scrollY === 0 ? '50px' : 0,
         height: scrollY !== 0 ? '3.5rem' : isSmall ? '4rem' : '5rem',
         backgroundColor:
           scrollY !== 0 ? 'rgba(255,255,255,0.5)' : 'rgba(0, 0, 0, 0)',
         backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'none',
       }}
       style={{ position: isFixed ? 'fixed' : 'sticky' }}
-      transition={{ type: 'spring', duration: 0.3, ease: 'linear' }}
+      transition={{
+        type: 'spring',
+        duration: 0.3,
+        ease: 'linear',
+      }}
     >
       <CustomSection
         className={classes.content}
@@ -202,32 +207,18 @@ const Header = ({ windowSize }) => {
                 : 'none',
             alignItems: scrollY === 0 ? 'flex-start' : 'center',
           }}
-          transition={{ delay: scrollY === 0 ? 0.5 : 0, duration: 0 }}
+          transition={{ delay: scrollY === 0 ? 0.2 : 0, duration: 0 }}
         >
           {!isSmall && (
             <CustomButton
               className={classes.login_btn}
               onClick={() => setModalOpen(true)}
+              ishomepage={isHomePage}
             >
-              <div className={classes.login_text} style={{ color: 'white' }}>
-                {t('login')}
-              </div>
+              {t('login')}
             </CustomButton>
           )}
 
-          {/* {isSmall && (
-            <span className={classes.icon_pack_wrapper}>
-              <IconButton>
-                <Login
-                  sx={{
-                    width: isSmall ? '0px' : '30px',
-                    height: isSmall ? '0px' : '30px',
-                    color: 'white',
-                  }}
-                />
-              </IconButton>
-            </span>
-          )} */}
           <span className={classes.icon_pack_wrapper}>
             <IconButton>
               <Badge
@@ -281,7 +272,7 @@ const Header = ({ windowSize }) => {
           className={classes.logo_container}
           initial={initialLogoState}
           animate={returnLogoStyles}
-          transition={{ duration: 0.2, type: 'tween' }}
+          transition={{ duration: 0.1, type: 'tween' }}
           href={`/${lng}`}
         >
           {logo && (
@@ -291,7 +282,6 @@ const Header = ({ windowSize }) => {
               alt='Seranoco Logo'
               initial={{ opacity: 0 }}
               animate={{ opacity: logo ? 1 : 1 }}
-              variant={'rectangular'}
             />
           )}
         </motion.a>
@@ -398,7 +388,11 @@ const Header = ({ windowSize }) => {
               <IconButton onClick={() => closeDrawer(true)}>
                 <Menu
                   className={classes.card_icons}
-                  sx={{ width: '20px', height: '20px', color: 'white' }}
+                  sx={{
+                    width: '20px',
+                    height: '20px',
+                    color: isHomePage ? '#000000' : '#ffffff',
+                  }}
                 />
               </IconButton>
               <MuiDrawer

@@ -14,24 +14,32 @@
   background: none;
   border: 0;
   box-sizing: border-box;
-  padding: 5px 7.5px;
+  padding: 10px 12px !important;
   box-shadow: inset 0 0 0 1px transparent;
-  color: var(--background) !important;
-  font-size: 0.4rem !important;
+  font-size: .8rem !important;
   font-weight: 200;
   position: relative;
   vertical-align: middle;
   white-space: nowrap;
   display: flex;
   align-items: center;
-  border: 1px solid rgb(140, 140, 140) !important;
   border-radius: 0 !important;
-  transform: scale(.7);
+  transform: scale(0.6);
 }
+.white {
+  border: 2px solid rgb(140, 140, 140) !important;
+  color: #ffffff !important;
+}
+
+.black {
+  border: 2px solid rgb(148, 148, 148) !important;
+  color: #000000 !important;
+}
+
 .custom_btn::before,
 .custom_btn::after {
   box-sizing: inherit;
-  content: "";
+  content: '';
   position: absolute;
   width: 100%;
   height: 100%;
@@ -53,8 +61,12 @@
   bottom: 0;
   right: 0;
 }
-.draw:hover {
-  color: var(--background);
+.white:hover {
+  color: #ffffff;
+  background-color: transparent !important;
+}
+.black:hover {
+  color: #000000;
   background-color: transparent !important;
 }
 .draw:hover::before,
@@ -62,14 +74,29 @@
   width: 100%;
   height: 100%;
 }
-.draw:hover::before {
+.white:hover::before {
+  border: 1.5px solid transparent;
   border-top-color: var(--background);
   border-right-color: var(--background);
   transition: width 0.125s ease-out, height 0.125s ease-out 0.125s;
 }
-.draw:hover::after {
+.white:hover::after {
+  border: 1.5px solid transparent;
   border-bottom-color: var(--background);
   border-left-color: var(--background);
+  transition: border-color 0s ease-out 0.25s, width 0.125s ease-out 0.25s,
+    height 0.125s ease-out 0.375s;
+}
+.black:hover::before {
+  border: 1.5px solid transparent;
+  border-top-color: #000000;
+  border-right-color: #000000;
+  transition: width 0.125s ease-out, height 0.125s ease-out 0.125s;
+}
+.black:hover::after {
+  border: 1.5px solid transparent;
+  border-bottom-color: #000000;
+  border-left-color: #000000;
   transition: border-color 0s ease-out 0.25s, width 0.125s ease-out 0.25s,
     height 0.125s ease-out 0.375s;
 }
@@ -78,7 +105,6 @@
 }
 .draw::before,
 .draw::after {
-  border: 1px solid transparent;
   width: 0;
   height: 0;
 }
