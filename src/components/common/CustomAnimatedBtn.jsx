@@ -62,22 +62,34 @@ const CustomAnimatedBtn = ({ children }) => {
               stdDeviation='50'
               result='blur50'
             />
+            <feGaussianBlur
+              in='SourceGraphic'
+              stdDeviation='70'
+              result='blur50'
+            />
+            <feGaussianBlur
+              in='SourceGraphic'
+              stdDeviation='70'
+              result='blur100'
+            />
 
             <feMerge result='blur-merged'>
               <feMergeNode in='blur10' />
               <feMergeNode in='blur20' />
               <feMergeNode in='blur30' />
               <feMergeNode in='blur50' />
+              <feMergeNode in='blur70' />
+              <feMergeNode in='blur100' />
             </feMerge>
 
             <feColorMatrix
               result='red-blur'
               in='blur-merged'
               type='matrix'
-              values='1 0 0 0 0
-                      0 0.06 0 0 0
-                      0 0 0.44 0 0
-                      0 0 0 1 0'
+              values='1 0 0 0 0 0 0
+                      0 0.06 0 0 0 0 0
+                      0 0 0.44 0 0 0 0
+                      0 0 0 1 0 0 0'
             />
             <feMerge>
               <feMergeNode in='red-blur' />
@@ -95,7 +107,7 @@ const CustomAnimatedBtn = ({ children }) => {
             animate={{
               pathLength: [0, 0.75],
               pathOffset: [0, 0.2],
-              opacity: [0, 1, 0],
+              opacity: [0, 1,0],
             }}
             transition={{
               duration: 3,

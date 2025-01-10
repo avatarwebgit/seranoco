@@ -148,13 +148,6 @@ const Signup = () => {
   };
   // api calls
 
-  useEffect(() => {
-    if (country.length > 0) {
-    }
-
-    return () => {};
-  }, [country]);
-
   const getCities = async (param, signal) => {
     const serverRes = await getCitiesByCountry(param, signal);
     if (serverRes.response.ok) {

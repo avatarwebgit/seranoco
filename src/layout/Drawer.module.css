@@ -80,14 +80,14 @@
   padding: 10px 20px !important;
   color: #000000 !important;
   border-radius: 5px !important;
-  transition: all 0.5s;
+  transition: all 0.5s !important;
   background: rgb(255, 255, 255);
-  border: 1px solid #000000;
+  border: 1px solid #000000 !important;
 }
 
 .pay_btn:hover {
   background: rgb(255, 234, 117);
-  border: 1px solid transparent;
+  border: 1px solid rgba(0, 0, 0, 0) !important;
   animation: pay_hover 1s forwards 0.3s;
 }
 
