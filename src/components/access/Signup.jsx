@@ -12,9 +12,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import Flag from 'react-world-flags';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-import { accesModalActions } from '../../store/store';
+import { accesModalActions, signupActions } from '../../store/store';
 
-import { getCitiesByCountry, useAllCountries } from '../../services/api';
+import {
+  getCitiesByCountry,
+  useAllCountries,
+  sendRegistrationData,
+} from '../../services/api';
 
 import logo from '../../assets/images/logo_trasnparent.png';
 
@@ -66,7 +70,27 @@ const Signup = () => {
   const [isError, setIsError] = useState(false);
   const [phoneCode, setPhoneCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(null);
-  const [formDataIntries, setFormDataIntries] = useState(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('sis');
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+
+      if (parsedData) {
+        setFirstname(parsedData.firstname || '');
+        setLastname(parsedData.lastname || '');
+        setEmail(parsedData.email || '');
+        setPassword(parsedData.password || '');
+        setCountry(parsedData.country || '');
+        setPhoneCode(parsedData.phoneCode || '');
+        setPhoneNumber(parsedData.phonenumber || null);
+        setSelectedCountry(parsedData.selectedCountry);
+        setCity(parsedData.city);
+        setSelectedCity(parsedData.city);
+      }
+    }
+  }, []);
 
   const { t } = useTranslation();
   const lng = useSelector(state => state.localeStore.lng);
@@ -89,6 +113,7 @@ const Signup = () => {
   const handleGoogleFailure = error => {
     console.log('Google Sign-In failed:', error);
   };
+
   const handleGoToLogin = () => {
     dispatch(accesModalActions.login());
   };
@@ -122,7 +147,6 @@ const Signup = () => {
     const formData = new FormData(form);
     const formEntries = Object.fromEntries(formData.entries());
 
-    // Check if any required fields are empty
     const requiredFields = [
       firstname?.trim(),
       lastname?.trim(),
@@ -139,11 +163,30 @@ const Signup = () => {
       setIsError(true);
     } else {
       setIsError(false);
-      console.log({
-        ...formEntries,
-        selectedCityId: selectedCity.id,
-        selectedCountryId: selectedCountry.id,
-      });
+      dispatch(
+        signupActions.set({
+          ...formEntries,
+          selectedCity: selectedCity,
+          selectedCountry: selectedCountry,
+          createdAt: new Date().toISOString(),
+        }),
+      );
+
+      try {
+        sendFormData({
+          password_confirmation: repeatPassword,
+          password: repeatPassword,
+          email: email,
+          cellphone: phoneNumber,
+          last_name: lastname,
+          first_name: firstname,
+          city_id: selectedCity.id,
+          country_id: selectedCountry.id,
+        });
+        // dispatch(accesModalActions.otp());
+      } catch (error) {
+        console.error('Registration failed:', error);
+      }
     }
   };
   // api calls
@@ -158,15 +201,23 @@ const Signup = () => {
   useEffect(() => {
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
-    setSelectedCity(null);
-    setCityData([]);
+
     if (selectedCountry) {
+      setSelectedCity(null);
+      setCityData([]);
       getCities(selectedCountry.id);
       setPhoneCode(`+${selectedCountry.phonecode || ''}`);
     }
 
     return () => {};
   }, [selectedCountry]);
+
+  const sendFormData = async d => {
+    const serverRes = await sendRegistrationData(d);
+    if (serverRes.response.ok) {
+      console.log(serverRes.result);
+    }
+  };
 
   return (
     <div className={classes.content_wrapper}>
@@ -194,6 +245,7 @@ const Signup = () => {
                   }}
                   onFocus={() => setIsError(false)}
                   error={isError && !firstname}
+                  value={firstname}
                 />
                 <TextField
                   id='signup-lastname-input'
@@ -207,6 +259,7 @@ const Signup = () => {
                   }}
                   onFocus={() => setIsError(false)}
                   error={isError && !lastname}
+                  value={lastname}
                 />
                 <TextField
                   id='signup-email-input'
@@ -220,6 +273,7 @@ const Signup = () => {
                   }}
                   onFocus={() => setIsError(false)}
                   error={isError && !email}
+                  value={email}
                 />
                 <TextField
                   id='signup-password-input'
@@ -231,6 +285,7 @@ const Signup = () => {
                   onChange={e => {
                     setPassword(e.target.value);
                   }}
+                  value={password}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
@@ -262,6 +317,7 @@ const Signup = () => {
                   onChange={e => {
                     setRepeatPassword(e.target.value);
                   }}
+                  value={repeatPassword}
                   onFocus={() => setIsError(false)}
                   error={isError && !repeatPassword}
                 />
@@ -342,6 +398,7 @@ const Signup = () => {
                     id='phone-number-input'
                     name='phonenumber'
                     label={t('signup.pnumber')}
+                    value={phoneNumber}
                     type='text'
                     autoComplete='current-password'
                     size='small'
@@ -352,7 +409,7 @@ const Signup = () => {
                     onChange={e => {
                       const value = e.target.value;
                       const numericValue = value.replace(/[^0-9]/g, '');
-                      setPhoneNumber(value);
+                      setPhoneNumber(numericValue);
                     }}
                     error={isError && !phoneNumber}
                   />

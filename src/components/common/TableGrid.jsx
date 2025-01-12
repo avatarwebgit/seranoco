@@ -17,6 +17,7 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
   useEffect(() => {
     setIsLoading(isLoadingData);
     if (dataProp) {
+      console.log(dataProp)
       setData(dataProp);
       if (selectedSizeProp.length > 0) {
         setSizeData(
