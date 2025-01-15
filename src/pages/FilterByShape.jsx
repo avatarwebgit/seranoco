@@ -213,10 +213,8 @@ const FilterByShape = ({ windowSize }) => {
   useEffect(() => {
     const getSizes = async () => {
       const serverRes = await getFilteredSizesByColor(selectedIds);
-      console.log(selectedIds);
       if (serverRes.response.ok) {
         setSizeData(serverRes.result.data.sizes);
-        console.log(serverRes);
       }
     };
     if (selectedIds.length > 0) {
@@ -295,10 +293,12 @@ const FilterByShape = ({ windowSize }) => {
     setProductDetails([]);
 
     const getProductByDetail = async id => {
+      console.log('first');
       try {
         const serverRes = await getProductDetailsWithId(id);
         if (serverRes.response.ok) {
           setProductDetails(prev => [...prev, serverRes.result.product]);
+          console.log(serverRes.result.product)
         }
       } catch (error) {
         console.error('Error fetching product details:', error);
@@ -306,6 +306,7 @@ const FilterByShape = ({ windowSize }) => {
     };
 
     if (memoizedItemIds && memoizedItemIds.length > 0) {
+      console.log('second');
       setIsLoadingSelectedItem(true);
       const fetchProductDetails = async () => {
         try {
@@ -319,6 +320,7 @@ const FilterByShape = ({ windowSize }) => {
 
       fetchProductDetails();
     }
+    console.log(memoizedItemIds);
   }, [memoizedItemIds]);
 
   useEffect(() => {

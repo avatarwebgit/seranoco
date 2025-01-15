@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { cartActions } from '../../store/store';
 
 import { ReactComponent as Plus } from '../../assets/svg/plus.svg';
 import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
 
 import classes from './ResultRow.module.css';
-import { nanoid } from '@reduxjs/toolkit';
 const ResultRow = ({ dataProp }) => {
   const [data, setData] = useState(null);
   const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -17,11 +18,14 @@ const ResultRow = ({ dataProp }) => {
 
   const { t, i18n } = useTranslation();
 
+  const dispatch = useDispatch();
+
   const lng = useSelector(state => state.localeStore.lng);
+  const cart = useSelector(state => state.cartStore);
 
   useEffect(() => {
     if (dataProp) {
-      console.log(dataProp)
+      console.log(dataProp);
       setData(dataProp);
     }
     if (isLoadingImage) {
@@ -32,23 +36,33 @@ const ResultRow = ({ dataProp }) => {
   }, [dataProp, isLoadingImage]);
 
   const handleAddQuantity = el => {
-    console.log(el)
+    console.log('el');
     setQuantities(prevQuantities => {
-      const newQuantity = prevQuantities[el.id] ? prevQuantities[el.id] + 1 : 1;
+      const newQuantity = prevQuantities[el.variation_id]
+        ? prevQuantities[el.variation_id] + 1
+        : 1;
       return newQuantity <= el.quantity
-        ? { ...prevQuantities, [el.id]: newQuantity }
+        ? { ...prevQuantities, [el.variation_id]: newQuantity }
         : prevQuantities;
     });
   };
 
   const handleReduceQuantity = el => {
-    console.log(el)
     setQuantities(prevQuantities => {
-      const newQuantity = prevQuantities[el.id] ? prevQuantities[el.id] - 1 : 0;
+      const newQuantity = prevQuantities[el.variation_id]
+        ? prevQuantities[el.variation_id] - 1
+        : 0;
       return newQuantity >= 0
-        ? { ...prevQuantities, [el.id]: newQuantity }
+        ? { ...prevQuantities, [el.variation_id]: newQuantity }
         : prevQuantities;
     });
+  };
+
+  const handleAddToCart = el => {
+    console.log({...el, selected_quantity: 1, euro_price: 100000 });
+    dispatch(
+      cartActions.add({ ...el, selected_quantity: 1, euro_price: 100000 }),
+    );
   };
 
   return (
@@ -86,8 +100,9 @@ const ResultRow = ({ dataProp }) => {
         <tbody>
           {data &&
             data.map(el => {
+              console.log(el);
               return (
-                <tr className={classes.tr} key={el.id}>
+                <tr className={classes.tr} key={el.variation_id}>
                   {/* Image Column */}
                   <td className={classes.img_wrapper}>
                     <img
@@ -130,7 +145,7 @@ const ResultRow = ({ dataProp }) => {
                   <td className={classes.detail_text}>
                     <div className={classes.quantity_controls}>
                       <p className={classes.totoal_quantity}>
-                        {quantities[el.id] || 0}
+                        {quantities[el.variation_id] || 0}
                       </p>
                       <span className={classes.button_wrapper}>
                         <IconButton
@@ -157,13 +172,18 @@ const ResultRow = ({ dataProp }) => {
                       direction: lng === 'fa' ? 'rtl' : 'ltr',
                     }}
                   >
-                    &nbsp;{quantities[el.id] * el.price || 0}&nbsp;
+                    &nbsp;{quantities[el.variation_id] * el.price || 0}&nbsp;
                     {t('m_unit')}
                   </td>
                   {/* Action Button */}
                   <td>
                     <center>
-                      <button className={classes.add_to_card}>
+                      <button
+                        className={classes.add_to_card}
+                        onClick={() => {
+                          handleAddToCart(el);
+                        }}
+                      >
                         {t('add_to_card')}
                       </button>
                     </center>

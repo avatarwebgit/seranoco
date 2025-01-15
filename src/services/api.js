@@ -19,6 +19,8 @@ const baseUrl = process.env.REACT_APP_SERVER_BASE_URL;
 //details page ,getdetails :/get/product/${alias}
 //get products by color : /get/ProductsByColor
 
+//promotions : /promotions
+
 export const getHeaderMenus = async lng => {
   const response = await fetch(`${baseUrl}/menus`, {
     method: 'GET',
@@ -85,6 +87,7 @@ export const getAllAtrributes = async (id, options) => {
     headers: {
       'Content-type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify({ id }),
     ...options,
   });
@@ -98,6 +101,8 @@ export const getColors = async (shape_id, size_ids) => {
     headers: {
       'Content-type': 'application/json',
     },
+    credentials: 'include',
+
     body: JSON.stringify({ shape_id, size_ids }),
   });
   const result = await response.json();
@@ -127,6 +132,7 @@ export const getProduct = async (
       headers: {
         'Content-type': 'application/json',
       },
+
       body: JSON.stringify({ shape_id, size_ids, color_ids }),
     },
   );
@@ -176,6 +182,7 @@ export const getProductsByColor = async (
       headers: {
         'Content-type': 'application/json',
       },
+
       body: JSON.stringify({ color_ids }),
       ...options,
     },
@@ -199,6 +206,7 @@ export const getProductsByShape = async (
       headers: {
         'Content-type': 'application/json',
       },
+
       body: JSON.stringify({ color_ids, shape_id }),
       ...options,
     },
@@ -214,6 +222,8 @@ export const getFilteredSizesByColor = async (color_ids, options = {}) => {
     headers: {
       'Content-type': 'application/json',
     },
+    credentials: 'include',
+
     body: JSON.stringify({ color_ids }),
     ...options,
   });
@@ -248,6 +258,28 @@ export const useHeaderMenus = lng => {
     },
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
+};
+
+export const getCsrfToken = async () => {
+  await fetch('https://admin.seranoco.com/sanctum/csrf-cookie', {
+    method: 'GET',
+    credentials: 'include',
+  });
+};
+
+export const sendRegistrationData = async data => {
+  const response = await fetch(`${baseUrl}/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ ...data }),
+  });
+  const result = await response.json();
+  return { response, result };
 };
 
 // Fetch Basic Information (GET)
@@ -440,6 +472,23 @@ export const useAllCountries = () => {
 
       const result = await response.json();
       return result.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useAllPromotions = () => {
+  return useQuery({
+    queryKey: ['allPromotions'],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/promotions`, {
+        method: 'GET',
+      });
+
+      const result = await response.json();
+      return result;
     },
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 10,

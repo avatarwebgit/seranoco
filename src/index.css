@@ -95,11 +95,23 @@ a:visited {
 .css-1lj39kh-MuiAccordionDetails-root {
   padding: 0 !important;
 }
-.css-w1u3ce>*{
+.css-w1u3ce > * {
   font-size: 90% !important;
 }
-.MuiAutocomplete-option{
+.MuiAutocomplete-option {
   font-size: 10px !important;
+}
+:where(.css-dev-only-do-not-override-142vneq).ant-steps.ant-steps-dot
+  .ant-steps-item-tail,
+:where(
+    .css-dev-only-do-not-override-142vneq
+  ).ant-steps.ant-steps-dot.ant-steps-small
+  .ant-steps-item-tail {
+  top: -18px !important;
+}
+:where(.css-dev-only-do-not-override-142vneq).ant-steps.ant-steps-label-vertical
+  .ant-steps-item-content {
+  margin-top: -25px !important;
 }
 @media only screen and (max-width: 480px) {
   .MuiBadge-badge {

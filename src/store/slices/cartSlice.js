@@ -1,0 +1,57 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = {
+  products: [],
+  totalPrice: 0,
+  finalCart: [],
+  finalPayment: 0,
+};
+
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState,
+  reducers: {
+    add(state, action) {
+      if (
+        !state.products.find(el => el.varient_id === action.payload.varient_id)
+      ) {
+        state.products.push(action.payload);
+      }
+      cartSlice.caseReducers.calculateTotalPrice(state);
+    },
+
+    remove(state, action) {
+      state.products = state.products.filter(el => el.id !== action.payload);
+      cartSlice.caseReducers.calculateTotalPrice(state);
+    },
+
+    increment(state, action) {
+      const product = state.products.find(el => el.id === action.payload);
+      if (product) {
+        product.selected_quantity += 1;
+      }
+      cartSlice.caseReducers.calculateTotalPrice(state);
+    },
+
+    decrement(state, action) {
+      const product = state.products.find(el => el.id === action.payload);
+      if (product && product.selected_quantity > 0) {
+        product.selected_quantity -= 1;
+      }
+      cartSlice.caseReducers.calculateTotalPrice(state);
+    },
+
+    calculateTotalPrice(state) {
+      state.totalPrice = state.products.reduce((total, product) => {
+        return total + product.selected_quantity * product.price;
+      }, 0);
+    },
+
+    setFinalCart(state, action) {
+      state.finalCart = state.products.filter(el => el.selected_quantity !== 0);
+      state.finalPayment = state.totalPrice;
+    },
+  },
+});
+
+export default cartSlice;

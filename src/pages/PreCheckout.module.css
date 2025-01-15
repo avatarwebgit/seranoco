@@ -1,0 +1,55 @@
+@import url(../styles/variables.css);
+.main {
+  height: fit-content;
+  /* min-height: 100vh; */
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+}
+
+.stepper {
+  width: 50%;
+  margin: 1.5rem auto; 
+}
+
+.action_wrapper {
+  width: 30%;
+  height: fit-content;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.total_wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.total_wrapper > * {
+  font-size: 0.8rem;
+}
+
+.step_btn {
+  background-color: var(--primary) !important;
+  /* color: #000000 !important; */
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  margin: 1rem 0 !important;
+}
+
+.step_btn_back {
+  background-color: transparent !important;
+  color: var(--primary) !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  margin: 1rem 0 !important;
+  text-decoration: underline !important;
+}

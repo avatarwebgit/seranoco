@@ -76,6 +76,7 @@
   "m_unit": "€",
 
   "my_acc": "My Account",
+  "byorder": "By Order",
 
   "profile": {
     "orders": "Orders",
@@ -118,7 +119,29 @@
     "country": "Country",
     "city": "City",
     "email": "Email",
+    "adress": "Adress",
 
-    "fillout":"Please fill all required fileds"
+    "fillout": "Please fill all required fileds"
+  },
+
+  "otp": {
+    "resend": "Resend"
+  },
+
+  "pc": {
+    "size": "Size",
+    "color": "Color",
+    "price": "Price",
+    "advance": "Advance Payment",
+    "payment": "Total Price",
+    "cart": "Shopping Cart",
+    "info": "َBilling Details",
+    "pmethod": "Payment Method",
+    "value": "Value",
+    "nstep": "Next Step",
+    "pstep": "Back",
+    "receiver": "Receiver",
+    "postalcode": "Post Code",
+    "submit": "ُSubmit"
   }
 }

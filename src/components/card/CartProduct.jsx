@@ -45,7 +45,7 @@ const CartProduct = data => {
           >
             <div className={classes.img_wrapper}>
               <img
-                src={productData.image}
+                src={productData.primary_image}
                 alt=''
                 onLoad={() => setIsLoading(false)}
                 onError={() => setIsLoading(false)}
@@ -92,10 +92,14 @@ const CartProduct = data => {
               >
                 {formatNumber(
                   lng !== 'fa'
-                    ? productData.price * productData.selected_quantity
-                    : productData.price *
+                    ? (
+                        productData.price * productData.selected_quantity
+                      ).toFixed(2)
+                    : (
+                        productData.price *
                         productData.euro_price *
-                        productData.selected_quantity,
+                        productData.selected_quantity
+                      ).toFixed(2),
                 )}
                 &nbsp;{t('m_unit')}
               </span>

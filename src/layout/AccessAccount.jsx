@@ -8,6 +8,7 @@ import Signup from '../components/access/Signup';
 
 import classes from './AccessAccount.module.css';
 import { useSelector } from 'react-redux';
+import OTP from '../components/access/OTP';
 
 const AccessAccount = ({ open, onClose }) => {
   const isLogin = useSelector(state => state.accessModalStore.login);
@@ -32,6 +33,7 @@ const AccessAccount = ({ open, onClose }) => {
         </IconButton>
         {isLogin && <Login />}
         {isSignup && <Signup />}
+        {isOTP && <OTP />}
       </div>
     </Modal>
   );

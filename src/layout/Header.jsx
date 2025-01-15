@@ -145,10 +145,10 @@ const Header = ({ windowSize }) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (isHomePage) {
-      setLogo(basicInformation.data.at(0)?.image);
+    if (isHomePage && basicInformation && basicInformation !== undefined) {
+      setLogo(basicInformation?.data.at(0)?.image);
     } else {
-      setLogo(basicInformation.data.at(0)?.image_white);
+      setLogo(basicInformation?.data.at(0)?.image_white);
     }
   }, [basicInformation, isHomePage]);
 

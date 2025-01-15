@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = { login: false, signup: true, otp: false };
 
-const accessModal = createSlice({
+const accessModalSlice = createSlice({
   name: 'accessModal',
   initialState,
   reducers: {
@@ -24,4 +24,4 @@ const accessModal = createSlice({
   },
 });
 
-export default accessModal;
+export default accessModalSlice;

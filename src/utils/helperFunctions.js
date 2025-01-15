@@ -16,3 +16,17 @@ export const scrollToTarget = (targetRef, headerHeight = 80) => {
     });
   }
 };
+
+export function formatNumber(value) {
+  let strValue = value.toString().replace(/,/g, '');
+
+  let [integerPart, decimalPart] = strValue.split(',');
+
+  let reversedInteger = integerPart.split('').reverse().join('');
+
+  let formattedReversed = reversedInteger.replace(/(\d{3})(?=\d)/g, '$1,');
+
+  let formattedInteger = formattedReversed.split('').reverse().join('');
+
+  return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+}

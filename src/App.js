@@ -22,6 +22,7 @@ function App() {
   const FilterByShape = React.lazy(() => import('./pages/FilterByShape'));
   const Products = React.lazy(() => import('./pages/Products'));
   const Profile = React.lazy(() => import('./pages/Profile'));
+  const PreCheckout = React.lazy(() => import('./pages/PreCheckout'));
 
   // const AuthExists = ({ children }) => {
   //   return token ? <Navigate to={"/"} /> : children;
@@ -87,6 +88,10 @@ function App() {
           <Route
             path={`/:lng/myaccount`}
             element={<Profile windowSize={windowSize} />}
+          />
+          <Route
+            path={`/:lng/precheckout`}
+            element={<PreCheckout windowSize={windowSize} />}
           />
         </Routes>
         {windowSize === 'xs' && <FixedNavigation />}

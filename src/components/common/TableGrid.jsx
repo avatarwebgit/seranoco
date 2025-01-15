@@ -17,7 +17,7 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
   useEffect(() => {
     setIsLoading(isLoadingData);
     if (dataProp) {
-      console.log(dataProp)
+      console.log(dataProp);
       setData(dataProp);
       if (selectedSizeProp.length > 0) {
         setSizeData(
@@ -32,7 +32,7 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
     }
   }, [dataProp, selectedSizeProp, sizeProp, isLoadingData]);
 
-  const handleCheckboxChange = (color, size, id, isChecked) => {
+  const handleCheckboxChange = (color, size, id, isChecked, item) => {
     if (isChecked) {
       dispatch(productDetailActions.addItem(id));
     } else {
@@ -88,9 +88,12 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
                   key={index}
                   style={{ opacity: isLoading ? 0.3 : 1 }}
                 >
-                  <td className={`${classes.td} ${classes.size_data}`}>{size.description}</td>
+                  <td className={`${classes.td} ${classes.size_data}`}>
+                    {size.description}
+                  </td>
                   {data.map(el => {
                     const color = Object.keys(el)[0];
+                    console.log(el)
                     const item = el[color]?.find(
                       item => item.size === size.description,
                     );
@@ -131,6 +134,7 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
                                       size.description,
                                       item?.id || '',
                                       e.target.checked,
+                                      item,
                                     )
                                   }
                                 />

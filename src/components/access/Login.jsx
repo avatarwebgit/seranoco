@@ -11,6 +11,7 @@ import { accesModalActions } from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
 
 import classes from './Login.module.css';
+import ReCAPTCHA from 'react-google-recaptcha';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -129,6 +130,10 @@ const Login = () => {
               </div>
             )}
           </div>
+
+          <ReCAPTCHA
+            sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_CLIENT_ID}
+          />
 
           <Button
             variant='contained'

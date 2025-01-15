@@ -10,6 +10,7 @@ import Guid from '../components/Guid';
 
 import classes from './Home.module.css';
 import BannerCarousel from '../components/BannerCarousel';
+import SecondaryPromotionShopCart from '../components/SecondaryPromotionShopCart';
 const Home = ({ windowSize }) => {
   return (
     <section className={classes.home}>
@@ -18,6 +19,7 @@ const Home = ({ windowSize }) => {
       <Carousel windowSize={windowSize} />
       <FilterLinks windowSize={windowSize} />
       <PromotionalShopCard windowSize={windowSize} />
+      <SecondaryPromotionShopCart />
       <Guid windowSize={windowSize} />
       <Footer windowSize={windowSize} />
     </section>

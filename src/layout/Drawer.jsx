@@ -2,16 +2,22 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
-import { drawerActions } from '../store/store';
+import { cartActions, drawerActions } from '../store/store';
 import { ReactComponent as Close } from '../assets/svg/close.svg';
 import { IconButton } from '@mui/material';
 
 import classes from './Drawer.module.css';
 import { KeyboardBackspace } from '@mui/icons-material';
+import CartProduct from '../components/card/CartProduct';
+import { Link } from 'react-router-dom';
 const Drawer = ({ children, size }) => {
   const dispatch = useDispatch();
+
   const drawerState = useSelector(state => state.drawerStore.drawerOpen);
+  const cart = useSelector(state => state.cartStore);
+
   const lng = useSelector(state => state.localeStore.lng);
+
   const { t } = useTranslation();
 
   const toggleDrawer = () => {
@@ -20,6 +26,7 @@ const Drawer = ({ children, size }) => {
 
   useEffect(() => {
     if (drawerState) {
+      dispatch(cartActions.calculateTotalPrice());
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -58,19 +65,29 @@ const Drawer = ({ children, size }) => {
             <Close className={classes.close_icon} />
           </IconButton>
         </div>
-        <div className={classes.items_wrapper}>{children}</div>
+        <div className={classes.items_wrapper}>
+          <div className={classes.items_sheet}>
+            {cart.products.map(el => {
+              return <CartProduct key={el.id} data={el} />;
+            })}
+          </div>
+        </div>
 
         <div className={classes.actions_wrapper}>
-          <IconButton className={classes.pay_btn} disableRipple={true}>
-            <KeyboardBackspace fontSize='10' />
-            &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;
-          </IconButton>
+          <Link to={`/${lng}/precheckout`}>
+            <IconButton className={classes.pay_btn} disableRipple={true}>
+              <KeyboardBackspace fontSize='10' />
+              &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;
+            </IconButton>
+          </Link>
           <span
             className={classes.total}
             style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
           >
             <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
-            <span>1000000</span>
+            <span>
+              {cart.totalPrice.toFixed(2)}&nbsp;{t('m_unit')}
+            </span>
           </span>
         </div>
       </motion.div>
