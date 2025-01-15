@@ -75,7 +75,7 @@ const ShoppingCart = () => {
                 className={classes.td}
                 style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
               >
-                {!isByOrder && lng !== 'fa' && totalPrice}
+                {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
                 {!isByOrder &&
                   lng === 'fa' &&
                   (totalPrice * el.euro_price).toFixed(2)}

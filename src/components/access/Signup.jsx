@@ -140,7 +140,7 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     const form = formRef.current;

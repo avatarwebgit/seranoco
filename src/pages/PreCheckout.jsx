@@ -79,19 +79,19 @@ const PreCheckout = ({ windowSize }) => {
               {step !== 2 ? (
                 <span className={classes.amont}>
                   {lng !== 'fa'
-                    ? card.totalPrice
+                    ? card.totalPrice.toFixed(2)
                     : formatNumber(
                         card.totalPrice * card.products.at(0).euro_price,
-                      )}
+                      ).toFixed(2)}
                   &nbsp;{t('m_unit')}
                 </span>
               ) : (
                 <span className={classes.amont}>
                   {lng !== 'fa'
-                    ? card.finalPayment
+                    ? card.finalPayment.toFixed(2)
                     : formatNumber(
                         card.finalPayment * card.products.at(0).euro_price,
-                      )}
+                      ).toFixed(2)}
                   &nbsp;{t('m_unit')}
                 </span>
               )}

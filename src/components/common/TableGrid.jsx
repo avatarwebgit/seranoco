@@ -17,7 +17,6 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
   useEffect(() => {
     setIsLoading(isLoadingData);
     if (dataProp) {
-      console.log(dataProp);
       setData(dataProp);
       if (selectedSizeProp.length > 0) {
         setSizeData(
@@ -93,7 +92,6 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
                   </td>
                   {data.map(el => {
                     const color = Object.keys(el)[0];
-                    console.log(el)
                     const item = el[color]?.find(
                       item => item.size === size.description,
                     );

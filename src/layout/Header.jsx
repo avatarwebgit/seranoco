@@ -50,6 +50,7 @@ const Header = ({ windowSize }) => {
   const test = [1, 2, 3, 4, 5, 6, 7];
 
   const lng = useSelector(state => state.localeStore.lng);
+  const cart = useSelector(state => state.cartStore);
 
   const { t, i18n } = useTranslation();
   const location = useLocation();
@@ -169,6 +170,11 @@ const Header = ({ windowSize }) => {
     setModalOpen(false);
   };
 
+  useEffect(() => {
+    console.log(cart)
+  }, [cart])
+  
+
   return (
     <motion.header
       className={classes.main}
@@ -242,7 +248,7 @@ const Header = ({ windowSize }) => {
           <span className={classes.icon_pack_wrapper}>
             <IconButton onClick={handleOpenCart}>
               <Badge
-                // badgeContent={1}
+                badgeContent={cart?.products.length || 0}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
                 {isHomePage ? (

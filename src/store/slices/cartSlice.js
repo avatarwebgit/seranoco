@@ -13,7 +13,9 @@ const cartSlice = createSlice({
   reducers: {
     add(state, action) {
       if (
-        !state.products.find(el => el.varient_id === action.payload.varient_id)
+        !state.products.find(
+          el => +el.variation_id === +action.payload.variation_id,
+        )
       ) {
         state.products.push(action.payload);
       }
@@ -21,12 +23,17 @@ const cartSlice = createSlice({
     },
 
     remove(state, action) {
-      state.products = state.products.filter(el => el.id !== action.payload);
+      state.products = state.products.filter(
+        el => +el.variation_id !== +action.payload.variation_id,
+      );
       cartSlice.caseReducers.calculateTotalPrice(state);
     },
 
     increment(state, action) {
-      const product = state.products.find(el => el.id === action.payload);
+      const product = state.products.find(
+        el => +el.variation_id === +action.payload.variation_id,
+      );
+      console.log(product)
       if (product) {
         product.selected_quantity += 1;
       }
@@ -34,7 +41,9 @@ const cartSlice = createSlice({
     },
 
     decrement(state, action) {
-      const product = state.products.find(el => el.id === action.payload);
+      const product = state.products.find(
+        el => +el.variation_id === +action.payload.variation_id,
+      );
       if (product && product.selected_quantity > 0) {
         product.selected_quantity -= 1;
       }

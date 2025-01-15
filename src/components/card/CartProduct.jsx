@@ -24,15 +24,15 @@ const CartProduct = data => {
   }, [data]);
 
   const handleIncrement = () => {
-    dispatch(cartActions.increment(productData.id));
+    dispatch(cartActions.increment(productData));
   };
 
   const handleDecrement = () => {
-    dispatch(cartActions.decrement(productData.id));
+    dispatch(cartActions.decrement(productData));
   };
 
   const handleRemveItem = () => {
-    dispatch(cartActions.remove(productData.id));
+    dispatch(cartActions.remove(productData));
   };
 
   return (

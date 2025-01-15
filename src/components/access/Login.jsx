@@ -12,7 +12,36 @@ import logo from '../../assets/images/logo_trasnparent.png';
 
 import classes from './Login.module.css';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { login } from '../../services/api';
 const Login = () => {
+  const inputStyles = {
+    m: '0.5rem 0',
+    width: '100%',
+
+    '& .MuiInputBase-root': {
+      '& fieldset': {
+        borderColor: 'rgb(0, 153, 130)',
+      },
+    },
+    '& .MuiInputBase-input': {
+      color: 'rgb(0, 0, 0)',
+      fontSize: '16px',
+    },
+    '& .MuiInputLabel-root': {
+      color: 'gray',
+      fontSize: '14px',
+    },
+    '& .Mui-focused .MuiInputLabel-root': {
+      color: 'rgb(0, 153, 130)',
+      transform: 'translate(0, -5px) scale(0.75)',
+    },
+    '& .Mui-focused .MuiInputBase-root': {
+      '& fieldset': {
+        borderColor: 'rgb(0, 153, 130)',
+      },
+    },
+  };
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(true);
@@ -40,9 +69,18 @@ const Login = () => {
   const handleOpenSignup = () => {
     dispatch(accesModalActions.signup());
   };
+
   const handleOpenOtp = () => {
     dispatch(accesModalActions.otp());
   };
+
+  const handleLogin = async () => {
+    const serverRes = await login(email, password);
+    if (serverRes.response.ok) {
+      console.log(serverRes.result);
+    }
+  };
+
   return (
     <div className={classes.content_wrapper}>
       <div className={classes.logo_wrapper}>
@@ -57,30 +95,8 @@ const Login = () => {
               type='Email'
               autoComplete='current-password'
               size='small'
-              sx={{
-                mb: '0.5rem',
-                '& .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
-                '& .MuiInputBase-input': {
-                  color: 'rgb(0, 153, 130)',
-                  fontSize: '16px',
-                },
-                '& .MuiInputLabel-root': {
-                  color: 'gray',
-                  fontSize: '14px',
-                },
-                '& .Mui-focused .MuiInputLabel-root': {
-                  color: 'rgb(0, 153, 130)',
-                },
-                '& .Mui-focused .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
-              }}
+              sx={{ ...inputStyles }}
+              onChange={e => setEmail(e.target.value)}
             />
             <TextField
               id='outlined-password-input'
@@ -89,30 +105,10 @@ const Login = () => {
               autoComplete='current-password'
               size='small'
               sx={{
-                mb: '0.5rem',
-                '& .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
-                '& .MuiInputBase-input': {
-                  color: 'rgb(0, 153, 130)',
-                  fontSize: '16px',
-                },
-                '& .MuiInputLabel-root': {
-                  color: 'gray',
-                  fontSize: '14px',
-                },
-                '& .Mui-focused .MuiInputLabel-root': {
-                  color: 'rgb(0, 153, 130)',
-                },
-                '& .Mui-focused .MuiInputBase-root': {
-                  '& fieldset': {
-                    borderColor: 'rgb(0, 153, 130)',
-                  },
-                },
+                ...inputStyles,
               }}
-            />{' '}
+              onChange={e => setPassword(e.target.value)}
+            />
             {isError && (
               <div
                 className={classes.error_text}
@@ -133,12 +129,14 @@ const Login = () => {
 
           <ReCAPTCHA
             sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_CLIENT_ID}
+            className={classes.rec}
           />
 
           <Button
             variant='contained'
             size='large'
             className={classes.login_btn}
+            onClick={handleLogin}
           >
             {t('login')}
           </Button>

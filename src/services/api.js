@@ -242,6 +242,19 @@ export const getCitiesByCountry = async (country_id, options) => {
   return { response, result };
 };
 
+export const login = async (email, password, options) => {
+  const response = await fetch(`${baseUrl}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+    ...options,
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
 // Fetch Header Menus (GET)
 export const useHeaderMenus = lng => {
   return useQuery({
@@ -261,19 +274,23 @@ export const useHeaderMenus = lng => {
 };
 
 export const getCsrfToken = async () => {
-  await fetch('https://admin.seranoco.com/sanctum/csrf-cookie', {
-    method: 'GET',
-    credentials: 'include',
-  });
+  const response = await fetch(
+    'https://admin.seranoco.com/sanctum/csrf-cookie',
+    {
+      method: 'GET',
+      credentials: 'include',
+    },
+  );
 };
 
 export const sendRegistrationData = async data => {
+  await getCsrfToken();
+
   const response = await fetch(`${baseUrl}/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      'X-Requested-With': 'XMLHttpRequest',
     },
     credentials: 'include',
     body: JSON.stringify({ ...data }),
