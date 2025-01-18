@@ -96,6 +96,56 @@ const PreCheckout = ({ windowSize }) => {
                 </span>
               )}
             </div>
+            <div
+              className={classes.total_wrapper}
+              style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
+            >
+              <span className={classes.title}>{t('pc.off')}</span>
+              {step !== 2 ? (
+                <span className={classes.amont}>
+                  {lng !== 'fa'
+                    ? card.totalPrice.toFixed(2)
+                    : formatNumber(
+                        card.totalPrice * card.products.at(0).euro_price,
+                      ).toFixed(2)}
+                  &nbsp;{t('m_unit')}
+                </span>
+              ) : (
+                <span className={classes.amont}>
+                  {lng !== 'fa'
+                    ? card.finalPayment.toFixed(2)
+                    : formatNumber(
+                        card.finalPayment * card.products.at(0).euro_price,
+                      ).toFixed(2)}
+                  &nbsp;{t('m_unit')}
+                </span>
+              )}
+            </div>
+            <div
+              className={classes.total_wrapper}
+              style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
+            >
+              <span className={classes.title}>{t('pc.dprice')}</span>
+              {step !== 2 ? (
+                <span className={classes.amont}>
+                  {lng !== 'fa'
+                    ? card.totalPrice.toFixed(2)
+                    : formatNumber(
+                        card.totalPrice * card.products.at(0).euro_price,
+                      ).toFixed(2)}
+                  &nbsp;{t('m_unit')}
+                </span>
+              ) : (
+                <span className={classes.amont}>
+                  {lng !== 'fa'
+                    ? card.finalPayment.toFixed(2)
+                    : formatNumber(
+                        card.finalPayment * card.products.at(0).euro_price,
+                      ).toFixed(2)}
+                  &nbsp;{t('m_unit')}
+                </span>
+              )}
+            </div>
             <Button
               className={classes.step_btn}
               onClick={handleGotoNextStep}

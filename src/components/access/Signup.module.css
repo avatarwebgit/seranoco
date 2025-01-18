@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-self: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .logo {
@@ -20,14 +20,15 @@
   height: 95vh;
   background-color: white;
   border-radius: 5px;
- 
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
 }
 
 .sheet {
   height: fit-content;
-  overflow-y: scroll; padding: 10px;
+  padding: 10px;
+  position: relative;
 }
 
 .login_wrapper {
@@ -104,7 +105,8 @@
 }
 
 .error_text,
-.signup_link {
+.signup_link,
+.check_text {
   font-size: 10px;
   color: red;
   width: 100%;
@@ -142,13 +144,37 @@
   justify-content: space-between;
 }
 
+.rec {
+  margin: 8px auto;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center;
+}
+
+.recaptcha-wrapper iframe {
+  width: 100% !important;
+  height: 78px !important;
+}
+
+.check_text {
+  margin: 5px 0;
+}
+
+.close_btn {
+  top: 10px !important;
+  right: 10px !important;
+  position: absolute !important;
+  z-index: 10;
+}
+
+span#recaptcha_privacy {
+  display: none;
+}
+
 @media only screen and (max-width: 480px) {
   .content_wrapper {
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .error_text {
     font-size: 8px;
@@ -162,9 +188,6 @@
   .content_wrapper {
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .error_text {
     font-size: 8px;

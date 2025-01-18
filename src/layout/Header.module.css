@@ -48,7 +48,7 @@
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   margin-left: auto;
 }
 .search_container {
@@ -216,6 +216,11 @@
 }
 .login_text {
   color: white !important;
+}
+.avatar{
+  margin-right: 10px !important;
+  width: 30px !important;
+  height: 30px !important;
 }
 
 @keyframes fade_in {

@@ -422,9 +422,10 @@ const FilterByShape = ({ windowSize }) => {
                   colorData
                     ?.sort((a, b) => {
                       if (a.group_id !== b.group_id) {
+                        return a.priority - b.priority;
+                      } else {
                         return a.group_id - b.group_id;
                       }
-                      return a.id - b.id;
                     })
                     .map((slide, index) => (
                       <SwiperSlide key={index} className={classes.slide}>
@@ -459,7 +460,7 @@ const FilterByShape = ({ windowSize }) => {
               <div className={classes.thumbnail_container}>
                 {groupColors?.length > 0 &&
                   groupColors
-                    ?.sort((a, b) => a.id - b.id)
+                    ?.sort((a, b) => a.priority - b.priority)
                     .map((slide, index) => {
                       return (
                         <>

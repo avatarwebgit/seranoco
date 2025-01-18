@@ -13,6 +13,13 @@
   justify-content: space-evenly;
   background-color: var(--color-black);
 }
+
 .svg{
     color: white !important;
+}
+
+.avatar{
+  margin-right: 10px !important;
+  width: 30px !important;
+  height: 30px !important;
 }

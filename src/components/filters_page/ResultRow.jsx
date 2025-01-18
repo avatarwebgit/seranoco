@@ -25,7 +25,6 @@ const ResultRow = ({ dataProp }) => {
 
   useEffect(() => {
     if (dataProp) {
-      console.log(dataProp);
       setData(dataProp);
     }
     if (isLoadingImage) {
@@ -36,7 +35,6 @@ const ResultRow = ({ dataProp }) => {
   }, [dataProp, isLoadingImage]);
 
   const handleAddQuantity = el => {
-    console.log('el');
     setQuantities(prevQuantities => {
       const newQuantity = prevQuantities[el.variation_id]
         ? prevQuantities[el.variation_id] + 1
@@ -59,7 +57,6 @@ const ResultRow = ({ dataProp }) => {
   };
 
   const handleAddToCart = el => {
-    console.log({...el, selected_quantity: 1, euro_price: 100000 });
     dispatch(
       cartActions.add({ ...el, selected_quantity: 1, euro_price: 100000 }),
     );

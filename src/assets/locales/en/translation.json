@@ -120,6 +120,8 @@
     "city": "City",
     "email": "Email",
     "adress": "Adress",
+    "err_8char": "Password Should Contain At Least 8 Characters",
+    "err_notm": "Passwords Do Not Match.",
 
     "fillout": "Please fill all required fileds"
   },
@@ -142,6 +144,8 @@
     "pstep": "Back",
     "receiver": "Receiver",
     "postalcode": "Post Code",
-    "submit": "ُSubmit"
+    "submit": "ُSubmit",
+    "off": "Discount",
+    "dprice": "Price After Discount"
   }
 }

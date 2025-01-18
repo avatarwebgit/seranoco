@@ -38,6 +38,8 @@ import {
   useColors,
   getProductsByShape,
   getProductDetailsWithId,
+  getColors,
+  getAllAtrributes,
 } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
@@ -84,6 +86,7 @@ const FilterByShape = ({ windowSize }) => {
   const gridSliderRef = useRef();
   const productsWrapperRef = useRef();
   const abortControllerRef = useRef(new AbortController());
+  const dataAbortRef = useRef(new AbortController());
 
   const { t } = useTranslation();
 
@@ -137,7 +140,6 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   const handleCheckboxChange = (e, slideId, slide) => {
-    console.log(slide);
     if (e.target.checked) {
       setSelectedIds(prevIds => [...prevIds, slideId]);
     } else {
@@ -149,24 +151,22 @@ const FilterByShape = ({ windowSize }) => {
     setShapeFormEntries([]);
     setDimensionEntries([]);
     setSelectedIds([]);
-    dispatch(productDetailActions.reset());
     setTableData([]);
     setChunkedData([]);
+    dispatch(productDetailActions.reset());
   };
 
   useEffect(() => {
-    if (itemIds.length > 0) {
-      dispatch(productDetailActions.reset());
-    }
+    dispatch(productDetailActions.reset());
   }, []);
 
   //api call
-  useEffect(() => {
-    if (fetchedColorData) {
-      setColorData(fetchedColorData?.data.colors);
-      setGroupColors(fetchedColorData?.data.group_colors);
-    }
-  }, [fetchedColorData]);
+  // useEffect(() => {
+  //   if (fetchedColorData) {
+  //     setColorData(fetchedColorData?.data.colors);
+  //     setGroupColors(fetchedColorData?.data.group_colors);
+  //   }
+  // }, [fetchedColorData]);
 
   const memoizedItemIds = useMemo(() => {
     return itemIds;
@@ -259,7 +259,7 @@ const FilterByShape = ({ windowSize }) => {
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
-        console.error('Fetch error:', error);
+        // console.error('Fetch error:', error);
       }
     } finally {
       setIsFilteredProductsLoading(false);
@@ -268,6 +268,25 @@ const FilterByShape = ({ windowSize }) => {
 
   const prevDimensionEntriesRef = useRef(dimensionEntries);
   const prevSelectedIdsRef = useRef(selectedIds);
+
+  const getInitialSizes = async (id, options) => {
+    const serverRes = await getAllAtrributes(id, options);
+    if (serverRes.response.ok) {
+      setColorData(serverRes?.result.data.colors);
+      setGroupColors(serverRes?.result.data.group_colors);
+      setSizeData(serverRes?.result.data.sizes);
+    }
+  };
+
+  useEffect(() => {
+    if (shapeFormEntries) {
+      dataAbortRef.current.abort();
+      dataAbortRef.current = new AbortController();
+      getInitialSizes(shapeFormEntries, {
+        signal: dataAbortRef.current.signal,
+      });
+    }
+  }, [shapeFormEntries]);
 
   useEffect(() => {
     abortControllerRef.current.abort();
@@ -293,26 +312,23 @@ const FilterByShape = ({ windowSize }) => {
     setProductDetails([]);
 
     const getProductByDetail = async id => {
-      console.log('first');
       try {
         const serverRes = await getProductDetailsWithId(id);
         if (serverRes.response.ok) {
           setProductDetails(prev => [...prev, serverRes.result.product]);
-          console.log(serverRes.result.product)
         }
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        // console.error('Error fetching product details:', error);
       }
     };
 
     if (memoizedItemIds && memoizedItemIds.length > 0) {
-      console.log('second');
       setIsLoadingSelectedItem(true);
       const fetchProductDetails = async () => {
         try {
           await Promise.all(memoizedItemIds.map(id => getProductByDetail(id)));
         } catch (error) {
-          console.error('Error in one of the requests:', error);
+          // console.error('Error in one of the requests:', error);
         } finally {
           setIsLoadingSelectedItem(false);
         }
@@ -320,7 +336,6 @@ const FilterByShape = ({ windowSize }) => {
 
       fetchProductDetails();
     }
-    console.log(memoizedItemIds);
   }, [memoizedItemIds]);
 
   useEffect(() => {
@@ -366,7 +381,7 @@ const FilterByShape = ({ windowSize }) => {
         setTableData(serverRes.result.data);
       }
     } catch (error) {
-      console.error('Error fetching products: ', error);
+      // console.error('Error fetching products: ', error);
     }
   };
 
@@ -430,7 +445,7 @@ const FilterByShape = ({ windowSize }) => {
                 <p className={classes.alert}>{t('select_shape')}</p>
               )}
               {isLoadingColors && <LoadingSpinner />}
-              {colorData?.length > 0 && shapeFormEntries && (
+              {colorData?.length > 9 && shapeFormEntries && (
                 <>
                   <button className={classes.prev_btn} onClick={handlePrev}>
                     <ArrowBackIos />
@@ -463,15 +478,17 @@ const FilterByShape = ({ windowSize }) => {
                   dynamicBullets: true,
                   enabled: isSmallPage,
                 }}
+                centeredSlides={colorData?.length > 9 ? false : true}
               >
                 {colorData?.length > 0 &&
                   shapeFormEntries &&
                   colorData
                     ?.sort((a, b) => {
                       if (a.group_id !== b.group_id) {
+                        return a.priority - b.priority;
+                      } else {
                         return a.group_id - b.group_id;
                       }
-                      return a.priority - b.priority;
                     })
                     .map((slide, index) => (
                       <SwiperSlide key={index} className={classes.slide}>
@@ -509,7 +526,7 @@ const FilterByShape = ({ windowSize }) => {
                 {groupColors?.length > 0 &&
                   shapeFormEntries &&
                   groupColors
-                    ?.sort((a, b) => a.id - b.id)
+                    ?.sort((a, b) => a.priority - b.priority)
                     .map((slide, index) => {
                       return (
                         <>
@@ -535,7 +552,7 @@ const FilterByShape = ({ windowSize }) => {
               </div>
             </Card>
           }
-          {shapeFormEntries && <Divider text={'Size mm'} />}
+          {sizeData?.length > 0 && sizeData && <Divider text={'Size mm'} />}
           {isLoading && <LoadingSpinner />}
           {shapeFormEntries && (
             <Card className={classes.size_wrapper}>

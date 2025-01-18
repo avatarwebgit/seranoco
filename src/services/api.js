@@ -161,6 +161,7 @@ export const getProductDetails = async alias => {
 };
 
 export const getProductDetailsWithId = async id => {
+  console.log(id)
   const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
     method: 'GET',
   });
@@ -248,6 +249,7 @@ export const login = async (email, password, options) => {
     headers: {
       'Content-type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify({ email, password }),
     ...options,
   });
@@ -269,7 +271,9 @@ export const useHeaderMenus = lng => {
       const result = await response.json();
       return result;
     },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
   });
 };
 

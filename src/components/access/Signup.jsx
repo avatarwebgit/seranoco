@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import Flag from 'react-world-flags';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { accesModalActions, signupActions } from '../../store/store';
 
@@ -21,6 +22,7 @@ import {
 } from '../../services/api';
 
 import logo from '../../assets/images/logo_trasnparent.png';
+import { ReactComponent as Close } from '../../assets/svg/close.svg';
 
 import classes from './Signup.module.css';
 const Signup = () => {
@@ -110,6 +112,10 @@ const Signup = () => {
     // 2. Handle user redirect after successful sign-up.
   };
 
+  const handleGetScore = e => {
+    console.log(e.target.value);
+  };
+
   const handleGoogleFailure = error => {
     console.log('Google Sign-In failed:', error);
   };
@@ -188,6 +194,10 @@ const Signup = () => {
         console.error('Registration failed:', error);
       }
     }
+  };
+
+  const handleCloseModal = () => {
+    dispatch(accesModalActions.close());
   };
   // api calls
 
@@ -424,6 +434,35 @@ const Signup = () => {
                 >
                   {t('signup.fillout')}
                 </div>
+                <ul
+                  style={{
+                    direction: lng === 'fa' ? 'rtl' : 'ltr',
+                    padding: '15px',
+                  }}
+                >
+                  <li
+                    className={classes.check_text}
+                    style={{ color: password.length > 8 ? 'green' : 'red' }}
+                  >
+                    {t('signup.err_8char')}
+                  </li>
+                  <li
+                    className={classes.check_text}
+                    style={{
+                      color: password === repeatPassword ? 'green' : 'red',
+                    }}
+                  >
+                    {t('signup.err_notm')}
+                  </li>
+                </ul>
+
+                <ReCAPTCHA
+                  sitekey={`${process.env.REACT_APP_GOOGLE_RECAPTCHA_CLIENT_ID}`}
+                  className={classes.rec}
+                  onChange={handleGetScore}
+                  type='image'
+                />
+
                 <Button
                   variant='contained'
                   size='large'
@@ -432,6 +471,7 @@ const Signup = () => {
                 >
                   {t('signup.sign_up')}
                 </Button>
+                
               </div>
             </form>
             <div className={classes.oneclick_login_wrapper}>
@@ -453,6 +493,13 @@ const Signup = () => {
             </div>
           </div>
         </div>
+        <IconButton
+          className={classes.close_btn}
+          disableRipple={true}
+          onClick={handleCloseModal}
+        >
+          <Close width={30} height={30} />
+        </IconButton>
       </div>
     </div>
   );

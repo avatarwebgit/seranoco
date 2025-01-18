@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Menu } from 'antd';
 
 import classes from './MobileDrawerList.module.css';
-import { getHeaderMenus } from '../services/api';
-const items = [
+import { getHeaderMenus, useHeaderMenus } from '../services/api';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { userActions } from '../store/store';
+import { useTranslation } from 'react-i18next';
+import { Logout } from '@mui/icons-material';
+const itemss = [
   {
     label: 'Navigation One',
     key: 'mail',
@@ -107,35 +112,50 @@ const items = [
       },
     ],
   },
-  //   {
-  //     key: "alipay",
-  //     label: (
-  //       <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-  //         Navigation Four - Link
-  //       </a>
-  //     ),
-  //   },
+  {
+    key: 'alipay',
+    label: (
+      <a href='https://ant.design' target='_blank' rel='noopener noreferrer'>
+        Navigation Four - Link
+      </a>
+    ),
+  },
 ];
 const MobileDrawerList = () => {
+  const lng = useSelector(state => state.localeStore.lng);
+  const { data } = useHeaderMenus(lng);
+
   const [current, setCurrent] = useState('mail');
   const [items, setItems] = useState(null);
+  const [struc, setStruc] = useState(null);
 
-  // const getHeaderLinks = async () => {
-  //   setitems(null);
-  //   const serverRes = await getHeaderMenus(lng);
-  //   console.log(serverRes.result);
-  //   if (serverRes.response.ok) {
-  //     setitems(serverRes.result);
-  //   }
-  // };
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   getHeaderLinks();
-  // }, []);
+  const { t } = useTranslation();
+
+  const handleLogOut = () => {
+    dispatch(userActions.reset());
+  };
+
+  useEffect(() => {
+    if (data) {
+      const updatedItems = [
+        ...data,
+        {
+          key: 'alipay',
+          id: 0,
+          label: <div onClick={handleLogOut}>{t('logout')}</div>,
+          icon: <Logout />,
+        },
+      ];
+      setItems(updatedItems);
+    }
+  }, [data]);
 
   const onClick = e => {
     setCurrent(e.key);
   };
+
   return (
     <>
       {items && (

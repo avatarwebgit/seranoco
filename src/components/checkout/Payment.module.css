@@ -7,6 +7,7 @@
 thead .td {
   font-size: 0.5rem;
   font-weight: 900;
+  padding-bottom: 1rem;
 }
 
 thead .tr {
@@ -16,10 +17,11 @@ thead .tr {
 .td,
 .tr {
   /* border: 1px solid var(--color-grey-2); */
+  background-color: white !important;
 }
 
 .tr:nth-of-type(odd) {
-  background-color: var(--color-grey-3);
+  /* background-color: var(--color-grey-3); */
 }
 
 .td {
@@ -37,4 +39,3 @@ thead .tr {
   height: 100%;
   object-fit: contain;
 }
-

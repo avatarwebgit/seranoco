@@ -73,7 +73,6 @@ const Checkout = ({ isDataValid }) => {
     const cData = JSON.parse(data);
     setParsedData(cData);
     if (cData.selectedCountry) {
-      setSelectedCity(null);
       getCities(cData.selectedCountry.id);
       setphoneCode(cData.selectedCountry.phonecode);
     }

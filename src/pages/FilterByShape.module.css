@@ -16,8 +16,8 @@
 .grid_form {
   display: flex;
   flex-wrap: wrap;
-  grid-template-columns: repeat(auto-fit, minmax(35px, 1fr));
   justify-content: center;
+  width: 100%;
   align-content: center;
 }
 .size_wrapper {

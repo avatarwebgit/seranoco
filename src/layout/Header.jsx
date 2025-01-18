@@ -7,6 +7,7 @@ import {
   Drawer as MuiDrawer,
   IconButton,
   Input,
+  Avatar,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,7 +17,7 @@ import { nanoid } from '@reduxjs/toolkit';
 
 import close from '../assets/svg/close.svg';
 
-import { drawerActions } from '../store/store';
+import { accesModalActions, drawerActions } from '../store/store';
 
 import CustomButton from '../components/CustomButton';
 import CustomSection from './CustomSection';
@@ -45,12 +46,13 @@ const Header = ({ windowSize }) => {
   const [logo, setLogo] = useState(null);
   const [isHomePage, setIsHomePage] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [ModalOpen, setModalOpen] = useState(false);
 
   const test = [1, 2, 3, 4, 5, 6, 7];
 
   const lng = useSelector(state => state.localeStore.lng);
   const cart = useSelector(state => state.cartStore);
+  const token = useSelector(state => state.userStore.token);
+  const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
 
   const { t, i18n } = useTranslation();
   const location = useLocation();
@@ -132,6 +134,10 @@ const Header = ({ windowSize }) => {
     dispatch(drawerActions.open());
   };
 
+  const handleOpenModal = () => {
+    dispatch(accesModalActions.login());
+  };
+
   const open = Boolean(anchorEl);
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -167,13 +173,8 @@ const Header = ({ windowSize }) => {
   }, []);
 
   const handleCloseModal = () => {
-    setModalOpen(false);
+    dispatch(accesModalActions.close());
   };
-
-  useEffect(() => {
-    console.log(cart)
-  }, [cart])
-  
 
   return (
     <motion.header
@@ -216,13 +217,21 @@ const Header = ({ windowSize }) => {
           transition={{ delay: scrollY === 0 ? 0.2 : 0, duration: 0 }}
         >
           {!isSmall && (
-            <CustomButton
-              className={classes.login_btn}
-              onClick={() => setModalOpen(true)}
-              ishomepage={isHomePage}
-            >
-              {t('login')}
-            </CustomButton>
+            <>
+              {token ? (
+                <IconButton>
+                  <Avatar className={classes.avatar} />
+                </IconButton>
+              ) : (
+                <CustomButton
+                  className={classes.login_btn}
+                  onClick={handleOpenModal}
+                  ishomepage={isHomePage}
+                >
+                  {t('login')}
+                </CustomButton>
+              )}
+            </>
           )}
 
           <span className={classes.icon_pack_wrapper}>
@@ -441,7 +450,7 @@ const Header = ({ windowSize }) => {
           )}
         </motion.span>
       </CustomSection>
-      <AccessAccount open={ModalOpen} onClose={handleCloseModal} />
+      <AccessAccount open={modalOpen} onClose={handleCloseModal} />
     </motion.header>
   );
 };

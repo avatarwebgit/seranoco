@@ -28,7 +28,7 @@ const Payment = () => {
       </thead>
       <tbody>
         {card.finalCart.map(el => {
-          const isByOrder = el.quantity === 0 && el.is_not_available === 0;
+          const isByOrder = el.variation.quantity === 0 && el.variation.is_not_available === 0;
           const totalPrice = el.selected_quantity * el.price;
           return (
             <tr className={classes.tr} key={el.id}>
@@ -41,31 +41,35 @@ const Payment = () => {
               <td className={classes.td}>{el.size}</td>
               <td className={classes.td}>{el.selected_quantity}</td>
               <td className={classes.td}>
-                {isByOrder && lng !== 'fa' && totalPrice * 0.2}
+                {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro_price)}
+                  formatNumber(totalPrice * 0.2 * el.euro_price).toFixed(2)}
                 &nbsp;{isByOrder ? t('m_unit') : '_'}
               </td>
               <td
                 className={classes.td}
                 style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
               >
-                {!isByOrder && lng !== 'fa' && totalPrice}
-                {!isByOrder && lng === 'fa' && totalPrice * el.euro_price}
+                {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
+                {!isByOrder &&
+                  lng === 'fa' &&
+                  (totalPrice * el.euro_price).toFixed(2)}
                 &nbsp;{!isByOrder ? t('m_unit') : '_'}
               </td>
               <td
                 className={classes.td}
                 style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
               >
-                {!isByOrder && lng !== 'fa' && totalPrice}
-                {!isByOrder && lng === 'fa' && totalPrice * el.euro_price}
+                {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
+                {!isByOrder &&
+                  lng === 'fa' &&
+                  (totalPrice * el.euro_price).toFixed(2)}
                 &nbsp;{!isByOrder && t('m_unit')}
-                {isByOrder && lng !== 'fa' && totalPrice * 0.2}
+                {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro_price)}
+                  formatNumber(totalPrice * 0.2 * el.euro_price).toFixed(2)}
                 &nbsp;{isByOrder && t('m_unit')}
               </td>
             </tr>

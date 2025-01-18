@@ -7,6 +7,7 @@ import drawerSlice from './slices/cardStateSlice';
 import accessModalSlice from './slices/accessModalslice';
 import signupInformationSlice from './slices/signupInformationSlice';
 import cartSlice from './slices/cartSlice';
+import userSlice from './slices/userSlice';
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     accessModalStore: accessModalSlice.reducer,
     signupStore: signupInformationSlice.reducer,
     cartStore: cartSlice.reducer,
+    userStore: userSlice.reducer,
   },
 });
 
@@ -27,5 +29,6 @@ export const drawerActions = drawerSlice.actions;
 export const accesModalActions = accessModalSlice.actions;
 export const signupActions = signupInformationSlice.actions;
 export const cartActions = cartSlice.actions;
+export const userActions = userSlice.actions;
 
 export default store;

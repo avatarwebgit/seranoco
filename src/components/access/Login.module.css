@@ -6,6 +6,16 @@
   display: flex;
   align-items: center;
   justify-self: center;
+  margin-bottom: 2rem;
+}
+
+.sheet {
+  height: fit-content;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
 }
 
 .logo {
@@ -20,8 +30,7 @@
   background-color: white;
   border-radius: 5px;
   padding: 10px;
-  display: flex;
-  flex-direction: column;
+  overflow-y: scroll;
 }
 
 .login_wrapper {
@@ -37,6 +46,7 @@
   flex-direction: column;
   justify-content: space-evenly;
   flex: 1 1 auto;
+  height: fit-content;
 }
 
 .actions > * {
@@ -91,6 +101,7 @@
   color: #000000 !important;
   font-size: 10px !important;
   font-weight: 900 !important;
+  margin: 10px 0 !important;
 }
 
 .error_text,
@@ -124,34 +135,49 @@
 }
 
 .rec {
-  margin: 15px auto;
-  width: fit-content;
+  margin: 8px auto;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center;
+  min-width: 0 !important;
+}
 
+.recaptcha-wrapper iframe {
+  width: 100% !important;
+  height: 78px !important;
+  min-width: 0 !important;
+}
+
+.close_btn {
+  top: 10px !important;
+  right: 10px !important;
+  position: absolute !important;
+  z-index: 10000;
 }
 
 @media only screen and (max-width: 480px) {
-  .logo_wrapper {
-    display: none;
-  }
   .content_wrapper {
     width: 100vw;
     height: 100vh;
   }
   .error_text {
     font-size: 8px;
+  }
+  .login_wrapper > * {
+    width: 90% !important;
   }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
-  .logo_wrapper {
-    display: none;
-  }
   .content_wrapper {
     width: 100vw;
     height: 100vh;
   }
   .error_text {
     font-size: 8px;
+  }
+  .login_wrapper > * {
+    width: 90% !important;
   }
 }
 

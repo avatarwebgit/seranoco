@@ -104,8 +104,8 @@ const CartProduct = data => {
                 &nbsp;{t('m_unit')}
               </span>
             </div>
-            {productData.quantity === 0 &&
-              productData.is_not_available === 0 && (
+            {productData.variation?.quantity === 0 &&
+              productData.variation?.is_not_available === 0 && (
                 <Tooltip
                   title={t('byorder')}
                   className={classes.tip}

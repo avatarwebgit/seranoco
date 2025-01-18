@@ -53,6 +53,9 @@
     width: 25px !important;
     height: 25px !important;
   }
+  .dropdown_wrapper {
+    left: -100%;
+  }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
@@ -60,5 +63,8 @@
     border-width: 1px !important;
     width: 25px !important;
     height: 25px !important;
+  }
+  .dropdown_wrapper {
+    left: -100%;
   }
 }

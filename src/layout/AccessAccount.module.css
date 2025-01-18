@@ -5,14 +5,15 @@
   align-items: center !important;
   justify-content: center !important;
   overflow: unset !important;
+  position: relative;
 }
 .parent {
-  position: relative;
 }
 .close_btn {
   top: 20px !important;
   right: 20px !important;
   display: none !important;
+  position: absolute !important;
 }
 
 @media only screen and (max-width: 480px) {

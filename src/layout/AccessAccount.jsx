@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { IconButton, Modal } from '@mui/material';
-
-import { ReactComponent as Close } from '../assets/svg/close.svg';
+import React from 'react';
+import { Modal } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 import Login from '../components/access/Login';
 import Signup from '../components/access/Signup';
-
-import classes from './AccessAccount.module.css';
-import { useSelector } from 'react-redux';
 import OTP from '../components/access/OTP';
 
+import classes from './AccessAccount.module.css';
 const AccessAccount = ({ open, onClose }) => {
   const isLogin = useSelector(state => state.accessModalStore.login);
   const isSignup = useSelector(state => state.accessModalStore.signup);
@@ -28,9 +25,6 @@ const AccessAccount = ({ open, onClose }) => {
       }}
     >
       <div className={classes.parent}>
-        <IconButton className={classes.close_btn} disableRipple={true}>
-          <Close width={30} height={30} />
-        </IconButton>
         {isLogin && <Login />}
         {isSignup && <Signup />}
         {isOTP && <OTP />}
