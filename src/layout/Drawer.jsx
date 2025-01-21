@@ -7,7 +7,7 @@ import { ReactComponent as Close } from '../assets/svg/close.svg';
 import { IconButton } from '@mui/material';
 
 import classes from './Drawer.module.css';
-import { KeyboardBackspace } from '@mui/icons-material';
+import { Keyboard, KeyboardArrowRight, KeyboardBackspace } from '@mui/icons-material';
 import CartProduct from '../components/card/CartProduct';
 import { Link } from 'react-router-dom';
 const Drawer = ({ children, size }) => {
@@ -76,7 +76,7 @@ const Drawer = ({ children, size }) => {
         <div className={classes.actions_wrapper}>
           <Link to={`/${lng}/precheckout`}>
             <IconButton className={classes.pay_btn} disableRipple={true}>
-              <KeyboardBackspace fontSize='10' />
+              <KeyboardArrowRight fontSize='10' />
               &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;
             </IconButton>
           </Link>

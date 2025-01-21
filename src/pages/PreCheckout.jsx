@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Steps } from 'antd';
+import { Result, Steps } from 'antd';
 
 import { cartActions, drawerActions } from '../store/store';
 
@@ -14,6 +14,8 @@ import ShoppingCart from '../components/checkout/ShoppingCart';
 import Payment from '../components/checkout/Payment';
 import Checkout from '../components/checkout/Checkout';
 
+import { getPayments } from '../services/api';
+
 import classes from './PreCheckout.module.css';
 import { Button } from '@mui/material';
 import { formatNumber } from '../utils/helperFunctions';
@@ -21,6 +23,8 @@ import PaymentMethod from '../components/checkout/PaymentMethod';
 const PreCheckout = ({ windowSize }) => {
   const [step, setStep] = useState(0);
   const [isDataValid, setIsDataValid] = useState(false);
+  const [paymentMethods, setPaymentMethods] = useState([]);
+
   const { t } = useTranslation();
 
   const card = useSelector(state => state.cartStore);
@@ -28,9 +32,18 @@ const PreCheckout = ({ windowSize }) => {
 
   const dispatch = useDispatch();
 
+  const p = async () => {
+    const serverRes = await getPayments();
+    if (serverRes.response.ok) {
+      setPaymentMethods(serverRes.result.data);
+      console.log(serverRes.result);
+    }
+  };
+
   useEffect(() => {
     dispatch(drawerActions.close());
     dispatch(cartActions.calculateTotalPrice());
+    p();
   }, []);
 
   const handleGotoNextStep = () => {
@@ -163,7 +176,7 @@ const PreCheckout = ({ windowSize }) => {
             >
               {t('pc.pstep')}
             </Button>
-            {/* <PaymentMethod /> */}
+            {true && <PaymentMethod dataProps={paymentMethods} />}
           </div>
         </Card>
       </Body>

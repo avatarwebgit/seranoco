@@ -1,0 +1,53 @@
+.main {
+  height: fit-content;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  direction: rtl;
+}
+
+.calendar_parent {
+  position: relative !important;
+}
+
+.cal {
+  width: 350px !important;
+  position: absolute !important;
+  z-index: 10 !important;
+  bottom: 22.5% !important;
+}
+
+.dn {
+  display: none;
+}
+
+.df {
+  display: block;
+}
+
+.cal * {
+  font-size: 12px !important;
+}
+
+.cal_header {
+  font-size: 10px !important;
+}
+.cal_header > * {
+  font-size: 13px;
+}
+
+.error_text,
+.signup_link {
+  font-size: 10px;
+  color: red;
+  width: 100%;
+}

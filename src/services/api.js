@@ -21,6 +21,8 @@ const baseUrl = process.env.REACT_APP_SERVER_BASE_URL;
 
 //promotions : /promotions
 
+// new products : /get/products/new?page=1&per_page=10
+
 export const getHeaderMenus = async lng => {
   const response = await fetch(`${baseUrl}/menus`, {
     method: 'GET',
@@ -161,7 +163,7 @@ export const getProductDetails = async alias => {
 };
 
 export const getProductDetailsWithId = async id => {
-  console.log(id)
+  console.log(id);
   const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
     method: 'GET',
   });
@@ -515,4 +517,65 @@ export const useAllPromotions = () => {
     cacheTime: 1000 * 60 * 10,
     refetchOnWindowFocus: false,
   });
+};
+
+export const useUser = token => {
+  return useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/test-token`, {
+        headers: {
+          Authorization: `bearer ${token}`,
+          test: 'test',
+        },
+        method: 'GET',
+      });
+
+      const result = await response.json();
+      return result;
+    },
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const getAllNewProducts = async (
+  shape_id,
+  color_ids,
+  size_ids,
+  page,
+  per_page,
+) => {
+  const response = await fetch(
+    `${baseUrl}/get/products/new?page=${page}&per_page=${per_page}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ shape_id, color_ids, size_ids }),
+    },
+  );
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getPayments = async () => {
+  const response = await fetch(`${baseUrl}/get/payments`, {
+    method: 'GET',
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getTestUser = async () => {
+  const response = await fetch(`${baseUrl}/user-test`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const result = await response.json();
+  return { response, result };
 };

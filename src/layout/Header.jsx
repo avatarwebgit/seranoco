@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, Search as MUISearch, Login } from '@mui/icons-material';
+import { Search as MUISearch } from '@mui/icons-material';
 import {
   Badge,
   Box,
   Drawer as MuiDrawer,
   IconButton,
   Input,
-  Avatar,
+  Menu,
+  Tooltip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,7 +20,6 @@ import close from '../assets/svg/close.svg';
 
 import { accesModalActions, drawerActions } from '../store/store';
 
-import CustomButton from '../components/CustomButton';
 import CustomSection from './CustomSection';
 import Search from '../components/Search';
 import MobileDrawerList from '../components/MobileDrawerList';
@@ -31,9 +31,12 @@ import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
 import { ReactComponent as Basket } from '../assets/svg/basket_white.svg';
 import { ReactComponent as Heart_black } from '../assets/svg/heart.svg';
 import { ReactComponent as Basket_black } from '../assets/svg/basket.svg';
+import { ReactComponent as Signin } from '../assets/svg/signin.svg';
+import { ReactComponent as Signin_White } from '../assets/svg/signin_white.svg';
 
 import classes from './Header.module.css';
 import AccessAccount from './AccessAccount';
+import LoginButton from '../components/header/LoginButton';
 const Header = ({ windowSize }) => {
   const { data: basicInformation } = useBasicInformation('en');
 
@@ -219,17 +222,23 @@ const Header = ({ windowSize }) => {
           {!isSmall && (
             <>
               {token ? (
-                <IconButton>
-                  <Avatar className={classes.avatar} />
-                </IconButton>
+                <LoginButton />
               ) : (
-                <CustomButton
-                  className={classes.login_btn}
-                  onClick={handleOpenModal}
-                  ishomepage={isHomePage}
-                >
-                  {t('login')}
-                </CustomButton>
+                <>
+                  <IconButton
+                    className={classes.login_btn}
+                    onClick={handleOpenModal}
+                    ishomepage={isHomePage}
+                  >
+                    <Tooltip title={t('login')} placement='top' arrow>
+                      {isHomePage ? (
+                        <Signin width={32} height={32} />
+                      ) : (
+                        <Signin_White width={32} height={32} />
+                      )}
+                    </Tooltip>
+                  </IconButton>
+                </>
               )}
             </>
           )}
@@ -240,17 +249,28 @@ const Header = ({ windowSize }) => {
                 // badgeContent={1}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
-                {isHomePage ? (
-                  <Heart_black
-                    width={isSmall ? '0px' : '30px'}
-                    height={isSmall ? '0px' : '30px'}
-                  />
-                ) : (
-                  <Heart
-                    width={isSmall ? '0px' : '30px'}
-                    height={isSmall ? '0px' : '30px'}
-                  />
-                )}
+                <Tooltip
+                  title={t('favorites')}
+                  placement='top'
+                  arrow
+                  sx={{
+                    '& .MuiTooltip-tooltip': {
+                      backgroundColor: 'red', // Change background color
+                    },
+                  }}
+                >
+                  {isHomePage ? (
+                    <Heart_black
+                      width={isSmall ? '0px' : '30px'}
+                      height={isSmall ? '0px' : '30px'}
+                    />
+                  ) : (
+                    <Heart
+                      width={isSmall ? '0px' : '30px'}
+                      height={isSmall ? '0px' : '30px'}
+                    />
+                  )}
+                </Tooltip>
               </Badge>
             </IconButton>
           </span>
@@ -260,17 +280,19 @@ const Header = ({ windowSize }) => {
                 badgeContent={cart?.products.length || 0}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               >
-                {isHomePage ? (
-                  <Basket_black
-                    width={isSmall ? '0px' : '30px'}
-                    height={isSmall ? '0px' : '30px'}
-                  />
-                ) : (
-                  <Basket
-                    width={isSmall ? '0px' : '30px'}
-                    height={isSmall ? '0px' : '30px'}
-                  />
-                )}
+                <Tooltip title={t('cart')} placement='top' arrow>
+                  {isHomePage ? (
+                    <Basket_black
+                      width={isSmall ? '0px' : '30px'}
+                      height={isSmall ? '0px' : '30px'}
+                    />
+                  ) : (
+                    <Basket
+                      width={isSmall ? '0px' : '30px'}
+                      height={isSmall ? '0px' : '30px'}
+                    />
+                  )}
+                </Tooltip>
               </Badge>
             </IconButton>
           </span>
@@ -341,7 +363,7 @@ const Header = ({ windowSize }) => {
                       </a>
 
                       {/* Mega menu paper */}
-                      {/* {elem.children && (
+                      {elem.children && (
                         <motion.div className={classes.mega_paper}>
                           <div className={classes.sub_menu_wrapper}>
                             <p className={classes.sub_menu_text}>test</p>
@@ -353,7 +375,7 @@ const Header = ({ windowSize }) => {
                             <span></span>
                           </div>
                         </motion.div>
-                      )} */}
+                      )}
                       {elem.children &&
                         elem.children.map((sublink, i) => {
                           return (

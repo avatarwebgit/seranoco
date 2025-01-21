@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Typography, IconButton } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,7 @@ import { getProductDetails } from '../services/api';
 import classes from './Products.module.css';
 
 const Products = ({ windowSize }) => {
-  const [params, setParams] = useSearchParams();
+  const { id } = useParams();
 
   const [zoomStyles, setZoomStyles] = useState({});
   const [detailsData, setDetailsData] = useState(null);
@@ -76,12 +76,17 @@ const Products = ({ windowSize }) => {
 
   useEffect(() => {
     const getDetails = async () => {
-      const id = location.pathname.split('=').at(1);
       const serverRes = await getProductDetails(id);
       setDetailsData(serverRes.result);
     };
     getDetails();
-  }, [params]);
+  }, [id]);
+
+  useEffect(() => {
+    if (detailsData) {
+      document.title = `Seranoco / ${detailsData.product.name}`;
+    }
+  }, [detailsData]);
 
   const handleIncrement = () => {
     if (quantity < detailsData.product.quantity) setQuantity(quantity + 1);

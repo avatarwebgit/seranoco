@@ -26,7 +26,7 @@ const Footer = () => {
           <span className={classes.image_wrapper}>
             <img
               className={classes.footer_logo}
-              src={footerData.image}
+              src={footerData.image_white}
               alt=''
             />
           </span>

@@ -46,6 +46,7 @@ const FilterLinks = () => {
         className={classes.new}
         helper_className={classes.helper}
         hepler_text={t('new')}
+        href={'new-products'}
       />
       {}
       {linkData &&

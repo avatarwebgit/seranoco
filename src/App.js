@@ -4,9 +4,11 @@ import { useSelector } from 'react-redux';
 
 import Loading from './layout/Loading';
 
-import './App.css';
 import FixedNavigation from './layout/FixedNavigation';
 import Drawer from './layout/Drawer';
+import { toast, ToastContainer } from 'react-toastify';
+
+import './App.css';
 function App() {
   const [windowSize, setWindowSize] = useState(() => {
     const width = window.innerWidth;
@@ -23,6 +25,8 @@ function App() {
   const Products = React.lazy(() => import('./pages/Products'));
   const Profile = React.lazy(() => import('./pages/Profile'));
   const PreCheckout = React.lazy(() => import('./pages/PreCheckout'));
+  const PayByCart = React.lazy(() => import('./pages/PayByCart'));
+  const New = React.lazy(() => import('./pages/New'));
 
   // const AuthExists = ({ children }) => {
   //   return token ? <Navigate to={"/"} /> : children;
@@ -93,10 +97,28 @@ function App() {
             path={`/:lng/precheckout`}
             element={<PreCheckout windowSize={windowSize} />}
           />
+          <Route
+            path={`/:lng/order/pay`}
+            element={<PayByCart windowSize={windowSize} />}
+          />
+          <Route
+            path={`/:lng/new-products`}
+            element={<New windowSize={windowSize} />}
+          />
         </Routes>
         {windowSize === 'xs' && <FixedNavigation />}
         {windowSize === 's' && <FixedNavigation />}
         <Drawer size={windowSize} />
+        <ToastContainer
+          theme='dark'
+          className={'toast'}
+          autoClose={5000}
+          newestOnTop={true}
+          closeButton={false}
+          rtl={lng === 'fa' ? true : false}
+          pauseOnFocusLoss={false}
+          pauseOnHover={true}
+        />
       </Suspense>
     </div>
   );

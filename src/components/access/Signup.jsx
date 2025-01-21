@@ -5,12 +5,12 @@ import {
   InputAdornment,
   TextField,
 } from '@mui/material';
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import Flag from 'react-world-flags';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Google, Visibility, VisibilityOff } from '@mui/icons-material';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { accesModalActions, signupActions } from '../../store/store';
@@ -30,7 +30,7 @@ const Signup = () => {
     mb: '0.5rem',
     '& .MuiInputBase-root': {
       '& fieldset': {
-        borderColor: 'rgb(0, 153, 130)',
+        borderColor: 'black',
       },
     },
     '& .MuiInputBase-input': {
@@ -42,12 +42,12 @@ const Signup = () => {
       fontSize: '14px',
     },
     '& .Mui-focused .MuiInputLabel-root': {
-      color: 'rgb(0, 153, 130)',
+      color: 'black',
       transform: 'translate(0, -5px) scale(0.75)',
     },
     '& .Mui-focused .MuiInputBase-root': {
       '& fieldset': {
-        borderColor: 'rgb(0, 153, 130)',
+        borderColor: 'black',
       },
     },
   };
@@ -72,6 +72,8 @@ const Signup = () => {
   const [isError, setIsError] = useState(false);
   const [phoneCode, setPhoneCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(null);
+  const [notMatch, setNotMatch] = useState(false);
+  const [minChar, setMinChar] = useState(false);
 
   useEffect(() => {
     const storedData = localStorage.getItem('sis');
@@ -102,22 +104,8 @@ const Signup = () => {
   const abortControllerRef = useRef(new AbortController());
   const formRef = useRef();
 
-  const handleGoogleSuccess = response => {
-    const { credential } = response;
-    // The `credential` here is a JWT token that you can send to your backend
-    console.log('Google Sign-In successful, credential:', credential);
-
-    // You can handle your signup logic here, for example:
-    // 1. Send the credential to your backend for verification and user creation.
-    // 2. Handle user redirect after successful sign-up.
-  };
-
   const handleGetScore = e => {
     console.log(e.target.value);
-  };
-
-  const handleGoogleFailure = error => {
-    console.log('Google Sign-In failed:', error);
   };
 
   const handleGoToLogin = () => {
@@ -199,6 +187,10 @@ const Signup = () => {
   const handleCloseModal = () => {
     dispatch(accesModalActions.close());
   };
+
+  const login = useGoogleLogin({
+    onSuccess: token => console.log(token),
+  });
   // api calls
 
   const getCities = async (param, signal) => {
@@ -442,14 +434,20 @@ const Signup = () => {
                 >
                   <li
                     className={classes.check_text}
-                    style={{ color: password.length > 8 ? 'green' : 'red' }}
+                    style={{
+                      color: password.trim().length > 8 ? 'green' : 'red',
+                    }}
                   >
                     {t('signup.err_8char')}
                   </li>
                   <li
                     className={classes.check_text}
                     style={{
-                      color: password === repeatPassword ? 'green' : 'red',
+                      color:
+                        password.trim().length > 0 &&
+                        password.trim() === repeatPassword.trim()
+                          ? 'green'
+                          : 'red',
                     }}
                   >
                     {t('signup.err_notm')}
@@ -471,17 +469,18 @@ const Signup = () => {
                 >
                   {t('signup.sign_up')}
                 </Button>
-                
               </div>
             </form>
             <div className={classes.oneclick_login_wrapper}>
               <div className={classes.google_login_wrapper}>
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleFailure}
-                  useOneTap={true}
-                  theme='outline'
-                />
+                <IconButton
+                  className={classes.mobile_login}
+                  disableRipple
+                  onClick={() => login()}
+                >
+                  <Google sx={{ fontSize: '20px !important' }} />
+                  <p>{t('access.swg')}</p>
+                </IconButton>
               </div>
             </div>
             <div

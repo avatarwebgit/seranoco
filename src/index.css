@@ -101,6 +101,9 @@ a:visited {
 .MuiAutocomplete-option {
   font-size: 10px !important;
 }
+.MuiTooltip-tooltip,.MuiTooltip-arrow::before{
+  background-color: #000000 !important;
+}
 :where(.css-dev-only-do-not-override-142vneq).ant-steps.ant-steps-dot
   .ant-steps-item-tail,
 :where(

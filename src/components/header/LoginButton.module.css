@@ -1,0 +1,23 @@
+.avatar_p {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin-right: 0 !important;
+  margin-right: 10px !important;
+}
+
+.avatar,
+.avatar_p {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50% !important;
+}
+
+.avatar {
+  background-color: rgb(46, 46, 46) !important;
+}
+
+.d_path {
+  display: block !important;
+  all: inherit !important;
+}

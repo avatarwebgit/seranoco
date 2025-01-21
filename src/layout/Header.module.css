@@ -24,7 +24,6 @@
   margin: 0 auto;
   position: relative;
   max-width: 1200px;
-
 }
 .logo_container {
   width: 50%;
@@ -94,18 +93,19 @@
 .mega_paper > * {
   opacity: 1;
   visibility: visible;
-  animation: fade_in 0.5s forwards;
+  animation: fade_in 0.1s forwards;
   display: flex;
 }
 .mega_paper {
   transition: all 1s;
-  height: 90vh;
+  height: 80vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.91);
   backdrop-filter: blur(20px) !important;
   position: absolute;
   top: 100%;
-  left: 0;
+  left: -12%;
+  transform: translateX(0%);
   opacity: 0;
   transition: all 0.25s;
   visibility: hidden;
@@ -216,11 +216,6 @@
 }
 .login_text {
   color: white !important;
-}
-.avatar{
-  margin-right: 10px !important;
-  width: 30px !important;
-  height: 30px !important;
 }
 
 @keyframes fade_in {

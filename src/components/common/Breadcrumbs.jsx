@@ -15,7 +15,11 @@ const Breadcrumbs = ({ linkDataProp }) => {
     <MuiBreadcrumbs
       aria-label='breadcrumb'
       separator='>'
-      sx={{ marginBottom: '1rem' }}
+      sx={{
+        marginBottom: '1rem',
+        width: '100%',
+        direction: lng === 'fa' ? 'rtl' : 'ltr',
+      }}
     >
       {linkDataProp.map((el, index) => {
         if (index === linkDataProp.length - 1) return;

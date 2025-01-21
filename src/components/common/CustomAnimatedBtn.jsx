@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 import classes from './CustomAnimatedBtn.module.css';
-const CustomAnimatedBtn = ({ children }) => {
+const CustomAnimatedBtn = ({ children, type = 'dark' }) => {
   const divRef = useRef();
   const [dimensions, setDimensions] = useState({
     width: 0,
@@ -18,6 +18,7 @@ const CustomAnimatedBtn = ({ children }) => {
 
     setDimensions({ width, height, top, left });
   }, [divRef.current]);
+  
   return (
     <div ref={divRef} className={classes.container}>
       <motion.svg
@@ -102,12 +103,12 @@ const CustomAnimatedBtn = ({ children }) => {
         <svg className={classes.neon} x={50} y={50}>
           <motion.path
             d={`M 0 0 h ${dimensions.width} v ${dimensions.height} h -${dimensions.width} v -${dimensions.height}`}
-            stroke='rgba(0, 153, 130,.5)'
+            stroke={type === 'dark' ? 'black' : 'white'}
             strokeWidth='3'
             animate={{
               pathLength: [0, 0.75],
               pathOffset: [0, 0.2],
-              opacity: [0, 1,0],
+              opacity: [0, 1, 0],
             }}
             transition={{
               duration: 3,

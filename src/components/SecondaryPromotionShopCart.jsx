@@ -9,7 +9,8 @@ import { useAllPromotions } from '../services/api';
 import Body from './filters_page/Body';
 import Card from './filters_page/Card';
 
-import classes from './SecandaryPromotionShopCart.module.css';
+import classes from './SecondaryPromotionShopCart.module.css';
+import CustomAnimatedBtn from './common/CustomAnimatedBtn';
 const SecondaryPromotionShopCart = () => {
   const [proData, setProData] = useState(null);
   const { data, isLoading } = useAllPromotions();
@@ -32,6 +33,7 @@ const SecondaryPromotionShopCart = () => {
             <section
               className={classes.main}
               style={{ backgroundImage: `url(${el.image})` }}
+              key={i}
             >
               <div className={classes.wrapper}>
                 <div className={classes.content}>
@@ -42,14 +44,15 @@ const SecondaryPromotionShopCart = () => {
                     <p className={classes.caption}>
                       {lng === 'fa' ? el.text_fa : el.text}
                     </p>
-                    <Link>
-                      <Button
+                    <Link className={classes.Link}>
+                      <CustomAnimatedBtn
                         className={classes.shop_btn}
                         size='large'
                         variant='outlined'
+                        type='light'
                       >
                         {t('shop_now')}
-                      </Button>
+                      </CustomAnimatedBtn>
                     </Link>
                   </span>
                 </div>

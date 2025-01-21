@@ -7,6 +7,7 @@
   align-items: center;
   justify-self: center;
   margin-bottom: 2rem;
+  /* box-shadow: 0 0 0 999px rgb(0, 0, 0); */
 }
 
 .logo {
@@ -23,6 +24,11 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+
+  -webkit-mask-image: linear-gradient(white, white);
+  mask-image: linear-gradient(white, white);
+  background-clip: content-box;
+  box-shadow: inset 0 0 0 999px white;
 }
 
 .sheet {
@@ -71,13 +77,14 @@
 
 .google_login_wrapper {
   margin-bottom: 10px;
-  border: 1px solid var(--primary);
+  border: 1px solid #000000;
   height: fit-content !important;
+  border-radius: 5px;
 }
 
 .google_login_wrapper * {
   border: none !important;
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 
 .mobile_login {
@@ -97,11 +104,13 @@
 }
 
 .login_btn {
-  background-color: var(--primary) !important;
-  color: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
   font-size: 10px !important;
   font-weight: 900 !important;
   margin: 1rem 0 !important;
+  padding: 12px 0 !important;
+  color: #ffffff !important;
 }
 
 .error_text,
@@ -117,15 +126,16 @@
   width: 100%;
   align-items: center;
   justify-content: center;
+  margin: 1rem 0;
 }
 
 .signup_link > p {
-  font-size: 10px;
+  font-size: 12px;
   color: #000000;
 }
 
 .signup_link > button {
-  font-size: 10px !important;
+  font-size: 12px !important;
   color: #000000 !important;
   border: none;
   outline: none;

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { useAllPromotions } from '../services/api';
 
 import classes from './PromotionalShopCard.module.css';
+import CustomAnimatedBtn from './common/CustomAnimatedBtn';
 const PromotionalShopCard = () => {
   const [proData, setProData] = useState(null);
   const { data, isLoading } = useAllPromotions();
@@ -37,13 +38,14 @@ const PromotionalShopCard = () => {
                   {lng === 'fa' ? proData.text_fa : proData.text}
                 </p>
                 <Link>
-                  <Button
+                  <CustomAnimatedBtn
                     className={classes.shop_btn}
                     size='large'
                     variant='outlined'
+                    type='light'
                   >
                     {t('shop_now')}
-                  </Button>
+                  </CustomAnimatedBtn>
                 </Link>
               </span>
             </div>

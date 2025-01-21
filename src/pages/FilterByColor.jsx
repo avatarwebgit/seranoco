@@ -13,6 +13,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
+import BreadCrumbs from '../components/common/Breadcrumbs';
 
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
@@ -45,6 +46,7 @@ import '../styles/carousel.css';
 import { scrollToTarget } from '../utils/helperFunctions';
 import TableGrid from '../components/common/TableGrid';
 import classes from './FilterByColor.module.css';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 const FilterByShape = ({ windowSize }) => {
   const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
   const [colorData, setColorData] = useState(null);
@@ -75,6 +77,8 @@ const FilterByShape = ({ windowSize }) => {
   const [selectedSizesObject, setSelectedSizesObject] = useState([]);
   const [chunkedData, setChunkedData] = useState([]);
   const [isLoadingSelectedItem, setIsLoadingSelectedItem] = useState(false);
+  const [sortedColors, setSortedColors] = useState([]);
+  const [sortedGroupColors, setSortedGroupColors] = useState([]);
 
   const formRef = useRef();
   const sizeRef = useRef();
@@ -169,6 +173,31 @@ const FilterByShape = ({ windowSize }) => {
       setGroupColors(fetchedColorData?.data.group_colors);
     }
   }, [fetchedColorData]);
+
+  useEffect(() => {
+    if (colorData && groupColors) {
+      const sortedGroupColorsP = groupColors.sort(
+        (a, b) => a.priority - b.priority,
+      );
+      setSortedGroupColors(sortedGroupColorsP);
+      setSortedColors(
+        colorData.sort((a, b) => {
+          const groupA = sortedGroupColorsP.find(
+            group => group.id === a.group_id,
+          );
+          const groupB = sortedGroupColorsP.find(
+            group => group.id === b.group_id,
+          );
+
+          if (groupA.priority === groupB.priority) {
+            return a.priority - b.priority;
+          }
+
+          return groupA.priority - groupB.priority;
+        }),
+      );
+    }
+  }, [groupColors, colorData]);
 
   const memoizedItemIds = useMemo(() => {
     return itemIds;
@@ -383,6 +412,12 @@ const FilterByShape = ({ windowSize }) => {
             <Card
               className={`${classes.size_wrapper} ${classes.colors_wrapper}`}
             >
+              <Breadcrumbs
+                linkDataProp={[
+                  { pathname: t('home'), url: ' ' },
+                  { pathname: t('shop_by_color'), url: 'shopbyshape' },
+                ]}
+              />
               {isLoadingColors && <LoadingSpinner />}
               {colorData?.length > 0 && (
                 <>
@@ -419,70 +454,64 @@ const FilterByShape = ({ windowSize }) => {
                 }}
               >
                 {colorData?.length > 0 &&
-                  colorData
-                    ?.sort((a, b) => {
-                      if (a.group_id !== b.group_id) {
-                        return a.priority - b.priority;
-                      } else {
-                        return a.group_id - b.group_id;
-                      }
-                    })
-                    .map((slide, index) => (
-                      <SwiperSlide key={index} className={classes.slide}>
-                        <div>
-                          <label
-                            htmlFor={slide.id}
-                            className={`${classes.color_slider_label} `}
-                          >
-                            <div className={classes.slider_image_wrapper}>
-                              <img
-                                src={slide.image}
-                                alt=''
-                                className={classes.slider_img}
-                              />
-                            </div>
-                          </label>
-                          <input
-                            type='checkbox'
-                            name={slide.id}
-                            id={slide.id}
-                            className={classes.slider_input}
-                            checked={selectedIds.includes(slide.id)}
-                            onChange={e => handleCheckboxChange(e, slide.id)}
-                          />
-                          <p className={classes.color_name}>
-                            {slide.description}
-                          </p>
-                        </div>
-                      </SwiperSlide>
-                    ))}
+                  sortedColors.map((slide, index) => (
+                    <SwiperSlide
+                      key={index}
+                      className={classes.slide}
+                      onClick={() => console.log(slide)}
+                    >
+                      <div>
+                        <label
+                          htmlFor={slide.id}
+                          className={`${classes.color_slider_label} `}
+                        >
+                          <div className={classes.slider_image_wrapper}>
+                            <img
+                              src={slide.image}
+                              alt=''
+                              className={classes.slider_img}
+                            />
+                          </div>
+                        </label>
+                        <input
+                          type='checkbox'
+                          name={slide.id}
+                          id={slide.id}
+                          className={classes.slider_input}
+                          checked={selectedIds.includes(slide.id)}
+                          onChange={e => handleCheckboxChange(e, slide.id)}
+                        />
+                        <p className={classes.color_name}>
+                          {slide.description}
+                        </p>
+                      </div>
+                    </SwiperSlide>
+                  ))}
               </Swiper>
               <div className={classes.thumbnail_container}>
                 {groupColors?.length > 0 &&
-                  groupColors
-                    ?.sort((a, b) => a.priority - b.priority)
-                    .map((slide, index) => {
-                      return (
-                        <>
-                          <div
-                            key={nanoid()}
-                            className={`${classes.thumbnail} ${
-                              currentActiveGroupColor === slide.id &&
-                              classes.thumbnail_active
-                            }`}
-                          >
-                            <div className={classes.slider_thumb_wrapper}>
-                              <img
-                                src={slide.image}
-                                className={classes.slider_thumb_img}
-                                alt=''
-                                onClick={() => handleThumbClick(slide.id)}
-                              />
-                            </div>
+                  sortedGroupColors.map((slide, index) => {
+                    return (
+                      <>
+                        <div
+                          key={nanoid()}
+                          className={`${classes.thumbnail} ${
+                            currentActiveGroupColor === slide.id &&
+                            classes.thumbnail_active
+                          }`}
+                        >
+                          <div className={classes.slider_thumb_wrapper}>
+                            <img
+                              src={slide.image}
+                              className={classes.slider_thumb_img}
+                              alt=''
+                              onClick={() => handleThumbClick(slide.id)}
+                            />
                           </div>
-                        </>
-                      );
-                    })}
+                        </div>
+                      </>
+                    );
+                  })}
               </div>
               {selectedIds?.length === 0 && (
                 <p className={classes.alert}>{t('select_color')}</p>

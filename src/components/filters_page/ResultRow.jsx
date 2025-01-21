@@ -111,7 +111,7 @@ const ResultRow = ({ dataProp }) => {
                   {/* Detail Column */}
                   <td className={classes.detail_text}>
                     <Link
-                      to={`/en/products/id=${el.alias}`}
+                      to={`/${lng}/products/${el.alias}`}
                       target='_blank'
                       className={classes.link}
                     >

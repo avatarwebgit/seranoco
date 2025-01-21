@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export const toPersianNumber = num => {
   const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
   return num.toString().replace(/\d/g, digit => persianDigits[digit]);
@@ -30,3 +32,8 @@ export function formatNumber(value) {
 
   return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
 }
+
+export const notify = message =>
+  toast(message, {
+    style: { fontSize: '15px' },
+  });

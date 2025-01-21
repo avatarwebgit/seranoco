@@ -76,20 +76,20 @@
 }
 
 .pay_btn {
-  font-size: 0.8rem !important;
+  font-size: 0.6rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  font-weight: 900 !important;
   padding: 10px 20px !important;
-  color: #000000 !important;
   border-radius: 5px !important;
   transition: all 0.5s !important;
-  background: rgb(255, 255, 255);
   border: 1px solid #000000 !important;
+  direction: rtl !important;
+  background-color: black !important;
+  color: #ffffff !important;
 }
 
-.pay_btn:hover {
+/* .pay_btn:hover {
   background: rgb(255, 234, 117);
   border: 1px solid rgba(0, 0, 0, 0) !important;
   animation: pay_hover 1s forwards 0.3s;
@@ -116,7 +116,7 @@
     background-size: 200% 100%;
     background-position: 150%;
   }
-}
+} */
 
 .total {
   display: flex;

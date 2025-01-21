@@ -37,8 +37,12 @@
 }
 .shop_btn {
   margin-top: 1rem !important;
+  background-color: var(--primary) !important;
+  color: #000000 !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  margin: 10px 0 !important;
   color: #ffffff !important;
-  border-color: #ffffff !important;
 }
 .title {
   font-size: 1.5rem;

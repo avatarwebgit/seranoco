@@ -86,13 +86,15 @@
 
     "acc_info": "Account Information",
     "favorites": "Favorites",
+    "'cart":"Cart",
 
     "pending": "Pending Payment",
     "order_status": "Order Status",
 
     "log_out": "Logout",
 
-    "support": "Support"
+    "support": "Support",
+    "account": "Account"
   },
 
   "shopping_cart": {
@@ -105,7 +107,9 @@
     "error": "Email or password is wrong please try again.",
     "error_empty": "Please Enter Email and Password",
     "create_acc": "Don't have an account?",
-    "have_acc": "Have an account?"
+    "have_acc": "Have an account?",
+    "swg": "Sign in with Google",
+    "swotp": "Sign in with OTP"
   },
 
   "signup": {
@@ -147,5 +151,13 @@
     "submit": "ُSubmit",
     "off": "Discount",
     "dprice": "Price After Discount"
+  },
+
+  "wellcome": "Wellcome",
+  "addtocart":"Add To Cart",
+
+  "newpage":{
+    "av":"In Stock",
+    "notav":"Not Available"
   }
 }
