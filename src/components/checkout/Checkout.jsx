@@ -121,10 +121,7 @@ const Checkout = ({ isDataValid }) => {
   };
 
   return (
-    <div
-      className={classes.main}
-      style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
-    >
+    <div className={classes.main}>
       <form ref={formRef} onSubmit={handleSubmit} className={classes.form}>
         <FormControl fullWidth>
           <div className={classes.input_wrapper}>
@@ -134,7 +131,7 @@ const Checkout = ({ isDataValid }) => {
               label={t('pc.receiver') + ' ' + t('signup.fname')}
               type='text'
               size='medium'
-              sx={inputStyles}
+              sx={{ ...inputStyles }}
               onChange={e => {
                 setFirstname(e.target.value);
               }}
@@ -271,7 +268,7 @@ const Checkout = ({ isDataValid }) => {
           className={classes.error_text}
           style={{
             direction: lng === 'fa' ? 'rtl' : 'ltr',
-            opacity: isError ? '1' : '0',
+            opacity: isError ? 1 : 0,
           }}
         >
           {t('signup.fillout')}

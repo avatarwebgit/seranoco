@@ -79,7 +79,7 @@ const OTP = () => {
     <div className={classes.content_wrapper}>
       <div className={classes.sheet}>
         <div className={classes.logo_wrapper}>
-          <img className={classes.logo} src={logo} alt='' />
+          <img className={classes.logo} src={logo} alt='' loading='lazy' />
         </div>
         <div className={classes.otp_wrapper}>
           <div className={classes.actions}>

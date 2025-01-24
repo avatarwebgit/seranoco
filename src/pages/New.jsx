@@ -43,13 +43,14 @@ import '../styles/carousel.css';
 import classes from './New.module.css';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import Product from '../components/new/Product';
+import { scrollToTarget } from '../utils/helperFunctions';
 const New = ({ windowSize }) => {
   const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
   const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
-  const [colorData, setColorData] = useState(null);
+  const [colorData, setColorData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [groupColors, setGroupColors] = useState([]);
-  const [shapeFormEntries, setShapeFormEntries] = useState('46');
+  const [shapeFormEntries, setShapeFormEntries] = useState(46);
   const [dimensionEntries, setDimensionEntries] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +62,7 @@ const New = ({ windowSize }) => {
   const [page, setPage] = useState(1);
   const [isFilteredProductsLoading, setIsFilteredProductsLoading] =
     useState(false);
-  const [ItemsPerPage, setItemsPerPage] = useState(20);
+  const [ItemsPerPage, setItemsPerPage] = useState(24);
   const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(1);
   const [selectedSizesObject, setSelectedSizesObject] = useState([]);
   const [sortedColors, setSortedColors] = useState([]);
@@ -127,14 +128,21 @@ const New = ({ windowSize }) => {
   };
 
   const handleResetSelections = () => {
-    setShapeFormEntries([]);
+    setShapeFormEntries('');
     setDimensionEntries([]);
     setSelectedIds([]);
     dispatch(productDetailActions.reset());
+    setProductDetails([]);
+    setColorData([]);
+    setGroupColors([]);
+    setSizeData([]);
+    scrollToTarget(formRef, 1000);
+    setPage(1);
   };
 
   useEffect(() => {
     dispatch(productDetailActions.reset());
+    handleShapeClick('', 46);
     document.title = 'Seranoco - New Products';
     getInfo();
   }, []);
@@ -177,25 +185,18 @@ const New = ({ windowSize }) => {
   }, [shapesData]);
 
   const handleShapeClick = async (e, id) => {
-    setProductDetails([]);
-    setIsLoading(true);
+    handleResetSelections();
+
     try {
-      //   const allProductsRes = await getPaginatedProductsByShape(
-      //     id,
-      //     page,
-      //     ItemsPerPage,
-      //   );
-      //   if (allProductsRes.response.ok) {
-      //     console.log(allProductsRes.result);
-      //     setProductDetails(allProductsRes.result.data.products.data);
-      //     setLastPage(allProductsRes.result.data.products.last_page);
-      //     setPage(allProductsRes.result.data.products.current_page);
-      //     console.log(allProductsRes.result);
-      //   }
-    } catch (error) {
-      if (error.name !== 'AbortError') {
-        // console.error('Fetch error:', error);
+      const serverRes = await getAllAtrributes(id);
+
+      if (serverRes.response.ok) {
+        setColorData(serverRes?.result.data.colors);
+        setGroupColors(serverRes?.result.data.group_colors);
+        setSizeData(serverRes?.result.data.sizes);
       }
+    } catch (error) {
+      // console.log(error)
     } finally {
       setIsLoading(false);
     }
@@ -246,29 +247,6 @@ const New = ({ windowSize }) => {
 
   const prevDimensionEntriesRef = useRef(dimensionEntries);
   const prevSelectedIdsRef = useRef(selectedIds);
-
-  const getInitialSizes = async (id, options) => {
-    const serverRes = await getAllAtrributes(id, options);
-    try {
-      if (serverRes.response.ok) {
-        setColorData(serverRes?.result.data.colors);
-        setGroupColors(serverRes?.result.data.group_colors);
-        setSizeData(serverRes?.result.data.sizes);
-      }
-    } catch (error) {
-      // console.log(error)
-    }
-  };
-
-  useEffect(() => {
-    if (shapeFormEntries) {
-      // dataAbortRef.current.abort();
-      // dataAbortRef.current = new AbortController();
-      getInitialSizes(shapeFormEntries, {
-        signal: dataAbortRef.current.signal,
-      });
-    }
-  }, [shapeFormEntries]);
 
   useEffect(() => {
     abortControllerRef.current.abort();
@@ -414,10 +392,10 @@ const New = ({ windowSize }) => {
             <Card
               className={`${classes.size_wrapper} ${classes.colors_wrapper}`}
             >
-              {!shapeFormEntries && shapesData?.length > 0 && (
+              {!shapeFormEntries && (
                 <p className={classes.alert}>{t('select_shape')}</p>
               )}
-              {isLoadingColors && <LoadingSpinner />}
+              {isLoading && <LoadingSpinner />}
               {colorData?.length > 9 && shapeFormEntries && (
                 <>
                   <button className={classes.prev_btn} onClick={handlePrev}>
@@ -428,65 +406,70 @@ const New = ({ windowSize }) => {
                   </button>
                 </>
               )}
-              <Swiper
-                modules={[Navigation, Thumbs, Pagination]}
-                className={classes.swiper}
-                spaceBetween={isSmallPage ? 5 : 9}
-                slidesPerView={slidesPerView}
-                onSlideChange={swiper => {
-                  setActiveIndex(swiper.activeIndex);
-                }}
-                onSwiper={swiper => {
-                  setActiveIndex(swiper.activeIndex);
-                }}
-                thumbs={{
-                  swiper:
-                    thumbsSwiper && !thumbsSwiper.destroyed
-                      ? thumbsSwiper
-                      : null,
-                }}
-                ref={sliderRef}
-                pagination={{
-                  clickable: true,
-                  dynamicBullets: true,
-                  enabled: isSmallPage,
-                }}
-                centeredSlides={colorData?.length > 9 ? false : true}
-              >
-                {colorData?.length > 0 &&
-                  shapeFormEntries &&
-                  sortedColors.map((slide, index) => (
-                    <SwiperSlide key={index} className={classes.slide}>
-                      <div>
-                        <label
-                          htmlFor={slide.id}
-                          className={`${classes.color_slider_label} `}
-                        >
-                          <div className={classes.slider_image_wrapper}>
-                            <img
-                              src={slide.image}
-                              alt=''
-                              className={classes.slider_img}
-                            />
-                          </div>
-                        </label>
-                        <input
-                          type='checkbox'
-                          name={slide.id}
-                          id={slide.id}
-                          className={classes.slider_input}
-                          checked={selectedIds.includes(slide.id)}
-                          onChange={e =>
-                            handleCheckboxChange(e, slide.id, slide)
-                          }
-                        />
-                        <p className={classes.color_name}>
-                          {slide.description}
-                        </p>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
+              {colorData.length > 0 && (
+                <Swiper
+                  modules={[Navigation, Thumbs, Pagination]}
+                  className={classes.swiper}
+                  spaceBetween={isSmallPage ? 5 : 9}
+                  slidesPerView={slidesPerView}
+                  onSlideChange={swiper => {
+                    setActiveIndex(swiper.activeIndex);
+                  }}
+                  onSwiper={swiper => {
+                    setActiveIndex(swiper.activeIndex);
+                  }}
+                  thumbs={{
+                    swiper:
+                      thumbsSwiper && !thumbsSwiper.destroyed
+                        ? thumbsSwiper
+                        : null,
+                  }}
+                  ref={sliderRef}
+                  pagination={{
+                    clickable: true,
+                    dynamicBullets: true,
+                    enabled: isSmallPage,
+                  }}
+                  centeredSlides={
+                    colorData?.length < slidesPerView || colorData?.length < 9
+                  }
+                >
+                  {colorData?.length > 0 &&
+                    shapeFormEntries &&
+                    sortedColors.map((slide, index) => (
+                      <SwiperSlide key={index} className={classes.slide}>
+                        <div>
+                          <label
+                            htmlFor={slide.id}
+                            className={`${classes.color_slider_label} `}
+                          >
+                            <div className={classes.slider_image_wrapper}>
+                              <img
+                                src={slide.image}
+                                alt=''
+                                className={classes.slider_img}
+                                loading='lazy'
+                              />
+                            </div>
+                          </label>
+                          <input
+                            type='checkbox'
+                            name={slide.id}
+                            id={slide.id}
+                            className={classes.slider_input}
+                            checked={selectedIds.includes(slide.id)}
+                            onChange={e =>
+                              handleCheckboxChange(e, slide.id, slide)
+                            }
+                          />
+                          <p className={classes.color_name}>
+                            {slide.description}
+                          </p>
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                </Swiper>
+              )}
               <div className={classes.thumbnail_container}>
                 {groupColors?.length > 0 &&
                   shapeFormEntries &&
@@ -506,6 +489,7 @@ const New = ({ windowSize }) => {
                               className={classes.slider_thumb_img}
                               alt=''
                               onClick={() => handleThumbClick(slide.id)}
+                              loading='lazy'
                             />
                           </div>
                         </div>
@@ -515,7 +499,7 @@ const New = ({ windowSize }) => {
               </div>
             </Card>
           }
-          {sizeData?.length > 0 && sizeData && <Divider text={'Size mm'} />}
+          {shapeFormEntries !== '' && <Divider text={'Size mm'} />}
           {isLoading && <LoadingSpinner />}
           {shapeFormEntries && (
             <Card className={classes.size_wrapper}>
@@ -534,7 +518,9 @@ const New = ({ windowSize }) => {
                     );
                   })}
               </form>
-              {(shapeFormEntries || colorData?.length > 0) && (
+              {(shapeFormEntries.length > 0 ||
+                colorData?.length > 0 ||
+                productDetails.length > 0) && (
                 <button
                   className={classes.reset_btn}
                   onClick={handleResetSelections}

@@ -218,6 +218,12 @@
   color: white !important;
 }
 
+.mobile_actions_wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @keyframes fade_in {
   0% {
     visibility: visible;

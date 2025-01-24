@@ -54,12 +54,11 @@ const LoginButton = () => {
     dispatch(userActions.reset());
   };
   return (
-    <Dropdown>
-      <IconButton disableRipple={true}>
-        <MenuButton className={classes.avatar_p} onClick={handleMenuOpen}>
+    <div style={{marginTop:'8px'}}>
+    <Dropdown >
+      <MenuButton className={classes.avatar_p} onClick={handleMenuOpen}>
           <Avatar className={classes.avatar} />
-        </MenuButton>
-      </IconButton>
+      </MenuButton>
       <Menu
         size='sm'
         sx={{ padding: '0', direction: lng === 'fa' ? 'rtl' : 'ltr' }}
@@ -85,7 +84,7 @@ const LoginButton = () => {
           <Logout sx={{ fontSize: '20px' }} /> Logout
         </MenuItem>
       </Menu>
-    </Dropdown>
+    </Dropdown></div>
   );
 };
 

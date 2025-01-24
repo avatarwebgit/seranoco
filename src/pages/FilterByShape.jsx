@@ -38,13 +38,13 @@ import {
   useColors,
   getProductsByShape,
   getProductDetailsWithId,
-  getColors,
   getAllAtrributes,
 } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
 import { scrollToTarget } from '../utils/helperFunctions';
 import TableGrid from '../components/common/TableGrid';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -54,14 +54,13 @@ import 'swiper/css/scrollbar';
 import '../styles/carousel.css';
 
 import classes from './FilterByShape.module.css';
-import Breadcrumbs from '../components/common/Breadcrumbs';
 const FilterByShape = ({ windowSize }) => {
   const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
   const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
   const [colorData, setColorData] = useState(null);
   const [sizeData, setSizeData] = useState([]);
   const [groupColors, setGroupColors] = useState([]);
-  const [shapeFormEntries, setShapeFormEntries] = useState(null);
+  const [shapeFormEntries, setShapeFormEntries] = useState(46);
   const [dimensionEntries, setDimensionEntries] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +81,7 @@ const FilterByShape = ({ windowSize }) => {
   const [isLoadingSelectedItem, setIsLoadingSelectedItem] = useState(false);
   const [sortedColors, setSortedColors] = useState([]);
   const [sortedGroupColors, setSortedGroupColors] = useState([]);
+  const [isTableDataLoading, setIsTableDataLoading] = useState(false);
 
   const formRef = useRef();
   const sizeRef = useRef();
@@ -151,15 +151,18 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   const handleResetSelections = () => {
-    setShapeFormEntries([]);
+    setShapeFormEntries('');
     setDimensionEntries([]);
     setSelectedIds([]);
     setTableData([]);
     setChunkedData([]);
+    setSizeData([]);
     dispatch(productDetailActions.reset());
+    scrollToTarget(formRef, 200);
   };
 
   useEffect(() => {
+    document.title = 'Seranoco - Shop By Shape'
     dispatch(productDetailActions.reset());
   }, []);
 
@@ -215,6 +218,8 @@ const FilterByShape = ({ windowSize }) => {
 
   const handleShapeClick = async (e, id) => {
     setProductDetails([]);
+    setChunkedData([])
+    setTableData([])
     setIsLoading(true);
     try {
       //   const allProductsRes = await getPaginatedProductsByShape(
@@ -246,6 +251,8 @@ const FilterByShape = ({ windowSize }) => {
       }
     };
     if (selectedIds.length > 0) {
+       setChunkedData([]);
+      setTableData([]);
       getSizes();
     }
   }, [selectedIds]);
@@ -396,6 +403,7 @@ const FilterByShape = ({ windowSize }) => {
   ) => {
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
+    setIsTableDataLoading(true);
     try {
       const serverRes = await getProductsByShape(
         shpaId,
@@ -410,6 +418,8 @@ const FilterByShape = ({ windowSize }) => {
       }
     } catch (error) {
       // console.error('Error fetching products: ', error);
+    } finally {
+      setIsTableDataLoading(false);
     }
   };
 
@@ -528,6 +538,7 @@ const FilterByShape = ({ windowSize }) => {
                               src={slide.image}
                               alt=''
                               className={classes.slider_img}
+                              loading='lazy'
                             />
                           </div>
                         </label>
@@ -567,6 +578,7 @@ const FilterByShape = ({ windowSize }) => {
                               className={classes.slider_thumb_img}
                               alt=''
                               onClick={() => handleThumbClick(slide.id)}
+                              loading='lazy'
                             />
                           </div>
                         </div>
@@ -595,7 +607,7 @@ const FilterByShape = ({ windowSize }) => {
                     );
                   })}
               </form>
-              {(shapeFormEntries || colorData?.length > 0) && (
+              {shapeFormEntries !== '' && (
                 <button
                   className={classes.reset_btn}
                   onClick={handleResetSelections}
@@ -606,7 +618,7 @@ const FilterByShape = ({ windowSize }) => {
             </Card>
           )}
           <Card className={`${classes.size_wrapper}`}>
-            {isLoadingColors && <LoadingSpinner />}
+            {isTableDataLoading && <LoadingSpinner />}
             {chunkedData?.length > 1 && (
               <>
                 <button

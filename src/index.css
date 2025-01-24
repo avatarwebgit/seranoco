@@ -101,8 +101,13 @@ a:visited {
 .MuiAutocomplete-option {
   font-size: 10px !important;
 }
-.MuiTooltip-tooltip,.MuiTooltip-arrow::before{
+.MuiTooltip-tooltip,
+.MuiTooltip-arrow::before {
   background-color: #000000 !important;
+  font-size: 10px !important;
+}
+.MuiTooltip-arrow {
+  font-size: 10px !important;
 }
 :where(.css-dev-only-do-not-override-142vneq).ant-steps.ant-steps-dot
   .ant-steps-item-tail,
@@ -115,6 +120,9 @@ a:visited {
 :where(.css-dev-only-do-not-override-142vneq).ant-steps.ant-steps-label-vertical
   .ant-steps-item-content {
   margin-top: -25px !important;
+}
+.css-12eb3rq-MuiStepLabel-label.MuiStepLabel-alternativeLabel {
+  margin-top: 0px !important;
 }
 @media only screen and (max-width: 480px) {
   .MuiBadge-badge {

@@ -223,8 +223,8 @@
   font-size: 1rem !important;
   margin: 1rem 0 !important;
   font-weight: 100 !important;
-  color: var(--color-grey-1) !important;
-  width: 200px !important;
+  color: #000000 !important;
+  width: 100% !important;
   line-height: 1.5rem !important;
 }
 

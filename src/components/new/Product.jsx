@@ -70,7 +70,12 @@ const Product = ({ dataProps, up, av }) => {
   return (
     <div className={classes.main}>
       <div className={classes.img_wrapper}>
-        <img className={classes.img} src={data?.product.primary_image} alt='' />
+        <img
+          className={classes.img}
+          src={data?.product.primary_image}
+          alt=''
+          loading='lazy'
+        />
       </div>
       <p className={classes.name}>{data?.product.name}</p>
       <div

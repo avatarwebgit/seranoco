@@ -47,6 +47,7 @@ const CartProduct = data => {
               <img
                 src={productData.primary_image}
                 alt=''
+                loading='lazy'
                 onLoad={() => setIsLoading(false)}
                 onError={() => setIsLoading(false)}
               />

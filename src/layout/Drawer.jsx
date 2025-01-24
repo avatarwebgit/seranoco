@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartActions, drawerActions } from '../store/store';
 import { ReactComponent as Close } from '../assets/svg/close.svg';
 import { IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { KeyboardArrowRight } from '@mui/icons-material';
+
+import CartProduct from '../components/card/CartProduct';
 
 import classes from './Drawer.module.css';
-import { Keyboard, KeyboardArrowRight, KeyboardBackspace } from '@mui/icons-material';
-import CartProduct from '../components/card/CartProduct';
-import { Link } from 'react-router-dom';
 const Drawer = ({ children, size }) => {
   const dispatch = useDispatch();
-
   const drawerState = useSelector(state => state.drawerStore.drawerOpen);
   const cart = useSelector(state => state.cartStore);
 

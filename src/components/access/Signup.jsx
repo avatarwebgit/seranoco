@@ -225,7 +225,7 @@ const Signup = () => {
     <div className={classes.content_wrapper}>
       <div className={classes.sheet}>
         <div className={classes.logo_wrapper}>
-          <img className={classes.logo} src={logo} alt='' />
+          <img className={classes.logo} src={logo} alt='' loading='lazy' />
         </div>
         <div className={classes.login_wrapper}>
           <div className={classes.actions}>
@@ -421,7 +421,7 @@ const Signup = () => {
                   className={classes.error_text}
                   style={{
                     direction: lng === 'fa' ? 'rtl' : 'ltr',
-                    opacity: isError ? '1' : '0',
+                    opacity: isError ? 1 : 0,
                   }}
                 >
                   {t('signup.fillout')}

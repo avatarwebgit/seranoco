@@ -40,7 +40,7 @@ const ShoppingCart = () => {
             <tr className={classes.tr} key={el.id}>
               <td className={classes.td}>
                 <div className={classes.img_wrapper}>
-                  <img src={el.primary_image} alt='' />
+                  <img src={el.primary_image} alt='' loading='lazy' />
                 </div>
               </td>
               <td className={classes.td}>{el.color}</td>

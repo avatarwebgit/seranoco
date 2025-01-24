@@ -97,7 +97,6 @@ const ResultRow = ({ dataProp }) => {
         <tbody>
           {data &&
             data.map(el => {
-              console.log(el);
               return (
                 <tr className={classes.tr} key={el.variation_id}>
                   {/* Image Column */}
@@ -106,6 +105,7 @@ const ResultRow = ({ dataProp }) => {
                       src={el?.primary_image}
                       alt={el.details}
                       onLoad={() => setIsLoadingImage(false)}
+                      loading='lazy'
                     />
                   </td>
                   {/* Detail Column */}

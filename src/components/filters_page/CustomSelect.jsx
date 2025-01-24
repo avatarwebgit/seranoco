@@ -21,6 +21,7 @@ const CustomSelect = ({
         title={description}
         onClick={onClick}
         className={`${classes.main}  ${isLoading ? classes.o0 : classes.o1}`}
+        arrow
       >
         <input
           className={classes.input}

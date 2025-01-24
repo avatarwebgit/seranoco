@@ -37,6 +37,7 @@
     "react-toastify": "^11.0.3",
     "react-world-flags": "^1.6.0",
     "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "swiper": "^11.1.15",
     "typescript": "^5.7.2",
     "web-vitals": "^4.2.4"

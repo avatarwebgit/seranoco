@@ -40,15 +40,16 @@ const BannerCarousel = () => {
                   className={classes.product_img_wrapper}
                   style={{
                     width: '100vw',
-                    height: '50px',
+                    height: '25px',
                   }}
                 >
                   <img
                     src={slide.image}
                     alt=''
+                    loading='lazy'
                     style={{
                       width: '100vw',
-                      height: '50px',
+                      height: '25px',
                       objectFit: 'cover',
                     }}
                   />
@@ -59,7 +60,7 @@ const BannerCarousel = () => {
         </Swiper>
       ) : (
         <Skeleton
-          sx={{ width: '100vw', height: '50px' }}
+          sx={{ width: '100vw', height: '25px' }}
           animation='wave'
           variant='rectangular'
         />
