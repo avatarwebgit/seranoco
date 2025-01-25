@@ -19,6 +19,7 @@ import { CustomButton } from '../components/account/CustomButton';
 
 import classes from './Profile.module.css';
 import OrderStatus from '../components/account/OrderStatus';
+import AccountInformaion from '../components/account/AccountInformaion';
 
 const Profile = ({ windowSize }) => {
   const lng = useSelector(state => state.localeStore.lng);
@@ -32,7 +33,7 @@ const Profile = ({ windowSize }) => {
         {
           id: 'btn1',
           title: t('profile.acc_info'),
-          content: 'Content for Button 1',
+          content: <AccountInformaion />,
         },
         {
           id: 'btn2',

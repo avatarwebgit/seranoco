@@ -5,7 +5,7 @@ import {
   InputAdornment,
   TextField,
 } from '@mui/material';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';

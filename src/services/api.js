@@ -290,7 +290,6 @@ export const getCsrfToken = async () => {
 };
 
 export const sendRegistrationData = async data => {
-  await getCsrfToken();
 
   const response = await fetch(`${baseUrl}/register`, {
     method: 'POST',
@@ -298,7 +297,6 @@ export const sendRegistrationData = async data => {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-    credentials: 'include',
     body: JSON.stringify({ ...data }),
   });
   const result = await response.json();
@@ -523,7 +521,7 @@ export const useUser = token => {
   return useQuery({
     queryKey: ['user'],
     queryFn: async () => {
-      const response = await fetch(`${baseUrl}/test-token`, {
+      const response = await fetch(`${baseUrl}/user`, {
         headers: {
           Authorization: `bearer ${token}`,
           test: 'test',
@@ -564,17 +562,6 @@ export const getAllNewProducts = async (
 export const getPayments = async () => {
   const response = await fetch(`${baseUrl}/get/payments`, {
     method: 'GET',
-  });
-  const result = await response.json();
-  return { response, result };
-};
-
-export const getTestUser = async () => {
-  const response = await fetch(`${baseUrl}/user-test`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   });
   const result = await response.json();
   return { response, result };
