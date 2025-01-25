@@ -94,6 +94,7 @@ const Login = () => {
   const handleLogin = async () => {
     const serverRes = await login(email, password);
     if (serverRes.response.ok) {
+      console.log(serverRes)
       dispatch(userActions.set(serverRes.result.token));
       dispatch(accesModalActions.close());
       notify('Wellcome Back');

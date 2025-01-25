@@ -77,12 +77,15 @@
 
   "my_acc": "My Account",
   "byorder": "By Order",
+  "add":"Add",
 
   "profile": {
     "orders": "Orders",
     "item_list": "Item Lists",
     "ticket": "Ticket",
     "contact": "Contact",
+    "addresses":"Adresses",
+    "add_add":"Add New Address",
 
     "acc_info": "Account Information",
     "favorites": "Favorites",
@@ -160,10 +163,5 @@
   "newpage": {
     "av": "In Stock",
     "notav": "Not Available"
-  },
-
-  "profile":{
-    "addresses":"Adresses"
-
   }
 }

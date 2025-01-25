@@ -163,7 +163,6 @@ export const getProductDetails = async alias => {
 };
 
 export const getProductDetailsWithId = async id => {
-  console.log(id);
   const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
     method: 'GET',
   });
@@ -570,9 +569,30 @@ export const updateUser = async token => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: token,
+      Authorization: `bearer ${token}`,
     },
   });
   const result = await response.json();
+  return { response, result };
+};
+
+export const addAddress = async (
+  token,
+  title,
+  tel,
+  address,
+  city_id,
+  postal_code,
+) => {
+  const response = await fetch(`${baseUrl}/add/address/user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ title, tel, address, city_id, postal_code }),
+  });
+  const result = await response.json();
+  console.log(response, result);
   return { response, result };
 };

@@ -6,6 +6,8 @@ import {
   InputAdornment,
   TextField,
 } from '@mui/material';
+import Flag from 'react-world-flags';
+import { getCitiesByCountry } from '../../services/api';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -13,17 +15,16 @@ import { useTranslation } from 'react-i18next';
 import { formatNumber } from '../../utils/helperFunctions';
 
 import classes from './Checkout.module.css';
-import { getCitiesByCountry } from '../../services/api';
-import Flag from 'react-world-flags';
 const Checkout = ({ isDataValid }) => {
   const lng = useSelector(state => state.localeStore.lng);
+  
   const inputStyles = {
     mb: '0.5rem',
     width: '49%',
 
     '& .MuiInputBase-root': {
       '& fieldset': {
-        borderColor: 'rgb(0, 153, 130)',
+        borderColor: '#000000',
       },
     },
     '& .MuiInputBase-input': {
@@ -35,12 +36,12 @@ const Checkout = ({ isDataValid }) => {
       fontSize: '14px',
     },
     '& .Mui-focused .MuiInputLabel-root': {
-      color: 'rgb(0, 153, 130)',
+      color: '#000000',
       transform: 'translate(0, -5px) scale(0.75)',
     },
     '& .Mui-focused .MuiInputBase-root': {
       '& fieldset': {
-        borderColor: 'rgb(0, 153, 130)',
+        borderColor: '#000000',
       },
     },
   };

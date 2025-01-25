@@ -45,7 +45,7 @@ const PreCheckout = ({ windowSize }) => {
     dispatch(drawerActions.close());
     dispatch(cartActions.calculateTotalPrice());
     p();
-    console.log(card.finalPayment);
+    console.log(card);
   }, []);
 
   const handleGotoNextStep = () => {
@@ -75,7 +75,7 @@ const PreCheckout = ({ windowSize }) => {
               style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
             >
               <span className={classes.title}>{t('pc.payment')}</span>
-              {/* {card && (
+              {card && (
                 <>
                   {step !== 2 ? (
                     <span className={classes.amont}>
@@ -93,39 +93,35 @@ const PreCheckout = ({ windowSize }) => {
                     </span>
                   )}
                 </>
-              )} */}
+              )}
             </div>
             <div
               className={classes.total_wrapper}
               style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
             >
               <span className={classes.title}>{t('pc.off')}</span>
-              {/* {step !== 2 ? (
+              {step !== 2 ? (
                 <span className={classes.amont}>
                   {lng !== 'fa'
                     ? card.totalPrice.toFixed(2)
-                    : formatNumber(
-                        card.totalPrice * 50000,
-                      ).toFixed(2)}
+                    : formatNumber(card.totalPrice * 50000).toFixed(2)}
                   &nbsp;{t('m_unit')}
                 </span>
               ) : (
                 <span className={classes.amont}>
                   {lng !== 'fa'
                     ? card.finalPayment.toFixed(2)
-                    : formatNumber(
-                        card.finalPayment * 50000,
-                      ).toFixed(2)}
+                    : formatNumber(card.finalPayment * 50000).toFixed(2)}
                   &nbsp;{t('m_unit')}
                 </span>
-              )} */}
+              )}
             </div>
             <div
               className={classes.total_wrapper}
               style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
             >
               <span className={classes.title}>{t('pc.dprice')}</span>
-              {/* {step !== 2 ? (
+              {step !== 2 ? (
                 <span className={classes.amont}>
                   {lng !== 'fa'
                     ? card.totalPrice.toFixed(2)
@@ -143,7 +139,7 @@ const PreCheckout = ({ windowSize }) => {
                       ).toFixed(2)}
                   &nbsp;{t('m_unit')}
                 </span>
-              )} */}
+              )}
             </div>
             <Button
               className={classes.step_btn}
@@ -162,7 +158,7 @@ const PreCheckout = ({ windowSize }) => {
             >
               {t('pc.pstep')}
             </Button>
-            {true && <PaymentMethod dataProps={paymentMethods} />}
+            {step===2 && <PaymentMethod dataProps={paymentMethods} />}
           </div>
         </Card>
       </Body>

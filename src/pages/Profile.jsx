@@ -47,6 +47,7 @@ const Profile = ({ windowSize }) => {
     {
       id: 'accordion1',
       title: t('my_acc'),
+      expanded: true,
       buttons: [
         {
           id: 'btn1',
@@ -109,6 +110,12 @@ const Profile = ({ windowSize }) => {
     setSelectedContent(content);
   };
 
+  const handleAccordionChange = accordionId => {
+    return accordionsData.some(accordion =>
+      accordion.buttons.some(button => button.id === selectedButtonId),
+    );
+  };
+
   return (
     <div className={classes.main}>
       <Header windowSize={windowSize} />
@@ -123,7 +130,10 @@ const Profile = ({ windowSize }) => {
           <section className={classes.container}>
             <div className={classes.accordion_wrapper}>
               {accordionsData.map(accordion => (
-                <Accordion key={accordion.id}>
+                <Accordion
+                  key={accordion.id}
+                  // expanded={handleAccordionChange(accordion.id)}
+                >
                   <AccordionSummary
                     expandIcon={<Add fontSize='10px' />}
                     aria-controls={`${accordion.id}-content`}

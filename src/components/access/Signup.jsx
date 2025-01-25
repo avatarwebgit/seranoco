@@ -177,7 +177,7 @@ const Signup = () => {
           city_id: selectedCity.id,
           country_id: selectedCountry.id,
         });
-        // dispatch(accesModalActions.otp());
+        dispatch(accesModalActions.otp());
       } catch (error) {
         console.error('Registration failed:', error);
       }

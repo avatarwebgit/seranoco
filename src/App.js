@@ -4,7 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 
 import Loading from './layout/Loading';
-import { accesModalActions, persistor, store, userActions } from './store/store';
+import {
+  accesModalActions,
+  persistor,
+  store,
+  userActions,
+} from './store/store';
 
 import FixedNavigation from './layout/FixedNavigation';
 import Drawer from './layout/Drawer';
@@ -33,11 +38,6 @@ function App() {
 
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
-
-  useEffect(() => {
-    console.log(token)
-  }, [token])
-  
 
   const dispatch = useDispatch();
 

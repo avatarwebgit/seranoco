@@ -10,44 +10,83 @@ import { ReactComponent as Edit } from '../../assets/svg/edit-black.svg';
 
 import classes from './AccountInformation.module.css';
 import { IconButton, Input } from '@mui/material';
+import AddressTable from './accountInformation/AddressTable';
+
 const AccountInformaion = () => {
   const { t } = useTranslation();
   const userData = useSelector(state => state.userStore.user);
   const lng = useSelector(state => state.localeStore.lng);
 
-  const [user, setuser] = useState(null);
-  const [fields, setfields] = useState([
-    { label: t('signup.fname'), value: null, updateAble: true },
-    { label: t('signup.lname'), value: null, updateAble: true },
-    { label: t('signup.email'), value: null, updateAble: true },
+  const [user, setUser] = useState(null);
+  const [fields, setFields] = useState([
+    {
+      label: t('signup.fname'),
+      value: null,
+      updateAble: true,
+      sec: 'username',
+    },
+    {
+      label: t('signup.lname'),
+      value: null,
+      updateAble: true,
+      sec: 'lastname',
+    },
+    { label: t('signup.email'), value: null, updateAble: true, sec: 'email' },
     { label: t('signup.pnumber'), value: null, updateAble: false },
     { label: t('signup.country'), value: null, updateAble: false },
     { label: t('signup.city'), value: null, updateAble: false },
   ]);
 
+  const [edits, setEdits] = useState({
+    username: false,
+    lastname: false,
+    email: false,
+  });
+
   useEffect(() => {
     if (userData) {
-      setuser(userData);
-      setfields([
+      setUser(userData);
+      setFields([
         {
           label: t('signup.fname'),
           value: userData.first_name,
           updateAble: true,
+          sec: 'username',
         },
         {
           label: t('signup.lname'),
           value: userData.last_name,
           updateAble: true,
+          sec: 'lastname',
         },
-        { label: t('signup.email'), value: userData.email, updateAble: true },
+        {
+          label: t('signup.email'),
+          value: userData.email,
+          updateAble: true,
+          sec: 'email',
+        },
         { label: t('signup.pnumber'), value: userData.cellphone },
-        { label: t('signup.country'), value: null },
-        { label: t('signup.city'), value: null },
+        { label: t('signup.country'), value: userData.Country },
+        { label: t('signup.city'), value: userData.City },
       ]);
     }
   }, [userData]);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    // Handle form submission logic here (e.g., API call to save data)
+  };
+
+  const handleEditClick = field => {
+    setEdits(prev => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const handleChange = (e, field) => {
+    setFields(prev =>
+      prev.map(el =>
+        el.sec === field ? { ...el, value: e.target.value } : el,
+      ),
+    );
+  };
 
   return (
     <section>
@@ -63,20 +102,36 @@ const AccountInformaion = () => {
                 {user.last_name}
               </h3>
               <Wrapper>
+                <h4 className={classes.title}>{t('profile.acc_info')}</h4>
                 <form onSubmit={handleSubmit}>
                   <div
                     className={classes.wrapper}
                     style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
                   >
-                    {fields.map(el => {
+                    {fields.map((el, index) => {
                       return (
-                        <div className={classes.content}>
+                        <div className={classes.content} key={index}>
                           <div className={classes.values}>
                             <span className={classes.label}>{el.label}</span>
-                            <Input className={classes.value} value={el.value} />
+                            {el.updateAble ? (
+                              edits[el.sec] ? (
+                                <Input
+                                  className={classes.value}
+                                  value={el.value}
+                                  onChange={e => handleChange(e, el.sec)}
+                                  sx={{fontSize:'13px'}}
+                                />
+                              ) : (
+                                <span className={classes.value}>
+                                  {el.value}
+                                </span>
+                              )
+                            ) : (
+                              <span className={classes.value}>{el.value}</span>
+                            )}
                           </div>
                           {el.updateAble && (
-                            <IconButton>
+                            <IconButton onClick={() => handleEditClick(el.sec)}>
                               <Edit width={17} height={17} />
                             </IconButton>
                           )}
@@ -90,12 +145,13 @@ const AccountInformaion = () => {
                         </span>
                         <span className={classes.value}></span>
                       </div>
-                      <IconButton sx={{ justifySelf: 'flex-start' }}>
-                        <Edit width={20} height={20} />
-                      </IconButton>
                     </div>
                   </div>
                 </form>
+              </Wrapper>
+              <Wrapper>
+                <h4 className={classes.title}>{t('profile.add_add')}</h4>
+                <AddressTable />
               </Wrapper>
             </Card>
           </Body>

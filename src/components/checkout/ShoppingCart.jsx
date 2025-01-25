@@ -33,8 +33,9 @@ const ShoppingCart = () => {
       </thead>
       <tbody>
         {card.products.map(el => {
+          console.log(el)
           const isByOrder =
-            el.variation.quantity === 0 && el.variation.is_not_available === 0;
+            el?.variation.quantity === 0 && el?.variation.is_not_available === 0;
           const totalPrice = el.selected_quantity * el.price;
           return (
             <tr className={classes.tr} key={el.id}>
