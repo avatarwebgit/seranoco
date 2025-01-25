@@ -20,7 +20,7 @@ const ResultMobile = ({ dataProps }) => {
             <Link key={el.id} to={`/en/products/id=${el.alias}`}>
               <div className={classes.wrapper}>
                 <div className={classes.right_side}>
-                  <img src={el.primary_image} alt='' />
+                  <img src={el.primary_image} alt='' loading='lazy' />
                 </div>
                 <div className={classes.left_side}>
                   <span className={classes.name_wrapper}>

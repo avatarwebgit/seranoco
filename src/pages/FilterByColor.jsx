@@ -33,6 +33,8 @@ import {
   getProductsByColor,
   getProductDetailsWithId,
   useFilteredShapes,
+  getProductsByShape,
+  getFilteredSizesByColor,
 } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
@@ -52,7 +54,7 @@ const FilterByShape = ({ windowSize }) => {
   const [colorData, setColorData] = useState(null);
   const [sizeData, setSizeData] = useState([]);
   const [groupColors, setGroupColors] = useState([]);
-  const [shapeFormEntries, setShapeFormEntries] = useState(46);
+  const [shapeFormEntries, setShapeFormEntries] = useState();
   const [dimensionEntries, setDimensionEntries] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const {
@@ -72,7 +74,7 @@ const FilterByShape = ({ windowSize }) => {
   const [isFilteredProductsLoading, setIsFilteredProductsLoading] =
     useState(false);
   const [ItemsPerPage, setItemsPerPage] = useState(9);
-  const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(1);
+  const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(0);
   const [tableData, setTableData] = useState([]);
   const [selectedSizesObject, setSelectedSizesObject] = useState([]);
   const [chunkedData, setChunkedData] = useState([]);
@@ -146,6 +148,7 @@ const FilterByShape = ({ windowSize }) => {
     dispatch(productDetailActions.reset());
     setTableData([]);
     setChunkedData([]);
+    scrollToTarget(formRef, 1000);
   };
 
   const handleCheckboxChange = (e, slideId) => {
@@ -157,6 +160,7 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   useEffect(() => {
+    document.title = 'Seranoco - Shop By Color';
     handleShapeClick('', 46);
     if (itemIds.length > 0) {
       dispatch(productDetailActions.reset());
@@ -219,6 +223,8 @@ const FilterByShape = ({ windowSize }) => {
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
     setProductDetails([]);
+    setTableData([]);
+    setSizeData([]);
     setIsFilteredProductsLoading(true);
     setIsLoading(true);
     try {
@@ -235,6 +241,34 @@ const FilterByShape = ({ windowSize }) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    refetchShapes();
+    const getSizes = async () => {
+      try {
+        const serverRes = await getAllAtrributes(shapeFormEntries);
+        if (serverRes.response.ok) {
+          setSizeData(serverRes.result.data.sizes);
+        }
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error('Fetch error:', error);
+        }
+      } finally {
+        setIsFilteredProductsLoading(false);
+        setIsLoading(false);
+      }
+      const serverRes = await getFilteredSizesByColor(selectedIds);
+      if (serverRes.response.ok) {
+        setSizeData(serverRes.result.data.sizes);
+      }
+    };
+    if (selectedIds.length > 0) {
+      setChunkedData([]);
+      setTableData([]);
+      getSizes();
+    }
+  }, [selectedIds]);
 
   const handleGetFilterProducts = async (
     shape_id = shapeFormEntries,
@@ -288,7 +322,7 @@ const FilterByShape = ({ windowSize }) => {
   useEffect(() => {
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
-    handleFetchTableData(selectedIds, 1, 1000, {
+    handleFetchTableData(shapeFormEntries, selectedIds, 1, 1000, {
       signal: abortControllerRef.current.signal,
     });
     if (itemIds.length === 0) {
@@ -312,11 +346,22 @@ const FilterByShape = ({ windowSize }) => {
     }
   }, [dimensionEntries, selectedIds, shapeFormEntries]);
 
-  useEffect(() => {
-    if (selectedIds) {
-      refetchShapes();
+  const getSize = async () => {
+    console.log(shapeFormEntries);
+    try {
+      const serverRes = await getAllAtrributes(shapeFormEntries);
+      if (serverRes.response.ok) {
+        setSizeData(serverRes.result.data.sizes);
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error('Fetch error:', error);
+      }
+    } finally {
+      setIsFilteredProductsLoading(false);
+      setIsLoading(false);
     }
-  }, [selectedIds]);
+  };
 
   useEffect(() => {
     setProductDetails([]);
@@ -369,20 +414,23 @@ const FilterByShape = ({ windowSize }) => {
     scrollToTarget(productsWrapperRef);
   };
 
-  const handleFetchTableData = async (colorIds, page, per_page, signal) => {
+  const handleFetchTableData = async (shpaId, colorIds, page, per_page) => {
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
     try {
-      const serverRes = await getProductsByColor(
+      const serverRes = await getProductsByShape(
+        shpaId,
         colorIds,
         page,
         per_page,
-        signal,
+        { signal: abortControllerRef.current.signal },
       );
 
       if (serverRes.response.ok) {
         setTableData(serverRes.result.data);
       }
     } catch (error) {
-      console.error('Error fetching products: ', error);
+      // console.error('Error fetching products: ', error);
     }
   };
 
@@ -458,7 +506,7 @@ const FilterByShape = ({ windowSize }) => {
                     <SwiperSlide
                       key={index}
                       className={classes.slide}
-                      onClick={() => console.log(slide)}
+                      onClick={() => getSize()}
                     >
                       <div>
                         <label
@@ -470,6 +518,7 @@ const FilterByShape = ({ windowSize }) => {
                               src={slide.image}
                               alt=''
                               className={classes.slider_img}
+                              loading='lazy'
                             />
                           </div>
                         </label>
@@ -492,24 +541,23 @@ const FilterByShape = ({ windowSize }) => {
                 {groupColors?.length > 0 &&
                   sortedGroupColors.map((slide, index) => {
                     return (
-                      <>
-                        <div
-                          key={nanoid()}
-                          className={`${classes.thumbnail} ${
-                            currentActiveGroupColor === slide.id &&
-                            classes.thumbnail_active
-                          }`}
-                        >
-                          <div className={classes.slider_thumb_wrapper}>
-                            <img
-                              src={slide.image}
-                              className={classes.slider_thumb_img}
-                              alt=''
-                              onClick={() => handleThumbClick(slide.id)}
-                            />
-                          </div>
+                      <div
+                        key={nanoid()}
+                        className={`${classes.thumbnail} ${
+                          currentActiveGroupColor === slide.id &&
+                          classes.thumbnail_active
+                        }`}
+                      >
+                        <div className={classes.slider_thumb_wrapper}>
+                          <img
+                            src={slide.image}
+                            className={classes.slider_thumb_img}
+                            alt=''
+                            onClick={() => handleThumbClick(slide.id)}
+                            loading='lazy'
+                          />
                         </div>
-                      </>
+                      </div>
                     );
                   })}
               </div>
@@ -540,7 +588,7 @@ const FilterByShape = ({ windowSize }) => {
                               handleShapeClick(e, elem.id);
                               setShapeFormEntries(elem.id);
                             }}
-                            isSelected={shapeFormEntries}
+                            isSelected={shapeFormEntries || 46}
                           />
                         )}
                       </div>

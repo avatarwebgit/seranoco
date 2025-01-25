@@ -17,6 +17,8 @@ import { accesModalActions } from '../../store/store';
 import { login, useUser } from '../../services/api';
 
 import { ReactComponent as Close } from '../../assets/svg/close.svg';
+import logo from '../../assets/images/logo_trasnparent.png';
+
 
 import { userActions } from '../../store/store';
 
@@ -101,6 +103,9 @@ const Login = () => {
   return (
     <div className={classes.content_wrapper}>
       <div className={classes.sheet}>
+        <div className={classes.logo_wrapper}>
+          <img className={classes.logo} src={logo} alt='' loading='lazy' />
+        </div>
         <div className={classes.login_wrapper}>
           <div className={classes.actions}>
             <div className={classes.ep}>

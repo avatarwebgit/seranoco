@@ -58,20 +58,32 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
         >
           <thead>
             <tr className={classes.tr}>
-              <th className={classes.th}>{t('size')}</th>
-              {data.map(el => (
-                <th
-                  className={`${classes.th} ${classes.image_wrapper}`}
-                  key={Object.values(el)[0][0].id}
-                >
-                  <img
-                    className={classes.img}
-                    src={Object.values(el)[0][0].image}
-                    loading='lazy'
-                    alt=''
-                  />
-                </th>
-              ))}
+              <th
+                className={`${classes.th} ${classes.image_wrapper}`}
+              >
+                <img
+                  className={classes.img}
+                  src={''}
+                  style={{visibility:'hidden'}}
+                />
+                <p>{t('size')}</p>
+              </th>
+              {data.map(el => {
+                return (
+                  <th
+                    className={`${classes.th} ${classes.image_wrapper}`}
+                    key={Object.values(el)[0][0].id}
+                  >
+                    <img
+                      className={classes.img}
+                      src={Object.values(el)[0][0].image}
+                      loading='lazy'
+                      alt=''
+                    />
+                    <p>{Object.values(el)[0][0].color}</p>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody className={classes.tbody}>

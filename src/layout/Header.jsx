@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search as MUISearch } from '@mui/icons-material';
+import { Search as MUISearch, Menu} from '@mui/icons-material';
 import {
   Badge,
   Box,
   Drawer as MuiDrawer,
   IconButton,
   Input,
-  Menu,
+  
   Tooltip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -88,7 +88,7 @@ const Header = ({ windowSize }) => {
     if (size === 'xs' || size === 's' || size === 'm') {
       setIsSmall(true);
       style = {
-        opacity: scrollY === 0 ? '0' : '1',
+        opacity: scrollY === 0 ? '0' : 1,
         marginTop: scrollY === 0 ? '5px' : '0px',
       };
     } else {
@@ -222,7 +222,9 @@ const Header = ({ windowSize }) => {
           {!isSmall && (
             <>
               {token ? (
-                <LoginButton />
+                <span className={classes.icon_pack_wrapper}>
+                  <LoginButton />
+                </span>
               ) : (
                 <>
                   <IconButton
@@ -232,9 +234,9 @@ const Header = ({ windowSize }) => {
                   >
                     <Tooltip title={t('login')} placement='top' arrow>
                       {isHomePage ? (
-                        <Signin width={32} height={32} />
+                        <Signin width={30} height={30} />
                       ) : (
-                        <Signin_White width={32} height={32} />
+                        <Signin_White width={30} height={30} />
                       )}
                     </Tooltip>
                   </IconButton>
@@ -243,59 +245,63 @@ const Header = ({ windowSize }) => {
             </>
           )}
 
-          <span className={classes.icon_pack_wrapper}>
-            <IconButton>
-              <Badge
-                // badgeContent={1}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              >
-                <Tooltip
-                  title={t('favorites')}
-                  placement='top'
-                  arrow
-                  sx={{
-                    '& .MuiTooltip-tooltip': {
-                      backgroundColor: 'red', // Change background color
-                    },
-                  }}
-                >
-                  {isHomePage ? (
-                    <Heart_black
-                      width={isSmall ? '0px' : '30px'}
-                      height={isSmall ? '0px' : '30px'}
-                    />
-                  ) : (
-                    <Heart
-                      width={isSmall ? '0px' : '30px'}
-                      height={isSmall ? '0px' : '30px'}
-                    />
-                  )}
-                </Tooltip>
-              </Badge>
-            </IconButton>
-          </span>
-          <span className={classes.icon_pack_wrapper}>
-            <IconButton onClick={handleOpenCart}>
-              <Badge
-                badgeContent={cart?.products.length || 0}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              >
-                <Tooltip title={t('cart')} placement='top' arrow>
-                  {isHomePage ? (
-                    <Basket_black
-                      width={isSmall ? '0px' : '30px'}
-                      height={isSmall ? '0px' : '30px'}
-                    />
-                  ) : (
-                    <Basket
-                      width={isSmall ? '0px' : '30px'}
-                      height={isSmall ? '0px' : '30px'}
-                    />
-                  )}
-                </Tooltip>
-              </Badge>
-            </IconButton>
-          </span>
+          {!isSmall && (
+            <>
+              <span className={classes.icon_pack_wrapper}>
+                <IconButton>
+                  <Badge
+                    // badgeContent={1}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  >
+                    <Tooltip
+                      title={t('favorites')}
+                      placement='top'
+                      arrow
+                      sx={{
+                        '& .MuiTooltip-tooltip': {
+                          backgroundColor: 'red', // Change background color
+                        },
+                      }}
+                    >
+                      {isHomePage ? (
+                        <Heart_black
+                          width={isSmall ? '0px' : '28px'}
+                          height={isSmall ? '0px' : '28px'}
+                        />
+                      ) : (
+                        <Heart
+                          width={isSmall ? '0px' : '28px'}
+                          height={isSmall ? '0px' : '28px'}
+                        />
+                      )}
+                    </Tooltip>
+                  </Badge>
+                </IconButton>
+              </span>
+              <span className={classes.icon_pack_wrapper}>
+                <IconButton onClick={handleOpenCart}>
+                  <Badge
+                    badgeContent={cart?.products.length || 0}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  >
+                    <Tooltip title={t('cart')} placement='top' arrow>
+                      {isHomePage ? (
+                        <Basket_black
+                          width={isSmall ? '0px' : '30px'}
+                          height={isSmall ? '0px' : '30px'}
+                        />
+                      ) : (
+                        <Basket
+                          width={isSmall ? '0px' : '30px'}
+                          height={isSmall ? '0px' : '30px'}
+                        />
+                      )}
+                    </Tooltip>
+                  </Badge>
+                </IconButton>
+              </span>
+            </>
+          )}
           {!isSmall && (
             <span className={classes.icon_pack_wrapper}>
               <ChangeLanguage
@@ -324,7 +330,7 @@ const Header = ({ windowSize }) => {
         </motion.a>
         <motion.span
           className={classes.navigation_container}
-          initial={{ alignItems: 'center', marginTop: '0' }}
+          initial={{ alignItems: 'center', marginTop: 0 }}
           animate={returnButtonStyles}
         >
           {/* Header buttons  */}
@@ -420,15 +426,15 @@ const Header = ({ windowSize }) => {
           transition={{ type: 'spring', damping: 100, stiffness: 1000 }}
         >
           {isSmall ? (
-            <>
+            <div className={classes.mobile_actions_wrapper }>
               <ChangeLanguage width={30} height={30} ishomepage={isHomePage} />
               <IconButton onClick={() => closeDrawer(true)}>
                 <Menu
                   className={classes.card_icons}
                   sx={{
-                    width: '20px',
-                    height: '20px',
-                    color: isHomePage ? '#000000' : '#ffffff',
+                    width: '25px',
+                    height: '25px',
+                    color: isHomePage ? '#000000 !important' : '#ffffff !important',
                   }}
                 />
               </IconButton>
@@ -466,7 +472,7 @@ const Header = ({ windowSize }) => {
                   </div>
                 </Box>
               </MuiDrawer>
-            </>
+            </div>
           ) : (
             <Search isHomePage={isHomePage} />
           )}

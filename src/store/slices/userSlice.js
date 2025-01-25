@@ -1,6 +1,7 @@
+// In your userSlice.js or wherever you manage the token
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { token: JSON.parse(localStorage.getItem('t')) || null };
+const initialState = { token: null };
 
 const userSlice = createSlice({
   name: 'user',
@@ -8,11 +9,15 @@ const userSlice = createSlice({
   reducers: {
     set(state, action) {
       state.token = action.payload;
-      localStorage.setItem('t', JSON.stringify(action.payload));
+      // If a token is set, save it in localStorage
+      if (state.token) {
+        localStorage.setItem('token', state.token);
+      }
     },
     reset(state) {
       state.token = null;
-      localStorage.setItem('t', null);
+      // Remove token from localStorage when it's reset
+      localStorage.removeItem('token');
     },
   },
 });

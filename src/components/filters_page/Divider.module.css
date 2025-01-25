@@ -5,7 +5,9 @@
   background-color: var(--color-grey-1);
   position: relative;
   margin: 1rem auto;
+  border-radius: 10px;
 }
+
 .text {
   font-size: 0.45rem;
   color: var(--color-grey-1);

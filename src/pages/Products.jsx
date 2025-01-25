@@ -33,6 +33,7 @@ const Products = ({ windowSize }) => {
   const [isInViewbox, setIsInViewbox] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [totalWeight, setTotalWeight] = useState(0);
+  const [zoomScale, setZoomScale] = useState(2);
 
   const imageRef = useRef();
 
@@ -100,7 +101,7 @@ const Products = ({ windowSize }) => {
   return (
     <div className={classes.main}>
       <BannerCarousel />
-      <Header windowSize={windowSize} />(
+      <Header windowSize={windowSize} />
       <Body>
         <Card className={classes.main_card}>
           {detailsData && (
@@ -115,8 +116,8 @@ const Products = ({ windowSize }) => {
           <div className={classes.content}>
             <div
               className={classes.image_container}
-              // onMouseMove={handleMouseMove}
-              // onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
             >
               <div className={classes.zoom_box} style={zoomStyles}>
                 {detailsData ? (
@@ -128,6 +129,7 @@ const Products = ({ windowSize }) => {
                       className={`${classes.zoom_image} ${
                         isInViewbox ? '' : classes.dn
                       }`}
+                      loading='lazy'
                     />
                     <img
                       className={`${classes.idle_image} ${
@@ -135,6 +137,7 @@ const Products = ({ windowSize }) => {
                       }`}
                       src={detailsData.product?.primary_image}
                       alt=''
+                      loading='lazy'
                     />
                   </>
                 ) : (
@@ -201,7 +204,7 @@ const Products = ({ windowSize }) => {
                     </Typography>
                     {detailsData.product.sale_price !==
                       detailsData.product.price && (
-                      <p
+                      <span
                         className={classes.prev_price}
                         style={{
                           textDecoration: 'line-through',
@@ -211,7 +214,7 @@ const Products = ({ windowSize }) => {
                           {detailsData.product.percent_sale_price}%
                         </p>
                         €&nbsp;{detailsData && detailsData.product.sale_price}
-                      </p>
+                      </span>
                     )}
                     &nbsp;&nbsp;
                     <p className={classes.current_price}>
@@ -271,7 +274,7 @@ const Products = ({ windowSize }) => {
                         </p>
                       </span>
                     </div>
-                    <button></button>
+                    {/* <button>sds</button> */}
                   </div>
 
                   <IconButton className={classes.wish_list}>
@@ -351,7 +354,6 @@ const Products = ({ windowSize }) => {
           {/* <Divider title={t('views')} />        */}
         </Card>
       </Body>
-      )
       <Footer />
     </div>
   );

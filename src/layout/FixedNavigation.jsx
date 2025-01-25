@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Login } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { drawerActions, accesModalActions } from '../store/store';
 
 import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
 import { ReactComponent as Basket } from '../assets/svg/basket_white.svg';
+import { ReactComponent as Login } from '../assets/svg/signin_white.svg';
 
 import classes from './FixedNavigation.module.css';
 import { Avatar, IconButton } from '@mui/material';

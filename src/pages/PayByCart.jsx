@@ -329,7 +329,7 @@ const PayByCart = ({ widnowSize }) => {
                 className={classes.error_text}
                 style={{
                   direction: 'rtl',
-                  opacity: isError ? '1' : '0',
+                  opacity: isError ? 1 : 0,
                 }}
               >
                 لطفا مقادیر بالا را وارد کنید

@@ -1,14 +1,17 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
 
 import Loading from './layout/Loading';
+import { accesModalActions, persistor, store, userActions } from './store/store';
 
 import FixedNavigation from './layout/FixedNavigation';
 import Drawer from './layout/Drawer';
-import { toast, ToastContainer } from 'react-toastify';
 
 import './App.css';
+import { PersistGate } from 'redux-persist/integration/react';
+import persistStore from 'redux-persist/es/persistStore';
 function App() {
   const [windowSize, setWindowSize] = useState(() => {
     const width = window.innerWidth;
@@ -28,15 +31,19 @@ function App() {
   const PayByCart = React.lazy(() => import('./pages/PayByCart'));
   const New = React.lazy(() => import('./pages/New'));
 
-  // const AuthExists = ({ children }) => {
-  //   return token ? <Navigate to={"/"} /> : children;
-  // };
-
-  // const RequireAuth = ({ children }) => {
-  //   return token ? children : <Navigate to={"/login"} />;
-  // };
-
   const lng = useSelector(state => state.localeStore.lng);
+  const token = useSelector(state => state.userStore.token);
+
+  useEffect(() => {
+    console.log(token)
+  }, [token])
+  
+
+  const dispatch = useDispatch();
+
+  const RequireAuth = ({ children }) => {
+    return token ? children : <Navigate to={`/${lng}`} replace />;
+  };
 
   useEffect(() => {
     const calculeSize = () => {
@@ -70,13 +77,12 @@ function App() {
   }, [lng]);
 
   return (
-    <div>
+    <PersistGate loading={null} persistor={persistor}>
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
-          <Route path={'/'} element={<Navigate to={'/en'} replace />} />
-
-          <Route path={` `} element={<Navigate to={`/en`} replace />} />
+          <Route path={'/'} element={<Navigate to={`/${lng}`} replace />} />
+          <Route path={` `} element={<Navigate to={`/${lng}`} replace />} />
           <Route
             path={`/:lng/shopByColor`}
             element={<FilterByColor windowSize={windowSize} />}
@@ -91,15 +97,27 @@ function App() {
           />
           <Route
             path={`/:lng/myaccount`}
-            element={<Profile windowSize={windowSize} />}
+            element={
+              <RequireAuth>
+                <Profile windowSize={windowSize} />
+              </RequireAuth>
+            }
           />
           <Route
             path={`/:lng/precheckout`}
-            element={<PreCheckout windowSize={windowSize} />}
+            element={
+              <RequireAuth>
+                <PreCheckout windowSize={windowSize} />
+              </RequireAuth>
+            }
           />
           <Route
             path={`/:lng/order/pay`}
-            element={<PayByCart windowSize={windowSize} />}
+            element={
+              <RequireAuth>
+                <PayByCart windowSize={windowSize} />
+              </RequireAuth>
+            }
           />
           <Route
             path={`/:lng/new-products`}
@@ -120,7 +138,7 @@ function App() {
           pauseOnHover={true}
         />
       </Suspense>
-    </div>
+    </PersistGate>
   );
 }
 

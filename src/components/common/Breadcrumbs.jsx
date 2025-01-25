@@ -32,6 +32,7 @@ const Breadcrumbs = ({ linkDataProp }) => {
               fontSize: '0.5rem !important',
               textDecoration: 'underline !important',
             }}
+            key={index}
           >
             {el.pathname}
           </Link>

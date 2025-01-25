@@ -26,7 +26,7 @@
   overflow: hidden;
   transition: all 0.2s;
   transform-origin: top;
-  box-shadow: 5px 5px 5px rgba(2, 2, 2, 0.418);
+  box-shadow: 5px 5px 5px rgba(196, 196, 196, 0.418);
 }
 .lng_item {
   font-size: 0.5rem;
@@ -44,8 +44,8 @@
   font-size: 0.5rem;
 }
 .svg {
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
 }
 @media only screen and (max-width: 480px) {
   .main {

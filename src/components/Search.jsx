@@ -51,24 +51,26 @@ const Search = ({ isHomePage }) => {
         className={classes.search_input}
         type='text'
         placeholder={isFullSize ? 'Search...' : ''}
-        style={{ backgroundColor: isFullSize ? 'white' : 'transparent' }}
+        style={{
+          backgroundColor: isFullSize ? 'white' : 'transparent',
+        }}
         transition={{ duration: 0.25, type: 'tween' }}
       />
       <motion.div
         className={classes.search_logo_wrapper}
         onClick={() => setIsFullSize(true)}
-        initial={{ border: '1px solid transparent' }}
+        initial={{ border: '1.5px solid transparent' }}
         animate={{
           border: !isFullSize
             ? isHomePage
-              ? '1px solid black'
-              : '1px solid white'
+              ? '1.5px solid black'
+              : '1.5px solid white'
             : '1px solid transparent',
         }}
       >
         <motion.img
           className={classes.search_logo}
-          src={isHomePage ? search_black : search}
+          src={isHomePage ? search_black : isFullSize ? search_black : search}
           alt='search logo'
           initial={{ width: '40%', height: '40%' }}
           animate={{
