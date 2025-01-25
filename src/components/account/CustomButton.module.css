@@ -17,5 +17,9 @@
 }
 
 .main:hover {
-  background-color: var(--color-grey-2);
+  background-color: var(--color-grey-3);
+}
+
+.active {
+  background-color: var(--color-grey-2) !important;
 }

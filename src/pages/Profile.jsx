@@ -6,7 +6,7 @@ import {
   AccordionSummary,
   Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Add } from '@mui/icons-material';
 
 import Header from '../layout/Header';
@@ -14,16 +14,34 @@ import Footer from '../layout/Footer';
 import Card from '../components/filters_page/Card';
 import Body from '../components/filters_page/Body';
 import Breadcrumbs from '../components/common/Breadcrumbs';
-import Wrapper from '../components/account/Wrapper';
 import { CustomButton } from '../components/account/CustomButton';
-
-import classes from './Profile.module.css';
 import OrderStatus from '../components/account/OrderStatus';
 import AccountInformaion from '../components/account/AccountInformaion';
 
+import { userActions } from '../store/store';
+
+import { useUser } from '../services/api';
+
+import classes from './Profile.module.css';
 const Profile = ({ windowSize }) => {
+  const [selectedButtonId, setSelectedButtonId] = useState(null);
+  const [selectedContent, setSelectedContent] = useState(null);
+  const [userData, setuserData] = useState(null);
+
+  const token = useSelector(state => state.userStore.token);
   const lng = useSelector(state => state.localeStore.lng);
   const { t } = useTranslation();
+
+  const { data, isLoading, isError } = useUser(token);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) {
+      setuserData(data);
+      dispatch(userActions.setUser(data.user));
+    }
+  }, [data]);
 
   const accordionsData = [
     {
@@ -41,7 +59,7 @@ const Profile = ({ windowSize }) => {
           content: 'Content for Button 2',
         },
         {
-          id: 'btn2',
+          id: 'btn3',
           title: t('profile.log_out'),
           content: 'Content for Button 2',
         },
@@ -52,12 +70,12 @@ const Profile = ({ windowSize }) => {
       title: t('profile.orders'),
       buttons: [
         {
-          id: 'btn3',
+          id: 'btn4',
           title: t('profile.pending'),
           content: 'Content for Button 3',
         },
         {
-          id: 'btn4',
+          id: 'btn45',
           title: t('profile.order_status'),
           content: <OrderStatus />,
         },
@@ -80,9 +98,6 @@ const Profile = ({ windowSize }) => {
       ],
     },
   ];
-
-  const [selectedButtonId, setSelectedButtonId] = useState(null);
-  const [selectedContent, setSelectedContent] = useState(null);
 
   useEffect(() => {
     setSelectedButtonId(accordionsData.at(0).buttons.at(0).id);
@@ -129,6 +144,7 @@ const Profile = ({ windowSize }) => {
                         onClick={() =>
                           handleButtonClick(button.id, button.content)
                         }
+                        isActive={button.id === selectedButtonId}
                       >
                         {button.title}
                       </CustomButton>
@@ -140,12 +156,7 @@ const Profile = ({ windowSize }) => {
 
             <div className={classes.info_wrapper}>
               {selectedButtonId && (
-                <div
-                  className={classes.info_container}
-                  title={`Content for ${selectedButtonId}`}
-                >
-                  <p>{selectedContent}</p>
-                </div>
+                <div className={classes.info_container}>{selectedContent}</div>
               )}
             </div>
           </section>

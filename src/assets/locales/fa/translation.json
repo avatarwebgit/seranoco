@@ -158,5 +158,9 @@
   "newpage": {
     "av": "موجود",
     "notav": "ناموجود"
+  },
+
+  "profile": {
+    "addresses": "آدرس ها"
   }
 }

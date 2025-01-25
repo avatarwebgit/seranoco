@@ -86,7 +86,7 @@
 
     "acc_info": "Account Information",
     "favorites": "Favorites",
-    "'cart":"Cart",
+    "'cart": "Cart",
 
     "pending": "Pending Payment",
     "order_status": "Order Status",
@@ -154,10 +154,16 @@
   },
 
   "wellcome": "Wellcome",
-  "addtocart":"Add To Cart",
+  "back": "Back",
+  "addtocart": "Add To Cart",
 
-  "newpage":{
-    "av":"In Stock",
-    "notav":"Not Available"
+  "newpage": {
+    "av": "In Stock",
+    "notav": "Not Available"
+  },
+
+  "profile":{
+    "addresses":"Adresses"
+
   }
 }
