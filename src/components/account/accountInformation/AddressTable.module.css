@@ -1,0 +1,43 @@
+.main {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  width: 100%;
+}
+
+.input_wrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.phone_wrapper {
+  width: 49%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn {
+  background-color: black !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  margin: 10px 0 !important;
+  padding: 12px 24px !important;
+  color: #ffffff !important;
+  margin-top: 10px;
+}
+
+.error_text {
+  font-size: 10px;
+  color: red;
+  width: 100%;
+}
