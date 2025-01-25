@@ -26,6 +26,7 @@ const ResultRow = ({ dataProp }) => {
   useEffect(() => {
     if (dataProp) {
       setData(dataProp);
+      console.log(dataProp)
     }
     if (isLoadingImage) {
       setIsLoading(true);

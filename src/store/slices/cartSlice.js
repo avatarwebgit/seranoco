@@ -24,7 +24,7 @@ const cartSlice = createSlice({
 
     remove(state, action) {
       state.products = state.products.filter(
-        el => +el.variation_id !== +action.payload.variation_id,
+        el => +el.variation_id !== +action.payload.variation.variation_id,
       );
       cartSlice.caseReducers.calculateTotalPrice(state);
     },
@@ -33,7 +33,7 @@ const cartSlice = createSlice({
       const product = state.products.find(
         el => +el.variation_id === +action.payload.variation_id,
       );
-      console.log(product)
+      console.log(product);
       if (product) {
         product.selected_quantity += 1;
       }

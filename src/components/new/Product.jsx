@@ -23,6 +23,7 @@ const Product = ({ dataProps, up, av }) => {
   useEffect(() => {
     if (dataProps) {
       setData(dataProps);
+      console.log(dataProps)
     }
     if (up) {
       setEuro(up);
@@ -37,11 +38,12 @@ const Product = ({ dataProps, up, av }) => {
 
   const handleAddToCart = el => {
     dispatch(drawerActions.open());
+    console.log(data)
     dispatch(
       cartActions.add({
         ...data.product,
-        ...data.variation,
-        variation_id: data.variation_id,
+        ...data.product.variation,
+        variation_id: data.product.variation_id,
         selected_quantity: 1,
         euro_price: 100000,
       }),
