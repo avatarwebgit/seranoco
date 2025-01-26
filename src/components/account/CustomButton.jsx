@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 
 import classes from './CustomButton.module.css';
-export const CustomButton = ({ children, onClick, isActive }) => {
+export const CustomButton = ({ children, onClick, isActive, className }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [active, setActive] = useState(false);
 
@@ -21,7 +21,7 @@ export const CustomButton = ({ children, onClick, isActive }) => {
 
   return (
     <button
-      className={`${classes.main} ${isActive && classes.active}`}
+      className={`${classes.main} ${isActive && classes.active} ${className}`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onClick={onClick}

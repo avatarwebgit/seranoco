@@ -11,12 +11,15 @@ import { ReactComponent as Edit } from '../../assets/svg/edit-black.svg';
 import classes from './AccountInformation.module.css';
 import { IconButton, Input } from '@mui/material';
 import AddressTable from './accountInformation/AddressTable';
+import { getAllAddresses } from '../../services/api';
 
 const AccountInformaion = () => {
   const { t } = useTranslation();
   const userData = useSelector(state => state.userStore.user);
   const lng = useSelector(state => state.localeStore.lng);
+  const token = useSelector(state => state.userStore.token);
 
+  const [addressData, setAddressData] = useState([]);
   const [user, setUser] = useState(null);
   const [fields, setFields] = useState([
     {
@@ -72,6 +75,17 @@ const AccountInformaion = () => {
     }
   }, [userData]);
 
+  const allAddresses = async token => {
+    const serverRes = await getAllAddresses(token);
+    if (serverRes.response.ok) {
+      setAddressData(serverRes.result.address);
+    }
+  };
+
+  useEffect(() => {
+    allAddresses(token);
+  }, []);
+
   const handleSubmit = () => {
     // Handle form submission logic here (e.g., API call to save data)
   };
@@ -119,7 +133,7 @@ const AccountInformaion = () => {
                                   className={classes.value}
                                   value={el.value}
                                   onChange={e => handleChange(e, el.sec)}
-                                  sx={{fontSize:'13px'}}
+                                  sx={{ fontSize: '13px' }}
                                 />
                               ) : (
                                 <span className={classes.value}>
@@ -153,6 +167,14 @@ const AccountInformaion = () => {
                 <h4 className={classes.title}>{t('profile.add_add')}</h4>
                 <AddressTable />
               </Wrapper>
+              {addressData && addressData.length > 0 && (
+                <Wrapper>
+                  <h4 className={classes.title}>{t('profile.urad')}</h4>
+                  {addressData.map(el => {
+                    return <AddressTable formData={el} key={el.id} />;
+                  })}
+                </Wrapper>
+              )}
             </Card>
           </Body>
         </>

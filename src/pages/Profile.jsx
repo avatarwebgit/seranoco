@@ -119,6 +119,7 @@ const Profile = ({ windowSize }) => {
   return (
     <div className={classes.main}>
       <Header windowSize={windowSize} />
+     
       <Body className={`${lng === 'fa' ? classes.fa : classes.en}`}>
         <Card className={classes.main_card}>
           <Breadcrumbs

@@ -120,7 +120,7 @@ const ResultRow = ({ dataProp }) => {
                     </Link>
                   </td>
                   {/* Size */}
-                  <td className={classes.detail_text}>{el.size}</td>{' '}
+                  <td className={classes.detail_text}>{el.size}</td>
                   {/* Color */}
                   <td className={classes.detail_text}>{el.color}</td>
                   {/* Quality */}

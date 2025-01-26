@@ -15,7 +15,7 @@ import { formatNumber } from '../../../utils/helperFunctions';
 import classes from './AddressTable.module.css';
 import { addAddress, getCitiesByCountry } from '../../../services/api';
 import Flag from 'react-world-flags';
-const AddressTable = () => {
+const AddressTable = ({ formData }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
 
@@ -72,6 +72,19 @@ const AddressTable = () => {
   };
 
   useEffect(() => {
+    if (formData) {
+      if (formData?.title?.split(' ')) {
+        setFirstname(formData.title.split(' ').at(0));
+        setLastname(formData.title.split(' ').at(1));
+      }
+      setAddress(formData.address);
+      setSecondaryPhoneN(formData.cellphone);
+      setSelectedCity(formData.City);
+      setPostalCode(formData.postal_code);
+    }
+  }, [formData]);
+
+  useEffect(() => {
     const cData = JSON.parse(data);
     setParsedData(cData);
     if (cData.selectedCountry) {
@@ -106,24 +119,26 @@ const AddressTable = () => {
       setIsError(false);
 
       try {
-        console.log(token)
         addAddress({
           token: token,
-          adress: Address,
+          title: `${firstname} ${lastname}`,
           tel: secondaryPhoneN,
-          name: lastname,
-          title: firstname,
-          city_id: selectedCity,
+          address: Address,
+          city_id: selectedCity.id,
           postal_code: postalCode,
         });
       } catch (error) {
-        console.error('Registration failed:', error);
+        // console.error('Registration failed:', error);
       }
     }
   };
 
+  useEffect(() => {
+    console.log(postalCode);
+  }, [postalCode]);
+
   return (
-    <div className={classes.main}>
+    <div className={`${classes.main} ${formData && classes.form}`}>
       <form ref={formRef} onSubmit={handleSubmit} className={classes.form}>
         <FormControl fullWidth>
           <div className={classes.input_wrapper}>
@@ -265,7 +280,7 @@ const AddressTable = () => {
             error={isError && !Address}
             value={Address}
           />
-        </FormControl>{' '}
+        </FormControl>
         <div
           className={classes.error_text}
           style={{
@@ -275,14 +290,16 @@ const AddressTable = () => {
         >
           {t('signup.fillout')}
         </div>
-        <Button
-          variant='contained'
-          type='submit'
-          onClick={handleSubmit}
-          className={classes.btn}
-        >
-          {t('add')}
-        </Button>
+        {!formData && (
+          <Button
+            variant='contained'
+            type='submit'
+            onClick={handleSubmit}
+            className={classes.btn}
+          >
+            {t('add')}
+          </Button>
+        )}
       </form>
     </div>
   );
