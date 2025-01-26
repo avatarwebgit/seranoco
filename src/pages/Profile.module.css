@@ -34,3 +34,15 @@
   width: 70%;
   height: fit-content;
 }
+
+.logout_btn{
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.logout_btn:hover{
+  background-color: red;
+}

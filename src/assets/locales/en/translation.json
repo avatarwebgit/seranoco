@@ -93,6 +93,7 @@
 
     "pending": "Pending Payment",
     "order_status": "Order Status",
+    "urad":"All Your Addresses",
 
     "log_out": "Logout",
 
@@ -151,6 +152,7 @@
     "pstep": "Back",
     "receiver": "Receiver",
     "postalcode": "Post Code",
+    "title":"Tile",
     "submit": "ُSubmit",
     "off": "Discount",
     "dprice": "Price After Discount"

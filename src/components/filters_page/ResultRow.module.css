@@ -11,7 +11,6 @@
   align-items: center;
   justify-content: space-evenly;
   padding: 5px;
-
 }
 .title_text {
   font-size: 0.5rem;
@@ -68,7 +67,9 @@ tbody tr {
   text-align: center !important;
   word-break: break-all !important;
 }
-.add_to_card {
+
+.add_to_card,
+.login_btn {
   font-size: 0.4rem;
   border: 2px solid var(--color-grey-2);
   border: none;
@@ -80,8 +81,13 @@ tbody tr {
   cursor: pointer;
   transition: all 0.5s;
   margin: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.add_to_card:hover {
+
+.add_to_card:hover,
+.login_btn:hover {
   background-color: #ffffff;
 }
 

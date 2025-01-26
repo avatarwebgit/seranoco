@@ -32,8 +32,6 @@ const Products = ({ windowSize }) => {
   const [detailsData, setDetailsData] = useState(null);
   const [isInViewbox, setIsInViewbox] = useState(false);
   const [quantity, setQuantity] = useState(0);
-  const [totalWeight, setTotalWeight] = useState(0);
-  const [zoomScale, setZoomScale] = useState(2);
 
   const imageRef = useRef();
 
@@ -96,6 +94,10 @@ const Products = ({ windowSize }) => {
   const handleDecrement = () => {
     if (quantity === 0) return;
     setQuantity(quantity - 1);
+  };
+
+  const handleAddToFavorites = () => {
+    console.log(detailsData)
   };
 
   return (
@@ -277,7 +279,10 @@ const Products = ({ windowSize }) => {
                     {/* <button>sds</button> */}
                   </div>
 
-                  <IconButton className={classes.wish_list}>
+                  <IconButton
+                    className={classes.wish_list}
+                    onClick={handleAddToFavorites}
+                  >
                     <Heart width={15} height={15} />
                     <p>{t('add_to_favorite')}</p>
                   </IconButton>

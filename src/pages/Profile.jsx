@@ -23,6 +23,7 @@ import { userActions } from '../store/store';
 import { useUser } from '../services/api';
 
 import classes from './Profile.module.css';
+import Favorites from '../components/account/Favorites';
 const Profile = ({ windowSize }) => {
   const [selectedButtonId, setSelectedButtonId] = useState(null);
   const [selectedContent, setSelectedContent] = useState(null);
@@ -57,12 +58,7 @@ const Profile = ({ windowSize }) => {
         {
           id: 'btn2',
           title: t('profile.favorites'),
-          content: 'Content for Button 2',
-        },
-        {
-          id: 'btn3',
-          title: t('profile.log_out'),
-          content: 'Content for Button 2',
+          content: <Favorites />,
         },
       ],
     },
@@ -119,7 +115,7 @@ const Profile = ({ windowSize }) => {
   return (
     <div className={classes.main}>
       <Header windowSize={windowSize} />
-     
+
       <Body className={`${lng === 'fa' ? classes.fa : classes.en}`}>
         <Card className={classes.main_card}>
           <Breadcrumbs
@@ -163,6 +159,12 @@ const Profile = ({ windowSize }) => {
                   </AccordionDetails>
                 </Accordion>
               ))}
+              <CustomButton
+                onClick={() => handleButtonClick(dispatch(userActions.reset()))}
+                className={classes.logout_btn}
+              >
+                {t('logout')}
+              </CustomButton>
             </div>
 
             <div className={classes.info_wrapper}>

@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { cartActions } from '../../store/store';
+import { accesModalActions, cartActions } from '../../store/store';
 
 import { ReactComponent as Plus } from '../../assets/svg/plus.svg';
 import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
 
 import classes from './ResultRow.module.css';
+import { Lock } from '@mui/icons-material';
 const ResultRow = ({ dataProp }) => {
   const [data, setData] = useState(null);
   const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -22,11 +23,11 @@ const ResultRow = ({ dataProp }) => {
 
   const lng = useSelector(state => state.localeStore.lng);
   const cart = useSelector(state => state.cartStore);
+  const token = useSelector(state => state.userStore.token);
 
   useEffect(() => {
     if (dataProp) {
       setData(dataProp);
-      console.log(dataProp)
     }
     if (isLoadingImage) {
       setIsLoading(true);
@@ -176,14 +177,26 @@ const ResultRow = ({ dataProp }) => {
                   {/* Action Button */}
                   <td>
                     <center>
-                      <button
-                        className={classes.add_to_card}
-                        onClick={() => {
-                          handleAddToCart(el);
-                        }}
-                      >
-                        {t('add_to_card')}
-                      </button>
+                      {token ? (
+                        <button
+                          className={classes.add_to_card}
+                          onClick={() => {
+                            handleAddToCart(el);
+                          }}
+                        >
+                          {t('add_to_card')}
+                        </button>
+                      ) : (
+                        <button
+                          className={classes.login_btn}
+                          onClick={() => {
+                            dispatch(accesModalActions.login());
+                          }}
+                        >
+                          {t('login')}
+                          <Lock sx={{width:'17px',height:'17px'}}/>
+                        </button>
+                      )}
                     </center>
                   </td>
                 </tr>

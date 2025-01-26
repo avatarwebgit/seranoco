@@ -162,7 +162,7 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   useEffect(() => {
-    document.title = 'Seranoco - Shop By Shape'
+    document.title = 'Seranoco - Shop By Shape';
     dispatch(productDetailActions.reset());
   }, []);
 
@@ -213,13 +213,13 @@ const FilterByShape = ({ windowSize }) => {
   }, [chunkedData]);
 
   const memoizedShapeData = useMemo(() => {
-    return shapesData;
+    return shapesData?.sort((a, b) => a.priority - b.priority);
   }, [shapesData]);
-
+  
   const handleShapeClick = async (e, id) => {
     setProductDetails([]);
-    setChunkedData([])
-    setTableData([])
+    setChunkedData([]);
+    setTableData([]);
     setIsLoading(true);
     try {
       //   const allProductsRes = await getPaginatedProductsByShape(
@@ -251,7 +251,7 @@ const FilterByShape = ({ windowSize }) => {
       }
     };
     if (selectedIds.length > 0) {
-       setChunkedData([]);
+      setChunkedData([]);
       setTableData([]);
       getSizes();
     }

@@ -12,13 +12,12 @@ import { Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import { accesModalActions } from '../../store/store';
+import { accesModalActions, signupActions } from '../../store/store';
 
 import { login, useUser } from '../../services/api';
 
 import { ReactComponent as Close } from '../../assets/svg/close.svg';
 import logo from '../../assets/images/logo_trasnparent.png';
-
 
 import { userActions } from '../../store/store';
 
@@ -94,10 +93,19 @@ const Login = () => {
   const handleLogin = async () => {
     const serverRes = await login(email, password);
     if (serverRes.response.ok) {
-      console.log(serverRes)
-      dispatch(userActions.set(serverRes.result.token));
-      dispatch(accesModalActions.close());
-      notify('Wellcome Back');
+      if (serverRes.result.token) {
+        dispatch(userActions.set(serverRes.result.token));
+        dispatch(accesModalActions.close());
+        // dispatch(
+        //   signupActions.set({
+        //     ...formEntries,
+        //     selectedCity: selectedCity,
+        //     selectedCountry: selectedCountry,
+        //     createdAt: new Date().toISOString(),
+        //   }),
+        // );
+        notify('Wellcome Back');
+      }
     }
   };
 

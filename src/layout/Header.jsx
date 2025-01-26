@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search as MUISearch, Menu} from '@mui/icons-material';
+import { Search as MUISearch, Menu } from '@mui/icons-material';
 import {
   Badge,
   Box,
   Drawer as MuiDrawer,
   IconButton,
   Input,
-  
   Tooltip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -247,37 +246,39 @@ const Header = ({ windowSize }) => {
 
           {!isSmall && (
             <>
-              <span className={classes.icon_pack_wrapper}>
-                <IconButton>
-                  <Badge
-                    // badgeContent={1}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  >
-                    <Tooltip
-                      title={t('favorites')}
-                      placement='top'
-                      arrow
-                      sx={{
-                        '& .MuiTooltip-tooltip': {
-                          backgroundColor: 'red', // Change background color
-                        },
-                      }}
+              {token && (
+                <span className={classes.icon_pack_wrapper}>
+                  <IconButton>
+                    <Badge
+                      // badgeContent={1}
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     >
-                      {isHomePage ? (
-                        <Heart_black
-                          width={isSmall ? '0px' : '28px'}
-                          height={isSmall ? '0px' : '28px'}
-                        />
-                      ) : (
-                        <Heart
-                          width={isSmall ? '0px' : '28px'}
-                          height={isSmall ? '0px' : '28px'}
-                        />
-                      )}
-                    </Tooltip>
-                  </Badge>
-                </IconButton>
-              </span>
+                      <Tooltip
+                        title={t('favorites')}
+                        placement='top'
+                        arrow
+                        sx={{
+                          '& .MuiTooltip-tooltip': {
+                            backgroundColor: 'red', // Change background color
+                          },
+                        }}
+                      >
+                        {isHomePage ? (
+                          <Heart_black
+                            width={isSmall ? '0px' : '28px'}
+                            height={isSmall ? '0px' : '28px'}
+                          />
+                        ) : (
+                          <Heart
+                            width={isSmall ? '0px' : '28px'}
+                            height={isSmall ? '0px' : '28px'}
+                          />
+                        )}
+                      </Tooltip>
+                    </Badge>
+                  </IconButton>
+                </span>
+              )}
               <span className={classes.icon_pack_wrapper}>
                 <IconButton onClick={handleOpenCart}>
                   <Badge
@@ -372,40 +373,31 @@ const Header = ({ windowSize }) => {
                       {elem.children && (
                         <motion.div className={classes.mega_paper}>
                           <div className={classes.sub_menu_wrapper}>
-                            <p className={classes.sub_menu_text}>test</p>
-                          </div>
-                          <div className={classes.link_menu_wrapper}>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                            {elem.children.map(el => {
+                              return (
+                                <div key={el.id} className={classes.header_sub}>
+                                  <p className={classes.sub_menu_text}>
+                                    {el.label}
+                                  </p>
+                                  <div className={classes.link_menu_wrapper}>
+                                    {el.children &&
+                                      el.children.map(elc => {
+                                        return (
+                                          <div
+                                            className={classes.menu_item}
+                                            key={elc.id}
+                                          >
+                                            {elc.label}
+                                          </div>
+                                        );
+                                      })}
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
                         </motion.div>
                       )}
-                      {elem.children &&
-                        elem.children.map((sublink, i) => {
-                          return (
-                            <div key={nanoid()}>
-                              <motion.div
-                                className={classes.mega_paper}
-                                key={i}
-                              >
-                                <div className={classes.sub_menu_wrapper}>
-                                  <p className={classes.sub_menu_text}>
-                                    {sublink.label}
-                                  </p>
-                                </div>
-                                <div className={classes.link_menu_wrapper}>
-                                  <span></span>
-                                  <span></span>
-                                  <span></span>
-                                  <span></span>
-                                </div>
-                                <div className={classes.backdrop} />
-                              </motion.div>
-                            </div>
-                          );
-                        })}
                     </div>
                   );
                 })
@@ -426,7 +418,7 @@ const Header = ({ windowSize }) => {
           transition={{ type: 'spring', damping: 100, stiffness: 1000 }}
         >
           {isSmall ? (
-            <div className={classes.mobile_actions_wrapper }>
+            <div className={classes.mobile_actions_wrapper}>
               <ChangeLanguage width={30} height={30} ishomepage={isHomePage} />
               <IconButton onClick={() => closeDrawer(true)}>
                 <Menu
@@ -434,7 +426,9 @@ const Header = ({ windowSize }) => {
                   sx={{
                     width: '25px',
                     height: '25px',
-                    color: isHomePage ? '#000000 !important' : '#ffffff !important',
+                    color: isHomePage
+                      ? '#000000 !important'
+                      : '#ffffff !important',
                   }}
                 />
               </IconButton>

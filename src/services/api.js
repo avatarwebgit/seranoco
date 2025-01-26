@@ -584,13 +584,53 @@ export const addAddress = async (
   city_id,
   postal_code,
 ) => {
+  console.log(token, title, tel, address, city_id, postal_code);
   const response = await fetch(`${baseUrl}/add/address/user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `bearer ${token}`,
     },
     body: JSON.stringify({ title, tel, address, city_id, postal_code }),
+  });
+  const result = await response.json();
+  console.log(response, result);
+  return { response, result };
+};
+
+export const getAllAddresses = async token => {
+  const response = await fetch(`${baseUrl}/address`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getAllFavorites = async token => {
+  const response = await fetch(`${baseUrl}/favorites`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const addToFavorite = async (token, product_id) => {
+  console.log(product_id);
+  const response = await fetch(`${baseUrl}/add/address/user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ product_id }),
   });
   const result = await response.json();
   console.log(response, result);

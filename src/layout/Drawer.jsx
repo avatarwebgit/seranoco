@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
-import { cartActions, drawerActions } from '../store/store';
+import { accesModalActions, cartActions, drawerActions } from '../store/store';
 import { ReactComponent as Close } from '../assets/svg/close.svg';
 import { IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { KeyboardArrowRight } from '@mui/icons-material';
+import { KeyboardArrowRight, Lock } from '@mui/icons-material';
 
 import CartProduct from '../components/card/CartProduct';
 
@@ -17,6 +17,7 @@ const Drawer = ({ children, size }) => {
   const cart = useSelector(state => state.cartStore);
 
   const lng = useSelector(state => state.localeStore.lng);
+  const token = useSelector(state => state.userStore.token);
 
   const { t } = useTranslation();
 
@@ -74,12 +75,24 @@ const Drawer = ({ children, size }) => {
         </div>
 
         <div className={classes.actions_wrapper}>
-          <Link to={`/${lng}/precheckout`}>
-            <IconButton className={classes.pay_btn} disableRipple={true}>
-              <KeyboardArrowRight fontSize='10' />
-              &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;
+          {token ? (
+            <Link to={`/${lng}/precheckout`}>
+              <IconButton className={classes.pay_btn} disableRipple={true}>
+                <KeyboardArrowRight fontSize='10' />
+                &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;
+              </IconButton>
+            </Link>
+          ) : (
+            <IconButton
+              className={classes.pay_btn}
+              onClick={() => {
+                dispatch(accesModalActions.login());
+              }}
+            >
+              <Lock fontSize='17px !important' />
+              &nbsp;&nbsp; {t('login')}&nbsp;&nbsp;
             </IconButton>
-          </Link>
+          )}
           <span
             className={classes.total}
             style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
