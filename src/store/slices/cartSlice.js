@@ -5,6 +5,7 @@ const initialState = {
   totalPrice: 0,
   finalCart: [],
   finalPayment: 0,
+  euro: 0,
 };
 
 const cartSlice = createSlice({
@@ -24,7 +25,7 @@ const cartSlice = createSlice({
 
     remove(state, action) {
       state.products = state.products.filter(
-        el => +el.variation_id !== +action.payload.variation.variation_id,
+        el => +el.variation_id !== +action.payload.variation_id,
       );
       cartSlice.caseReducers.calculateTotalPrice(state);
     },
@@ -33,7 +34,6 @@ const cartSlice = createSlice({
       const product = state.products.find(
         el => +el.variation_id === +action.payload.variation_id,
       );
-      console.log(product);
       if (product) {
         product.selected_quantity += 1;
       }
@@ -59,6 +59,9 @@ const cartSlice = createSlice({
     setFinalCart(state, action) {
       state.finalCart = state.products.filter(el => el.selected_quantity !== 0);
       state.finalPayment = state.totalPrice;
+    },
+    setEuro(state, action) {
+      state.euro = action.payload;
     },
   },
 });

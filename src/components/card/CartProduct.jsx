@@ -79,8 +79,8 @@ const CartProduct = data => {
             <div className={classes.actions_wrapper}>
               <div>{productData.selected_quantity}</div>
               <span>
-                <button onClick={handleDecrement}>-</button>
                 <button onClick={handleIncrement}>+</button>
+                <button onClick={handleDecrement}>-</button>
               </span>
             </div>
             <div className={classes.final}>

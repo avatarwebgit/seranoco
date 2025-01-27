@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Typography, IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
@@ -20,25 +20,36 @@ import CustomeTab from '../components/common/CustomTab';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
+import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
 
-import { getProductDetails } from '../services/api';
+import {
+  addToFavorite,
+  getProductDetails,
+  removeFromFavorite,
+} from '../services/api';
 
 import classes from './Products.module.css';
+import { notify } from '../utils/helperFunctions';
+import { favoriteActions } from '../store/store';
 
 const Products = ({ windowSize }) => {
-  const { id } = useParams();
+  const { id, variation } = useParams();
 
   const [zoomStyles, setZoomStyles] = useState({});
   const [detailsData, setDetailsData] = useState(null);
   const [isInViewbox, setIsInViewbox] = useState(false);
   const [quantity, setQuantity] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const imageRef = useRef();
 
   const { t } = useTranslation();
   const lng = useSelector(state => state.localeStore.lng);
+  const token = useSelector(state => state.userStore.token);
+  const favorites = useSelector(state => state.favoriteStore.products);
 
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -96,9 +107,31 @@ const Products = ({ windowSize }) => {
     setQuantity(quantity - 1);
   };
 
-  const handleAddToFavorites = () => {
-    console.log(detailsData)
+  const handleAddToFavorites = async () => {
+    const serverRes = await addToFavorite(token, id, variation);
+    if (serverRes.response.ok) {
+      notify(t('product.added'));
+      // dispatch(favoriteActions.add({ variation_id: +variation, id }));
+    } else {
+      notify(t('product.err'));
+    }
   };
+
+  const handleRemoveToFavorites = async () => {
+    const serverRes = await removeFromFavorite(token, +variation);
+    if (serverRes.response.ok) {
+      notify(t('product.removed'));
+      // dispatch(favoriteActions.remove(+variation));
+    } else {
+      notify(t('product.err'));
+    }
+  };
+
+  useEffect(() => {
+    if (favorites) {
+      setIsFavorite(favorites?.some(el => el.variation_id === +variation));
+    }
+  }, [favorites]);
 
   return (
     <div className={classes.main}>
@@ -118,8 +151,8 @@ const Products = ({ windowSize }) => {
           <div className={classes.content}>
             <div
               className={classes.image_container}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
+              // onMouseMove={handleMouseMove}
+              // onMouseLeave={handleMouseLeave}
             >
               <div className={classes.zoom_box} style={zoomStyles}>
                 {detailsData ? (
@@ -279,13 +312,25 @@ const Products = ({ windowSize }) => {
                     {/* <button>sds</button> */}
                   </div>
 
-                  <IconButton
-                    className={classes.wish_list}
-                    onClick={handleAddToFavorites}
-                  >
-                    <Heart width={15} height={15} />
-                    <p>{t('add_to_favorite')}</p>
-                  </IconButton>
+                  {isFavorite ? (
+                    <>
+                      <IconButton
+                        className={classes.wish_list}
+                        onClick={handleRemoveToFavorites}
+                      >
+                        <HeartRed width={15} height={15} />
+                        <p>{t('product.remove')}</p>
+                      </IconButton>
+                    </>
+                  ) : (
+                    <IconButton
+                      className={classes.wish_list}
+                      onClick={handleAddToFavorites}
+                    >
+                      <Heart width={15} height={15} />
+                      <p>{t('add_to_favorite')}</p>
+                    </IconButton>
+                  )}
                 </>
               )}
               <span className={classes.divider} />

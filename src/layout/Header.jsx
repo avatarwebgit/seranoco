@@ -55,6 +55,7 @@ const Header = ({ windowSize }) => {
   const cart = useSelector(state => state.cartStore);
   const token = useSelector(state => state.userStore.token);
   const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
+  const favorits = useSelector(state => state.favoriteStore.products);
 
   const { t, i18n } = useTranslation();
   const location = useLocation();
@@ -246,11 +247,11 @@ const Header = ({ windowSize }) => {
 
           {!isSmall && (
             <>
-              {token && (
+              {token && favorits && (
                 <span className={classes.icon_pack_wrapper}>
                   <IconButton>
                     <Badge
-                      // badgeContent={1}
+                      badgeContent={favorits.length}
                       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     >
                       <Tooltip
@@ -361,7 +362,7 @@ const Header = ({ windowSize }) => {
                       >
                         {elem.label}
                       </motion.div>
-                      <div className={classes.mega_menu_backdropp} />
+                      {/* <div className={classes.mega_menu_backdropp} /> */}
 
                       {/* Mega menu paper */}
                       {elem.children && (

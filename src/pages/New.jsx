@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import BannerCarousel from '../components/BannerCarousel';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +12,7 @@ import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 
+import BannerCarousel from '../components/BannerCarousel';
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 import Body from '../components/filters_page/Body';
@@ -540,6 +540,7 @@ const New = ({ windowSize }) => {
                           dataProps={el}
                           key={el.variation_id}
                           up={euro_price}
+                          newItem={true}
                         />
                       );
                     })}

@@ -277,16 +277,6 @@ export const useHeaderMenus = lng => {
   });
 };
 
-export const getCsrfToken = async () => {
-  const response = await fetch(
-    'https://admin.seranoco.com/sanctum/csrf-cookie',
-    {
-      method: 'GET',
-      credentials: 'include',
-    },
-  );
-};
-
 export const sendRegistrationData = async data => {
   const response = await fetch(`${baseUrl}/register`, {
     method: 'POST',
@@ -516,7 +506,7 @@ export const useAllPromotions = () => {
 
 export const useUser = token => {
   return useQuery({
-    queryKey: ['user',token],
+    queryKey: ['user', token],
     queryFn: async () => {
       const response = await fetch(`${baseUrl}/user`, {
         headers: {
@@ -611,25 +601,38 @@ export const getAllAddresses = async token => {
 
 export const getAllFavorites = async token => {
   const response = await fetch(`${baseUrl}/favorites`, {
-    method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `bearer ${token}`,
     },
+    method: 'GET',
   });
+
   const result = await response.json();
   return { response, result };
 };
 
-export const addToFavorite = async (token, product_id) => {
-  console.log(product_id);
-  const response = await fetch(`${baseUrl}/add/address/user`, {
+export const addToFavorite = async (token, alias, variation_id) => {
+  const response = await fetch(`${baseUrl}/add/favorite/user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `bearer ${token}`,
     },
-    body: JSON.stringify({ product_id }),
+    body: JSON.stringify({ alias, variation_id }),
+  });
+  const result = await response.json();
+  console.log(response, result);
+  return { response, result };
+};
+
+export const removeFromFavorite = async (token, variation_id) => {
+  const response = await fetch(`${baseUrl}/remove/favorite/user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ variation_id: variation_id }),
   });
   const result = await response.json();
   console.log(response, result);

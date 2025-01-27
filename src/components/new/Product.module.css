@@ -91,3 +91,9 @@
   width: fit-content;
   margin: 0 3px;
 }
+
+.close_btn {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+}

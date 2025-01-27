@@ -77,15 +77,15 @@
 
   "my_acc": "My Account",
   "byorder": "By Order",
-  "add":"Add",
+  "add": "Add",
 
   "profile": {
     "orders": "Orders",
     "item_list": "Item Lists",
     "ticket": "Ticket",
     "contact": "Contact",
-    "addresses":"Adresses",
-    "add_add":"Add New Address",
+    "addresses": "Adresses",
+    "add_add": "Add New Address",
 
     "acc_info": "Account Information",
     "favorites": "Favorites",
@@ -93,12 +93,19 @@
 
     "pending": "Pending Payment",
     "order_status": "Order Status",
-    "urad":"All Your Addresses",
+    "urad": "All Your Addresses",
 
     "log_out": "Logout",
 
     "support": "Support",
-    "account": "Account"
+    "account": "Account",
+
+    "sbsi":"Sort By Size (Increasing)",
+    "sbsd":"Sort By Size (Decreasing)",
+    "sbpi":"Sort By price (Increasing)",
+    "sbpd":"Sort By price (Decreasing)",
+
+    "sort":"Sort"
   },
 
   "shopping_cart": {
@@ -152,7 +159,7 @@
     "pstep": "Back",
     "receiver": "Receiver",
     "postalcode": "Post Code",
-    "title":"Tile",
+    "title": "Tile",
     "submit": "ُSubmit",
     "off": "Discount",
     "dprice": "Price After Discount"
@@ -165,5 +172,14 @@
   "newpage": {
     "av": "In Stock",
     "notav": "Not Available"
+  },
+
+  "product": {
+    "added": "Product Successfully Added To Favorites",
+    "removed": "Product Successfully Removed From Favorites",
+    "err": "Product Not Added To Favorites Please Try Again.",
+    "remove": "Remove From Wish List",
+    "remove_ow":"Remove"
+
   }
 }

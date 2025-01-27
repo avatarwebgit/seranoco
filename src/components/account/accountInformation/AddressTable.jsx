@@ -51,10 +51,10 @@ const AddressTable = ({ formData }) => {
   const [lastname, setLastname] = useState('');
   const [secondaryPhoneN, setSecondaryPhoneN] = useState('');
   const [phoneCode, setphoneCode] = useState('');
-  const [cityData, setCityData] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
+  const [cityData, setCityData] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [Address, setAddress] = useState('');
-  const [city, setCity] = useState(null);
+  const [city, setCity] = useState('');
   const [isError, setIsError] = useState(false);
   const [parsedData, setParsedData] = useState([]);
   const [postalCode, setPostalCode] = useState('');
@@ -132,10 +132,6 @@ const AddressTable = ({ formData }) => {
       }
     }
   };
-
-  useEffect(() => {
-    console.log(postalCode);
-  }, [postalCode]);
 
   return (
     <div className={`${classes.main} ${formData && classes.form}`}>

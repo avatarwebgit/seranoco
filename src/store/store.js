@@ -11,12 +11,13 @@ import accessModalSlice from './slices/accessModalslice';
 import signupInformationSlice from './slices/signupInformationSlice';
 import cartSlice from './slices/cartSlice';
 import userSlice from './slices/userSlice';
+import favoriteSlice from './slices/favorites';
 
 // Persistence Configuration
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['userStore', 'cartStore'], 
+  whitelist: ['userStore', 'cartStore', 'favoriteStore'],
 };
 
 const rootReducer = {
@@ -28,6 +29,7 @@ const rootReducer = {
   signupStore: signupInformationSlice.reducer,
   cartStore: cartSlice.reducer,
   userStore: userSlice.reducer,
+  favoriteStore: favoriteSlice.reducer,
 };
 
 const persistedReducer = persistReducer(
@@ -37,7 +39,6 @@ const persistedReducer = persistReducer(
 
 const store = configureStore({
   reducer: persistedReducer,
- 
 });
 
 // Create Persistor
@@ -51,5 +52,6 @@ export const accesModalActions = accessModalSlice.actions;
 export const signupActions = signupInformationSlice.actions;
 export const cartActions = cartSlice.actions;
 export const userActions = userSlice.actions;
+export const favoriteActions = favoriteSlice.actions;
 
 export { store, persistor };
