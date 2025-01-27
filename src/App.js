@@ -17,6 +17,9 @@ import Drawer from './layout/Drawer';
 import './App.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/es/persistStore';
+import { notify } from './utils/helperFunctions';
+import { useUser } from './services/api';
+import { useTranslation } from 'react-i18next';
 function App() {
   const [windowSize, setWindowSize] = useState(() => {
     const width = window.innerWidth;
@@ -38,6 +41,10 @@ function App() {
 
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
+
+  const { t } = useTranslation();
+
+  const { data: userData, isLoading } = useUser(token);
 
   const dispatch = useDispatch();
 
@@ -75,6 +82,17 @@ function App() {
   useEffect(() => {
     document.body.className = lng === 'fa' ? 'fa' : 'en';
   }, [lng]);
+
+  useEffect(() => {
+    if (userData) {
+      console.log(userData);
+      notify(
+        `${t('welcome')} ${userData.user.first_name} ${
+          userData.user.last_name
+        }`,
+      );
+    }
+  }, [userData]);
 
   return (
     <PersistGate loading={null} persistor={persistor}>

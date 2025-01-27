@@ -186,8 +186,8 @@ const Header = ({ windowSize }) => {
         y: isHomePage && scrollY === 0 ? '50px' : 0,
         height: scrollY !== 0 ? '3.5rem' : isSmall ? '4rem' : '5rem',
         backgroundColor:
-          scrollY !== 0 ? 'rgba(255,255,255,0.5)' : 'rgba(0, 0, 0, 0)',
-        backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'none',
+          scrollY !== 0 ? 'rgba(255,255,255,0.9)' : 'rgba(0, 0, 0, 0)',
+        // backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'none',
       }}
       style={{ position: isFixed ? 'fixed' : 'sticky' }}
       transition={{
@@ -350,35 +350,41 @@ const Header = ({ windowSize }) => {
 
                   return (
                     <div className={classes.header_btn_wrapper} key={nanoid()}>
-                      <a
-                        href={`${
-                          isFullUrl ? elem.url : '/en' + elem.url || '#'
-                        }`}
+                      <motion.div
                         className={classes.header_btn}
+                        id='basic-button'
+                        aria-controls={open ? 'basic-menu' : undefined}
+                        aria-haspopup='true'
+                        aria-expanded={open ? 'true' : undefined}
+                        onMouseEnter={event => handleClick(event)}
+                        style={{ color: isHomePage ? '#000000' : '#ffffff' }}
                       >
-                        <motion.button
-                          className={classes.header_btn}
-                          id='basic-button'
-                          aria-controls={open ? 'basic-menu' : undefined}
-                          aria-haspopup='true'
-                          aria-expanded={open ? 'true' : undefined}
-                          onMouseEnter={event => handleClick(event)}
-                          style={{ color: isHomePage ? '#000000' : '#ffffff' }}
-                        >
-                          {elem.label}
-                        </motion.button>
-                      </a>
+                        {elem.label}
+                      </motion.div>
+                      <div className={classes.mega_menu_backdropp} />
 
                       {/* Mega menu paper */}
                       {elem.children && (
                         <motion.div className={classes.mega_paper}>
                           <div className={classes.sub_menu_wrapper}>
-                            {elem.children.map(el => {
+                            {elem.children.map((el, i) => {
+                              const id = nanoid();
                               return (
                                 <div key={el.id} className={classes.header_sub}>
-                                  <p className={classes.sub_menu_text}>
+                                  <input
+                                    type='radio'
+                                    name='mega-menu'
+                                    id={id}
+                                    className={classes.label_radio}
+                                    defaultChecked={i === 0}
+                                  />
+                                  <label
+                                    className={classes.mega_title}
+                                    id={id}
+                                    htmlFor={id}
+                                  >
                                     {el.label}
-                                  </p>
+                                  </label>
                                   <div className={classes.link_menu_wrapper}>
                                     {el.children &&
                                       el.children.map(elc => {

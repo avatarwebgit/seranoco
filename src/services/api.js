@@ -250,7 +250,6 @@ export const login = async (email, password, options) => {
     headers: {
       'Content-type': 'application/json',
     },
-    credentials: 'include',
     body: JSON.stringify({ email, password }),
     ...options,
   });
@@ -517,7 +516,7 @@ export const useAllPromotions = () => {
 
 export const useUser = token => {
   return useQuery({
-    queryKey: ['user'],
+    queryKey: ['user',token],
     queryFn: async () => {
       const response = await fetch(`${baseUrl}/user`, {
         headers: {

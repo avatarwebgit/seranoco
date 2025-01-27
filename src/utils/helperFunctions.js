@@ -35,5 +35,5 @@ export function formatNumber(value) {
 
 export const notify = message =>
   toast(message, {
-    style: { fontSize: '15px' },
+    style: { fontSize: '12px' },
   });

@@ -29,6 +29,7 @@ const Login = () => {
   const [isError, setIsError] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [token, settoken] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -96,6 +97,8 @@ const Login = () => {
       if (serverRes.result.token) {
         dispatch(userActions.set(serverRes.result.token));
         dispatch(accesModalActions.close());
+        settoken(serverRes.result.token);
+
         // dispatch(
         //   signupActions.set({
         //     ...formEntries,
@@ -104,10 +107,11 @@ const Login = () => {
         //     createdAt: new Date().toISOString(),
         //   }),
         // );
-        notify('Wellcome Back');
       }
     }
   };
+
+
 
   return (
     <div className={classes.content_wrapper}>

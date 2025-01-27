@@ -11,10 +11,6 @@
   src: url('/public/assets/fonts/Mulish-SemiBold.ttf');
 }
 
-.toast {
-  font-size: 0.1rem !important;
-}
-
 .Toastify__progress-bar {
   background-color: var(--primary) !important;
   /* color: #333333; */
