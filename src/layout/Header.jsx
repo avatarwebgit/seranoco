@@ -361,7 +361,7 @@ const Header = ({ windowSize }) => {
                       >
                         {elem.label}
                       </motion.div>
-                      <div className={classes.mega_menu_backdropp} />
+                      {/* <div className={classes.mega_menu_backdropp} /> */}
 
                       {/* Mega menu paper */}
                       {elem.children && (
