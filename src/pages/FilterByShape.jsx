@@ -82,6 +82,7 @@ const FilterByShape = ({ windowSize }) => {
   const [sortedColors, setSortedColors] = useState([]);
   const [sortedGroupColors, setSortedGroupColors] = useState([]);
   const [isTableDataLoading, setIsTableDataLoading] = useState(false);
+  const [chunkSize, setChunkSize] = useState(9);
 
   const formRef = useRef();
   const sizeRef = useRef();
@@ -167,12 +168,6 @@ const FilterByShape = ({ windowSize }) => {
   }, []);
 
   //api call
-  // useEffect(() => {
-  //   if (fetchedColorData) {
-  //     setColorData(fetchedColorData?.data.colors);
-  //     setGroupColors(fetchedColorData?.data.group_colors);
-  //   }
-  // }, [fetchedColorData]);
 
   useEffect(() => {
     if (colorData && groupColors) {
@@ -208,14 +203,13 @@ const FilterByShape = ({ windowSize }) => {
   }, [tableData]);
 
   const memoizedChunkedData = useMemo(() => {
-    console.log(chunkedData);
     return chunkedData;
   }, [chunkedData]);
 
   const memoizedShapeData = useMemo(() => {
     return shapesData?.sort((a, b) => a.priority - b.priority);
   }, [shapesData]);
-  
+
   const handleShapeClick = async (e, id) => {
     setProductDetails([]);
     setChunkedData([]);
@@ -376,10 +370,12 @@ const FilterByShape = ({ windowSize }) => {
   useEffect(() => {
     if (windowSize === 'xs' || windowSize === 's' || windowSize === 'm') {
       setIsSmallPage(true);
+      setChunkSize(4);
       setSlidesPerView(5);
     } else {
       setIsSmallPage(false);
       setSlidesPerView(9);
+      setChunkSize(9);
     }
   }, [windowSize]);
 
@@ -433,7 +429,7 @@ const FilterByShape = ({ windowSize }) => {
 
   useEffect(() => {
     if (memoizedTableData) {
-      const chunks = chunkData(memoizedTableData, 9);
+      const chunks = chunkData(memoizedTableData, chunkSize);
       setChunkedData(chunks);
     }
   }, [memoizedTableData]);
@@ -617,7 +613,7 @@ const FilterByShape = ({ windowSize }) => {
               )}
             </Card>
           )}
-          <Card className={`${classes.size_wrapper}`}>
+          <Card className={`${classes.table_wrapper}`}>
             {isTableDataLoading && <LoadingSpinner />}
             {chunkedData?.length > 1 && (
               <>
@@ -667,6 +663,7 @@ const FilterByShape = ({ windowSize }) => {
                         sizeProp={sizeData}
                         selectedSizeProp={selectedSizesObject}
                         isLoadingData={isLoadingSelectedItem}
+                        isSmall={isSmallPage}
                       />
                     </SwiperSlide>
                   );

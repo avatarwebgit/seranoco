@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Typography, IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
-import { nanoid } from '@reduxjs/toolkit';
-import { FavoriteBorder } from '@mui/icons-material';
-import { Navigation, Scrollbar, Thumbs } from 'swiper/modules';
+import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
+
+import { favoriteActions } from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -18,27 +18,43 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import Card from '../components/filters_page/Card';
 import CustomeTab from '../components/common/CustomTab';
 import Breadcrumbs from '../components/common/Breadcrumbs';
+import { notify } from '../utils/helperFunctions';
 
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
+import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
 
-import { getProductDetails } from '../services/api';
+import {
+  addToFavorite,
+  getProductDetails,
+  removeFromFavorite,
+} from '../services/api';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
+import 'swiper/css/scrollbar';
 
 import classes from './Products.module.css';
 
 const Products = ({ windowSize }) => {
-  const { id } = useParams();
+  const { id, variation } = useParams();
 
   const [zoomStyles, setZoomStyles] = useState({});
   const [detailsData, setDetailsData] = useState(null);
   const [isInViewbox, setIsInViewbox] = useState(false);
   const [quantity, setQuantity] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const imageRef = useRef();
 
   const { t } = useTranslation();
   const lng = useSelector(state => state.localeStore.lng);
+  const token = useSelector(state => state.userStore.token);
+  const favorites = useSelector(state => state.favoriteStore.products);
 
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -96,9 +112,31 @@ const Products = ({ windowSize }) => {
     setQuantity(quantity - 1);
   };
 
-  const handleAddToFavorites = () => {
-    console.log(detailsData)
+  const handleAddToFavorites = async () => {
+    const serverRes = await addToFavorite(token, id, variation);
+    if (serverRes.response.ok) {
+      notify(t('product.added'));
+      // dispatch(favoriteActions.add({ variation_id: +variation, id }));
+    } else {
+      notify(t('product.err'));
+    }
   };
+
+  const handleRemoveToFavorites = async () => {
+    const serverRes = await removeFromFavorite(token, +variation);
+    if (serverRes.response.ok) {
+      notify(t('product.removed'));
+      // dispatch(favoriteActions.remove(+variation));
+    } else {
+      notify(t('product.err'));
+    }
+  };
+
+  useEffect(() => {
+    if (favorites) {
+      setIsFavorite(favorites?.some(el => el.variation_id === +variation));
+    }
+  }, [favorites]);
 
   return (
     <div className={classes.main}>
@@ -279,13 +317,25 @@ const Products = ({ windowSize }) => {
                     {/* <button>sds</button> */}
                   </div>
 
-                  <IconButton
-                    className={classes.wish_list}
-                    onClick={handleAddToFavorites}
-                  >
-                    <Heart width={15} height={15} />
-                    <p>{t('add_to_favorite')}</p>
-                  </IconButton>
+                  {isFavorite ? (
+                    <>
+                      <IconButton
+                        className={classes.wish_list}
+                        onClick={handleRemoveToFavorites}
+                      >
+                        <HeartRed width={15} height={15} />
+                        <p>{t('product.remove')}</p>
+                      </IconButton>
+                    </>
+                  ) : (
+                    <IconButton
+                      className={classes.wish_list}
+                      onClick={handleAddToFavorites}
+                    >
+                      <Heart width={15} height={15} />
+                      <p>{t('add_to_favorite')}</p>
+                    </IconButton>
+                  )}
                 </>
               )}
               <span className={classes.divider} />
@@ -319,6 +369,85 @@ const Products = ({ windowSize }) => {
                 </div>
               )}
             </div>
+          </div>
+          <div className={classes.gallery}>
+            {detailsData && (
+              <Swiper
+                modules={[Pagination]}
+                slidesPerView={5}
+                spaceBetween={0}
+                breakpoints={{
+                  640: {
+                    slidesPerView: 3,
+                  },
+                  768: {
+                    slidesPerView: 4,
+                  },
+                  1024: {
+                    slidesPerView: 5,
+                  },
+                }}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                pagination={{
+                  clickable: true,
+                  dynamicBullets: true,
+                }}
+              >
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+              </Swiper>
+            )}
           </div>
 
           {detailsData && <CustomeTab dataProp={detailsData} />}

@@ -7,17 +7,21 @@ import {
   TextField,
 } from '@mui/material';
 import Flag from 'react-world-flags';
-import { getCitiesByCountry } from '../../services/api';
+import {
+  addAddress,
+  getAllAddresses,
+  getCitiesByCountry,
+} from '../../services/api';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { formatNumber } from '../../utils/helperFunctions';
+import { formatNumber, notify } from '../../utils/helperFunctions';
 
 import classes from './Checkout.module.css';
 const Checkout = ({ isDataValid }) => {
   const lng = useSelector(state => state.localeStore.lng);
-  
+
   const inputStyles = {
     mb: '0.5rem',
     width: '49%',
@@ -57,11 +61,21 @@ const Checkout = ({ isDataValid }) => {
   const [isError, setIsError] = useState(false);
   const [parsedData, setParsedData] = useState([]);
   const [postalCode, setPostalCode] = useState('');
+  const [options, setOptions] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState([]);
 
   const formRef = useRef();
 
   const { t } = useTranslation();
   const data = localStorage.getItem('sis');
+
+  const abortControllerRef = useRef(new AbortController());
+
+  const token = useSelector(state => state.userStore.token);
+
+  const dispatch = useDispatch();
+
+  const [addressData, setAddressData] = useState([]);
 
   const getCities = async param => {
     const serverRes = await getCitiesByCountry(param);
@@ -101,28 +115,83 @@ const Checkout = ({ isDataValid }) => {
 
     if (!isValid) {
       setIsError(true);
-      isDataValid(false);
     } else {
       setIsError(false);
-      isDataValid(true);
 
       try {
-        console.log({
-          adress: Address,
-          secondaryPhoneN: secondaryPhoneN,
-          last_name: lastname,
-          first_name: firstname,
-          city_id: selectedCity,
-          postal_code: postalCode,
-        });
+        addAddress(
+          token,
+          `${firstname} ${lastname}`,
+          secondaryPhoneN,
+          Address,
+          selectedCity.id,
+          postalCode,
+        );
+        allAddresses();
+        notify(t('profile.suc_add_add'));
+        resetInput();
       } catch (error) {
-        console.error('Registration failed:', error);
+        // console.error('Registration failed:', error);
+        notify(t('profile.err_add_add'));
       }
     }
   };
 
+  const resetInput = () => {
+    setFirstname('');
+    setLastname('');
+    setSecondaryPhoneN('');
+    setSelectedCity('');
+    setAddress('');
+    setPostalCode('');
+  };
+
+  const allAddresses = async () => {
+    const serverRes = await getAllAddresses(token);
+    setOptions([]);
+    if (serverRes.response.ok) {
+      setAddressData(serverRes.result.address);
+    }
+  };
+
+  useEffect(() => {
+    addressData.map(el => {
+      return setOptions(prev => [...prev, { id: el.id, label: el.address }]);
+    });
+  }, [addressData]);
+
+  useEffect(() => {
+    allAddresses();
+  }, []);
+
   return (
     <div className={classes.main}>
+      <Autocomplete
+        id='city-autocomplete'
+        disablePortal
+        size='medium'
+        name='city'
+        sx={{ ...inputStyles, width: '100%' }}
+        value={selectedCity}
+        options={options || []}
+        error={isError && !selectedCity}
+        renderInput={params => (
+          <TextField
+            {...params}
+            label={t('signup.city')}
+            error={isError && !selectedCity}
+            name='city'
+          />
+        )}
+        onInputChange={(e, value) => {
+          setCity(value);
+        }}
+        onChange={(e, newValue) => {
+          setSelectedAddress(newValue.id);
+          isDataValid(true);
+        }}
+        onFocus={() => setIsError(false)}
+      />
       <form ref={formRef} onSubmit={handleSubmit} className={classes.form}>
         <FormControl fullWidth>
           <div className={classes.input_wrapper}>

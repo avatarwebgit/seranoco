@@ -1,7 +1,7 @@
 @import url(../styles/variables.css);
 
 .slide {
-  height: calc(100vh - var(--top-slider-height)) !important;
+  height: calc(100vh - var(--top-slider-height)) - 50px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -14,10 +14,9 @@
   height: var(--top-slider-height);
   overflow: hidden;
 }
-.banner_img_wrapper{
+.banner_img_wrapper {
   width: 100%;
   height: var(--top-slider-height);
-  background-color: red;
 }
 .slider_image_wrapper {
   height: 100vh;
@@ -144,7 +143,7 @@
   display: flex;
   justify-content: center;
 }
-.thumb_wrapper{
+.thumb_wrapper {
   height: 60px;
   display: flex;
   align-items: center;

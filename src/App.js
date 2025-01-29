@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Loading from './layout/Loading';
 import {
   accesModalActions,
+  favoriteActions,
   persistor,
   store,
   userActions,
@@ -18,7 +19,12 @@ import './App.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/es/persistStore';
 import { notify } from './utils/helperFunctions';
-import { useUser } from './services/api';
+import {
+  getAllFavorites,
+  useBasicInformation,
+  useGetAllFavorites,
+  useUser,
+} from './services/api';
 import { useTranslation } from 'react-i18next';
 function App() {
   const [windowSize, setWindowSize] = useState(() => {
@@ -38,6 +44,7 @@ function App() {
   const PreCheckout = React.lazy(() => import('./pages/PreCheckout'));
   const PayByCart = React.lazy(() => import('./pages/PayByCart'));
   const New = React.lazy(() => import('./pages/New'));
+  const NotFound = React.lazy(() => import('./pages/NotFound'));
 
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
@@ -46,11 +53,18 @@ function App() {
 
   const { data: userData, isLoading } = useUser(token);
 
+  const { data: basicData, isLoading: basicDataIsloading } =
+    useBasicInformation();
+
   const dispatch = useDispatch();
 
   const RequireAuth = ({ children }) => {
     return token ? children : <Navigate to={`/${lng}`} replace />;
   };
+
+  const memoizedToken = useMemo(() => {
+    return userData;
+  }, [userData]);
 
   useEffect(() => {
     const calculeSize = () => {
@@ -83,16 +97,7 @@ function App() {
     document.body.className = lng === 'fa' ? 'fa' : 'en';
   }, [lng]);
 
-  useEffect(() => {
-    if (userData) {
-      console.log(userData);
-      notify(
-        `${t('welcome')} ${userData.user.first_name} ${
-          userData.user.last_name
-        }`,
-      );
-    }
-  }, [userData]);
+
 
   return (
     <PersistGate loading={null} persistor={persistor}>
@@ -110,7 +115,7 @@ function App() {
             element={<FilterByShape windowSize={windowSize} />}
           />
           <Route
-            path={`/:lng/products/:id`}
+            path={`/:lng/products/:id/:variation`}
             element={<Products windowSize={windowSize} />}
           />
           <Route
@@ -141,6 +146,7 @@ function App() {
             path={`/:lng/new-products`}
             element={<New windowSize={windowSize} />}
           />
+          <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
         </Routes>
         {windowSize === 'xs' && <FixedNavigation />}
         {windowSize === 's' && <FixedNavigation />}

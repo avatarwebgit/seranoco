@@ -10,12 +10,12 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { formatNumber } from '../../../utils/helperFunctions';
+import { formatNumber, notify } from '../../../utils/helperFunctions';
 
 import classes from './AddressTable.module.css';
 import { addAddress, getCitiesByCountry } from '../../../services/api';
 import Flag from 'react-world-flags';
-const AddressTable = ({ formData }) => {
+const AddressTable = ({ formData, refetch }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
 
@@ -51,10 +51,10 @@ const AddressTable = ({ formData }) => {
   const [lastname, setLastname] = useState('');
   const [secondaryPhoneN, setSecondaryPhoneN] = useState('');
   const [phoneCode, setphoneCode] = useState('');
-  const [cityData, setCityData] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
+  const [cityData, setCityData] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [Address, setAddress] = useState('');
-  const [city, setCity] = useState(null);
+  const [city, setCity] = useState('');
   const [isError, setIsError] = useState(false);
   const [parsedData, setParsedData] = useState([]);
   const [postalCode, setPostalCode] = useState('');
@@ -119,23 +119,32 @@ const AddressTable = ({ formData }) => {
       setIsError(false);
 
       try {
-        addAddress({
-          token: token,
-          title: `${firstname} ${lastname}`,
-          tel: secondaryPhoneN,
-          address: Address,
-          city_id: selectedCity.id,
-          postal_code: postalCode,
-        });
+        addAddress(
+          token,
+          `${firstname} ${lastname}`,
+          secondaryPhoneN,
+          Address,
+          selectedCity.id,
+          postalCode,
+        );
+        refetch();
+        notify(t('profile.suc_add_add'));
+        resetInput();
       } catch (error) {
         // console.error('Registration failed:', error);
+        notify(t('profile.err_add_add'));
       }
     }
   };
 
-  useEffect(() => {
-    console.log(postalCode);
-  }, [postalCode]);
+  const resetInput = () => {
+    setFirstname('');
+    setLastname('');
+    setSecondaryPhoneN('');
+    setSelectedCity('');
+    setAddress('');
+    setPostalCode('');
+  };
 
   return (
     <div className={`${classes.main} ${formData && classes.form}`}>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import Wrapper from './Wrapper';
@@ -8,16 +8,31 @@ import Card from '../filters_page/Card';
 
 import { ReactComponent as Edit } from '../../assets/svg/edit-black.svg';
 
-import classes from './AccountInformation.module.css';
-import { IconButton, Input } from '@mui/material';
-import AddressTable from './accountInformation/AddressTable';
-import { getAllAddresses } from '../../services/api';
+import {
+  IconButton,
+  Input,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from '@mui/material';
 
+import AddressTable from './accountInformation/AddressTable';
+import { getAllAddresses, removeAddress } from '../../services/api';
+
+import classes from './AccountInformation.module.css';
+import { Add, Delete } from '@mui/icons-material';
+import { notify } from '../../utils/helperFunctions';
+import { cartActions } from '../../store/store';
 const AccountInformaion = () => {
   const { t } = useTranslation();
   const userData = useSelector(state => state.userStore.user);
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
+
+  const abortControllerRef = useRef(new AbortController());
+
+  const dispatch = useDispatch()
 
   const [addressData, setAddressData] = useState([]);
   const [user, setUser] = useState(null);
@@ -75,15 +90,19 @@ const AccountInformaion = () => {
     }
   }, [userData]);
 
-  const allAddresses = async token => {
-    const serverRes = await getAllAddresses(token);
+  const allAddresses = async () => {
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
+    const serverRes = await getAllAddresses(token, {
+      signal: abortControllerRef.current.signal,
+    });
     if (serverRes.response.ok) {
       setAddressData(serverRes.result.address);
     }
   };
 
   useEffect(() => {
-    allAddresses(token);
+    allAddresses();
   }, []);
 
   const handleSubmit = () => {
@@ -100,6 +119,18 @@ const AccountInformaion = () => {
         el.sec === field ? { ...el, value: e.target.value } : el,
       ),
     );
+  };
+
+  const hnadleDeleteAddress = async (e, token, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const serverRes = await removeAddress(token, id);
+    if (serverRes.response.ok) {
+      notify(t('profile.suc_rem_add'));
+      allAddresses();
+    } else {
+      notify(t('profile.err_rem_add'));
+    }
   };
 
   return (
@@ -165,15 +196,42 @@ const AccountInformaion = () => {
               </Wrapper>
               <Wrapper>
                 <h4 className={classes.title}>{t('profile.add_add')}</h4>
-                <AddressTable />
+                <AddressTable refetch={allAddresses} />
               </Wrapper>
               {addressData && addressData.length > 0 && (
-                <Wrapper>
+                <>
                   <h4 className={classes.title}>{t('profile.urad')}</h4>
-                  {addressData.map(el => {
-                    return <AddressTable formData={el} key={el.id} />;
-                  })}
-                </Wrapper>
+                  {addressData.map(el => (
+                    <Wrapper>
+                      <Accordion key={el.id} sx={{ boxShadow: 'none' }}>
+                        {/* Ensure each Accordion has a unique key */}
+                        <AccordionSummary
+                          expandIcon={<Add fontSize='small' />}
+                          aria-controls={`${el.id}-content`}
+                          id={`${el.id}-header`}
+                        >
+                          <Typography
+                            component='span'
+                            style={{ fontSize: '.7rem', fontWeight: 'bold' }}
+                            variant='h1'
+                          >
+                            {el.address}
+                          </Typography>
+                          <IconButton
+                            onClick={e => hnadleDeleteAddress(e, token, el.id)}
+                            sx={{ marginLeft: 'auto' }}
+                            size='small'
+                          >
+                            <Delete fontSize='small' />
+                          </IconButton>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <AddressTable formData={el} />
+                        </AccordionDetails>
+                      </Accordion>
+                    </Wrapper>
+                  ))}
+                </>
               )}
             </Card>
           </Body>

@@ -277,16 +277,6 @@ export const useHeaderMenus = lng => {
   });
 };
 
-export const getCsrfToken = async () => {
-  const response = await fetch(
-    'https://admin.seranoco.com/sanctum/csrf-cookie',
-    {
-      method: 'GET',
-      credentials: 'include',
-    },
-  );
-};
-
 export const sendRegistrationData = async data => {
   const response = await fetch(`${baseUrl}/register`, {
     method: 'POST',
@@ -297,6 +287,7 @@ export const sendRegistrationData = async data => {
     body: JSON.stringify({ ...data }),
   });
   const result = await response.json();
+  console.log(response, result);
   return { response, result };
 };
 
@@ -516,7 +507,7 @@ export const useAllPromotions = () => {
 
 export const useUser = token => {
   return useQuery({
-    queryKey: ['user',token],
+    queryKey: ['user', token],
     queryFn: async () => {
       const response = await fetch(`${baseUrl}/user`, {
         headers: {
@@ -563,6 +554,27 @@ export const getPayments = async () => {
   return { response, result };
 };
 
+export const sendCartPrice = async ({ token, address_id }) => {
+  const response = await fetch(`${baseUrl}/payment`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+    body: JSON.stringify({ address_id }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const cartMehtodPayment = async () => {
+  const response = await fetch(`${baseUrl}/get/payments`, {
+    method: 'GET',
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
 export const updateUser = async token => {
   const response = await fetch(`${baseUrl}/update/user`, {
     method: 'POST',
@@ -583,27 +595,39 @@ export const addAddress = async (
   city_id,
   postal_code,
 ) => {
-  console.log(token, title, tel, address, city_id, postal_code);
-  const response = await fetch(`${baseUrl}/add/address/user`, {
+  const response = await fetch(`${baseUrl}/add/user/address`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ title, tel, address, city_id, postal_code }),
   });
   const result = await response.json();
-  console.log(response, result);
   return { response, result };
 };
 
-export const getAllAddresses = async token => {
+export const removeAddress = async (token, address_id) => {
+  const response = await fetch(`${baseUrl}/remove/address/user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ address_id }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getAllAddresses = async (token, options) => {
   const response = await fetch(`${baseUrl}/address`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    ...options,
   });
   const result = await response.json();
   return { response, result };
@@ -611,25 +635,38 @@ export const getAllAddresses = async token => {
 
 export const getAllFavorites = async token => {
   const response = await fetch(`${baseUrl}/favorites`, {
-    method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `bearer ${token}`,
     },
+    method: 'GET',
   });
+
   const result = await response.json();
   return { response, result };
 };
 
-export const addToFavorite = async (token, product_id) => {
-  console.log(product_id);
-  const response = await fetch(`${baseUrl}/add/address/user`, {
+export const addToFavorite = async (token, alias, variation_id) => {
+  const response = await fetch(`${baseUrl}/add/favorite/user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `bearer ${token}`,
     },
-    body: JSON.stringify({ product_id }),
+    body: JSON.stringify({ alias, variation_id }),
+  });
+  const result = await response.json();
+  console.log(response, result);
+  return { response, result };
+};
+
+export const removeFromFavorite = async (token, variation_id) => {
+  const response = await fetch(`${baseUrl}/remove/favorite/user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ variation_id: variation_id }),
   });
   const result = await response.json();
   console.log(response, result);
