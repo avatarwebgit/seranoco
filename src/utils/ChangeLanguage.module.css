@@ -50,8 +50,8 @@
 @media only screen and (max-width: 480px) {
   .main {
     border-width: 1px !important;
-    width: 25px !important;
-    height: 25px !important;
+    width: 35px !important;
+    height: 35px !important;
   }
   .dropdown_wrapper {
     left: -100%;
@@ -61,8 +61,8 @@
 @media only screen and (min-width: 481px) and (max-width: 768px) {
   .main {
     border-width: 1px !important;
-    width: 25px !important;
-    height: 25px !important;
+    width: 35px !important;
+    height: 35px !important;
   }
   .dropdown_wrapper {
     left: -100%;

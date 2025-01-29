@@ -47,7 +47,6 @@ const SecondaryPromotionShopCart = () => {
                     <Link className={classes.Link}>
                       <CustomAnimatedBtn
                         className={classes.shop_btn}
-                        size='large'
                         variant='outlined'
                         type='light'
                       >

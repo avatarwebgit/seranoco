@@ -6,6 +6,8 @@ const initialState = {
   finalCart: [],
   finalPayment: 0,
   euro: 0,
+  allAddresses: [],
+  selectedAddress: [],
 };
 
 const cartSlice = createSlice({
@@ -62,6 +64,12 @@ const cartSlice = createSlice({
     },
     setEuro(state, action) {
       state.euro = action.payload;
+    },
+    setAllAddresses(state, action) {
+      state.allAddresses = action.payload;
+    },
+    setSelectedAddress(state, action) {
+      state.selectedAddress = action.payload;
     },
   },
 });

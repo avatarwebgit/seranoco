@@ -287,6 +287,7 @@ export const sendRegistrationData = async data => {
     body: JSON.stringify({ ...data }),
   });
   const result = await response.json();
+  console.log(response, result);
   return { response, result };
 };
 
@@ -553,6 +554,27 @@ export const getPayments = async () => {
   return { response, result };
 };
 
+export const sendCartPrice = async ({ token, address_id }) => {
+  const response = await fetch(`${baseUrl}/payment`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+    body: JSON.stringify({ address_id }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const cartMehtodPayment = async () => {
+  const response = await fetch(`${baseUrl}/get/payments`, {
+    method: 'GET',
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
 export const updateUser = async token => {
   const response = await fetch(`${baseUrl}/update/user`, {
     method: 'POST',
@@ -573,27 +595,39 @@ export const addAddress = async (
   city_id,
   postal_code,
 ) => {
-  console.log(token, title, tel, address, city_id, postal_code);
-  const response = await fetch(`${baseUrl}/add/address/user`, {
+  const response = await fetch(`${baseUrl}/add/user/address`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ title, tel, address, city_id, postal_code }),
   });
   const result = await response.json();
-  console.log(response, result);
   return { response, result };
 };
 
-export const getAllAddresses = async token => {
+export const removeAddress = async (token, address_id) => {
+  const response = await fetch(`${baseUrl}/remove/address/user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ address_id }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getAllAddresses = async (token, options) => {
   const response = await fetch(`${baseUrl}/address`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    ...options,
   });
   const result = await response.json();
   return { response, result };

@@ -7,7 +7,13 @@ import Body from '../components/filters_page/Body';
 import Card from '../components/filters_page/Card';
 
 import classes from './Footer.module.css';
-import { GitHub, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
+import {
+  Facebook,
+  GitHub,
+  Instagram,
+  LinkedIn,
+  Twitter,
+} from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 const Footer = () => {
   const [footerData, setFooterData] = useState(null);
@@ -16,12 +22,27 @@ const Footer = () => {
 
   const fetchFooterLinks = async () => {
     const serverRes = await basicInformation();
-    setFooterData(serverRes.result.data.at(0));
+    if (serverRes.response.ok) {
+      setFooterData(serverRes.result.data.at(0));
+    }
   };
 
   useEffect(() => {
     fetchFooterLinks();
   }, []);
+
+  const getKeys = (data, dataKey) => {
+    const keys = Object.keys(data).filter(key => {
+      const startsWithPrefix = key.startsWith(dataKey);
+      return startsWithPrefix;
+    });
+
+    return keys.map(key => (
+      <a key={key} href='#'>
+        {data[key]}
+      </a>
+    ));
+  };
 
   return (
     <>
@@ -43,41 +64,28 @@ const Footer = () => {
                   </span>
                   <span>
                     <p className={classes.title}>{footerData.footer_1}</p>
-                    <a href='#'>Customer Service Overview</a>
-                    <a href='#'>Git Card Balance</a>
-                    <a href='#'>Contact Us</a>
+                    {getKeys(footerData, 'footer_')}
                   </span>
                   <span>
                     <p className={classes.title}>{footerData.footer_2}</p>
+                    {getKeys(footerData, 'news_')}
                   </span>
                   <span className={classes.support}>
                     <p className={classes.title}>{footerData.footer_3}</p>
-                    <a href='#'>Terms Of Use</a>
-                    <a href='#'>Terms And Conditions</a>
-                    <a href='#'>Privacy policy</a>
+                    {getKeys(footerData, 'contact_')}
                   </span>
                 </div>
               </div>
               <div className={classes.divider}></div>
               <div className={classes.social_media_links}>
-                <Tooltip title={'instagram'} arrow placement='top' >
-                  <a href='/'>
+                <Tooltip title={'Instagram'} arrow placement='top'>
+                  <a href={footerData.instagram}>
                     <Instagram sx={{ color: 'grey' }} fontSize='10' />
                   </a>
                 </Tooltip>
-                <Tooltip title={'twitter'} arrow placement='top' >
-                  <a href='/'>
-                    <Twitter sx={{ color: 'grey' }} fontSize='10' />
-                  </a>
-                </Tooltip>
-                <Tooltip title={'linkedin'} arrow placement='top' >
-                  <a href='/'>
-                    <LinkedIn sx={{ color: 'grey' }} fontSize='10' />
-                  </a>
-                </Tooltip>
-                <Tooltip title={'github'} arrow placement='top' >
-                  <a href='/'>
-                    <GitHub sx={{ color: 'grey' }} fontSize='10' />
+                <Tooltip title={'Facebook'} arrow placement='top'>
+                  <a href={footerData.facebook}>
+                    <Facebook sx={{ color: 'grey' }} fontSize='10' />
                   </a>
                 </Tooltip>
               </div>

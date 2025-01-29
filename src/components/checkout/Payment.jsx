@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { formatNumber } from '../../utils/helperFunctions';
+import { sendCartPrice } from '../../services/api';
 
 import classes from './Payment.module.css';
 const Payment = () => {
@@ -15,7 +16,7 @@ const Payment = () => {
     <table className={classes.table}>
       <thead>
         <tr className={classes.tr}>
-          <td className={classes.td}>{t('pc.size')}</td>
+          <td className={classes.td}>{t('pc.image')}</td>
           <td className={classes.td}>{t('pc.color')}</td>
           <td className={classes.td}>{t('pc.size')}</td>
           <td className={classes.td}>{t('quantity')}</td>
@@ -28,7 +29,8 @@ const Payment = () => {
       </thead>
       <tbody>
         {card.finalCart.map(el => {
-          const isByOrder = el.variation.quantity === 0 && el.variation.is_not_available === 0;
+          const isByOrder =
+            el.variation.quantity === 0 && el.variation.is_not_available === 0;
           const totalPrice = el.selected_quantity * el.price;
           return (
             <tr className={classes.tr} key={el.id}>

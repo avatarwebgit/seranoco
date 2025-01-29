@@ -17,7 +17,7 @@ const ShoppingCart = () => {
     <table className={classes.table}>
       <thead>
         <tr className={classes.tr}>
-          <td className={classes.td}>{t('pc.size')}</td>
+          <td className={classes.td}>{t('pc.image')}</td>
           <td className={classes.td}>{t('pc.color')}</td>
           <td className={classes.td}>{t('pc.size')}</td>
           <td className={classes.td}>
@@ -33,7 +33,6 @@ const ShoppingCart = () => {
       </thead>
       <tbody>
         {card.products.map(el => {
-          console.log(el)
           const isByOrder =
             el?.variation.quantity === 0 && el?.variation.is_not_available === 0;
           const totalPrice = el.selected_quantity * el.price;

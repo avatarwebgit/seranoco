@@ -22,7 +22,7 @@ import { Button } from '@mui/material';
 import { formatNumber } from '../utils/helperFunctions';
 import PaymentMethod from '../components/checkout/PaymentMethod';
 const PreCheckout = ({ windowSize }) => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const [isDataValid, setIsDataValid] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
 
@@ -37,7 +37,6 @@ const PreCheckout = ({ windowSize }) => {
     const serverRes = await getPayments();
     if (serverRes.response.ok) {
       setPaymentMethods(serverRes.result.data);
-      console.log(serverRes.result);
     }
   };
 
@@ -45,7 +44,6 @@ const PreCheckout = ({ windowSize }) => {
     dispatch(drawerActions.close());
     dispatch(cartActions.calculateTotalPrice());
     p();
-    console.log(card);
   }, []);
 
   const handleGotoNextStep = () => {

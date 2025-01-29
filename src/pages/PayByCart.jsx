@@ -87,8 +87,6 @@ const PayByCart = ({ widnowSize }) => {
       destCardNo?.trim(),
     ];
 
-    console.log(requiredFields);
-
     const isValid = requiredFields.every(field => field && field.length > 0);
 
     if (!isValid) {

@@ -10,12 +10,12 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { formatNumber } from '../../../utils/helperFunctions';
+import { formatNumber, notify } from '../../../utils/helperFunctions';
 
 import classes from './AddressTable.module.css';
 import { addAddress, getCitiesByCountry } from '../../../services/api';
 import Flag from 'react-world-flags';
-const AddressTable = ({ formData }) => {
+const AddressTable = ({ formData, refetch }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
 
@@ -119,18 +119,31 @@ const AddressTable = ({ formData }) => {
       setIsError(false);
 
       try {
-        addAddress({
-          token: token,
-          title: `${firstname} ${lastname}`,
-          tel: secondaryPhoneN,
-          address: Address,
-          city_id: selectedCity.id,
-          postal_code: postalCode,
-        });
+        addAddress(
+          token,
+          `${firstname} ${lastname}`,
+          secondaryPhoneN,
+          Address,
+          selectedCity.id,
+          postalCode,
+        );
+        refetch();
+        notify(t('profile.suc_add_add'));
+        resetInput();
       } catch (error) {
         // console.error('Registration failed:', error);
+        notify(t('profile.err_add_add'));
       }
     }
+  };
+
+  const resetInput = () => {
+    setFirstname('');
+    setLastname('');
+    setSecondaryPhoneN('');
+    setSelectedCity('');
+    setAddress('');
+    setPostalCode('');
   };
 
   return (

@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(0.5);
+  transform: scale(0.6);
   position: relative;
   cursor: pointer;
 }
@@ -22,7 +22,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 25px;
+  font-size: 20px;
   white-space: nowrap;
   font-weight: bold;
 }

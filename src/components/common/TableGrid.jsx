@@ -6,10 +6,18 @@ import LoadingSpinner from './LoadingSpinner';
 import { productDetailActions } from '../../store/store';
 import classes from './TableGrid.module.css';
 
-const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
+const TableGrid = ({
+  dataProp,
+  sizeProp,
+  selectedSizeProp,
+  isLoadingData,
+  isSmall,
+}) => {
   const [data, setData] = useState(null);
   const [sizeData, setSizeData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [tableWidthPerItem, setTableWidthPerItem] = useState(10);
+
   const selectedItems = useSelector(state => state.detailsStore.itemIds);
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -31,7 +39,16 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
     }
   }, [dataProp, selectedSizeProp, sizeProp, isLoadingData]);
 
+  useEffect(() => {
+    if (isSmall) {
+      setTableWidthPerItem(20);
+    } else {
+      setTableWidthPerItem(10);
+    }
+  }, [isSmall]);
+
   const handleCheckboxChange = (color, size, id, isChecked, item) => {
+    setIsLoading(true);
     if (isChecked) {
       dispatch(productDetailActions.addItem(id));
     } else {
@@ -54,17 +71,15 @@ const TableGrid = ({ dataProp, sizeProp, selectedSizeProp, isLoadingData }) => {
       {data && data.length > 0 && (
         <table
           className={classes.table}
-          style={{ width: `${Object.keys(data).length * 10}%` }}
+          style={{ width: `${Object.keys(data).length * tableWidthPerItem}%` }}
         >
           <thead>
             <tr className={classes.tr}>
-              <th
-                className={`${classes.th} ${classes.image_wrapper}`}
-              >
+              <th className={`${classes.th} ${classes.image_wrapper}`}>
                 <img
                   className={classes.img}
                   src={''}
-                  style={{visibility:'hidden'}}
+                  style={{ visibility: 'hidden' }}
                 />
                 <p>{t('size')}</p>
               </th>

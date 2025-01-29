@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
-import { nanoid } from '@reduxjs/toolkit';
-import { FavoriteBorder } from '@mui/icons-material';
-import { Navigation, Scrollbar, Thumbs } from 'swiper/modules';
+import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
+
+import { favoriteActions } from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -18,6 +18,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import Card from '../components/filters_page/Card';
 import CustomeTab from '../components/common/CustomTab';
 import Breadcrumbs from '../components/common/Breadcrumbs';
+import { notify } from '../utils/helperFunctions';
 
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
 import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
@@ -28,9 +29,13 @@ import {
   removeFromFavorite,
 } from '../services/api';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
+import 'swiper/css/scrollbar';
+
 import classes from './Products.module.css';
-import { notify } from '../utils/helperFunctions';
-import { favoriteActions } from '../store/store';
 
 const Products = ({ windowSize }) => {
   const { id, variation } = useParams();
@@ -151,8 +156,8 @@ const Products = ({ windowSize }) => {
           <div className={classes.content}>
             <div
               className={classes.image_container}
-              // onMouseMove={handleMouseMove}
-              // onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
             >
               <div className={classes.zoom_box} style={zoomStyles}>
                 {detailsData ? (
@@ -364,6 +369,85 @@ const Products = ({ windowSize }) => {
                 </div>
               )}
             </div>
+          </div>
+          <div className={classes.gallery}>
+            {detailsData && (
+              <Swiper
+                modules={[Pagination]}
+                slidesPerView={5}
+                spaceBetween={0}
+                breakpoints={{
+                  640: {
+                    slidesPerView: 3,
+                  },
+                  768: {
+                    slidesPerView: 4,
+                  },
+                  1024: {
+                    slidesPerView: 5,
+                  },
+                }}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                pagination={{
+                  clickable: true,
+                  dynamicBullets: true,
+                }}
+              >
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+                <SwiperSlide className={classes.gallery_image_wrapper}>
+                  <img
+                   
+                    src={detailsData.product?.primary_image}
+                    alt=''
+                    loading='lazy'
+                  />
+                </SwiperSlide>
+              </Swiper>
+            )}
           </div>
 
           {detailsData && <CustomeTab dataProp={detailsData} />}
