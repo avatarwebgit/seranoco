@@ -153,9 +153,13 @@ export const getPaginatedProductsByShape = async (id, page, per_page) => {
   return { response, result };
 };
 
-export const getProductDetails = async alias => {
+export const getProductDetails = async (alias, token) => {
+  console.log(alias, token);
   const response = await fetch(`${baseUrl}/get/product/${alias}`, {
     method: 'GET',
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
   });
 
   const result = await response.json();
@@ -163,11 +167,12 @@ export const getProductDetails = async alias => {
 };
 
 export const getProductDetailsWithId = async (id, token) => {
+  console.log(id, token);
   const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
     method: 'GET',
     headers: {
-      Authorization:`bearer ${token}`
-    }
+      Authorization: `bearer ${token}`,
+    },
   });
 
   const result = await response.json();
@@ -655,7 +660,7 @@ export const getAllFavorites = async token => {
 };
 
 export const addToFavorite = async (token, alias, variation_id) => {
-  console.log(token, alias, variation_id)
+  console.log(token, alias, variation_id);
   const response = await fetch(`${baseUrl}/add/favorite/user`, {
     method: 'POST',
     headers: {
@@ -670,7 +675,8 @@ export const addToFavorite = async (token, alias, variation_id) => {
 };
 
 export const removeFromFavorite = async (token, variation_id) => {
-  const response = await fetch(`${baseUrl}/remove/favorite/user`, {
+  console.log(token, variation_id);
+  const response = await fetch(`${baseUrl}/favorite/remove/product/user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

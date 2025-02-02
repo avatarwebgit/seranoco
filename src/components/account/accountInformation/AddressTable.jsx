@@ -134,6 +134,7 @@ const AddressTable = ({ formData, refetch }) => {
         // console.error('Registration failed:', error);
         notify(t('profile.err_add_add'));
       }
+      
     }
   };
 

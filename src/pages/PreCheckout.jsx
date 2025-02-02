@@ -23,7 +23,7 @@ import { formatNumber } from '../utils/helperFunctions';
 import PaymentMethod from '../components/checkout/PaymentMethod';
 import { useNavigate } from 'react-router-dom';
 const PreCheckout = ({ windowSize }) => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [isDataValid, setIsDataValid] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
 
@@ -123,7 +123,7 @@ const PreCheckout = ({ windowSize }) => {
                 </>
               )}
             </div>
-            <div
+            {/* <div
               className={classes.total_wrapper}
               style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
             >
@@ -168,7 +168,7 @@ const PreCheckout = ({ windowSize }) => {
                   &nbsp;{t('m_unit')}
                 </span>
               )}
-            </div>
+            </div> */}
             {step < 2 && (
               <Button
                 className={classes.step_btn}

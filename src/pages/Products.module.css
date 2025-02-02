@@ -231,11 +231,11 @@
   grid-template-rows: 50px 50px 50px !important;
 }
 
-.product_title > h2 {
+.product_title > span {
   white-space: nowrap;
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .slide {

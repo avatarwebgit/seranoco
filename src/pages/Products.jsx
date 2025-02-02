@@ -100,36 +100,69 @@ const Products = ({ windowSize }) => {
       if (serverRes.response.ok) {
         setDetailsData(serverRes.result);
         console.log(serverRes.result);
-        setShape(
-          serverRes.result.product_attributes.find(
-            attr => attr.attribute.name === 'Shapes',
-          )?.value.name,
-        );
-        setColor(
-          serverRes.result.product_attributes.find(
-            attr => attr.attribute.name === 'Colors',
-          )?.value.name,
-        );
-        setBrand(
-          serverRes.result.product_attributes.find(
-            attr => attr.attribute.name === 'Brand/Mine',
-          )?.value.name,
-        );
-        setCuttingStyle(
-          serverRes.result.product_attributes.find(
-            attr => attr.attribute.name === 'Cutting Style',
-          )?.value.name,
-        );
-        setSize(
-          serverRes.result.product_attributes.find(
-            attr => attr.attribute.name === 'Size',
-          )?.value.name,
-        );
-        setDetails(
-          serverRes.result.product_attributes.find(
-            attr => attr.attribute.name === 'Details',
-          )?.value.name,
-        );
+        if (lng === 'fa') {
+          setShape(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Shapes',
+            )?.value.name_fa,
+          );
+          setColor(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Colors',
+            )?.value.name_fa,
+          );
+          setBrand(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Brand/Mine',
+            )?.value.name_fa,
+          );
+          setCuttingStyle(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Cutting Style',
+            )?.value.name_fa,
+          );
+          setSize(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Size',
+            )?.value.name_fa,
+          );
+          setDetails(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Details',
+            )?.value.name_fa,
+          );
+        } else {
+          setShape(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Shapes',
+            )?.value.name,
+          );
+          setColor(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Colors',
+            )?.value.name,
+          );
+          setBrand(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Brand/Mine',
+            )?.value.name,
+          );
+          setCuttingStyle(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Cutting Style',
+            )?.value.name,
+          );
+          setSize(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Size',
+            )?.value.name,
+          );
+          setDetails(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Details',
+            )?.value.name,
+          );
+        }
       }
     };
     getDetails();
@@ -159,7 +192,7 @@ const Products = ({ windowSize }) => {
     const serverRes = await addToFavorite(token, id, +variation);
     if (serverRes.response.ok) {
       notify(t('product.added'));
-      // dispatch(favoriteActions.add({ variation_id: +variation, id }));
+      setIsFavorite(true);
     } else {
       notify(t('product.err'));
     }
@@ -169,7 +202,7 @@ const Products = ({ windowSize }) => {
     const serverRes = await removeFromFavorite(token, +variation);
     if (serverRes.response.ok) {
       notify(t('product.removed'));
-      // dispatch(favoriteActions.remove(+variation));
+      setIsFavorite(false);
     } else {
       notify(t('product.err'));
     }
@@ -247,11 +280,11 @@ const Products = ({ windowSize }) => {
                   variant='h3'
                 >
                   <strong>
-                    <h2>{shape}</h2>
+                    <span>{shape}</span>
                   </strong>
-                  <h2>{cuttingStyle} </h2> <h2>{brand}</h2>
-                  <h2>{details}</h2> <h2>{color}</h2>
-                  <h2>{size}</h2>
+                  <span>{cuttingStyle} </span> <span>{brand}</span>
+                  <span>{details}</span> <span>{color}</span>
+                  <span>{size}</span>
                 </Typography>
               ) : (
                 <Skeleton

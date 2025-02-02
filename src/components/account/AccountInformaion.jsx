@@ -91,6 +91,7 @@ const AccountInformaion = () => {
   }, [userData]);
 
   const allAddresses = async () => {
+    console.log(';laskfdjklsajf')
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
     const serverRes = await getAllAddresses(token, {
