@@ -63,7 +63,7 @@ const PaymentMethod = ({ dataProps }) => {
                   </button>
                 </>
               ) : (
-                // <Link to={`/fa/order/pay`}>
+                <Link to={`/fa/order/pay`}>
                 <button
                   onClick={() => handleSetPaymentMethod(el.id)}
                   className={`${classes.label}`}
@@ -79,7 +79,7 @@ const PaymentMethod = ({ dataProps }) => {
                   </div>
                   {lng === 'fa' ? el.title : el.name}
                 </button>
-                // </Link>
+                </Link>
               )}
             </>
           );

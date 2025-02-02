@@ -338,7 +338,7 @@ const PayByCart = ({ widnowSize }) => {
                 className={classes.login_btn}
                 type='submit'
               >
-                {t('signup.sign_up')}
+                {t('pc.submit')}
               </Button>
             </div>
           </form>
