@@ -25,10 +25,12 @@ const CartProduct = data => {
 
   const handleIncrement = () => {
     dispatch(cartActions.increment(productData));
+    console.log('first')
   };
 
   const handleDecrement = () => {
     dispatch(cartActions.decrement(productData));
+    console.log('second')
   };
 
   const handleRemveItem = () => {

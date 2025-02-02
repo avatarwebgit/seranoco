@@ -44,7 +44,9 @@ const Drawer = ({ children, size }) => {
     if (cart.products || drawerState) {
       setProductData(cart.products);
     }
-  }, [cart,drawerState]);
+    console.log(cart);
+    console.log(cart.totalPrice);
+  }, [cart, drawerState]);
 
   return (
     <motion.div
