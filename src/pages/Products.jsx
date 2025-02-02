@@ -232,8 +232,8 @@ const Products = ({ windowSize }) => {
           <div className={classes.content}>
             <div
               className={classes.image_container}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
+              // onMouseMove={handleMouseMove}
+              // onMouseLeave={handleMouseLeave}
             >
               <div className={classes.zoom_box} style={zoomStyles}>
                 {detailsData ? (
