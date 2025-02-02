@@ -7,7 +7,6 @@ import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-
 import { favoriteActions } from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
@@ -45,6 +44,12 @@ const Products = ({ windowSize }) => {
   const [isInViewbox, setIsInViewbox] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [shape, setShape] = useState('');
+  const [cuttingStyle, setCuttingStyle] = useState('');
+  const [brand, setBrand] = useState('');
+  const [details, setDetails] = useState('');
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState('');
 
   const imageRef = useRef();
 
@@ -91,8 +96,41 @@ const Products = ({ windowSize }) => {
 
   useEffect(() => {
     const getDetails = async () => {
-      const serverRes = await getProductDetails(id);
-      setDetailsData(serverRes.result);
+      const serverRes = await getProductDetails(id, token);
+      if (serverRes.response.ok) {
+        setDetailsData(serverRes.result);
+        console.log(serverRes.result);
+        setShape(
+          serverRes.result.product_attributes.find(
+            attr => attr.attribute.name === 'Shapes',
+          )?.value.name,
+        );
+        setColor(
+          serverRes.result.product_attributes.find(
+            attr => attr.attribute.name === 'Colors',
+          )?.value.name,
+        );
+        setBrand(
+          serverRes.result.product_attributes.find(
+            attr => attr.attribute.name === 'Brand/Mine',
+          )?.value.name,
+        );
+        setCuttingStyle(
+          serverRes.result.product_attributes.find(
+            attr => attr.attribute.name === 'Cutting Style',
+          )?.value.name,
+        );
+        setSize(
+          serverRes.result.product_attributes.find(
+            attr => attr.attribute.name === 'Size',
+          )?.value.name,
+        );
+        setDetails(
+          serverRes.result.product_attributes.find(
+            attr => attr.attribute.name === 'Details',
+          )?.value.name,
+        );
+      }
     };
     getDetails();
   }, [id]);
@@ -100,6 +138,11 @@ const Products = ({ windowSize }) => {
   useEffect(() => {
     if (detailsData) {
       document.title = `Seranoco / ${detailsData.product.name}`;
+      if (detailsData.product.is_wishlist) {
+        setIsFavorite(true);
+      } else {
+        setIsFavorite(false);
+      }
     }
   }, [detailsData]);
 
@@ -113,7 +156,7 @@ const Products = ({ windowSize }) => {
   };
 
   const handleAddToFavorites = async () => {
-    const serverRes = await addToFavorite(token, id, variation);
+    const serverRes = await addToFavorite(token, id, +variation);
     if (serverRes.response.ok) {
       notify(t('product.added'));
       // dispatch(favoriteActions.add({ variation_id: +variation, id }));
@@ -203,7 +246,12 @@ const Products = ({ windowSize }) => {
                   href={`/${lng}/shopbyshape`}
                   variant='h3'
                 >
-                  {detailsData?.product?.name}
+                  <strong>
+                    <h2>{shape}</h2>
+                  </strong>
+                  <h2>{cuttingStyle} </h2> <h2>{brand}</h2>
+                  <h2>{details}</h2> <h2>{color}</h2>
+                  <h2>{size}</h2>
                 </Typography>
               ) : (
                 <Skeleton
@@ -400,7 +448,6 @@ const Products = ({ windowSize }) => {
               >
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -408,7 +455,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -416,7 +462,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -424,7 +469,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -432,7 +476,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -440,7 +483,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { accesModalActions, cartActions, drawerActions } from '../store/store';
@@ -19,6 +19,8 @@ const Drawer = ({ children, size }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
 
+  const [productData, setProductData] = useState([]);
+
   const { t } = useTranslation();
 
   const toggleDrawer = () => {
@@ -37,6 +39,12 @@ const Drawer = ({ children, size }) => {
       document.body.style.overflow = '';
     };
   }, [drawerState]);
+
+  useEffect(() => {
+    if (cart.products || drawerState) {
+      setProductData(cart.products);
+    }
+  }, [cart,drawerState]);
 
   return (
     <motion.div
@@ -68,7 +76,7 @@ const Drawer = ({ children, size }) => {
         </div>
         <div className={classes.items_wrapper}>
           <div className={classes.items_sheet}>
-            {cart.products.map(el => {
+            {productData.map(el => {
               return <CartProduct key={el.id} data={el} />;
             })}
           </div>

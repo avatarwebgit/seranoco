@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Loading from './layout/Loading';
 import {
   accesModalActions,
+  cartActions,
   favoriteActions,
   persistor,
   store,
@@ -97,72 +98,75 @@ function App() {
     document.body.className = lng === 'fa' ? 'fa' : 'en';
   }, [lng]);
 
-
+  useEffect(() => {
+    if (basicData) {
+      console.log(basicData.data[0].price_euro);
+      dispatch(cartActions.setEuro(basicData.data[0].price_euro));
+    }
+  }, [basicData]);
 
   return (
-    <PersistGate loading={null} persistor={persistor}>
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
-          <Route path={'/'} element={<Navigate to={`/${lng}`} replace />} />
-          <Route path={` `} element={<Navigate to={`/${lng}`} replace />} />
-          <Route
-            path={`/:lng/shopByColor`}
-            element={<FilterByColor windowSize={windowSize} />}
-          />
-          <Route
-            path={`/:lng/shopByShape`}
-            element={<FilterByShape windowSize={windowSize} />}
-          />
-          <Route
-            path={`/:lng/products/:id/:variation`}
-            element={<Products windowSize={windowSize} />}
-          />
-          <Route
-            path={`/:lng/myaccount`}
-            element={
-              <RequireAuth>
-                <Profile windowSize={windowSize} />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path={`/:lng/precheckout`}
-            element={
-              <RequireAuth>
-                <PreCheckout windowSize={windowSize} />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path={`/:lng/order/pay`}
-            element={
-              <RequireAuth>
-                <PayByCart windowSize={windowSize} />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path={`/:lng/new-products`}
-            element={<New windowSize={windowSize} />}
-          />
-          <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
-        </Routes>
-        {windowSize === 'xs' && <FixedNavigation />}
-        {windowSize === 's' && <FixedNavigation />}
-        <Drawer size={windowSize} />
-        <ToastContainer
-          theme='dark'
-          className={'toast'}
-          autoClose={5000}
-          newestOnTop={true}
-          closeButton={false}
-          rtl={lng === 'fa' ? true : false}
-          pauseOnFocusLoss={false}
-          pauseOnHover={true}
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
+        <Route path={'/'} element={<Navigate to={`/${lng}`} replace />} />
+        <Route path={` `} element={<Navigate to={`/${lng}`} replace />} />
+        <Route
+          path={`/:lng/shopByColor`}
+          element={<FilterByColor windowSize={windowSize} />}
         />
-      </Suspense>
-    </PersistGate>
+        <Route
+          path={`/:lng/shopByShape`}
+          element={<FilterByShape windowSize={windowSize} />}
+        />
+        <Route
+          path={`/:lng/products/:id/:variation`}
+          element={<Products windowSize={windowSize} />}
+        />
+        <Route
+          path={`/:lng/myaccount`}
+          element={
+            <RequireAuth>
+              <Profile windowSize={windowSize} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={`/:lng/precheckout`}
+          element={
+            <RequireAuth>
+              <PreCheckout windowSize={windowSize} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={`/:lng/order/pay`}
+          element={
+            <RequireAuth>
+              <PayByCart windowSize={windowSize} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={`/:lng/new-products`}
+          element={<New windowSize={windowSize} />}
+        />
+        <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
+      </Routes>
+      {windowSize === 'xs' && <FixedNavigation />}
+      {windowSize === 's' && <FixedNavigation />}
+      <Drawer size={windowSize} />
+      <ToastContainer
+        theme='dark'
+        className={'toast'}
+        autoClose={5000}
+        newestOnTop={true}
+        closeButton={false}
+        rtl={lng === 'fa' ? true : false}
+        pauseOnFocusLoss={false}
+        pauseOnHover={true}
+      />
+    </Suspense>
   );
 }
 

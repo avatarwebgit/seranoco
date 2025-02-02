@@ -162,9 +162,12 @@ export const getProductDetails = async alias => {
   return { response, result };
 };
 
-export const getProductDetailsWithId = async id => {
+export const getProductDetailsWithId = async (id, token) => {
   const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
     method: 'GET',
+    headers: {
+      Authorization:`bearer ${token}`
+    }
   });
 
   const result = await response.json();
@@ -554,14 +557,20 @@ export const getPayments = async () => {
   return { response, result };
 };
 
-export const sendCartPrice = async ({ token, address_id }) => {
+export const sendCartPrice = async (
+  token,
+  address_id,
+  payment_method,
+  amount,
+) => {
+  console.log(token, address_id, payment_method, amount);
   const response = await fetch(`${baseUrl}/payment`, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ address_id }),
+    body: JSON.stringify({ address_id, payment_method, amount }),
   });
   const result = await response.json();
   return { response, result };
@@ -646,6 +655,7 @@ export const getAllFavorites = async token => {
 };
 
 export const addToFavorite = async (token, alias, variation_id) => {
+  console.log(token, alias, variation_id)
   const response = await fetch(`${baseUrl}/add/favorite/user`, {
     method: 'POST',
     headers: {
@@ -670,5 +680,48 @@ export const removeFromFavorite = async (token, variation_id) => {
   });
   const result = await response.json();
   console.log(response, result);
+  return { response, result };
+};
+
+export const sendShoppingCart = async (
+  token,
+  product_id,
+  variation_id,
+  quantity,
+) => {
+  console.log(product_id, variation_id, quantity);
+  const response = await fetch(`${baseUrl}/cart`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ product_id, variation_id, quantity }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getShoppingCart = async token => {
+  const response = await fetch(`${baseUrl}/cart`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const removeShoppingCart = async (token, cart_id) => {
+  const response = await fetch(`${baseUrl}/cart/${cart_id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+  });
+  const result = await response.json();
   return { response, result };
 };

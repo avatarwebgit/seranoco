@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Autocomplete,
   Button,
   FormControl,
   InputAdornment,
   TextField,
+  Typography,
 } from '@mui/material';
 import Flag from 'react-world-flags';
 import {
@@ -19,7 +23,10 @@ import { useTranslation } from 'react-i18next';
 import { formatNumber, notify } from '../../utils/helperFunctions';
 
 import classes from './Checkout.module.css';
-const Checkout = ({ isDataValid }) => {
+import { Add } from '@mui/icons-material';
+import AddressTable from '../account/accountInformation/AddressTable';
+import { cartActions } from '../../store/store';
+const Checkout = ({ isDataValid, sendOrderData }) => {
   const lng = useSelector(state => state.localeStore.lng);
 
   const inputStyles = {
@@ -72,6 +79,7 @@ const Checkout = ({ isDataValid }) => {
   const abortControllerRef = useRef(new AbortController());
 
   const token = useSelector(state => state.userStore.token);
+  const card = useSelector(state => state.cartStore);
 
   const dispatch = useDispatch();
 
@@ -164,21 +172,27 @@ const Checkout = ({ isDataValid }) => {
     allAddresses();
   }, []);
 
+  useEffect(() => {
+    if (selectedAddress) {
+      dispatch(cartActions.setSelectedAddress(selectedAddress.id));
+    }
+  }, [selectedAddress]);
+
   return (
     <div className={classes.main}>
       <Autocomplete
         id='city-autocomplete'
         disablePortal
         size='medium'
-        name='city'
-        sx={{ ...inputStyles, width: '100%' }}
-        value={selectedCity}
+        name='selectedaddress'
+        sx={{ ...inputStyles, width: '100%', mb: '2rem' }}
+        value={selectedAddress.label}
         options={options || []}
         error={isError && !selectedCity}
         renderInput={params => (
           <TextField
             {...params}
-            label={t('signup.city')}
+            label={t('profile.address')}
             error={isError && !selectedCity}
             name='city'
           />
@@ -187,171 +201,191 @@ const Checkout = ({ isDataValid }) => {
           setCity(value);
         }}
         onChange={(e, newValue) => {
-          setSelectedAddress(newValue.id);
+          setSelectedAddress(newValue);
           isDataValid(true);
         }}
         onFocus={() => setIsError(false)}
       />
-      <form ref={formRef} onSubmit={handleSubmit} className={classes.form}>
-        <FormControl fullWidth>
-          <div className={classes.input_wrapper}>
-            <TextField
-              id='signup-firstname-input'
-              name='firstname'
-              label={t('pc.receiver') + ' ' + t('signup.fname')}
-              type='text'
-              size='medium'
-              sx={{ ...inputStyles }}
-              onChange={e => {
-                setFirstname(e.target.value);
-              }}
-              onFocus={() => setIsError(false)}
-              error={isError && !firstname}
-              value={firstname}
-            />
-            <TextField
-              id='signup-lastname-input'
-              name='lastname'
-              label={t('pc.receiver') + ' ' + t('signup.lname')}
-              type='text'
-              size='medium'
-              sx={inputStyles}
-              onChange={e => {
-                setLastname(e.target.value);
-              }}
-              onFocus={() => setIsError(false)}
-              error={isError && !lastname}
-              value={lastname}
-            />
-          </div>
-          <div className={classes.input_wrapper}>
-            <span className={classes.phone_wrapper}>
-              <TextField
-                id='phone-code-input'
-                type='text'
-                name='pohonecode'
-                autoComplete='current-password'
-                size='medium'
-                sx={{
-                  ...inputStyles,
-                  width: '30%',
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      {parsedData && parsedData.length !== 0 && (
-                        <Flag
-                          code={parsedData.selectedCountry.alias}
-                          style={{ width: '20px', height: 'auto' }}
-                        />
-                      )}
-                    </InputAdornment>
-                  ),
-                }}
-                value={`+${phoneCode}`}
-                placeholder='+'
-              />
-              <TextField
-                id='phone-number-input'
-                name='phonenumber'
-                label={t('signup.pnumber')}
-                value={secondaryPhoneN}
-                type='text'
-                autoComplete='current-password'
-                size='medium'
-                sx={{
-                  ...inputStyles,
-                  width: '68%',
-                }}
-                onChange={e => {
-                  const value = e.target.value;
-                  const numericValue = value.replace(/[^0-9]/g, '');
-                  setSecondaryPhoneN(numericValue);
-                }}
-                error={isError && !secondaryPhoneN}
-              />
-            </span>
-            <Autocomplete
-              id='city-autocomplete'
-              disablePortal
-              size='medium'
-              name='city'
-              sx={inputStyles}
-              value={selectedCity}
-              options={cityData || []}
-              error={isError && !selectedCity}
-              renderInput={params => (
+
+      <Accordion sx={{ boxShadow: 'none' }}>
+        {/* Ensure each Accordion has a unique key */}
+        <AccordionSummary
+          expandIcon={<Add fontSize='small' />}
+          aria-controls={`address-content`}
+          id={`address-header`}
+        >
+          <Typography
+            component='span'
+            style={{ fontSize: '.7rem', fontWeight: 'bold' }}
+            variant='h1'
+          >
+            {t('profile.add_add')}
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <form ref={formRef} onSubmit={handleSubmit} className={classes.form}>
+            <FormControl fullWidth>
+              <div className={classes.input_wrapper}>
                 <TextField
-                  {...params}
-                  label={t('signup.city')}
-                  error={isError && !selectedCity}
-                  name='city'
+                  id='signup-firstname-input'
+                  name='firstname'
+                  label={t('pc.receiver') + ' ' + t('signup.fname')}
+                  type='text'
+                  size='medium'
+                  sx={{ ...inputStyles }}
+                  onChange={e => {
+                    setFirstname(e.target.value);
+                  }}
+                  onFocus={() => setIsError(false)}
+                  error={isError && !firstname}
+                  value={firstname}
                 />
-              )}
-              onInputChange={(e, value) => {
-                setCity(value);
+                <TextField
+                  id='signup-lastname-input'
+                  name='lastname'
+                  label={t('pc.receiver') + ' ' + t('signup.lname')}
+                  type='text'
+                  size='medium'
+                  sx={inputStyles}
+                  onChange={e => {
+                    setLastname(e.target.value);
+                  }}
+                  onFocus={() => setIsError(false)}
+                  error={isError && !lastname}
+                  value={lastname}
+                />
+              </div>
+              <div className={classes.input_wrapper}>
+                <span className={classes.phone_wrapper}>
+                  <TextField
+                    id='phone-code-input'
+                    type='text'
+                    name='pohonecode'
+                    autoComplete='current-password'
+                    size='medium'
+                    sx={{
+                      ...inputStyles,
+                      width: '30%',
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          {parsedData && parsedData.length !== 0 && (
+                            <Flag
+                              code={parsedData.selectedCountry.alias}
+                              style={{ width: '20px', height: 'auto' }}
+                            />
+                          )}
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={`+${phoneCode}`}
+                    placeholder='+'
+                  />
+                  <TextField
+                    id='phone-number-input'
+                    name='phonenumber'
+                    label={t('signup.pnumber')}
+                    value={secondaryPhoneN}
+                    type='text'
+                    autoComplete='current-password'
+                    size='medium'
+                    sx={{
+                      ...inputStyles,
+                      width: '68%',
+                    }}
+                    onChange={e => {
+                      const value = e.target.value;
+                      const numericValue = value.replace(/[^0-9]/g, '');
+                      setSecondaryPhoneN(numericValue);
+                    }}
+                    error={isError && !secondaryPhoneN}
+                  />
+                </span>
+                <Autocomplete
+                  id='city-autocomplete'
+                  disablePortal
+                  size='medium'
+                  name='city'
+                  sx={inputStyles}
+                  value={selectedCity}
+                  options={cityData || []}
+                  getOptionLabel={option => option.label}
+                  error={isError && !selectedCity}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label={t('signup.city')}
+                      error={isError && !selectedCity}
+                      name='city'
+                    />
+                  )}
+                  onInputChange={(e, value) => {
+                    setCity(value);
+                  }}
+                  onChange={(e, newValue) => {
+                    setSelectedCity(newValue);
+                  }}
+                  onFocus={() => setIsError(false)}
+                />
+              </div>
+              <div className={classes.input_wrapper}>
+                <TextField
+                  id='signup-postalcode-input'
+                  name='postalcode'
+                  label={t('pc.postalcode')}
+                  type='text'
+                  size='medium'
+                  sx={inputStyles}
+                  onChange={e => {
+                    let value = e.target.value;
+                    const numericValue = value.replace(/[^0-9]/g, '');
+                    const formattedValue = numericValue.replace(
+                      /(\d{3})(?=\d)/g,
+                      '$1 ',
+                    );
+                    setPostalCode(formattedValue);
+                  }}
+                  onFocus={() => setIsError(false)}
+                  error={isError && !postalCode}
+                  value={postalCode}
+                />
+              </div>
+              <TextField
+                id='signup-adress-input'
+                name='address'
+                label={t('signup.adress')}
+                type='text'
+                size='medium'
+                sx={{ ...inputStyles, width: '100%' }}
+                onChange={e => {
+                  setAddress(e.target.value);
+                }}
+                onFocus={() => setIsError(false)}
+                error={isError && !Address}
+                value={Address}
+              />
+            </FormControl>{' '}
+            <div
+              className={classes.error_text}
+              style={{
+                direction: lng === 'fa' ? 'rtl' : 'ltr',
+                opacity: isError ? 1 : 0,
               }}
-              onChange={(e, newValue) => {
-                setSelectedCity(newValue);
-              }}
-              onFocus={() => setIsError(false)}
-            />
-          </div>
-          <div className={classes.input_wrapper}>
-            <TextField
-              id='signup-postalcode-input'
-              name='postalcode'
-              label={t('pc.postalcode')}
-              type='text'
-              size='medium'
-              sx={inputStyles}
-              onChange={e => {
-                let value = e.target.value;
-                const numericValue = value.replace(/[^0-9]/g, '');
-                const formattedValue = numericValue.replace(
-                  /(\d{3})(?=\d)/g,
-                  '$1 ',
-                );
-                setPostalCode(formattedValue);
-              }}
-              onFocus={() => setIsError(false)}
-              error={isError && !postalCode}
-              value={postalCode}
-            />
-          </div>
-          <TextField
-            id='signup-adress-input'
-            name='address'
-            label={t('signup.adress')}
-            type='text'
-            size='medium'
-            sx={{ ...inputStyles, width: '100%' }}
-            onChange={e => {
-              setAddress(e.target.value);
-            }}
-            onFocus={() => setIsError(false)}
-            error={isError && !Address}
-            value={Address}
-          />
-        </FormControl>{' '}
-        <div
-          className={classes.error_text}
-          style={{
-            direction: lng === 'fa' ? 'rtl' : 'ltr',
-            opacity: isError ? 1 : 0,
-          }}
-        >
-          {t('signup.fillout')}
-        </div>
-        <Button
-          variant='contained'
-          type='submit'
-          onClick={handleSubmit}
-          className={classes.btn}
-        >
-          {t('pc.submit')}
-        </Button>
-      </form>
+            >
+              {t('signup.fillout')}
+            </div>
+            <Button
+              variant='contained'
+              type='submit'
+              onClick={handleSubmit}
+              className={classes.btn}
+            >
+              {t('pc.submit')}
+            </Button>
+          </form>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 };
