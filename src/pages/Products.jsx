@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { Typography, IconButton } from '@mui/material';
+import { Typography, IconButton, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-import { favoriteActions } from '../store/store';
+import { cartActions, favoriteActions } from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -57,6 +57,7 @@ const Products = ({ windowSize }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
   const favorites = useSelector(state => state.favoriteStore.products);
+  const euro = useSelector(state => state.cartStore.euro);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -214,6 +215,17 @@ const Products = ({ windowSize }) => {
     }
   }, [favorites]);
 
+  const handleAddToCart = el => {
+    console.log(el);
+    dispatch(
+      cartActions.add({
+        ...el,
+        selected_quantity: quantity,
+        euro_price: euro,
+      }),
+    );
+  };
+
   return (
     <div className={classes.main}>
       <BannerCarousel />
@@ -312,45 +324,72 @@ const Products = ({ windowSize }) => {
                   className={classes.product_serial}
                 />
               )}
-              <div className={classes.price_wrapper}>
-                {detailsData ? (
-                  <>
-                    <Typography
-                      className={classes.product_price}
-                      color='inherit'
-                      href={`/${lng}/shopbyshape`}
-                      variant='h3'
-                    >
-                      {t('price')}&nbsp;:&nbsp;
-                    </Typography>
-                    {detailsData.product.sale_price !==
-                      detailsData.product.price && (
-                      <span
-                        className={classes.prev_price}
-                        style={{
-                          textDecoration: 'line-through',
-                        }}
+              {detailsData && (
+                <div className={classes.price_wrapper}>
+                  {lng !== 'fa' ? (
+                    <>
+                      <Typography
+                        className={classes.product_price}
+                        color='inherit'
+                        href={`/${lng}/shopbyshape`}
+                        variant='h3'
                       >
-                        <p className={classes.off_text}>
-                          {detailsData.product.percent_sale_price}%
-                        </p>
-                        €&nbsp;{detailsData && detailsData.product.sale_price}
-                      </span>
-                    )}
-                    &nbsp;&nbsp;
-                    <p className={classes.current_price}>
-                      €&nbsp;{detailsData && detailsData.product.price}
-                    </p>
-                  </>
-                ) : (
-                  <Skeleton
-                    variant='text'
-                    sx={{ width: '10rem' }}
-                    animation='wave'
-                    className={classes.product_price}
-                  />
-                )}
-              </div>
+                        {t('price')}&nbsp;:&nbsp;
+                      </Typography>
+                      {detailsData.product.sale_price !==
+                        detailsData.product.price && (
+                        <span
+                          className={classes.prev_price}
+                          style={{
+                            textDecoration: 'line-through',
+                          }}
+                        >
+                          <p className={classes.off_text}>
+                            {detailsData.product.percent_sale_price}%
+                          </p>
+                          €&nbsp;{detailsData && detailsData.product.sale_price}
+                        </span>
+                      )}
+                      &nbsp;&nbsp;
+                      <p className={classes.current_price}>
+                        {detailsData && detailsData.product.price}&nbsp;€
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <Typography
+                        className={classes.product_price}
+                        color='inherit'
+                        href={`/${lng}/shopbyshape`}
+                        variant='h3'
+                      >
+                        {t('price')}&nbsp;:&nbsp;
+                      </Typography>
+                      {detailsData.product?.sale_price !==
+                        detailsData.product?.price && (
+                        <span
+                          className={classes.prev_price}
+                          style={{
+                            textDecoration: 'line-through',
+                          }}
+                        >
+                          <p className={classes.off_text}>
+                            {detailsData.product.percent_sale_price}%
+                          </p>
+                          تومان&nbsp;
+                          {detailsData &&
+                            detailsData.product?.sale_price * euro}
+                        </span>
+                      )}
+                      &nbsp;&nbsp;
+                      <p className={classes.current_price}>
+                        {detailsData && detailsData?.product.price * euro}
+                        تومان
+                      </p>
+                    </>
+                  )}
+                </div>
+              )}
               {detailsData && (
                 <>
                   <div className={classes.quantity_wrapper}>
@@ -395,7 +434,6 @@ const Products = ({ windowSize }) => {
                         </p>
                       </span>
                     </div>
-                    {/* <button>sds</button> */}
                   </div>
 
                   {isFavorite ? (
@@ -419,6 +457,16 @@ const Products = ({ windowSize }) => {
                   )}
                 </>
               )}
+
+              <Button
+                variant='contained'
+                size='large'
+                className={classes.addtocart}
+                // onClick={() => handleAddToCart(detailsData.product)}
+              >
+                {t('addtocart')}
+              </Button>
+
               <span className={classes.divider} />
               {detailsData && (
                 <div
@@ -428,24 +476,38 @@ const Products = ({ windowSize }) => {
                   }}
                 >
                   {lng !== 'fa' ? (
-                    <span className={classes.payment_ct}>
+                    <div className={classes.payment_ct}>
                       <p className={classes.payment_title}>{t('payment')}:</p>
                       &nbsp;&nbsp;
                       <p className={classes.payment_value}>
-                        {+detailsData.product.price * quantity}
+                        {+detailsData.product.price * quantity} {t('m_unit')}
                       </p>
-                    </span>
+                    </div>
                   ) : (
-                    <span
+                    <div
                       className={classes.payment_ct}
-                      style={{ direction: 'rtl' }}
+                      style={{
+                        direction: 'rtl',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}
                     >
-                      <p className={classes.payment_title}>{t('payment')}:</p>
-                      &nbsp;&nbsp;
-                      <p className={classes.payment_value}>
-                        {+detailsData.product.price * quantity}
-                      </p>
-                    </span>
+                      <span style={{ display: 'flex' }}>
+                        <p className={classes.payment_title}>{t('payment')}:</p>
+                        &nbsp;&nbsp;
+                        <p className={classes.payment_value}>
+                          {+detailsData.product.price * quantity * +euro}
+                          {t('m_unit')}
+                        </p>
+                      </span>
+                      <span style={{ display: 'flex' }}>
+                        <p className={classes.payment_value}>
+                          مبنا نرخ یورو محاسباتی : {euro}
+                          {t('m_unit')}
+                        </p>
+                      </span>
+                    </div>
                   )}
                 </div>
               )}

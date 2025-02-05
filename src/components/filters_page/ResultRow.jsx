@@ -24,6 +24,7 @@ const ResultRow = ({ dataProp }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const cart = useSelector(state => state.cartStore);
   const token = useSelector(state => state.userStore.token);
+  const euro = useSelector(state => state.cartActions.euro);
 
   useEffect(() => {
     if (dataProp) {
@@ -60,7 +61,11 @@ const ResultRow = ({ dataProp }) => {
 
   const handleAddToCart = el => {
     dispatch(
-      cartActions.add({ ...el, selected_quantity: 1, euro_price: 100000 }),
+      cartActions.add({
+        ...el,
+        selected_quantity: quantities[el.variation_id],
+        euro_price: euro,
+      }),
     );
   };
 
@@ -194,7 +199,7 @@ const ResultRow = ({ dataProp }) => {
                           }}
                         >
                           {t('login')}
-                          <Lock sx={{width:'17px',height:'17px'}}/>
+                          <Lock sx={{ width: '17px', height: '17px' }} />
                         </button>
                       )}
                     </center>

@@ -11,6 +11,7 @@ const ShoppingCart = () => {
 
   const card = useSelector(state => state.cartStore);
   const lng = useSelector(state => state.localeStore.lng);
+  const euro = useSelector(state => state.cartStore.euro);
 
   const dispatch = useDispatch();
   return (
@@ -34,7 +35,8 @@ const ShoppingCart = () => {
       <tbody>
         {card.products.map(el => {
           const isByOrder =
-            el?.variation.quantity === 0 && el?.variation.is_not_available === 0;
+            el?.variation.quantity === 0 &&
+            el?.variation.is_not_available === 0;
           const totalPrice = el.selected_quantity * el.price;
           return (
             <tr className={classes.tr} key={el.id}>
@@ -51,7 +53,7 @@ const ShoppingCart = () => {
               >
                 {lng !== 'fa'
                   ? el.price
-                  : formatNumber(el.price * el.euro_price).toFixed(2)}
+                  : formatNumber(el.price * el.euro).toFixed(2)}
                 &nbsp;{t('m_unit')}
               </td>
               <td className={classes.td}>{el.selected_quantity}</td>
@@ -59,7 +61,7 @@ const ShoppingCart = () => {
                 {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro_price).toFixed(2)}
+                  formatNumber(totalPrice * 0.2 * el.euro).toFixed(2)}
                 &nbsp;{isByOrder ? t('m_unit') : '_'}
               </td>
               <td
@@ -69,7 +71,7 @@ const ShoppingCart = () => {
                 {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
                 {!isByOrder &&
                   lng === 'fa' &&
-                  (totalPrice * el.euro_price).toFixed(2)}
+                  (totalPrice * el.euro).toFixed(2)}
                 &nbsp;{!isByOrder ? t('m_unit') : '_'}
               </td>
               <td
@@ -79,12 +81,12 @@ const ShoppingCart = () => {
                 {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
                 {!isByOrder &&
                   lng === 'fa' &&
-                  (totalPrice * el.euro_price).toFixed(2)}
+                  (totalPrice * el.euro).toFixed(2)}
                 &nbsp;{!isByOrder && t('m_unit')}
                 {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro_price).toFixed(2)}
+                  formatNumber(totalPrice * 0.2 * el.euro).toFixed(2)}
                 &nbsp;{isByOrder && t('m_unit')}
               </td>
             </tr>
