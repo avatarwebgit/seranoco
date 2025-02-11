@@ -24,7 +24,7 @@ const ResultRow = ({ dataProp }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const cart = useSelector(state => state.cartStore);
   const token = useSelector(state => state.userStore.token);
-  const euro = useSelector(state => state.cartActions.euro);
+  const euro = useSelector(state => state.cartStore.euro);
 
   useEffect(() => {
     if (dataProp) {
@@ -60,10 +60,15 @@ const ResultRow = ({ dataProp }) => {
   };
 
   const handleAddToCart = el => {
+    console.log({
+      ...el,
+      selected_quantity: quantities[el.variation_id]||1,
+      euro_price: euro,
+    });
     dispatch(
       cartActions.add({
         ...el,
-        selected_quantity: quantities[el.variation_id],
+        selected_quantity: quantities[el.variation_id]||1,
         euro_price: euro,
       }),
     );

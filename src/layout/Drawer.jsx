@@ -44,7 +44,7 @@ const Drawer = ({ children, size }) => {
     if (cart.products || drawerState) {
       setProductData(cart.products);
     }
-
+    console.log(cart);
   }, [cart, drawerState]);
 
   return (
@@ -108,7 +108,8 @@ const Drawer = ({ children, size }) => {
           >
             <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
             <span>
-              {cart.totalPrice.toFixed(2)}&nbsp;{t('m_unit')}
+              {cart.totalPrice && cart?.totalPrice?.toFixed(2)}&nbsp;
+              {t('m_unit')}
             </span>
           </span>
         </div>

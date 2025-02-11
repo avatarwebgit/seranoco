@@ -7,7 +7,11 @@ import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-import { accesModalActions, cartActions, favoriteActions } from '../store/store';
+import {
+  accesModalActions,
+  cartActions,
+  favoriteActions,
+} from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -17,7 +21,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import Card from '../components/filters_page/Card';
 import CustomeTab from '../components/common/CustomTab';
 import Breadcrumbs from '../components/common/Breadcrumbs';
-import { notify } from '../utils/helperFunctions';
+import { formatNumber, notify } from '../utils/helperFunctions';
 
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
 import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
@@ -217,14 +221,20 @@ const Products = ({ windowSize }) => {
   }, [favorites]);
 
   const handleAddToCart = el => {
-    console.log(el);
+    console.log({
+      ...el,
+      selected_quantity: quantity,
+      euro_price: euro,
+      variation_id: variation,
+      variation: { quantity: el.quantity },
+    });
     dispatch(
       cartActions.add({
         ...el,
         selected_quantity: quantity,
         euro_price: euro,
         variation_id: variation,
-        variation: { qunatity: el.quantity },
+        variation: { quantity: el.quantity },
       }),
     );
   };
@@ -471,7 +481,7 @@ const Products = ({ windowSize }) => {
                   {t('addtocart')}
                 </Button>
               ) : (
-                 <Button
+                <Button
                   variant='contained'
                   size='large'
                   className={classes.addtocart}
@@ -497,7 +507,7 @@ const Products = ({ windowSize }) => {
                       <p className={classes.payment_title}>{t('payment')}:</p>
                       &nbsp;&nbsp;
                       <p className={classes.payment_value}>
-                        {+detailsData.product.price * quantity} {t('m_unit')}
+                        {(+detailsData.product.price * quantity).toFixed(2)} {t('m_unit')}
                       </p>
                     </div>
                   ) : (
@@ -514,7 +524,11 @@ const Products = ({ windowSize }) => {
                         <p className={classes.payment_title}>{t('payment')}:</p>
                         &nbsp;&nbsp;
                         <p className={classes.payment_value}>
-                          {+detailsData.product.price * quantity * +euro}
+                          {formatNumber(
+                            +detailsData.product.price *
+                            quantity *
+                            +euro
+                          )}
                           {t('m_unit')}
                         </p>
                       </span>

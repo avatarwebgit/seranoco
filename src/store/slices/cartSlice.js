@@ -23,14 +23,18 @@ const cartSlice = createSlice({
       ) {
         state.products.push(action.payload);
       }
-      cartSlice.caseReducers.calculateTotalPrice(state);
+       state.totalPrice = state.products.reduce((total, product) => {
+        return total + product.selected_quantity * product.sale_price;
+      }, 0);
     },
 
     remove(state, action) {
       state.products = state.products.filter(
         el => +el.variation_id !== +action.payload.variation_id,
       );
-      cartSlice.caseReducers.calculateTotalPrice(state);
+       state.totalPrice = state.products.reduce((total, product) => {
+        return total + product.selected_quantity * product.sale_price;
+      }, 0);
     },
 
     increment(state, action) {
@@ -40,7 +44,9 @@ const cartSlice = createSlice({
       if (product) {
         product.selected_quantity += 1;
       }
-      cartSlice.caseReducers.calculateTotalPrice(state);
+       state.totalPrice = state.products.reduce((total, product) => {
+        return total + product.selected_quantity * product.sale_price;
+      }, 0);
     },
 
     decrement(state, action) {
@@ -50,10 +56,13 @@ const cartSlice = createSlice({
       if (product && product.selected_quantity > 0) {
         product.selected_quantity -= 1;
       }
-      cartSlice.caseReducers.calculateTotalPrice(state);
+       state.totalPrice = state.products.reduce((total, product) => {
+        return total + product.selected_quantity * product.sale_price;
+      }, 0);
     },
 
     calculateTotalPrice(state) {
+      console.log(state.totalPrice)
       state.totalPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
