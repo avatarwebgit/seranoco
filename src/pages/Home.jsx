@@ -16,10 +16,6 @@ import { useUser } from '../services/api';
 const Home = ({ windowSize }) => {
   const token = useSelector(state => state.userStore.token);
   const { data, error, isLoading } = useUser(token);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   
   return (
     <section className={classes.home}>

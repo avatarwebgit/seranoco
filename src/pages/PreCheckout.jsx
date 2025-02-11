@@ -64,7 +64,7 @@ const PreCheckout = ({ windowSize }) => {
         product.selected_quantity,
       );
       if (serverRes.response.ok) {
-        console.log(serverRes);
+        // console.log(serverRes);
       }
     } catch {}
   };
@@ -75,9 +75,8 @@ const PreCheckout = ({ windowSize }) => {
       dispatch(cartActions.setFinalCart(products));
       setStep(step < 2 ? step + 1 : 2);
       if (products) {
-        console.log(products);
         products.map(product => {
-          console.log(product);
+          // console.log(product);
           handleSendShoppingCart(token, product);
         });
       }

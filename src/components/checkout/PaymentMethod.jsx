@@ -33,7 +33,6 @@ const PaymentMethod = ({ dataProps }) => {
   const sendData = async (token, address, method, amount) => {
     const serverRes = await sendCartPrice(token, address, method, amount);
     if (serverRes.response.ok) {
-      console.log(serverRes);
     }
   };
 
@@ -41,7 +40,6 @@ const PaymentMethod = ({ dataProps }) => {
     <div className={classes.wrapper}>
       {data &&
         data.map(el => {
-          console.log(el)
           return (
             <>
               {el.id !== 10 ? (

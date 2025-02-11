@@ -26,11 +26,11 @@ import { productDetailActions } from '../store/store';
 
 import {
   getFilteredSizesByColor,
-  useShapes,
-  useColors,
   getAllAtrributes,
   getAllNewProducts,
   basicInformation,
+  useNewShapes,
+  getNewColors,
 } from '../services/api';
 
 import 'swiper/css';
@@ -45,8 +45,11 @@ import Breadcrumbs from '../components/common/Breadcrumbs';
 import Product from '../components/new/Product';
 import { scrollToTarget } from '../utils/helperFunctions';
 const New = ({ windowSize }) => {
-  const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
-  const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
+  const {
+    data: shapesData,
+    isLoading: isLoadingShapes,
+    isError,
+  } = useNewShapes();
   const [colorData, setColorData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [groupColors, setGroupColors] = useState([]);
@@ -148,13 +151,6 @@ const New = ({ windowSize }) => {
   }, []);
 
   //api call
-  // useEffect(() => {
-  //   if (fetchedColorData) {
-  //     setColorData(fetchedColorData?.data.colors);
-  //     setGroupColors(fetchedColorData?.data.group_colors);
-  //   }
-  // }, [fetchedColorData]);
-
   useEffect(() => {
     if (colorData && groupColors) {
       const sortedGroupColorsP = groupColors.sort(
@@ -188,11 +184,12 @@ const New = ({ windowSize }) => {
     handleResetSelections();
 
     try {
+      const productColorRes = await getNewColors(id, []);
       const serverRes = await getAllAtrributes(id);
 
       if (serverRes.response.ok) {
-        setColorData(serverRes?.result.data.colors);
-        setGroupColors(serverRes?.result.data.group_colors);
+        setColorData(productColorRes?.result.data.colors);
+        setGroupColors(productColorRes?.result.data.group_colors);
         setSizeData(serverRes?.result.data.sizes);
       }
     } catch (error) {
@@ -203,6 +200,8 @@ const New = ({ windowSize }) => {
   };
 
   useEffect(() => {
+    setProductDetails([]);
+    handleGetNewProducts(shapeFormEntries, selectedIds, [], 1, ItemsPerPage);
     const getSizes = async () => {
       const serverRes = await getFilteredSizesByColor(selectedIds);
       if (serverRes.response.ok) {
@@ -222,6 +221,13 @@ const New = ({ windowSize }) => {
     per_page = ItemsPerPage,
   ) => {
     setIsFilteredProductsLoading(true);
+    console.log(shape_id);
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     try {
       const serverRes = await getAllNewProducts(
         shape_id,
@@ -229,49 +235,56 @@ const New = ({ windowSize }) => {
         color_ids,
         pagee,
         per_page,
-        {
-          signal: abortControllerRef.current.signal,
-        },
+        abortControllerRef.current.signal,
       );
+
       if (serverRes.response.ok) {
-        setProductDetails(prev => [...prev, ...serverRes.result.data]);
+        if (pagee === 1) {
+          setProductDetails(serverRes.result.data);
+        } else {
+          setProductDetails(prev => [...prev, ...serverRes.result.data]);
+        }
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
-        // console.error('Fetch error:', error);
+        // ... (error handling)
       }
     } finally {
       setIsFilteredProductsLoading(false);
     }
   };
+  useEffect(() => {
+    console.log(productDetails);
+  }, [productDetails]);
 
   const prevDimensionEntriesRef = useRef(dimensionEntries);
   const prevSelectedIdsRef = useRef(selectedIds);
 
-  useEffect(() => {
-    abortControllerRef.current.abort();
-    abortControllerRef.current = new AbortController();
+  // useEffect(() => {
+  //   // abortControllerRef.current.abort();
+  //   // abortControllerRef.current = new AbortController();
 
-    if (itemIds.length === 0) {
-      if (
-        JSON.stringify(dimensionEntries) !==
-          JSON.stringify(prevDimensionEntriesRef.current) ||
-        JSON.stringify(selectedIds) !==
-          JSON.stringify(prevSelectedIdsRef.current)
-      ) {
-        setProductDetails([]);
-        handleGetNewProducts(
-          shapeFormEntries,
-          selectedIds,
-          [],
-          page,
-          ItemsPerPage,
-        );
-        prevDimensionEntriesRef.current = dimensionEntries;
-        prevSelectedIdsRef.current = selectedIds;
-      }
-    }
-  }, [selectedIds, shapeFormEntries]);
+  //   if (itemIds.length === 0) {
+  //     if (
+  //       JSON.stringify(dimensionEntries) !==
+  //         JSON.stringify(prevDimensionEntriesRef.current) ||
+  //       JSON.stringify(selectedIds) !==
+  //         JSON.stringify(prevSelectedIdsRef.current)
+  //     ) {
+  //       setProductDetails([]);
+  //       handleGetNewProducts(
+  //         shapeFormEntries,
+  //         selectedIds,
+  //         [],
+  //         page,
+  //         ItemsPerPage,
+  //       );
+  //       prevDimensionEntriesRef.current = dimensionEntries;
+  //       prevSelectedIdsRef.current = selectedIds;
+  //     }
+  //   }
+  //   console.log(selectedIds, shapeFormEntries);
+  // }, [selectedIds, shapeFormEntries]);
 
   useEffect(() => {
     if (selectedSizesObject.length === 0) {
@@ -327,6 +340,7 @@ const New = ({ windowSize }) => {
 
   useEffect(() => {
     if (isIntersecting && !isFilteredProductsLoading) {
+      console.log('first');
       handleGetNewProducts(
         shapeFormEntries,
         selectedIds,
@@ -430,9 +444,6 @@ const New = ({ windowSize }) => {
                     dynamicBullets: true,
                     enabled: isSmallPage,
                   }}
-                  centeredSlides={
-                    colorData?.length < slidesPerView || colorData?.length < 9
-                  }
                 >
                   {colorData?.length > 0 &&
                     shapeFormEntries &&

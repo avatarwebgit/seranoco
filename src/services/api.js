@@ -22,6 +22,8 @@ const baseUrl = process.env.REACT_APP_SERVER_BASE_URL;
 //promotions : /promotions
 
 // new products : /get/products/new?page=1&per_page=10
+// new shapes : /attribute/get/new/shape
+// new shapes by color : /attribute/get/new/color
 
 export const getHeaderMenus = async lng => {
   const response = await fetch(`${baseUrl}/menus`, {
@@ -111,6 +113,18 @@ export const getColors = async (shape_id, size_ids) => {
   return { response, result };
 };
 
+export const getNewColors = async (shape_id, size_ids) => {
+  const response = await fetch(`${baseUrl}/attribute/get/new/color`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ shape_id, size_ids }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
 export const getAllColors = async () => {
   const response = await fetch(`${baseUrl}/attribute/get/colors`, {
     method: 'GET',
@@ -154,7 +168,6 @@ export const getPaginatedProductsByShape = async (id, page, per_page) => {
 };
 
 export const getProductDetails = async (alias, token) => {
-  console.log(alias, token);
   const response = await fetch(`${baseUrl}/get/product/${alias}`, {
     method: 'GET',
     headers: {
@@ -167,7 +180,6 @@ export const getProductDetails = async (alias, token) => {
 };
 
 export const getProductDetailsWithId = async (id, token) => {
-  console.log(id, token);
   const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
     method: 'GET',
     headers: {
@@ -373,6 +385,23 @@ export const useShapes = () => {
     queryKey: ['shapes'],
     queryFn: async () => {
       const response = await fetch(`${baseUrl}/attribute/get/shape`, {
+        method: 'GET',
+      });
+      const result = await response.json();
+      return result.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+  });
+};
+
+// Fetch new added Shapes (GET)
+export const useNewShapes = () => {
+  return useQuery({
+    queryKey: ['newshapes'],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/attribute/get/new/shape`, {
         method: 'GET',
       });
       const result = await response.json();

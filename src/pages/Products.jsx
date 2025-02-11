@@ -7,7 +7,7 @@ import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-import { cartActions, favoriteActions } from '../store/store';
+import { accesModalActions, cartActions, favoriteActions } from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -35,6 +35,7 @@ import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
 
 import classes from './Products.module.css';
+import { Lock } from '@mui/icons-material';
 
 const Products = ({ windowSize }) => {
   const { id, variation } = useParams();
@@ -222,6 +223,8 @@ const Products = ({ windowSize }) => {
         ...el,
         selected_quantity: quantity,
         euro_price: euro,
+        variation_id: variation,
+        variation: { qunatity: el.quantity },
       }),
     );
   };
@@ -458,14 +461,28 @@ const Products = ({ windowSize }) => {
                 </>
               )}
 
-              <Button
-                variant='contained'
-                size='large'
-                className={classes.addtocart}
-                // onClick={() => handleAddToCart(detailsData.product)}
-              >
-                {t('addtocart')}
-              </Button>
+              {token ? (
+                <Button
+                  variant='contained'
+                  size='large'
+                  className={classes.addtocart}
+                  onClick={() => handleAddToCart(detailsData.product)}
+                >
+                  {t('addtocart')}
+                </Button>
+              ) : (
+                 <Button
+                  variant='contained'
+                  size='large'
+                  className={classes.addtocart}
+                  onClick={() => {
+                    dispatch(accesModalActions.login());
+                  }}
+                >
+                  {t('login')}
+                  <Lock sx={{ width: '17px', height: '17px' }} />
+                </Button>
+              )}
 
               <span className={classes.divider} />
               {detailsData && (

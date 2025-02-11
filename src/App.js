@@ -100,7 +100,6 @@ function App() {
 
   useEffect(() => {
     if (basicData) {
-      console.log(basicData.data[0].price_euro);
       dispatch(cartActions.setEuro(basicData.data[0].price_euro));
     }
   }, [basicData]);

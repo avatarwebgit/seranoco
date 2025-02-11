@@ -335,7 +335,7 @@ const PayByCart = ({ widnowSize }) => {
               <Button
                 variant='contained'
                 size='large'
-                className={classes.login_btn}
+                className={classes.submit}
                 type='submit'
               >
                 {t('pc.submit')}

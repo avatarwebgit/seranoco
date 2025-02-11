@@ -234,7 +234,7 @@ const FilterByShape = ({ windowSize }) => {
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
-        console.error('Fetch error:', error);
+        // console.error('Fetch error:', error);
       }
     } finally {
       setIsFilteredProductsLoading(false);
@@ -252,7 +252,7 @@ const FilterByShape = ({ windowSize }) => {
         }
       } catch (error) {
         if (error.name !== 'AbortError') {
-          console.error('Fetch error:', error);
+          // console.error('Fetch error:', error);
         }
       } finally {
         setIsFilteredProductsLoading(false);
@@ -309,7 +309,7 @@ const FilterByShape = ({ windowSize }) => {
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
-        console.error('Fetch error:', error);
+        // console.error('Fetch error:', error);
       }
     } finally {
       setIsFilteredProductsLoading(false);
@@ -347,7 +347,6 @@ const FilterByShape = ({ windowSize }) => {
   }, [dimensionEntries, selectedIds, shapeFormEntries]);
 
   const getSize = async () => {
-    console.log(shapeFormEntries);
     try {
       const serverRes = await getAllAtrributes(shapeFormEntries);
       if (serverRes.response.ok) {
@@ -355,7 +354,7 @@ const FilterByShape = ({ windowSize }) => {
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
-        console.error('Fetch error:', error);
+        // console.error('Fetch error:', error);
       }
     } finally {
       setIsFilteredProductsLoading(false);
@@ -373,7 +372,7 @@ const FilterByShape = ({ windowSize }) => {
           setProductDetails(prev => [...prev, serverRes.result.product]);
         }
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        // console.error('Error fetching product details:', error);
       }
     };
 
@@ -383,7 +382,7 @@ const FilterByShape = ({ windowSize }) => {
         try {
           await Promise.all(memoizedItemIds.map(id => getProductByDetail(id)));
         } catch (error) {
-          console.error('Error in one of the requests:', error);
+          // console.error('Error in one of the requests:', error);
         } finally {
           setIsLoadingSelectedItem(false);
         }

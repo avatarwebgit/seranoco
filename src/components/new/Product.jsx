@@ -24,7 +24,6 @@ const Product = ({ dataProps, up, av, newItem, closeButtonClick, action }) => {
   useEffect(() => {
     if (dataProps) {
       setData(dataProps);
-      console.log(dataProps);
     }
     if (up) {
       setEuro(up);
