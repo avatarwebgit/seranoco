@@ -11,6 +11,7 @@ import { KeyboardArrowRight, Lock } from '@mui/icons-material';
 import CartProduct from '../components/card/CartProduct';
 
 import classes from './Drawer.module.css';
+import { formatNumber } from '../utils/helperFunctions';
 const Drawer = ({ children, size }) => {
   const dispatch = useDispatch();
   const drawerState = useSelector(state => state.drawerStore.drawerOpen);
@@ -108,7 +109,10 @@ const Drawer = ({ children, size }) => {
           >
             <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
             <span>
-              {cart.totalPrice && cart?.totalPrice?.toFixed(2)}&nbsp;
+              {cart.totalPrice && lng !== 'fa'
+                ? cart?.totalPrice?.toFixed(2)
+                : formatNumber(cart.totalPrice * cart.euro)}
+              &nbsp;
               {t('m_unit')}
             </span>
           </span>

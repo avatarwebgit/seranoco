@@ -53,7 +53,7 @@ const ShoppingCart = () => {
               >
                 {lng !== 'fa'
                   ? el.price
-                  : formatNumber(el.price * el.euro).toFixed(2)}
+                  : formatNumber(el.price * euro)}
                 &nbsp;{t('m_unit')}
               </td>
               <td className={classes.td}>{el.selected_quantity}</td>
@@ -61,7 +61,7 @@ const ShoppingCart = () => {
                 {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro).toFixed(2)}
+                  formatNumber(totalPrice * 0.2 * euro)}
                 &nbsp;{isByOrder ? t('m_unit') : '_'}
               </td>
               <td
@@ -71,7 +71,7 @@ const ShoppingCart = () => {
                 {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
                 {!isByOrder &&
                   lng === 'fa' &&
-                  (totalPrice * el.euro).toFixed(2)}
+                 ( formatNumber(totalPrice * euro))}
                 &nbsp;{!isByOrder ? t('m_unit') : '_'}
               </td>
               <td
@@ -81,12 +81,12 @@ const ShoppingCart = () => {
                 {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
                 {!isByOrder &&
                   lng === 'fa' &&
-                  (totalPrice * el.euro).toFixed(2)}
+                  formatNumber(totalPrice * euro)}
                 &nbsp;{!isByOrder && t('m_unit')}
                 {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro).toFixed(2)}
+                  formatNumber(totalPrice * 0.2 * euro)}
                 &nbsp;{isByOrder && t('m_unit')}
               </td>
             </tr>

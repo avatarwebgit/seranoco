@@ -101,7 +101,7 @@ const CartProduct = data => {
                         productData.sale_price *
                         euro *
                         productData.selected_quantity
-                      ).toFixed(2),
+                      ),
                 )}
                 &nbsp;{t('m_unit')}
               </span>
