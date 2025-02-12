@@ -22,6 +22,8 @@ const baseUrl = process.env.REACT_APP_SERVER_BASE_URL;
 //promotions : /promotions
 
 // new products : /get/products/new?page=1&per_page=10
+// new shapes : /attribute/get/new/shape
+// new shapes by color : /attribute/get/new/color
 
 export const getHeaderMenus = async lng => {
   const response = await fetch(`${baseUrl}/menus`, {
@@ -111,6 +113,18 @@ export const getColors = async (shape_id, size_ids) => {
   return { response, result };
 };
 
+export const getNewColors = async (shape_id, size_ids) => {
+  const response = await fetch(`${baseUrl}/attribute/get/new/color`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ shape_id, size_ids }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
 export const getAllColors = async () => {
   const response = await fetch(`${baseUrl}/attribute/get/colors`, {
     method: 'GET',
@@ -153,18 +167,24 @@ export const getPaginatedProductsByShape = async (id, page, per_page) => {
   return { response, result };
 };
 
-export const getProductDetails = async alias => {
+export const getProductDetails = async (alias, token) => {
   const response = await fetch(`${baseUrl}/get/product/${alias}`, {
     method: 'GET',
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
   });
 
   const result = await response.json();
   return { response, result };
 };
 
-export const getProductDetailsWithId = async id => {
+export const getProductDetailsWithId = async (id, token) => {
   const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
     method: 'GET',
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
   });
 
   const result = await response.json();
@@ -224,7 +244,21 @@ export const getFilteredSizesByColor = async (color_ids, options = {}) => {
     headers: {
       'Content-type': 'application/json',
     },
-    credentials: 'include',
+
+    body: JSON.stringify({ color_ids }),
+    ...options,
+  });
+
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getNewFilteredSizesByColor = async (color_ids, options = {}) => {
+  const response = await fetch(`${baseUrl}/get/filterSizeNewByColor`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
 
     body: JSON.stringify({ color_ids }),
     ...options,
@@ -365,6 +399,23 @@ export const useShapes = () => {
     queryKey: ['shapes'],
     queryFn: async () => {
       const response = await fetch(`${baseUrl}/attribute/get/shape`, {
+        method: 'GET',
+      });
+      const result = await response.json();
+      return result.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+  });
+};
+
+// Fetch new added Shapes (GET)
+export const useNewShapes = () => {
+  return useQuery({
+    queryKey: ['newshapes'],
+    queryFn: async () => {
+      const response = await fetch(`${baseUrl}/attribute/get/new/shape`, {
         method: 'GET',
       });
       const result = await response.json();
@@ -554,14 +605,20 @@ export const getPayments = async () => {
   return { response, result };
 };
 
-export const sendCartPrice = async ({ token, address_id }) => {
+export const sendCartPrice = async (
+  token,
+  address_id,
+  payment_method,
+  amount,
+) => {
+  // console.log(token, address_id, payment_method, amount);
   const response = await fetch(`${baseUrl}/payment`, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ address_id }),
+    body: JSON.stringify({ address_id, payment_method, amount }),
   });
   const result = await response.json();
   return { response, result };
@@ -646,6 +703,7 @@ export const getAllFavorites = async token => {
 };
 
 export const addToFavorite = async (token, alias, variation_id) => {
+  console.log(token, alias, variation_id);
   const response = await fetch(`${baseUrl}/add/favorite/user`, {
     method: 'POST',
     headers: {
@@ -660,7 +718,8 @@ export const addToFavorite = async (token, alias, variation_id) => {
 };
 
 export const removeFromFavorite = async (token, variation_id) => {
-  const response = await fetch(`${baseUrl}/remove/favorite/user`, {
+  console.log(token, variation_id);
+  const response = await fetch(`${baseUrl}/favorite/remove/product/user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -670,5 +729,48 @@ export const removeFromFavorite = async (token, variation_id) => {
   });
   const result = await response.json();
   console.log(response, result);
+  return { response, result };
+};
+
+export const sendShoppingCart = async (
+  token,
+  product_id,
+  variation_id,
+  quantity,
+) => {
+  console.log(product_id, variation_id, quantity);
+  const response = await fetch(`${baseUrl}/cart`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ product_id, variation_id, quantity }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getShoppingCart = async token => {
+  const response = await fetch(`${baseUrl}/cart`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const removeShoppingCart = async (token, cart_id) => {
+  const response = await fetch(`${baseUrl}/cart/${cart_id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+  });
+  const result = await response.json();
   return { response, result };
 };

@@ -40,8 +40,9 @@ const Favorites = () => {
 
   const { t } = useTranslation();
   const lng = useSelector(state => state.localeStore.locale);
-  const favorites = useSelector(state => state.favoriteStore.products);
   const token = useSelector(state => state.userStore.token);
+
+  const [favorites, setFavorites] = useState(null);
 
   const sorts = [
     { id: 1, label: t('profile.sbsi') },
@@ -77,7 +78,7 @@ const Favorites = () => {
   const getFavoriteItems = async () => {
     const serverRes = await getAllFavorites(token);
     if (serverRes.response.ok) {
-      console.log(serverRes);
+      setFavorites(serverRes.result.wishlist);
     }
   };
 
@@ -120,10 +121,14 @@ const Favorites = () => {
               />
             </div>
             <div className={classes.item_wrapper}>
-              {favorites.length > 0 ? (
+              {favorites ? (
                 favorites.map(el => {
                   return (
-                    <Product newItem={false} dataProps={{ product: el }} />
+                    <Product
+                      newItem={false}
+                      dataProps={{ product: el }}
+                      action={getFavoriteItems}
+                    />
                   );
                 })
               ) : (

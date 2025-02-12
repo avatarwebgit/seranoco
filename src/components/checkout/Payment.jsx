@@ -46,7 +46,7 @@ const Payment = () => {
                 {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro_price).toFixed(2)}
+                  formatNumber(totalPrice * 0.2 * card.euro)}
                 &nbsp;{isByOrder ? t('m_unit') : '_'}
               </td>
               <td
@@ -56,7 +56,7 @@ const Payment = () => {
                 {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
                 {!isByOrder &&
                   lng === 'fa' &&
-                  (totalPrice * el.euro_price).toFixed(2)}
+                  formatNumber(totalPrice * card.euro)}
                 &nbsp;{!isByOrder ? t('m_unit') : '_'}
               </td>
               <td
@@ -66,12 +66,12 @@ const Payment = () => {
                 {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
                 {!isByOrder &&
                   lng === 'fa' &&
-                  (totalPrice * el.euro_price).toFixed(2)}
+                  formatNumber(totalPrice * card.euro)}
                 &nbsp;{!isByOrder && t('m_unit')}
                 {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
                 {isByOrder &&
                   lng === 'fa' &&
-                  formatNumber(totalPrice * 0.2 * el.euro_price).toFixed(2)}
+                  formatNumber(totalPrice * 0.2 * card.euro)}
                 &nbsp;{isByOrder && t('m_unit')}
               </td>
             </tr>

@@ -26,6 +26,17 @@
   bottom: 22.5% !important;
 }
 
+
+.submit {
+   background-color: black !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  margin-top: 15px !important;
+  padding: 12px 10px !important;
+  color: #ffffff !important;
+}
+
 .dn {
   display: none;
 }

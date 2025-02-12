@@ -23,7 +23,6 @@
     rgba(0, 0, 0, 0.7) 60%,
     rgba(0, 0, 0, 0) 100%
   );
-  max-height: 7rem;
 }
 
 .content {
@@ -32,7 +31,7 @@
   margin: 0 auto;
   margin-right: var(--small-pc-padding);
   margin-left: var(--small-pc-padding);
-  padding-top: 1.5rem;
+  white-space: nowrap;
 }
 
 .shop_hero {
@@ -43,23 +42,23 @@
   color: #ffffff;
   width: 20%;
   height: 100%;
-  padding: 0rem 0 !important;
+  padding: 1rem 0 ;
 }
 
 .title {
-  font-size: 13px;
+  font-size: 26px;
   margin-bottom: -10px;
 }
 
 .caption {
-  font-size: 13px;
+  font-size: 26px;
   margin-top: 10px;
   margin-bottom: -30px;
 }
 
 .link {
   margin-bottom: -20px;
-  transform: scale(0.5) !important;
+  /* transform: scale(0.5) !important; */
 }
 
 @media only screen and (max-width: 480px) {

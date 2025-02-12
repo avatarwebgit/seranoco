@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { accesModalActions, cartActions, drawerActions } from '../store/store';
@@ -11,6 +11,7 @@ import { KeyboardArrowRight, Lock } from '@mui/icons-material';
 import CartProduct from '../components/card/CartProduct';
 
 import classes from './Drawer.module.css';
+import { formatNumber } from '../utils/helperFunctions';
 const Drawer = ({ children, size }) => {
   const dispatch = useDispatch();
   const drawerState = useSelector(state => state.drawerStore.drawerOpen);
@@ -18,6 +19,8 @@ const Drawer = ({ children, size }) => {
 
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
+
+  const [productData, setProductData] = useState([]);
 
   const { t } = useTranslation();
 
@@ -37,6 +40,13 @@ const Drawer = ({ children, size }) => {
       document.body.style.overflow = '';
     };
   }, [drawerState]);
+
+  useEffect(() => {
+    if (cart.products || drawerState) {
+      setProductData(cart.products);
+    }
+    console.log(cart);
+  }, [cart, drawerState]);
 
   return (
     <motion.div
@@ -68,7 +78,7 @@ const Drawer = ({ children, size }) => {
         </div>
         <div className={classes.items_wrapper}>
           <div className={classes.items_sheet}>
-            {cart.products.map(el => {
+            {productData.map(el => {
               return <CartProduct key={el.id} data={el} />;
             })}
           </div>
@@ -99,7 +109,11 @@ const Drawer = ({ children, size }) => {
           >
             <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
             <span>
-              {cart.totalPrice.toFixed(2)}&nbsp;{t('m_unit')}
+              {cart.totalPrice && lng !== 'fa'
+                ? cart?.totalPrice?.toFixed(2)
+                : formatNumber(cart.totalPrice * cart.euro)}
+              &nbsp;
+              {t('m_unit')}
             </span>
           </span>
         </div>

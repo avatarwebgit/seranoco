@@ -335,10 +335,10 @@ const PayByCart = ({ widnowSize }) => {
               <Button
                 variant='contained'
                 size='large'
-                className={classes.login_btn}
+                className={classes.submit}
                 type='submit'
               >
-                {t('signup.sign_up')}
+                {t('pc.submit')}
               </Button>
             </div>
           </form>

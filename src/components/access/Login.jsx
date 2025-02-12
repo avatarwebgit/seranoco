@@ -98,15 +98,15 @@ const Login = () => {
         dispatch(userActions.set(serverRes.result.token));
         dispatch(accesModalActions.close());
         settoken(serverRes.result.token);
-
-        // dispatch(
-        //   signupActions.set({
-        //     ...formEntries,
-        //     selectedCity: selectedCity,
-        //     selectedCountry: selectedCountry,
-        //     createdAt: new Date().toISOString(),
-        //   }),
-        // );
+console.log(serverRes.result.user)
+        dispatch(
+          signupActions.set({
+            ...serverRes.result.user,
+            selectedCity: serverRes.result.user.Country,
+            selectedCountry: serverRes.result.user.Country,
+            createdAt: new Date().toISOString(),
+          }),
+        );
       }
     }
   };

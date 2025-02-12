@@ -165,7 +165,7 @@ const Header = ({ windowSize }) => {
   // API calls
   const getHeaderLinks = async () => {
     setHeaderData(null);
-    const serverRes = await getHeaderMenus(i18n.language);
+    const serverRes = await getHeaderMenus(lng);
     if (serverRes.response.ok) {
       setHeaderData(serverRes.result);
     }
@@ -173,7 +173,7 @@ const Header = ({ windowSize }) => {
 
   useEffect(() => {
     getHeaderLinks();
-  }, []);
+  }, [lng]);
 
   const handleCloseModal = () => {
     dispatch(accesModalActions.close());
@@ -188,7 +188,7 @@ const Header = ({ windowSize }) => {
         height: scrollY !== 0 ? '3.5rem' : isSmall ? '4rem' : '5rem',
         backgroundColor:
           scrollY !== 0 ? 'rgba(255,255,255,0.9)' : 'rgba(0, 0, 0, 0)',
-        // backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'none',
+        backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'blur(0px)',
       }}
       style={{ position: isFixed ? 'fixed' : 'sticky' }}
       transition={{

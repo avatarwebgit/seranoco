@@ -518,7 +518,6 @@ const FilterByShape = ({ windowSize }) => {
                   dynamicBullets: true,
                   enabled: isSmallPage,
                 }}
-                centeredSlides={colorData?.length > 9 ? false : true}
               >
                 {colorData?.length > 0 &&
                   shapeFormEntries &&

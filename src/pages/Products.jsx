@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { Typography, IconButton } from '@mui/material';
+import { Typography, IconButton, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-
-import { favoriteActions } from '../store/store';
+import {
+  accesModalActions,
+  cartActions,
+  favoriteActions,
+} from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -18,7 +21,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import Card from '../components/filters_page/Card';
 import CustomeTab from '../components/common/CustomTab';
 import Breadcrumbs from '../components/common/Breadcrumbs';
-import { notify } from '../utils/helperFunctions';
+import { formatNumber, notify } from '../utils/helperFunctions';
 
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
 import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
@@ -36,6 +39,7 @@ import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
 
 import classes from './Products.module.css';
+import { Lock } from '@mui/icons-material';
 
 const Products = ({ windowSize }) => {
   const { id, variation } = useParams();
@@ -45,6 +49,12 @@ const Products = ({ windowSize }) => {
   const [isInViewbox, setIsInViewbox] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [shape, setShape] = useState('');
+  const [cuttingStyle, setCuttingStyle] = useState('');
+  const [brand, setBrand] = useState('');
+  const [details, setDetails] = useState('');
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState('');
 
   const imageRef = useRef();
 
@@ -52,6 +62,7 @@ const Products = ({ windowSize }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const token = useSelector(state => state.userStore.token);
   const favorites = useSelector(state => state.favoriteStore.products);
+  const euro = useSelector(state => state.cartStore.euro);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -91,8 +102,74 @@ const Products = ({ windowSize }) => {
 
   useEffect(() => {
     const getDetails = async () => {
-      const serverRes = await getProductDetails(id);
-      setDetailsData(serverRes.result);
+      const serverRes = await getProductDetails(id, token);
+      if (serverRes.response.ok) {
+        setDetailsData(serverRes.result);
+        console.log(serverRes.result);
+        if (lng === 'fa') {
+          setShape(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Shapes',
+            )?.value.name_fa,
+          );
+          setColor(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Colors',
+            )?.value.name_fa,
+          );
+          setBrand(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Brand/Mine',
+            )?.value.name_fa,
+          );
+          setCuttingStyle(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Cutting Style',
+            )?.value.name_fa,
+          );
+          setSize(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Size',
+            )?.value.name_fa,
+          );
+          setDetails(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Details',
+            )?.value.name_fa,
+          );
+        } else {
+          setShape(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Shapes',
+            )?.value.name,
+          );
+          setColor(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Colors',
+            )?.value.name,
+          );
+          setBrand(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Brand/Mine',
+            )?.value.name,
+          );
+          setCuttingStyle(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Cutting Style',
+            )?.value.name,
+          );
+          setSize(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Size',
+            )?.value.name,
+          );
+          setDetails(
+            serverRes.result.product_attributes.find(
+              attr => attr.attribute.name === 'Details',
+            )?.value.name,
+          );
+        }
+      }
     };
     getDetails();
   }, [id]);
@@ -100,6 +177,11 @@ const Products = ({ windowSize }) => {
   useEffect(() => {
     if (detailsData) {
       document.title = `Seranoco / ${detailsData.product.name}`;
+      if (detailsData.product.is_wishlist) {
+        setIsFavorite(true);
+      } else {
+        setIsFavorite(false);
+      }
     }
   }, [detailsData]);
 
@@ -113,10 +195,10 @@ const Products = ({ windowSize }) => {
   };
 
   const handleAddToFavorites = async () => {
-    const serverRes = await addToFavorite(token, id, variation);
+    const serverRes = await addToFavorite(token, id, +variation);
     if (serverRes.response.ok) {
       notify(t('product.added'));
-      // dispatch(favoriteActions.add({ variation_id: +variation, id }));
+      setIsFavorite(true);
     } else {
       notify(t('product.err'));
     }
@@ -126,7 +208,7 @@ const Products = ({ windowSize }) => {
     const serverRes = await removeFromFavorite(token, +variation);
     if (serverRes.response.ok) {
       notify(t('product.removed'));
-      // dispatch(favoriteActions.remove(+variation));
+      setIsFavorite(false);
     } else {
       notify(t('product.err'));
     }
@@ -137,6 +219,25 @@ const Products = ({ windowSize }) => {
       setIsFavorite(favorites?.some(el => el.variation_id === +variation));
     }
   }, [favorites]);
+
+  const handleAddToCart = el => {
+    console.log({
+      ...el,
+      selected_quantity: quantity,
+      euro_price: euro,
+      variation_id: variation,
+      variation: { quantity: el.quantity },
+    });
+    dispatch(
+      cartActions.add({
+        ...el,
+        selected_quantity: quantity,
+        euro_price: euro,
+        variation_id: variation,
+        variation: { quantity: el.quantity },
+      }),
+    );
+  };
 
   return (
     <div className={classes.main}>
@@ -156,8 +257,8 @@ const Products = ({ windowSize }) => {
           <div className={classes.content}>
             <div
               className={classes.image_container}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
+              // onMouseMove={handleMouseMove}
+              // onMouseLeave={handleMouseLeave}
             >
               <div className={classes.zoom_box} style={zoomStyles}>
                 {detailsData ? (
@@ -203,7 +304,12 @@ const Products = ({ windowSize }) => {
                   href={`/${lng}/shopbyshape`}
                   variant='h3'
                 >
-                  {detailsData?.product?.name}
+                  <strong>
+                    <span>{shape}</span>
+                  </strong>
+                  <span>{cuttingStyle} </span> <span>{brand}</span>
+                  <span>{details}</span> <span>{color}</span>
+                  <span>{size}</span>
                 </Typography>
               ) : (
                 <Skeleton
@@ -231,45 +337,72 @@ const Products = ({ windowSize }) => {
                   className={classes.product_serial}
                 />
               )}
-              <div className={classes.price_wrapper}>
-                {detailsData ? (
-                  <>
-                    <Typography
-                      className={classes.product_price}
-                      color='inherit'
-                      href={`/${lng}/shopbyshape`}
-                      variant='h3'
-                    >
-                      {t('price')}&nbsp;:&nbsp;
-                    </Typography>
-                    {detailsData.product.sale_price !==
-                      detailsData.product.price && (
-                      <span
-                        className={classes.prev_price}
-                        style={{
-                          textDecoration: 'line-through',
-                        }}
+              {detailsData && (
+                <div className={classes.price_wrapper}>
+                  {lng !== 'fa' ? (
+                    <>
+                      <Typography
+                        className={classes.product_price}
+                        color='inherit'
+                        href={`/${lng}/shopbyshape`}
+                        variant='h3'
                       >
-                        <p className={classes.off_text}>
-                          {detailsData.product.percent_sale_price}%
-                        </p>
-                        €&nbsp;{detailsData && detailsData.product.sale_price}
-                      </span>
-                    )}
-                    &nbsp;&nbsp;
-                    <p className={classes.current_price}>
-                      €&nbsp;{detailsData && detailsData.product.price}
-                    </p>
-                  </>
-                ) : (
-                  <Skeleton
-                    variant='text'
-                    sx={{ width: '10rem' }}
-                    animation='wave'
-                    className={classes.product_price}
-                  />
-                )}
-              </div>
+                        {t('price')}&nbsp;:&nbsp;
+                      </Typography>
+                      {detailsData.product.sale_price !==
+                        detailsData.product.price && (
+                        <span
+                          className={classes.prev_price}
+                          style={{
+                            textDecoration: 'line-through',
+                          }}
+                        >
+                          <p className={classes.off_text}>
+                            {detailsData.product.percent_sale_price}%
+                          </p>
+                          €&nbsp;{detailsData && detailsData.product.sale_price}
+                        </span>
+                      )}
+                      &nbsp;&nbsp;
+                      <p className={classes.current_price}>
+                        {detailsData && detailsData.product.price}&nbsp;€
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <Typography
+                        className={classes.product_price}
+                        color='inherit'
+                        href={`/${lng}/shopbyshape`}
+                        variant='h3'
+                      >
+                        {t('price')}&nbsp;:&nbsp;
+                      </Typography>
+                      {detailsData.product?.sale_price !==
+                        detailsData.product?.price && (
+                        <span
+                          className={classes.prev_price}
+                          style={{
+                            textDecoration: 'line-through',
+                          }}
+                        >
+                          <p className={classes.off_text}>
+                            {detailsData.product.percent_sale_price}%
+                          </p>
+                          تومان&nbsp;
+                          {detailsData &&
+                            detailsData.product?.sale_price * euro}
+                        </span>
+                      )}
+                      &nbsp;&nbsp;
+                      <p className={classes.current_price}>
+                        {detailsData && detailsData?.product.price * euro}
+                        تومان
+                      </p>
+                    </>
+                  )}
+                </div>
+              )}
               {detailsData && (
                 <>
                   <div className={classes.quantity_wrapper}>
@@ -314,7 +447,6 @@ const Products = ({ windowSize }) => {
                         </p>
                       </span>
                     </div>
-                    {/* <button>sds</button> */}
                   </div>
 
                   {isFavorite ? (
@@ -338,6 +470,30 @@ const Products = ({ windowSize }) => {
                   )}
                 </>
               )}
+
+              {token ? (
+                <Button
+                  variant='contained'
+                  size='large'
+                  className={classes.addtocart}
+                  onClick={() => handleAddToCart(detailsData.product)}
+                >
+                  {t('addtocart')}
+                </Button>
+              ) : (
+                <Button
+                  variant='contained'
+                  size='large'
+                  className={classes.addtocart}
+                  onClick={() => {
+                    dispatch(accesModalActions.login());
+                  }}
+                >
+                  {t('login')}
+                  <Lock sx={{ width: '17px', height: '17px' }} />
+                </Button>
+              )}
+
               <span className={classes.divider} />
               {detailsData && (
                 <div
@@ -347,24 +503,42 @@ const Products = ({ windowSize }) => {
                   }}
                 >
                   {lng !== 'fa' ? (
-                    <span className={classes.payment_ct}>
+                    <div className={classes.payment_ct}>
                       <p className={classes.payment_title}>{t('payment')}:</p>
                       &nbsp;&nbsp;
                       <p className={classes.payment_value}>
-                        {+detailsData.product.price * quantity}
+                        {(+detailsData.product.price * quantity).toFixed(2)} {t('m_unit')}
                       </p>
-                    </span>
+                    </div>
                   ) : (
-                    <span
+                    <div
                       className={classes.payment_ct}
-                      style={{ direction: 'rtl' }}
+                      style={{
+                        direction: 'rtl',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}
                     >
-                      <p className={classes.payment_title}>{t('payment')}:</p>
-                      &nbsp;&nbsp;
-                      <p className={classes.payment_value}>
-                        {+detailsData.product.price * quantity}
-                      </p>
-                    </span>
+                      <span style={{ display: 'flex' }}>
+                        <p className={classes.payment_title}>{t('payment')}:</p>
+                        &nbsp;&nbsp;
+                        <p className={classes.payment_value}>
+                          {formatNumber(
+                            +detailsData.product.price *
+                            quantity *
+                            +euro
+                          )}
+                          {t('m_unit')}
+                        </p>
+                      </span>
+                      <span style={{ display: 'flex' }}>
+                        <p className={classes.payment_value}>
+                          مبنا نرخ یورو محاسباتی : {euro}
+                          {t('m_unit')}
+                        </p>
+                      </span>
+                    </div>
                   )}
                 </div>
               )}
@@ -400,7 +574,6 @@ const Products = ({ windowSize }) => {
               >
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -408,7 +581,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -416,7 +588,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -424,7 +595,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -432,7 +602,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'
@@ -440,7 +609,6 @@ const Products = ({ windowSize }) => {
                 </SwiperSlide>
                 <SwiperSlide className={classes.gallery_image_wrapper}>
                   <img
-                   
                     src={detailsData.product?.primary_image}
                     alt=''
                     loading='lazy'

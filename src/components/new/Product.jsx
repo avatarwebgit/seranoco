@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { formatNumber, notify } from '../../utils/helperFunctions';
 import { removeFromFavorite } from '../../services/api';
 
-const Product = ({ dataProps, up, av, newItem, closeButtonClick }) => {
+const Product = ({ dataProps, up, av, newItem, closeButtonClick, action }) => {
   const [data, setData] = useState(null);
   const [tipText, setTipText] = useState('new');
   const [tipBg, setTipBg] = useState('#641e16');
@@ -24,7 +24,6 @@ const Product = ({ dataProps, up, av, newItem, closeButtonClick }) => {
   useEffect(() => {
     if (dataProps) {
       setData(dataProps);
-      console.log(dataProps);
     }
     if (up) {
       setEuro(up);
@@ -74,6 +73,7 @@ const Product = ({ dataProps, up, av, newItem, closeButtonClick }) => {
     );
     if (serverRes.response.ok) {
       notify(t('product.removed'));
+      action();
       dispatch(favoriteActions.remove(+data?.product.variation_id));
     } else {
       notify(t('product.err'));

@@ -15,6 +15,7 @@ const CartProduct = data => {
   const { t } = useTranslation();
 
   const lng = useSelector(state => state.localeStore.lng);
+  const euro = useSelector(state => state.cartStore.euro);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -63,15 +64,15 @@ const CartProduct = data => {
                 {t('price')}:
                 {formatNumber(
                   lng !== 'fa'
-                    ? productData.price
-                    : productData.price * productData.euro_price,
+                    ? productData.sale_price
+                    : productData.sale_price * euro,
                 )}
                 &nbsp;{t('m_unit')}
               </span>
               {lng === 'fa' && (
                 <span className={classes.price}>
                   قیمت یورو:
-                  {formatNumber(productData.euro_price)}
+                  {formatNumber(euro)}
                   &nbsp;{t('m_unit')}
                 </span>
               )}
@@ -94,13 +95,13 @@ const CartProduct = data => {
                 {formatNumber(
                   lng !== 'fa'
                     ? (
-                        productData.price * productData.selected_quantity
+                        productData.sale_price * productData.selected_quantity
                       ).toFixed(2)
                     : (
-                        productData.price *
-                        productData.euro_price *
+                        productData.sale_price *
+                        euro *
                         productData.selected_quantity
-                      ).toFixed(2),
+                      ),
                 )}
                 &nbsp;{t('m_unit')}
               </span>
