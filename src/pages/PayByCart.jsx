@@ -17,6 +17,7 @@ import 'react-calendar/dist/Calendar.css';
 import { formatNumber } from '../utils/helperFunctions';
 
 import classes from './PayByCart.module.css';
+import { sendcardPaymentData } from '../services/api';
 const PayByCart = ({ widnowSize }) => {
   const [billNo, setBillNo] = useState('554');
   const [DocType, setDocType] = useState(null);
@@ -92,7 +93,7 @@ const PayByCart = ({ widnowSize }) => {
     if (!isValid) {
       return setIsError(true);
     } else {
-      console.log({
+      sendcardPaymentData({
         billNo,
         DocType,
         amount,

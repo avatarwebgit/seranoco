@@ -774,3 +774,17 @@ export const removeShoppingCart = async (token, cart_id) => {
   const result = await response.json();
   return { response, result };
 };
+
+export const sendcardPaymentData = async (token, data, order_id) => {
+  console.log(order_id, data);
+  const response = await fetch(`${baseUrl}/order_cash2_submit/${order_id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ data }),
+  });
+  const result = await response.json();
+  return { response, result };
+};

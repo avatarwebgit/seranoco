@@ -54,7 +54,7 @@ const FilterByShape = ({ windowSize }) => {
   const [colorData, setColorData] = useState(null);
   const [sizeData, setSizeData] = useState([]);
   const [groupColors, setGroupColors] = useState([]);
-  const [shapeFormEntries, setShapeFormEntries] = useState();
+  const [shapeFormEntries, setShapeFormEntries] = useState(46);
   const [dimensionEntries, setDimensionEntries] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const {
@@ -158,7 +158,7 @@ const FilterByShape = ({ windowSize }) => {
       setSelectedIds(prevIds => prevIds.filter(id => id !== slideId));
     }
   };
-
+  
   useEffect(() => {
     document.title = 'Seranoco - Shop By Color';
     handleShapeClick('', 46);
@@ -220,6 +220,7 @@ const FilterByShape = ({ windowSize }) => {
   // }, [tableData]);
 
   const handleShapeClick = async (e, id) => {
+    console.log(e,id)
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
     setProductDetails([]);
@@ -258,10 +259,10 @@ const FilterByShape = ({ windowSize }) => {
         setIsFilteredProductsLoading(false);
         setIsLoading(false);
       }
-      const serverRes = await getFilteredSizesByColor(selectedIds);
-      if (serverRes.response.ok) {
-        setSizeData(serverRes.result.data.sizes);
-      }
+      // const serverRes = await getFilteredSizesByColor(selectedIds);
+      // if (serverRes.response.ok) {
+      //   setSizeData(serverRes.result.data.sizes);
+      // }
     };
     if (selectedIds.length > 0) {
       setChunkedData([]);
@@ -573,26 +574,29 @@ const FilterByShape = ({ windowSize }) => {
 
               <form ref={formRef} className={classes.grid_form}>
                 {shapesData &&
-                  shapesData.map((elem, i) => {
-                    return (
-                      <div key={nanoid()}>
-                        {elem.image && (
-                          <CustomSelect
-                            title={`${i}`}
-                            src={elem.image}
-                            key={elem.id}
-                            id={elem.id}
-                            description={elem.description}
-                            onClick={e => {
-                              handleShapeClick(e, elem.id);
-                              setShapeFormEntries(elem.id);
-                            }}
-                            isSelected={shapeFormEntries || 46}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
+                  shapesData
+                    .sort((a, b) => a.priority - b.priority)
+                    .map((elem, i) => {
+                      console.log(elem);
+                      return (
+                        <div key={nanoid()}>
+                          {elem.image && (
+                            <CustomSelect
+                              title={`${i}`}
+                              src={elem.image}
+                              key={elem.id}
+                              id={elem.id}
+                              description={elem.description}
+                              onClick={e => {
+                                handleShapeClick(e, elem.id);
+                                setShapeFormEntries(elem.id);
+                              }}
+                              isSelected={shapeFormEntries || 46}
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
               </form>
             </Card>
           )}
