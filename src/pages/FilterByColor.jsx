@@ -20,7 +20,7 @@ import Divider from '../components/filters_page/Divider';
 
 import { productDetailActions } from '../store/store';
 
-import { getAllAtrributes, getProduct, useColors, getProductsByColor, getProductDetailsWithId, useFilteredShapes, getProductsByShape, getFilteredSizesByColor } from '../services/api';
+import { getAllAtrributes, getProduct, useColors, getProductsByColor, getProductDetailsWithId, useFilteredShapes, getProductsByShape, getFilteredSizes } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
 
@@ -218,7 +218,7 @@ const FilterByShape = ({ windowSize }) => {
   refetchShapes();
   const getSizes = async () => {
    try {
-    const serverRes = await getAllAtrributes(shapeFormEntries);
+    const serverRes = await getFilteredSizes(selectedIds,shapeFormEntries,{});
     if (serverRes.response.ok) {
      setSizeData(serverRes.result.data.sizes);
     }
@@ -240,7 +240,7 @@ const FilterByShape = ({ windowSize }) => {
    setTableData([]);
    getSizes();
   }
- }, [selectedIds]);
+ }, [selectedIds, shapeFormEntries]);
 
  const handleGetFilterProducts = async (shape_id = shapeFormEntries, size_ids = dimensionEntries, color_ids = selectedIds, page = 1, per_page = ItemsPerPage) => {
   abortControllerRef.current.abort();
