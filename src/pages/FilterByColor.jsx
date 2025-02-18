@@ -218,7 +218,7 @@ const FilterByShape = ({ windowSize }) => {
   refetchShapes();
   const getSizes = async () => {
    try {
-    const serverRes = await getFilteredSizes(selectedIds,shapeFormEntries,{});
+    const serverRes = await getFilteredSizes(selectedIds, shapeFormEntries, {});
     if (serverRes.response.ok) {
      setSizeData(serverRes.result.data.sizes);
     }

@@ -61,6 +61,7 @@ const FilterByShape = ({ windowSize }) => {
  const [sortedGroupColors, setSortedGroupColors] = useState([]);
  const [isTableDataLoading, setIsTableDataLoading] = useState(false);
  const [chunkSize, setChunkSize] = useState(9);
+ const [allSizesData, setAllSizesData] = useState([]);
 
  const formRef = useRef();
  const sizeRef = useRef();
@@ -273,7 +274,14 @@ const FilterByShape = ({ windowSize }) => {
     setSizeData(serverRes.result.data.sizes);
    }
   };
-  getSizes();
+  if (selectedIds.length > 0) {
+   getSizes();
+  } else {
+   getInitialSizes(shapeFormEntries, {
+    signal: dataAbortRef.current.signal,
+   });
+  }
+
   if (itemIds.length === 0) {
    if (JSON.stringify(dimensionEntries) !== JSON.stringify(prevDimensionEntriesRef.current) || JSON.stringify(selectedIds) !== JSON.stringify(prevSelectedIdsRef.current)) {
     prevDimensionEntriesRef.current = dimensionEntries;
