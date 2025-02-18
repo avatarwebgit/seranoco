@@ -247,7 +247,7 @@ const FilterByShape = ({ windowSize }) => {
     if (selectedIds.length > 0) {
       setChunkedData([]);
       setTableData([]);
-      getSizes();
+      // getSizes();
     }
   }, [selectedIds]);
 
