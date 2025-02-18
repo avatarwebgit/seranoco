@@ -412,7 +412,8 @@ export const useFilteredShapes = (color_ids, options) => {
     body: JSON.stringify({ color_ids }),
     ...options,
    });
-   const result = await response.json();
+    const result = await response.json();
+    console.log(result)
    return result.data;
   },
   staleTime: 1000 * 60 * 5,

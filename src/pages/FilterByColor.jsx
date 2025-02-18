@@ -199,26 +199,14 @@ const FilterByShape = ({ windowSize }) => {
   setSizeData([]);
   setIsFilteredProductsLoading(true);
   setIsLoading(true);
-  try {
-   const serverRes = await getAllAtrributes(id);
-   if (serverRes.response.ok) {
-    setSizeData(serverRes.result.data.sizes);
-   }
-  } catch (error) {
-   if (error.name !== 'AbortError') {
-    // console.error('Fetch error:', error);
-   }
-  } finally {
-   setIsFilteredProductsLoading(false);
-   setIsLoading(false);
-  }
+  
  };
 
  useEffect(() => {
   refetchShapes();
   const getSizes = async () => {
    try {
-    const serverRes = await getFilteredSizes(selectedIds, shapeFormEntries, {});
+    const serverRes = await getFilteredSizes(selectedIds, shapeFormEntries||46, {});
     if (serverRes.response.ok) {
      setSizeData(serverRes.result.data.sizes);
     }
@@ -294,21 +282,21 @@ const FilterByShape = ({ windowSize }) => {
   }
  }, [dimensionEntries, selectedIds, shapeFormEntries]);
 
- const getSize = async () => {
-  try {
-   const serverRes = await getAllAtrributes(shapeFormEntries);
-   if (serverRes.response.ok) {
-    setSizeData(serverRes.result.data.sizes);
-   }
-  } catch (error) {
-   if (error.name !== 'AbortError') {
-    // console.error('Fetch error:', error);
-   }
-  } finally {
-   setIsFilteredProductsLoading(false);
-   setIsLoading(false);
-  }
- };
+//  const getSize = async () => {
+//   try {
+//    const serverRes = await getAllAtrributes(shapeFormEntries);
+//    if (serverRes.response.ok) {
+//     setSizeData(serverRes.result.data.sizes);
+//    }
+//   } catch (error) {
+//    if (error.name !== 'AbortError') {
+//     // console.error('Fetch error:', error);
+//    }
+//   } finally {
+//    setIsFilteredProductsLoading(false);
+//    setIsLoading(false);
+//   }
+//  };
 
  useEffect(() => {
   setProductDetails([]);
@@ -432,7 +420,7 @@ const FilterByShape = ({ windowSize }) => {
         }}>
         {colorData?.length > 0 &&
          sortedColors.map((slide, index) => (
-          <SwiperSlide key={index} className={classes.slide} onClick={() => getSize()}>
+          <SwiperSlide key={index} className={classes.slide}>
            <div>
             <label htmlFor={slide.id} className={`${classes.color_slider_label} `}>
              <div className={classes.slider_image_wrapper}>
