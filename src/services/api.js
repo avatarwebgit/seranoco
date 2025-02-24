@@ -58,6 +58,22 @@ export const sliderContents = async lng => {
  return { response, result };
 };
 
+const fetchSearch = async param => {
+ const response = await fetch(`${baseUrl}/products/search?q=${param}`);
+ if (!response.ok) {
+  throw new Error('Network response was not ok');
+ }
+ return response.json();
+};
+
+export const useSearch = param => {
+ return useQuery({
+  queryKey: ['search', param],
+  queryFn: () => fetchSearch(param),
+  enabled: !!param,
+ });
+};
+
 export const getNarrowBanners = async () => {
  const response = await fetch(`${baseUrl}/banners`, {
   method: 'GET',
@@ -133,24 +149,37 @@ export const getAllColors = async () => {
  return { response, result };
 };
 
-export const getProduct = async (shape_id, size_ids, color_ids, page, per_page) => {
- const response = await fetch(`${baseUrl}/get/products?page=${page}&per_page=${per_page}`, {
-  method: 'POST',
-  headers: {
-   'Content-type': 'application/json',
-  },
+export const getProduct = async (
+ shape_id,
+ size_ids,
+ color_ids,
+ page,
+ per_page,
+) => {
+ const response = await fetch(
+  `${baseUrl}/get/products?page=${page}&per_page=${per_page}`,
+  {
+   method: 'POST',
+   headers: {
+    'Content-type': 'application/json',
+   },
 
-  body: JSON.stringify({ shape_id, size_ids, color_ids }),
- });
+   body: JSON.stringify({ shape_id, size_ids, color_ids }),
+  },
+ );
  const result = await response.json();
  return { response, result };
 };
 
 export const getPaginatedProductsByShape = async (id, page, per_page) => {
- const response = await fetch(`${baseUrl}/products-paginate?id=${id}&per_page=${per_page}&page=${page}`, {
-  method: 'GET',
- });
+ const response = await fetch(
+  `${baseUrl}/products-paginate?id=${id}&per_page=${per_page}&page=${page}`,
+  {
+   method: 'GET',
+  },
+ );
  const result = await response.json();
+ console.log(response, result);
  return { response, result };
 };
 
@@ -178,31 +207,48 @@ export const getProductDetailsWithId = async (id, token) => {
  return { response, result };
 };
 
-export const getProductsByColor = async (color_ids, page, per_page, options) => {
- const response = await fetch(`${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`, {
-  method: 'POST',
-  headers: {
-   'Content-type': 'application/json',
-  },
+export const getProductsByColor = async (
+ color_ids,
+ page,
+ per_page,
+ options,
+) => {
+ const response = await fetch(
+  `${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`,
+  {
+   method: 'POST',
+   headers: {
+    'Content-type': 'application/json',
+   },
 
-  body: JSON.stringify({ color_ids }),
-  ...options,
- });
+   body: JSON.stringify({ color_ids }),
+   ...options,
+  },
+ );
 
  const result = await response.json();
  return { response, result };
 };
 
-export const getProductsByShape = async (shape_id, color_ids, page, per_page, options = {}) => {
- const response = await fetch(`${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`, {
-  method: 'POST',
-  headers: {
-   'Content-type': 'application/json',
-  },
+export const getProductsByShape = async (
+ shape_id,
+ color_ids,
+ page,
+ per_page,
+ options = {},
+) => {
+ const response = await fetch(
+  `${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`,
+  {
+   method: 'POST',
+   headers: {
+    'Content-type': 'application/json',
+   },
 
-  body: JSON.stringify({ color_ids, shape_id }),
-  ...options,
- });
+   body: JSON.stringify({ color_ids, shape_id }),
+   ...options,
+  },
+ );
 
  const result = await response.json();
  return { response, result };
@@ -412,8 +458,8 @@ export const useFilteredShapes = (color_ids, options) => {
     body: JSON.stringify({ color_ids }),
     ...options,
    });
-    const result = await response.json();
-    console.log(result)
+   const result = await response.json();
+   console.log(result);
    return result.data;
   },
   staleTime: 1000 * 60 * 5,
@@ -452,7 +498,7 @@ export const useColors = () => {
     throw new Error('Failed to fetch colors');
    }
 
-   const result = await response.json();
+      const result = await response.json();
    return result;
   },
  });
@@ -546,14 +592,23 @@ export const useUser = token => {
  });
 };
 
-export const getAllNewProducts = async (shape_id, color_ids, size_ids, page, per_page) => {
- const response = await fetch(`${baseUrl}/get/products/new?page=${page}&per_page=${per_page}`, {
-  method: 'POST',
-  headers: {
-   'Content-Type': 'application/json',
+export const getAllNewProducts = async (
+ shape_id,
+ color_ids,
+ size_ids,
+ page,
+ per_page,
+) => {
+ const response = await fetch(
+  `${baseUrl}/get/products/new?page=${page}&per_page=${per_page}`,
+  {
+   method: 'POST',
+   headers: {
+    'Content-Type': 'application/json',
+   },
+   body: JSON.stringify({ shape_id, color_ids, size_ids }),
   },
-  body: JSON.stringify({ shape_id, color_ids, size_ids }),
- });
+ );
  const result = await response.json();
  return { response, result };
 };
@@ -566,7 +621,12 @@ export const getPayments = async () => {
  return { response, result };
 };
 
-export const sendCartPrice = async (token, address_id, payment_method, amount) => {
+export const sendCartPrice = async (
+ token,
+ address_id,
+ payment_method,
+ amount,
+) => {
  // console.log(token, address_id, payment_method, amount);
  const response = await fetch(`${baseUrl}/payment`, {
   method: 'POST',
@@ -600,7 +660,14 @@ export const updateUser = async token => {
  return { response, result };
 };
 
-export const addAddress = async (token, title, tel, address, city_id, postal_code) => {
+export const addAddress = async (
+ token,
+ title,
+ tel,
+ address,
+ city_id,
+ postal_code,
+) => {
  const response = await fetch(`${baseUrl}/add/user/address`, {
   method: 'POST',
   headers: {
@@ -681,7 +748,12 @@ export const removeFromFavorite = async (token, variation_id) => {
  return { response, result };
 };
 
-export const sendShoppingCart = async (token, product_id, variation_id, quantity) => {
+export const sendShoppingCart = async (
+ token,
+ product_id,
+ variation_id,
+ quantity,
+) => {
  console.log(product_id, variation_id, quantity);
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'POST',
@@ -720,7 +792,6 @@ export const removeShoppingCart = async (token, cart_id) => {
 };
 
 export const sendcardPaymentData = async (token, data, order_id) => {
- console.log(order_id, data);
  const response = await fetch(`${baseUrl}/order_cash2_submit/${order_id}`, {
   method: 'POST',
   headers: {
@@ -728,6 +799,17 @@ export const sendcardPaymentData = async (token, data, order_id) => {
    Authorization: `bearer ${token}`,
   },
   body: JSON.stringify({ data }),
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const getAllProductFromCategory = async id => {
+ const response = await fetch(`${baseUrl}/product_categories/${id}`, {
+  method: 'GET',
+  headers: {
+   'Content-Type': 'application/json',
+  },
  });
  const result = await response.json();
  return { response, result };

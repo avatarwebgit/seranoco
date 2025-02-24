@@ -12,55 +12,56 @@ import { homePageCategories } from '../services/api';
 
 import classes from './FilterLinks.module.css';
 const FilterLinks = () => {
-  const [linkData, setLinkData] = useState(null);
-  const { t } = useTranslation();
+ const [linkData, setLinkData] = useState(null);
+ const { t } = useTranslation();
 
-  const lng = useSelector(state => state.localeStore.lng);
+ const lng = useSelector(state => state.localeStore.lng);
 
-  const getHomeCategories = async () => {
-    const serverRes = await homePageCategories(lng);
-    if (serverRes.response.ok) {
-      setLinkData(serverRes.result.data);
-    }
-  };
+ const getHomeCategories = async () => {
+  const serverRes = await homePageCategories(lng);
+  if (serverRes.response.ok) {
+   setLinkData(serverRes.result.data);
+  }
+ };
 
-  useEffect(() => {
-    getHomeCategories();
-  }, []);
+ useEffect(() => {
+  getHomeCategories();
+ }, []);
 
-  return (
-    <CustomSection className={classes.main}>
+ return (
+  <CustomSection className={classes.main}>
+   <Link
+    imgUrl={filterByColor}
+    title={t('shop_by_color')}
+    href={'shopbycolor'}
+   />
+   <Link
+    imgUrl={filterByShape}
+    title={t('shop_by_shape')}
+    href={'shopbyshape'}
+   />
+   <Link
+    imgUrl={null}
+    title={t('new_product')}
+    className={classes.new}
+    helper_className={classes.helper}
+    hepler_text={t('new')}
+    href={'new-products'}
+   />
+   {}
+   {linkData &&
+    linkData.map(elem => {
+     return (
       <Link
-        imgUrl={filterByColor}
-        title={t('shop_by_color')}
-        href={'shopbycolor'}
+       href={`special/${elem.id}`}
+       imgUrl={elem.primary_image}
+       title={lng === 'en' ? elem.name : elem.name_fa}
+       key={nanoid()}
       />
-      <Link
-        imgUrl={filterByShape}
-        title={t('shop_by_shape')}
-        href={'shopbyshape'}
-      />
-      <Link
-        imgUrl={null}
-        title={t('new_product')}
-        className={classes.new}
-        helper_className={classes.helper}
-        hepler_text={t('new')}
-        href={'new-products'}
-      />
-      {}
-      {linkData &&
-        linkData.map(elem => {
-          return (
-            <Link
-              imgUrl={elem.primary_image}
-              title={lng === 'en' ? elem.name : elem.name_fa}
-              key={nanoid()}
-            />
-          );
-        })}
-    </CustomSection>
-  );
+     );
+    })}
+  </CustomSection>
+ );
 };
 
 export default FilterLinks;

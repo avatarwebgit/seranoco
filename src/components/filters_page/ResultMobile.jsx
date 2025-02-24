@@ -39,6 +39,7 @@ const ResultMobile = ({ dataProps }) => {
               key={el.id}
               to={`/${lng}/products/${el.alias}/${el.variation_id}`}
             >
+              {console.log(el)}
               <div className={classes.wrapper}>
                 <div className={classes.right_side}>
                   <img src={el.primary_image} alt='' loading='lazy' />

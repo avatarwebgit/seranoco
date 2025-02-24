@@ -45,6 +45,8 @@ function App() {
   const PreCheckout = React.lazy(() => import('./pages/PreCheckout'));
   const PayByCart = React.lazy(() => import('./pages/PayByCart'));
   const New = React.lazy(() => import('./pages/New'));
+  const Special = React.lazy(() => import('./pages/SpecialStones'));
+  const Categories = React.lazy(() => import('./pages/Categories'));
   const NotFound = React.lazy(() => import('./pages/NotFound'));
 
   const lng = useSelector(state => state.localeStore.lng);
@@ -56,6 +58,11 @@ function App() {
 
   const { data: basicData, isLoading: basicDataIsloading } =
     useBasicInformation();
+  
+  useEffect(() => {
+    console.log(basicData)
+  }, [basicData])
+  
 
   const dispatch = useDispatch();
 
@@ -119,6 +126,10 @@ function App() {
           element={<FilterByShape windowSize={windowSize} />}
         />
         <Route
+          path={`/:lng/categories`}
+          element={<Categories windowSize={windowSize} />}
+        />
+        <Route
           path={`/:lng/products/:id/:variation`}
           element={<Products windowSize={windowSize} />}
         />
@@ -149,6 +160,10 @@ function App() {
         <Route
           path={`/:lng/new-products`}
           element={<New windowSize={windowSize} />}
+        />
+        <Route
+          path={`/:lng/special/:id`}
+          element={<Special windowSize={windowSize} />}
         />
         <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
       </Routes>

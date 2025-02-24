@@ -140,36 +140,34 @@ const TableGrid = ({
                             availabilityLabel === 'By Order'
                           ) {
                             return (
-                              <span
-                                style={{
-                                  backgroundColor:
-                                    availabilityLabel === 'Available'
-                                      ? '#a9dfbf'
-                                      : '#aed6f1',
-                                }}
-                              >
-                                <input
-                                  type='checkbox'
-                                  name={id}
-                                  id={id}
-                                  checked={selectedItems.includes(item?.id)}
-                                  onChange={e =>
-                                    handleCheckboxChange(
-                                      color,
-                                      size.description,
-                                      item?.id || '',
-                                      e.target.checked,
-                                      item,
-                                    )
-                                  }
-                                />
-                                <label
-                                  htmlFor={id}
-                                  className={`${classes.available} ${classes.label}`}
-                                >
-                                  {availabilityLabel}
-                                </label>
-                              </span>
+                             <span
+                              style={{
+                               backgroundColor:
+                                availabilityLabel === 'Available'
+                                 ? '#4bd14b'
+                                 : '#8181fc',
+                              }}>
+                              <input
+                               type='checkbox'
+                               name={id}
+                               id={id}
+                               checked={selectedItems.includes(item?.id)}
+                               onChange={e =>
+                                handleCheckboxChange(
+                                 color,
+                                 size.description,
+                                 item?.id || '',
+                                 e.target.checked,
+                                 item,
+                                )
+                               }
+                              />
+                              <label
+                               htmlFor={id}
+                               className={`${classes.available} ${classes.label}`}>
+                               {availabilityLabel}
+                              </label>
+                             </span>
                             );
                           } else {
                             return (

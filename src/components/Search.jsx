@@ -1,93 +1,150 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { useSearch } from '../services/api';
+import { debounce } from 'lodash';
+
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 import search from '../assets/svg/search_white.svg';
 import search_black from '../assets/svg/search.svg';
 import classes from './Search.module.css';
+import SearchResult from './SearchResult';
 
 const Search = ({ isHomePage }) => {
-  const [isFullSize, setIsFullSize] = useState(false);
+ const [isFullSize, setIsFullSize] = useState(false);
+ const [searchQuery, setSearchQuery] = useState('');
+ const [searchTerm, setSearchTerm] = useState('');
+ const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+ const { data, isLoading, isError, error } = useSearch(debouncedSearchTerm);
+ const [resultDetail, setResultDetail] = useState([]);
 
-  const searchRef = useRef();
+ const searchRef = useRef();
+ const { t } = useTranslation();
 
-  useEffect(() => {
-    const handleClickOutside = event => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setIsFullSize(false);
-      }
-    };
+ const debouncedSearch = debounce(value => {
+  setDebouncedSearchTerm(value);
+ }, 300);
 
-    document.addEventListener('mousedown', handleClickOutside);
+ const handleInputChange = e => {
+  const value = e.target.value;
+  setSearchTerm(value);
+  debouncedSearch(value);
+ };
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+ useEffect(() => {
+  if (data && data.data.length > 0) {
+   setResultDetail(data.data);
+  }
+ }, [data]);
 
-  const handleMouseOut = () => {
+ useEffect(() => {
+  const handleClickOutside = event => {
+   if (searchRef.current && !searchRef.current.contains(event.target)) {
     setIsFullSize(false);
+   }
   };
 
-  const initial = {
-    width: 0,
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+   document.removeEventListener('mousedown', handleClickOutside);
   };
+ }, []);
 
-  useEffect(() => {
-    if (isFullSize) {
-      document.body.style.overflowY = 'hidden';
-    } else {
-      document.body.style.overflowY = 'auto';
-    }
-  }, [isFullSize]);
+ const handleMouseOut = () => {
+  setIsFullSize(false);
+ };
 
-  return (
-    <motion.div
-      ref={searchRef}
-      className={classes.main}
-      initial={initial}
-      animate={{ width: isFullSize ? '100%' : 0 }}
-      transition={{ duration: 0.25, type: 'tween' }}
-    >
-      <motion.input
-        className={classes.search_input}
-        type='text'
-        placeholder={isFullSize ? 'Search...' : ''}
-        style={{
-          backgroundColor: isFullSize ? 'white' : 'transparent',
-        }}
-        transition={{ duration: 0.25, type: 'tween' }}
-      />
-      <motion.div
-        className={classes.search_logo_wrapper}
-        onClick={() => setIsFullSize(true)}
-        initial={{ border: '1.5px solid transparent' }}
-        animate={{
-          border: !isFullSize
-            ? isHomePage
-              ? '1.5px solid black'
-              : '1.5px solid white'
-            : '1px solid transparent',
-        }}
-      >
-        <motion.img
-          className={classes.search_logo}
-          src={isHomePage ? search_black : isFullSize ? search_black : search}
-          alt='search logo'
-          initial={{ width: '40%', height: '40%' }}
-          animate={{
-            width: isFullSize ? '50%' : '40%',
-            height: isFullSize ? '50%' : '40%',
-          }}
-          transition={{ duration: 0.25, type: 'tween' }}
-        />
-      </motion.div>
-      <motion.div
-        className={classes.backdrop}
-        initial={{ display: 'none' }}
-        animate={{ display: isFullSize ? 'block' : 'none' }}
-        onClick={handleMouseOut}
-      />
-    </motion.div>
-  );
+ const initial = {
+  width: 0,
+ };
+
+ useEffect(() => {
+  if (isFullSize) {
+   document.body.style.overflowY = 'hidden';
+  } else {
+   document.body.style.overflowY = 'auto';
+  }
+ }, [isFullSize]);
+
+ return (
+  <motion.form
+   ref={searchRef}
+   className={classes.main}
+   initial={initial}
+   animate={{ width: isFullSize ? '100%' : 0 }}
+   transition={{ duration: 0.25, type: 'tween' }}>
+   <motion.input
+    onChange={e => handleInputChange(e)}
+    className={classes.search_input}
+    type='text'
+    placeholder={isFullSize ? 'Search...' : ''}
+    transition={{ duration: 0.25, type: 'tween' }}
+    initial={{
+     boxShadow: '0 0 5px rgba(65, 65, 65, 0)',
+     background: 'rgba(0, 0, 0, 0)',
+    }}
+    animate={{
+     boxShadow: isFullSize
+      ? '0 0 5px rgba(65, 65, 65, 1)'
+      : '0 0 5px rgba(65, 65, 65, 0)',
+     background: isFullSize ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0)',
+    }}
+   />
+   <motion.div
+    className={classes.search_logo_wrapper}
+    onClick={() => setIsFullSize(true)}
+    initial={{ border: '1.5px solid transparent' }}
+    animate={{
+     border: !isFullSize
+      ? isHomePage
+        ? '1.5px solid black'
+        : '1.5px solid white'
+      : '1px solid transparent',
+    }}>
+    <motion.img
+     className={classes.search_logo}
+     src={isHomePage ? search_black : isFullSize ? search_black : search}
+     alt='search logo'
+     initial={{ width: '40%', height: '40%' }}
+     animate={{
+      width: isFullSize ? '50%' : '40%',
+      height: isFullSize ? '50%' : '40%',
+     }}
+     transition={{ duration: 0.25, type: 'tween' }}
+    />
+   </motion.div>
+   <motion.div
+    className={classes.backdrop}
+    initial={{ display: 'none' }}
+    animate={{ display: isFullSize ? 'block' : 'none' }}
+    onClick={handleMouseOut}
+   />
+   <motion.div
+    className={classes.result_wrapper}
+    initial={{ padding: 0, height: 0 }}
+    animate={{
+     padding: isFullSize ? '20px 10px 10px 10px' : 0,
+     height: isFullSize ? '500px' : 0,
+    }}
+    transition={{ delay: !isFullSize ? 0 : 0.5 }}>
+    {isLoading && <LoadingSpinner size={'20px'} />}
+    <div className={classes.sheet}>
+     {resultDetail.length > 0 &&
+      resultDetail.map(el => {
+       console.log(el);
+       return <SearchResult dataProp={el}/>
+      })}
+    </div>
+   </motion.div>
+   {searchQuery.length > 0 && (
+    <button type='submit' className={classes.search_btn}>
+     {t('search')}
+    </button>
+   )}
+  </motion.form>
+ );
 };
 
 export default Search;
