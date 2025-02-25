@@ -17,6 +17,8 @@ import Breadcrumbs from '../components/common/Breadcrumbs';
 import { CustomButton } from '../components/account/CustomButton';
 import OrderStatus from '../components/account/OrderStatus';
 import AccountInformaion from '../components/account/AccountInformaion';
+import Ticket from '../components/account/Ticket'
+import Contact from '../components/account/Contact'
 
 import { userActions } from '../store/store';
 
@@ -24,6 +26,7 @@ import { useUser } from '../services/api';
 
 import classes from './Profile.module.css';
 import Favorites from '../components/account/Favorites';
+import MobileProfile from './MobileProfile';
 const Profile = ({ windowSize }) => {
   const [selectedButtonId, setSelectedButtonId] = useState(null);
   const [selectedContent, setSelectedContent] = useState(null);
@@ -85,12 +88,12 @@ const Profile = ({ windowSize }) => {
         {
           id: 'btn7',
           title: t('profile.ticket'),
-          content: 'Content for Button 7',
+          content: <Ticket/>,
         },
         {
           id: 'btn8',
           title: t('profile.contact'),
-          content: 'Content for Button 8',
+          content: <Contact/>,
         },
       ],
     },
@@ -117,7 +120,7 @@ const Profile = ({ windowSize }) => {
       <Header windowSize={windowSize} />
 
       <Body className={`${lng === 'fa' ? classes.fa : classes.en}`}>
-        <Card className={classes.main_card}>
+        {windowSize!=='xs'&& windowSize!=='s'?<Card className={classes.main_card}>
           <Breadcrumbs
             linkDataProp={[
               { pathname: t('home'), url: ' ' },
@@ -173,7 +176,7 @@ const Profile = ({ windowSize }) => {
               )}
             </div>
           </section>
-        </Card>
+        </Card>:<MobileProfile/>}
       </Body>
       <Footer />
     </div>

@@ -32,7 +32,8 @@ export const getHeaderMenus = async lng => {
    'Accept-Language': `${lng}`,
   },
  });
- const result = await response.json();
+   const result = await response.json();
+   console.log(response, result)
  return { response, result };
 };
 
