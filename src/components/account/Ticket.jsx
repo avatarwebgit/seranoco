@@ -1,13 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { Autocomplete, TextareaAutosize, TextField } from '@mui/material';
+
+import show from '../../assets/svg/show.svg';
 
 import Wrapper from './Wrapper';
 import Body from '../filters_page/Body';
 import Card from '../filters_page/Card';
 
 import classes from './Ticket.module.css';
-import { Autocomplete, TextareaAutosize, TextField } from '@mui/material';
 const Ticket = () => {
  const inputStyles = {
   mb: '0.5rem',
@@ -71,7 +73,39 @@ const Ticket = () => {
       //   onFocus={() => setIsError(false)}
      />
      <label htmlFor='desc'>{t('caption')}</label>
-     <TextareaAutosize name='desc' id='desc' style={{maxWidth:'500px'}}></TextareaAutosize>
+     <TextareaAutosize
+      name='desc'
+      id='desc'
+      style={{ maxWidth: '500px' }}></TextareaAutosize>
+    </Wrapper>
+    <h3
+     className={classes.title}
+     style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+     {t('profile.favorites')}
+    </h3>
+    <Wrapper>
+     <table className={classes.table}>
+      <thead>
+       <tr className={classes.tr}>
+        <th className={classes.th}>{t('ticket.no')}</th>
+        <th className={classes.th}>{t('ticket.title')}</th>
+        <th className={classes.th}>{t('ticket.status')}</th>
+        <th className={classes.th}>{t('ticket.show')}</th>
+        <th className={classes.th}>{t('ticket.ticket_no')}</th>
+        <th className={classes.th}>{t('ticket.data')}</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr className={classes.tr}>
+        <td className={classes.td}>text</td>
+        <td className={classes.td}>text</td>
+        <td className={classes.td}>text</td>
+        <td className={classes.td}><img className={classes.img} src={show} alt="" /></td>
+        <td className={classes.td}>text</td>
+        <td className={classes.td}>text</td>
+       </tr>
+      </tbody>
+     </table>
     </Wrapper>
    </Card>
   </Body>

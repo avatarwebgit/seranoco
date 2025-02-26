@@ -90,11 +90,6 @@ const Profile = ({ windowSize }) => {
           title: t('profile.ticket'),
           content: <Ticket/>,
         },
-        {
-          id: 'btn8',
-          title: t('profile.contact'),
-          content: <Contact/>,
-        },
       ],
     },
   ];

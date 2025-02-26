@@ -1,192 +1,205 @@
 {
-  "header_button_1": "button 1",
-  "header_button_2": "button 2",
-  "header_button_3": "button 3",
-  "header_button_4": "button 4",
-  "header_button_5": "button 5",
-  "header_button_6": "button 6",
-  "header_button_7": "button 7",
-  "header_button_8": "button 8",
-  "header_button_9": "button 9",
-  "header_button_10": "button 10",
+ "header_button_1": "button 1",
+ "header_button_2": "button 2",
+ "header_button_3": "button 3",
+ "header_button_4": "button 4",
+ "header_button_5": "button 5",
+ "header_button_6": "button 6",
+ "header_button_7": "button 7",
+ "header_button_8": "button 8",
+ "header_button_9": "button 9",
+ "header_button_10": "button 10",
 
-  "title": "Tile",
-  "caption": "Description",
+ "title": "Tile",
+ "caption": "Description",
 
-  "shop_now": "SHOP NOW",
-  "login": "Login",
-  "home": "Home",
+ "shop_now": "SHOP NOW",
+ "login": "Login",
+ "home": "Home",
 
-  "shop_by_color": "Shop by Color",
-  "shop_by_shape": "Shop by Shape",
-  "new_product": "New Products",
-  "wholesales": "Wholesales",
-  "limited_edition": "Limited Edition",
-  "birth_stones": "Birth Stones",
+ "shop_by_color": "Shop by Color",
+ "shop_by_shape": "Shop by Shape",
+ "new_product": "New Products",
+ "wholesales": "Wholesales",
+ "limited_edition": "Limited Edition",
+ "birth_stones": "Birth Stones",
 
-  "new": "New",
-  "trending_new": "New",
-  "noItem": "There is no Item.",
+ "new": "New",
+ "trending_new": "New",
+ "noItem": "There is no Item.",
 
-  "shape": "Shapes",
-  "type": "Stone Type",
-  "details": "Details",
+ "shape": "Shapes",
+ "type": "Stone Type",
+ "details": "Details",
+ "color": "Color",
+ "size": "Size (mm)",
+ "weight": "Ct Weight",
+ "quality": "Quality",
+ "cut": "Cut",
+ "report": "Report",
+ "country": "Country Of Origin",
+ "agta": "AGTA",
+ "price": "Price",
+ "quantity": "Quantity",
+ "total_price": "Total Price",
+ "add_to_card": "Add To Card",
+ "brand": "Brand",
+ "mine": "Mine",
+
+ "page": "Page",
+ "select_shape": "Please Select A Shape ",
+ "select_color": "Please Select A Color ",
+
+ "zoom_tip": "The color on your screen may not reflect actual stone color due to the variations in computer monitors",
+
+ "sold_by": "Sold By",
+ "specifications": "Specifications",
+
+ "related": "Related Bestsellers",
+ "views": "People Who Viewed These Items Ultimately Bought",
+ "reset_selections": "Reset Selections",
+
+ "more_info": "Technical Information",
+ "description": "More Information",
+ "serial_number": "Serial No",
+ "payment": "Payment",
+ "total_weight": "Total Weight",
+
+ "add_to_favorite": "Add To Wish List",
+
+ "loading": "Loading ...",
+ "items_per_page": "Results Per Page",
+
+ "1_pcs": "Pcs",
+ "pcs": "PCS",
+
+ "m_unit": "€",
+ "search": "Search",
+
+ "my_acc": "My Account",
+ "byorder": "By Order",
+ "add": "Add",
+
+ "profile": {
+  "orders": "Orders",
+  "item_list": "Item Lists",
+  "ticket": "Ticket",
+  "contact": "Contact",
+  "addresses": "Adresses",
+  "address": "Adress",
+  "add_add": "Add New Address",
+
+  "acc_info": "Account Information",
+  "favorites": "Favorites",
+  "'cart": "Cart",
+
+  "pending": "Pending Payment",
+  "order_status": "Order Status",
+  "urad": "All Your Addresses",
+
+  "log_out": "Logout",
+
+  "support": "Support",
+  "account": "Account",
+
+  "sbsi": "Sort By Size (Increasing)",
+  "sbsd": "Sort By Size (Decreasing)",
+  "sbpi": "Sort By price (Increasing)",
+  "sbpd": "Sort By price (Decreasing)",
+
+  "sort": "Sort",
+
+  "err_add_add": "There Was An Error Adding This Address, Please Try Again Later",
+  "suc_add_add": "Address Added Successfully.",
+  "err_rem_add": "There Was An Error Removing This Address, Please Try Again Later",
+  "suc_rem_add": "Address Removed Successfully"
+ },
+
+ "shopping_cart": {
+  "cart": "Shopping Cart",
+  "pay": "Proceed",
+  "total": "Total"
+ },
+
+ "access": {
+  "error": "Email or password is wrong please try again.",
+  "error_empty": "Please Enter Email and Password",
+  "create_acc": "Don't have an account?",
+  "have_acc": "Have an account?",
+  "swg": "Sign in with Google",
+  "swotp": "Sign in with OTP"
+ },
+
+ "signup": {
+  "sign_up": "Signup",
+  "fname": "First Name",
+  "lname": "Last Name",
+  "uname": "User Name",
+  "password": "Password",
+  "repeat": "Repeat",
+  "pnumber": "Phone Number",
+  "country": "Country",
+  "city": "City",
+  "email": "Email",
+  "adress": "Adress",
+  "err_8char": "Password Should Contain At Least 8 Characters",
+  "err_notm": "Passwords Do Not Match.",
+
+  "fillout": "Please fill all required fileds"
+ },
+
+ "otp": {
+  "resend": "Resend"
+ },
+
+ "pc": {
+  "size": "Size",
   "color": "Color",
-  "size": "Size (mm)",
-  "weight": "Ct Weight",
-  "quality": "Quality",
-  "cut": "Cut",
-  "report": "Report",
-  "country": "Country Of Origin",
-  "agta": "AGTA",
   "price": "Price",
-  "quantity": "Quantity",
-  "total_price": "Total Price",
-  "add_to_card": "Add To Card",
-  "brand": "Brand",
-  "mine": "Mine",
+  "advance": "Advance Payment",
+  "payment": "Total Price",
+  "cart": "Shopping Cart",
+  "info": "َBilling Details",
+  "pmethod": "Payment Method",
+  "value": "Value",
+  "nstep": "Next Step",
+  "pstep": "Back",
+  "receiver": "Receiver",
+  "postalcode": "Post Code",
+  "title": "Tile",
+  "submit": "ُSubmit",
+  "off": "Discount",
+  "dprice": "Price After Discount",
+  "image": "Image"
+ },
 
-  "page": "Page",
-  "select_shape": "Please Select A Shape ",
-  "select_color": "Please Select A Color ",
+ "welcome": "Welcome Back",
+ "back": "Back",
+ "addtocart": "Add To Cart",
 
-  "zoom_tip": "The color on your screen may not reflect actual stone color due to the variations in computer monitors",
+ "newpage": {
+  "av": "In Stock",
+  "notav": "Not Available"
+ },
 
-  "sold_by": "Sold By",
-  "specifications": "Specifications",
+ "product": {
+  "added": "Product Successfully Added To Favorites",
+  "removed": "Product Successfully Removed From Favorites",
+  "err": "Product Not Added To Favorites Please Try Again.",
+  "remove": "Remove From Wish List",
+  "remove_ow": "Remove"
+ },
 
-  "related": "Related Bestsellers",
-  "views": "People Who Viewed These Items Ultimately Bought",
-  "reset_selections": "Reset Selections",
+ "cu": {
+  "contact_us": "Contact Us"
+ },
 
-  "more_info": "Technical Information",
-  "description": "More Information",
-  "serial_number": "Serial No",
-  "payment": "Payment",
-  "total_weight": "Total Weight",
-
-  "add_to_favorite": "Add To Wish List",
-
-  "loading": "Loading ...",
-  "items_per_page": "Results Per Page",
-
-  "1_pcs": "Pcs",
-  "pcs": "PCS",
-
-  "m_unit": "€",
-  "search":"Search",
-
-  "my_acc": "My Account",
-  "byorder": "By Order",
-  "add": "Add",
-
-  "profile": {
-    "orders": "Orders",
-    "item_list": "Item Lists",
-    "ticket": "Ticket",
-    "contact": "Contact",
-    "addresses": "Adresses",
-    "address": "Adress",
-    "add_add": "Add New Address",
-
-    "acc_info": "Account Information",
-    "favorites": "Favorites",
-    "'cart": "Cart",
-
-    "pending": "Pending Payment",
-    "order_status": "Order Status",
-    "urad": "All Your Addresses",
-
-    "log_out": "Logout",
-
-    "support": "Support",
-    "account": "Account",
-
-    "sbsi": "Sort By Size (Increasing)",
-    "sbsd": "Sort By Size (Decreasing)",
-    "sbpi": "Sort By price (Increasing)",
-    "sbpd": "Sort By price (Decreasing)",
-
-    "sort": "Sort",
-
-    "err_add_add": "There Was An Error Adding This Address, Please Try Again Later",
-    "suc_add_add": "Address Added Successfully.",
-    "err_rem_add": "There Was An Error Removing This Address, Please Try Again Later",
-    "suc_rem_add": "Address Removed Successfully"
-  },
-
-  "shopping_cart": {
-    "cart": "Shopping Cart",
-    "pay": "Proceed",
-    "total": "Total"
-  },
-
-  "access": {
-    "error": "Email or password is wrong please try again.",
-    "error_empty": "Please Enter Email and Password",
-    "create_acc": "Don't have an account?",
-    "have_acc": "Have an account?",
-    "swg": "Sign in with Google",
-    "swotp": "Sign in with OTP"
-  },
-
-  "signup": {
-    "sign_up": "Signup",
-    "fname": "First Name",
-    "lname": "Last Name",
-    "uname": "User Name",
-    "password": "Password",
-    "repeat": "Repeat",
-    "pnumber": "Phone Number",
-    "country": "Country",
-    "city": "City",
-    "email": "Email",
-    "adress": "Adress",
-    "err_8char": "Password Should Contain At Least 8 Characters",
-    "err_notm": "Passwords Do Not Match.",
-
-    "fillout": "Please fill all required fileds"
-  },
-
-  "otp": {
-    "resend": "Resend"
-  },
-
-  "pc": {
-    "size": "Size",
-    "color": "Color",
-    "price": "Price",
-    "advance": "Advance Payment",
-    "payment": "Total Price",
-    "cart": "Shopping Cart",
-    "info": "َBilling Details",
-    "pmethod": "Payment Method",
-    "value": "Value",
-    "nstep": "Next Step",
-    "pstep": "Back",
-    "receiver": "Receiver",
-    "postalcode": "Post Code",
-    "title": "Tile",
-    "submit": "ُSubmit",
-    "off": "Discount",
-    "dprice": "Price After Discount",
-    "image": "Image"
-  },
-
-  "welcome": "Welcome Back",
-  "back": "Back",
-  "addtocart": "Add To Cart",
-
-  "newpage": {
-    "av": "In Stock",
-    "notav": "Not Available"
-  },
-
-  "product": {
-    "added": "Product Successfully Added To Favorites",
-    "removed": "Product Successfully Removed From Favorites",
-    "err": "Product Not Added To Favorites Please Try Again.",
-    "remove": "Remove From Wish List",
-    "remove_ow": "Remove"
-  }
+ "ticket":{
+    "no":"NO",
+    "title":"Title",
+    "status":"Status",
+    "show":"Show",
+    "ticket_no":"Ticket Number",
+    "data":"Date"
+ }
 }
