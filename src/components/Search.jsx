@@ -123,17 +123,16 @@ const Search = ({ isHomePage }) => {
    />
    <motion.div
     className={classes.result_wrapper}
-    initial={{ padding: 0, height: 0 }}
+    initial={{ paddingTop: 0, height: 0 }}
     animate={{
-     padding: isFullSize ? '20px 10px 10px 10px' : 0,
-     height: isFullSize ? '500px' : 0,
+     paddingTop: isFullSize ? '20px' : 0,
+     height: isFullSize ? '400px' : 0,
     }}
     transition={{ delay: !isFullSize ? 0 : 0.5 }}>
     {isLoading && <LoadingSpinner size={'20px'} />}
     <div className={classes.sheet}>
      {resultDetail.length > 0 &&
       resultDetail.map(el => {
-       console.log(el);
        return <SearchResult dataProp={el}/>
       })}
     </div>

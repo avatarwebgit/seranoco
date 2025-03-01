@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Autocomplete, TextareaAutosize, TextField } from '@mui/material';
 
-import show from '../../assets/svg/show.svg';
-
 import Wrapper from './Wrapper';
 import Body from '../filters_page/Body';
 import Card from '../filters_page/Card';
 
 import classes from './Ticket.module.css';
+import TicketHistory from './ticket/TicketHistory';
 const Ticket = () => {
  const inputStyles = {
   mb: '0.5rem',
@@ -36,8 +35,10 @@ const Ticket = () => {
    },
   },
  };
+
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
+
  return (
   <Body parentClass={classes.body}>
    <Card className={classes.main}>
@@ -96,14 +97,7 @@ const Ticket = () => {
        </tr>
       </thead>
       <tbody>
-       <tr className={classes.tr}>
-        <td className={classes.td}>text</td>
-        <td className={classes.td}>text</td>
-        <td className={classes.td}>text</td>
-        <td className={classes.td}><img className={classes.img} src={show} alt="" /></td>
-        <td className={classes.td}>text</td>
-        <td className={classes.td}>text</td>
-       </tr>
+       <TicketHistory />
       </tbody>
      </table>
     </Wrapper>

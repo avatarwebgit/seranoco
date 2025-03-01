@@ -14,29 +14,23 @@ const SearchResult = ({ dataProp }) => {
  useEffect(() => {
   if (dataProp) {
    setData(dataProp);
+   console.log(dataProp);
   }
  }, [dataProp]);
 
  return (
-  <div className={classes.main}>
-   <div className={classes.image_wrapper}>
-    <img src={data?.primary_image} alt='' />
-   </div>
-   <div>
-    <span>{data?.name}</span>
-    <span>{data?.size}</span>
-   </div>
-   <Tooltip title={t('details')} arrow placement='top'>
-    <Link
-     to={`/${lng}/products/${data?.product?.alias}/${data?.product?.variation_id}`}
-     target='_blank'
-     className={classes.link}>
-     <IconButton className={classes.btn} size='medium'>
-      <OpenInNew fontSize='13' sx={{ color: 'black' }} />
-     </IconButton>
-    </Link>
-   </Tooltip>
-  </div>
+   <Link
+    className={classes.main}
+    to={`/${lng}/products/${data?.product?.alias}/${data?.product?.variation_id}`}
+    target='_blank'>
+    <div className={classes.image_wrapper}>
+     <img src={data?.primary_image} alt='' />
+    </div>
+    <div className={classes.text_wrapper}>
+     <div className={classes.name}>{data?.name}</div>
+     <div className={classes.size}>{data?.size}</div>
+    </div>
+   </Link>
  );
 };
 
