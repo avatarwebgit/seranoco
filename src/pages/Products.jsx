@@ -53,6 +53,7 @@ const Products = ({ windowSize }) => {
  const [isByOrder, setIsByOrder] = useState(false);
  const [variationDetail, setVariationDetail] = useState(null);
  const [productImages, setProductImages] = useState(null);
+ const [productData, setProductData] = useState(null);
 
  const imageRef = useRef();
  const primaryImg = useRef();
@@ -114,6 +115,7 @@ const Products = ({ windowSize }) => {
    if (serverRes.response.ok) {
     setProductImages(serverRes.result.product.images);
     setDetailsData(serverRes.result);
+    setProductData(serverRes);
     if (lng === 'fa') {
      setShape(
       serverRes.result.product_attributes.find(
@@ -172,15 +174,15 @@ const Products = ({ windowSize }) => {
   };
   getDetails();
  }, [id]);
-  
-   const handleSlideClick = index => {
-    if (primaryImg.current) {
-     primaryImg.current.src = productImages[index];
-    }
-    if (imageRef.current) {
-     imageRef.current.src = productImages[index];
-    }
-   };
+
+ const handleSlideClick = index => {
+  if (primaryImg.current) {
+   primaryImg.current.src = productImages[index];
+  }
+  if (imageRef.current) {
+   imageRef.current.src = productImages[index];
+  }
+ };
 
  useEffect(() => {
   if (detailsData) {
@@ -457,10 +459,11 @@ const Products = ({ windowSize }) => {
            <span className={classes.weight_wrapper}>
             <p>{t('total_weight')}</p>&nbsp;
             <p style={{ color: '#000000' }}>
-             {console.log(variationDetail)}
              :&nbsp;
-             {+variationDetail.product.variation.weight.split(' ').at(0) *
-              quantity}
+             {(
+              +variationDetail.product.variation.weight.split(' ').at(0) *
+              quantity
+             )?.toFixed(3)}
              &nbsp;ct
             </p>
            </span>
@@ -583,13 +586,21 @@ const Products = ({ windowSize }) => {
          handleSlideClick(swiper.clickedIndex);
         }}>
         {productImages.map(el => {
-         console.log(el);
          return (
           <SwiperSlide className={classes.gallery_image_wrapper}>
            <img src={el} alt='' loading='lazy' />
           </SwiperSlide>
          );
         })}
+        {productData && (
+         <SwiperSlide className={classes.gallery_image_wrapper}>
+          <img
+           src={productData.result.product.primary_image}
+           alt=''
+           loading='lazy'
+          />
+         </SwiperSlide>
+        )}
        </Swiper>
       )}
      </div>

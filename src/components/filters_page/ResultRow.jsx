@@ -92,7 +92,6 @@ const ResultRow = ({ dataProp }) => {
        <th className={classes.title_text}>{t('color')}</th>
        <th className={classes.title_text}>{t('country')}</th>
        <th className={classes.title_text}>{t('agta')}</th>
-       <th className={classes.title_text}>{t('report')}</th>
        <th className={classes.title_text}>
         {t('price')}&nbsp;1{t('1_pcs')} / {t('m_unit')}
        </th>
@@ -138,11 +137,12 @@ const ResultRow = ({ dataProp }) => {
          {/* Color */}
          <td className={classes.detail_text}>{el.color}</td>
          {/* Quality */}
-         <td className={classes.detail_text}>{el.quality}</td>
+         <td className={classes.detail_text}>{el.country}</td>
          {/* Report */}
-         <td className={classes.detail_text}>{el.report}</td>
+         <td className={classes.detail_text}>
+          {el.attribute.find(attr => attr.attribute.name === 'AGTA').value.name}
+         </td>
          {/* AGTA */}
-         <td className={classes.detail_text}>{el.agta}</td>
          {/* Price */}
          <td
           className={classes.detail_text}

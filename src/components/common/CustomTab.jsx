@@ -15,7 +15,7 @@ function CustomTabPanel(props) {
   <div
    role='tabpanel'
    hidden={value !== index}
-   id={`simple-tabpanel-${index}`}
+   id={`product-tabpanel-${index}`}
    aria-labelledby={`simple-tab-${index}`}
    {...other}>
    {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
@@ -25,8 +25,8 @@ function CustomTabPanel(props) {
 
 function a11yProps(index) {
  return {
-  id: `simple-tab-${index}`,
-  'aria-controls': `simple-tabpanel-${index}`,
+  id: `products-tab-${index}`,
+  'aria-controls': `product-tabpanel-${index}`,
  };
 }
 
@@ -82,15 +82,15 @@ export default function BasicTabs({ dataProp }) {
      )}
     </div>
    </CustomTabPanel>
-   <CustomTabPanel value={value} index={1}>
+     <CustomTabPanel value={value} index={1} >
     <div
      className={classes.detail_container}
-     style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr', display: 'flex', flexDirection: 'column',justifyContent:'flex-start'}}>
      {data &&
       (lng === 'fa' ? (
-       <div dangerouslySetInnerHTML={{ __html: data.product.description_fa }} />
+       <div dangerouslySetInnerHTML={{ __html: data.product.description_fa }}  className={classes.text_html}/>
       ) : (
-       <div dangerouslySetInnerHTML={{ __html: data.product.description }} />
+       <div dangerouslySetInnerHTML={{ __html: data.product.description }} className={classes.text_html}/>
       ))}
     </div>
    </CustomTabPanel>
