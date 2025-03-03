@@ -192,7 +192,8 @@ export const getProductDetails = async (alias, token) => {
   },
  });
 
- const result = await response.json();
+  const result = await response.json();
+  console.log(result, response)
  return { response, result };
 };
 

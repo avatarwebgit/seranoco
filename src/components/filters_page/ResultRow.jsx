@@ -16,6 +16,7 @@ const ResultRow = ({ dataProp }) => {
  const [isLoadingImage, setIsLoadingImage] = useState(true);
  const [isLoading, setIsLoading] = useState(true);
  const [quantities, setQuantities] = useState({});
+ const [isByOrder, setIsByOrder] = useState(false);
 
  const { t, i18n } = useTranslation();
 
@@ -29,6 +30,7 @@ const ResultRow = ({ dataProp }) => {
  useEffect(() => {
   if (dataProp) {
    setData(dataProp);
+   console.log(dataProp?.variation);
   }
   if (isLoadingImage) {
    setIsLoading(true);
@@ -111,7 +113,7 @@ const ResultRow = ({ dataProp }) => {
       data.map(el => {
        console.log(el);
        return (
-        <tr className={classes.tr} key={el.id} style={{height:'80px'}}>
+        <tr className={classes.tr} key={el.id} style={{ height: '80px' }}>
          {/* Image Column */}
          <td className={classes.img_wrapper}>
           <img
@@ -119,6 +121,7 @@ const ResultRow = ({ dataProp }) => {
            alt={el.details}
            onLoad={() => setIsLoadingImage(false)}
            loading='lazy'
+           style={{ maxHeight: '70px' }}
           />
          </td>
          {/* Detail Column */}
@@ -189,7 +192,7 @@ const ResultRow = ({ dataProp }) => {
              onClick={() => {
               handleAddToCart(el);
              }}>
-             {t('add_to_card')}
+             {el.variation.quantity === 0 ? t('addtoorder') : t('add_to_card')}
             </button>
            ) : (
             <button

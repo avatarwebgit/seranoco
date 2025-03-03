@@ -7,17 +7,11 @@ import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-import {
- accesModalActions,
- cartActions,
- favoriteActions,
-} from '../store/store';
+import { accesModalActions, cartActions } from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
-import Divider from '../components/products/Divider';
-import LoadingSpinner from '../components/common/LoadingSpinner';
 import Card from '../components/filters_page/Card';
 import CustomeTab from '../components/common/CustomTab';
 import Breadcrumbs from '../components/common/Breadcrumbs';
@@ -30,6 +24,7 @@ import {
  addToFavorite,
  getProductDetails,
  removeFromFavorite,
+ getProductDetailsWithId,
 } from '../services/api';
 
 import 'swiper/css';
@@ -56,8 +51,11 @@ const Products = ({ windowSize }) => {
  const [color, setColor] = useState('');
  const [size, setSize] = useState('');
  const [isByOrder, setIsByOrder] = useState(false);
+ const [variationDetail, setVariationDetail] = useState(null);
+ const [productImages, setProductImages] = useState(null);
 
  const imageRef = useRef();
+ const primaryImg = useRef();
 
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
@@ -103,7 +101,18 @@ const Products = ({ windowSize }) => {
  useEffect(() => {
   const getDetails = async () => {
    const serverRes = await getProductDetails(id, token);
+   const variationRes = await getProductDetailsWithId(variation, token);
+
+   if (variationRes.response.ok) {
+    setVariationDetail(variationRes.result);
+    if (variationRes.result.product.variation.quantity === 0) {
+     setIsByOrder(true);
+    }
+
+    setSize(variationRes?.result?.product?.size);
+   }
    if (serverRes.response.ok) {
+    setProductImages(serverRes.result.product.images);
     setDetailsData(serverRes.result);
     if (lng === 'fa') {
      setShape(
@@ -126,11 +135,7 @@ const Products = ({ windowSize }) => {
        attr => attr.attribute.name === 'Cutting Style',
       )?.value.name_fa,
      );
-     setSize(
-      serverRes.result.product_attributes.find(
-       attr => attr.attribute.name === 'Size',
-      )?.value.name_fa,
-     );
+
      setDetails(
       serverRes.result.product_attributes.find(
        attr => attr.attribute.name === 'Details',
@@ -157,11 +162,6 @@ const Products = ({ windowSize }) => {
        attr => attr.attribute.name === 'Cutting Style',
       )?.value.name,
      );
-     setSize(
-      serverRes.result.product_attributes.find(
-       attr => attr.attribute.name === 'Size',
-      )?.value.name,
-     );
      setDetails(
       serverRes.result.product_attributes.find(
        attr => attr.attribute.name === 'Details',
@@ -172,16 +172,25 @@ const Products = ({ windowSize }) => {
   };
   getDetails();
  }, [id]);
+  
+   const handleSlideClick = index => {
+    if (primaryImg.current) {
+     primaryImg.current.src = productImages[index];
+    }
+    if (imageRef.current) {
+     imageRef.current.src = productImages[index];
+    }
+   };
 
  useEffect(() => {
-   if (detailsData) {
-  //    if (+detailsData.product.quantity > 0) {
-  //    console.log('true')
-  //   setIsByOrder(false);
-  //    } else {
-  //      console.log('false')
-  //   setIsByOrder(true);
-  //  }
+  if (detailsData) {
+   //    if (+detailsData.product.quantity > 0) {
+   //    console.log('true')
+   //   setIsByOrder(false);
+   //    } else {
+   //      console.log('false')
+   //   setIsByOrder(true);
+   //  }
    document.title = `Seranoco / ${detailsData.product.name}`;
    if (detailsData.product.is_wishlist) {
     setIsFavorite(true);
@@ -277,6 +286,7 @@ const Products = ({ windowSize }) => {
            loading='lazy'
           />
           <img
+           ref={primaryImg}
            className={`${classes.idle_image} ${!isInViewbox ? '' : classes.dn}`}
            src={detailsData.product?.primary_image}
            alt=''
@@ -447,7 +457,10 @@ const Products = ({ windowSize }) => {
            <span className={classes.weight_wrapper}>
             <p>{t('total_weight')}</p>&nbsp;
             <p style={{ color: '#000000' }}>
-             :&nbsp;{+detailsData.product.weight * quantity}
+             {console.log(variationDetail)}
+             :&nbsp;
+             {+variationDetail.product.variation.weight.split(' ').at(0) *
+              quantity}
              &nbsp;ct
             </p>
            </span>
@@ -480,7 +493,7 @@ const Products = ({ windowSize }) => {
          size='large'
          className={classes.addtocart}
          onClick={() => handleAddToCart(detailsData.product)}>
-         {t('addtocart')}
+         {isByOrder ? t('addtoorder') : t('addtocart')}
         </Button>
        ) : (
         <Button
@@ -565,25 +578,18 @@ const Products = ({ windowSize }) => {
         pagination={{
          clickable: true,
          dynamicBullets: true,
+        }}
+        onClick={(swiper, event) => {
+         handleSlideClick(swiper.clickedIndex);
         }}>
-        <SwiperSlide className={classes.gallery_image_wrapper}>
-         <img src={detailsData.product?.primary_image} alt='' loading='lazy' />
-        </SwiperSlide>
-        <SwiperSlide className={classes.gallery_image_wrapper}>
-         <img src={detailsData.product?.primary_image} alt='' loading='lazy' />
-        </SwiperSlide>
-        <SwiperSlide className={classes.gallery_image_wrapper}>
-         <img src={detailsData.product?.primary_image} alt='' loading='lazy' />
-        </SwiperSlide>
-        <SwiperSlide className={classes.gallery_image_wrapper}>
-         <img src={detailsData.product?.primary_image} alt='' loading='lazy' />
-        </SwiperSlide>
-        <SwiperSlide className={classes.gallery_image_wrapper}>
-         <img src={detailsData.product?.primary_image} alt='' loading='lazy' />
-        </SwiperSlide>
-        <SwiperSlide className={classes.gallery_image_wrapper}>
-         <img src={detailsData.product?.primary_image} alt='' loading='lazy' />
-        </SwiperSlide>
+        {productImages.map(el => {
+         console.log(el);
+         return (
+          <SwiperSlide className={classes.gallery_image_wrapper}>
+           <img src={el} alt='' loading='lazy' />
+          </SwiperSlide>
+         );
+        })}
        </Swiper>
       )}
      </div>
