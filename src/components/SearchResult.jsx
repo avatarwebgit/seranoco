@@ -24,7 +24,7 @@ const SearchResult = ({ dataProp }) => {
     to={`/${lng}/products/${data?.product?.alias}/${data?.product?.variation_id}`}
     target='_blank'>
     <div className={classes.image_wrapper}>
-     <img src={data?.primary_image} alt='' />
+       <img className={classes.img } src={data?.primary_image} alt=''/>
     </div>
     <div className={classes.text_wrapper}>
      <div className={classes.name}>{data?.name}</div>

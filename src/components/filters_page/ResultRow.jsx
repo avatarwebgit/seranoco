@@ -30,7 +30,6 @@ const ResultRow = ({ dataProp }) => {
  useEffect(() => {
   if (dataProp) {
    setData(dataProp);
-   console.log(dataProp?.variation);
   }
   if (isLoadingImage) {
    setIsLoading(true);
@@ -140,7 +139,7 @@ const ResultRow = ({ dataProp }) => {
          <td className={classes.detail_text}>{el.country}</td>
          {/* Report */}
          <td className={classes.detail_text}>
-          {el.attribute.find(attr => attr.attribute.name === 'AGTA').value.name}
+          {el?.attribute?.find(attr => attr.attribute.name === 'AGTA').value.name}
          </td>
          {/* AGTA */}
          {/* Price */}
@@ -192,7 +191,7 @@ const ResultRow = ({ dataProp }) => {
              onClick={() => {
               handleAddToCart(el);
              }}>
-             {el.variation.quantity === 0 ? t('addtoorder') : t('add_to_card')}
+             {el?.variation?.quantity === 0 ? t('addtoorder') : t('add_to_card')}
             </button>
            ) : (
             <button

@@ -10,6 +10,10 @@
   font-family: mulishBold;
   src: url('/public/assets/fonts/Mulish-SemiBold.ttf');
 }
+@font-face {
+  font-family: novares;
+  src: url('/public/assets/fonts/novarese-medium.otf');
+}
 
 .Toastify__progress-bar {
   background-color: var(--primary) !important;

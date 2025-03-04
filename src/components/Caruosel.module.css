@@ -39,7 +39,9 @@
   justify-content: center;
 }
 .title {
-  font-size: 1.5rem !important;
+  font-size: 1.8rem !important;
+  font-weight:900;
+  font-family: novares, Courier, monospace !important;
 }
 .caption {
   font-size: 1.1rem !important;
@@ -173,6 +175,9 @@
   inherits: true;
 }
 @media only screen and (max-width: 480px) {
+  .slider_image_wrapper{
+    height: 30vh;
+  }
   .thumbs_wrapper {
     width: 50vw;
   }
@@ -185,6 +190,9 @@
   }
 }
 @media only screen and (min-width: 351px) and (max-width: 768px) {
+  .slider_image_wrapper{
+    height: 30vh;
+  }
   .thumbs_wrapper {
     width: 25vw;
   }

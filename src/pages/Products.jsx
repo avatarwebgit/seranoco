@@ -175,7 +175,7 @@ const Products = ({ windowSize }) => {
   getDetails();
  }, [id]);
 
- const handleSlideClick = index => {
+  const handleSlideClick = index => {
   if (primaryImg.current) {
    primaryImg.current.src = productImages[index];
   }
@@ -186,13 +186,6 @@ const Products = ({ windowSize }) => {
 
  useEffect(() => {
   if (detailsData) {
-   //    if (+detailsData.product.quantity > 0) {
-   //    console.log('true')
-   //   setIsByOrder(false);
-   //    } else {
-   //      console.log('false')
-   //   setIsByOrder(true);
-   //  }
    document.title = `Seranoco / ${detailsData.product.name}`;
    if (detailsData.product.is_wishlist) {
     setIsFavorite(true);

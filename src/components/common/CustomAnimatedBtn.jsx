@@ -2,7 +2,8 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 import classes from './CustomAnimatedBtn.module.css';
-const CustomAnimatedBtn = ({ children, type = 'dark' }) => {
+import { Link } from 'react-router-dom';
+const CustomAnimatedBtn = ({ children, type = 'dark', to }) => {
   const divRef = useRef();
   const [dimensions, setDimensions] = useState({
     width: 0,
@@ -20,7 +21,7 @@ const CustomAnimatedBtn = ({ children, type = 'dark' }) => {
   }, [divRef.current]);
   
   return (
-    <div ref={divRef} className={classes.container}>
+    <Link ref={divRef} className={classes.container} to={to}>
       <motion.svg
         className={classes.svg_border}
         width={dimensions.width + 250}
@@ -121,7 +122,7 @@ const CustomAnimatedBtn = ({ children, type = 'dark' }) => {
       </motion.svg>
 
       <span>{children}</span>
-    </div>
+    </Link>
   );
 };
 

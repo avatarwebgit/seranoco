@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search as MUISearch, Menu } from '@mui/icons-material';
 import {
-  Badge,
-  Box,
-  Drawer as MuiDrawer,
-  IconButton,
-  Input,
-  Tooltip,
+ Badge,
+ Box,
+ Drawer as MuiDrawer,
+ IconButton,
+ Input,
+ Tooltip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,6 +23,8 @@ import CustomSection from './CustomSection';
 import Search from '../components/Search';
 import MobileDrawerList from '../components/MobileDrawerList';
 import ChangeLanguage from '../utils/ChangeLanguage';
+import Body from '../components/filters_page/Body';
+import Card from '../components/filters_page/Card';
 
 import { useBasicInformation, getHeaderMenus } from '../services/api';
 
@@ -37,451 +39,411 @@ import classes from './Header.module.css';
 import AccessAccount from './AccessAccount';
 import LoginButton from '../components/header/LoginButton';
 const Header = ({ windowSize }) => {
-  const { data: basicInformation } = useBasicInformation('en');
+ const { data: basicInformation } = useBasicInformation('en');
 
-  const [scrollY, setScrollY] = useState(0);
-  const [size, setSize] = useState('');
-  const [isSmall, setIsSmall] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isFixed, setIsFixed] = useState(true);
-  const [headerData, setHeaderData] = useState(null);
-  const [logo, setLogo] = useState(null);
-  const [isHomePage, setIsHomePage] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+ const [scrollY, setScrollY] = useState(0);
+ const [size, setSize] = useState('');
+ const [isSmall, setIsSmall] = useState(false);
+ const [drawerOpen, setDrawerOpen] = useState(false);
+ const [isFixed, setIsFixed] = useState(true);
+ const [headerData, setHeaderData] = useState(null);
+ const [logo, setLogo] = useState(null);
+ const [isHomePage, setIsHomePage] = useState(true);
+ const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const test = [1, 2, 3, 4, 5, 6, 7];
+ const test = [1, 2, 3, 4, 5, 6, 7];
 
-  const lng = useSelector(state => state.localeStore.lng);
-  const cart = useSelector(state => state.cartStore);
-  const token = useSelector(state => state.userStore.token);
-  const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
-  const favorits = useSelector(state => state.favoriteStore.products);
+ const lng = useSelector(state => state.localeStore.lng);
+ const cart = useSelector(state => state.cartStore);
+ const token = useSelector(state => state.userStore.token);
+ const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
+ const favorits = useSelector(state => state.favoriteStore.products);
 
-  const { t, i18n } = useTranslation();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+ const { t, i18n } = useTranslation();
+ const location = useLocation();
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
 
-  useEffect(() => {
-    window.addEventListener('load', () => setScrollY(window.scrollY));
-    window.addEventListener('scroll', () => setScrollY(window.scrollY));
+ useEffect(() => {
+  window.addEventListener('load', () => setScrollY(window.scrollY));
+  window.addEventListener('scroll', () => setScrollY(window.scrollY));
 
-    return () => {
-      window.removeEventListener('load', () => setScrollY(window.scrollY));
-      window.removeEventListener('scroll', () => setScrollY(window.scrollY));
-    };
-  }, []);
-
-  useEffect(() => {
-    setSize(windowSize);
-    setIsFixed(location.pathname.split('/').length <= 2 ? true : false);
-  }, [windowSize, location.pathname]);
-
-  const initialLogoState = {
-    y: 0,
-    x: 0,
+  return () => {
+   window.removeEventListener('load', () => setScrollY(window.scrollY));
+   window.removeEventListener('scroll', () => setScrollY(window.scrollY));
   };
+ }, []);
 
-  const returnButtonStyles = () => {
-    let style = {};
+ useEffect(() => {
+  setSize(windowSize);
+  setIsFixed(location.pathname.split('/').length <= 2 ? true : false);
+ }, [windowSize, location.pathname]);
 
-    if (size === 'xs' || size === 's' || size === 'm') {
-      setIsSmall(true);
-      style = {
-        opacity: scrollY === 0 ? '0' : 1,
-        marginTop: scrollY === 0 ? '5px' : '0px',
-      };
-    } else {
-      setIsSmall(false);
-      style = {
-        alignItems: scrollY === 0 ? 'flex-end' : 'center',
-        marginTop: scrollY === 0 ? '5px' : '0px',
-      };
-    }
+ const initialLogoState = {
+  y: 0,
+  x: 0,
+ };
 
-    return style;
-  };
+ const returnButtonStyles = () => {
+  let style = {};
 
-  const returnLogoStyles = () => {
-    if (size === 'xs') {
-      setIsSmall(true);
-      return {
-        left: scrollY === 0 ? '50%' : '25%',
-      };
-    } else if (size === 's') {
-      setIsSmall(true);
-      return {
-        left: scrollY === 0 ? '50%' : '25%',
-      };
-    } else if (size === 'm') {
-      return {
-        left: scrollY === 0 ? '50%' : '25%',
-      };
-    } else if (size === 'l') {
-      return {
-        left: scrollY === 0 ? '50%' : '25%',
-      };
-    } else {
-      setIsSmall(false);
-      return {
-        left: scrollY === 0 ? '50%' : '15%',
-      };
-    }
-  };
+  if (size === 'xs' || size === 's' || size === 'm') {
+   setIsSmall(true);
+   style = {
+    opacity: scrollY === 0 ? '0' : 1,
+    marginTop: scrollY === 0 ? '5px' : '0px',
+   };
+  } else {
+   setIsSmall(false);
+   style = {
+    alignItems: scrollY === 0 ? 'flex-end' : 'flex-end',
+    marginTop: scrollY === 0 ? '5px' : '0px',
+   };
+  }
 
-  const closeDrawer = v => {
-    setDrawerOpen(v);
-  };
+  return style;
+ };
 
-  const handleOpenCart = () => {
-    dispatch(drawerActions.open());
-  };
+ const returnLogoStyles = () => {
+  if (size === 'xs') {
+   setIsSmall(true);
+   return {
+    left: scrollY === 0 ? '50%' : '50%',
+   };
+  } else if (size === 's') {
+   setIsSmall(true);
+   return {
+    left: scrollY === 0 ? '50%' : '50%',
+   };
+  } else if (size === 'm') {
+   return {
+    left: scrollY === 0 ? '50%' : '50%',
+   };
+  } else if (size === 'l') {
+   return {
+    left: scrollY === 0 ? '50%' : '50%',
+   };
+  } else {
+   setIsSmall(false);
+   return {
+    left: scrollY === 0 ? '50%' : '50%',
+   };
+  }
+ };
 
-  const handleOpenModal = () => {
-    dispatch(accesModalActions.login());
-  };
+ const closeDrawer = v => {
+  setDrawerOpen(v);
+ };
 
-  const open = Boolean(anchorEl);
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+ const handleOpenCart = () => {
+  dispatch(drawerActions.open());
+ };
 
-  useEffect(() => {
-    if (location.pathname === `/${lng}`) {
-      setIsHomePage(true);
-    } else {
-      setIsHomePage(false);
-    }
-  }, [location.pathname]);
+ const handleOpenModal = () => {
+  dispatch(accesModalActions.login());
+ };
 
-  useEffect(() => {
-    if (isHomePage && basicInformation && basicInformation !== undefined) {
-      setLogo(basicInformation?.data.at(0)?.image);
-    } else {
-      setLogo(basicInformation?.data.at(0)?.image_white);
-    }
-  }, [basicInformation, isHomePage]);
+ const open = Boolean(anchorEl);
+ const handleClick = event => {
+  setAnchorEl(event.currentTarget);
+ };
 
-  // API calls
-  const getHeaderLinks = async () => {
-    setHeaderData(null);
-    const serverRes = await getHeaderMenus(lng);
-    if (serverRes.response.ok) {
-      setHeaderData(serverRes.result);
-    }
-  };
+ useEffect(() => {
+  if (location.pathname === `/${lng}`) {
+   setIsHomePage(true);
+  } else {
+   setIsHomePage(false);
+  }
+ }, [location.pathname]);
 
-  useEffect(() => {
-    getHeaderLinks();
-  }, [lng]);
+ useEffect(() => {
+  if (isHomePage && basicInformation && basicInformation !== undefined) {
+   setLogo(basicInformation?.data.at(0)?.image);
+  } else {
+   setLogo(basicInformation?.data.at(0)?.image_white);
+  }
+ }, [basicInformation, isHomePage]);
 
-  const handleCloseModal = () => {
-    dispatch(accesModalActions.close());
-  };
+ // API calls
+ const getHeaderLinks = async () => {
+  setHeaderData(null);
+  const serverRes = await getHeaderMenus(lng);
+  if (serverRes.response.ok) {
+   setHeaderData(serverRes.result);
+  }
+ };
 
-  return (
-    <motion.header
-      className={classes.main}
-      initial={{ y: 0, height: '5rem' }}
-      animate={{
-        y: isHomePage && scrollY === 0 ? '50px' : 0,
-        height: scrollY !== 0 ? '3.5rem' : isSmall ? '4rem' : '5rem',
-        backgroundColor:
-          scrollY !== 0 ? 'rgba(255,255,255,0.9)' : 'rgba(0, 0, 0, 0)',
-        backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'blur(0px)',
-      }}
-      style={{ position: isFixed ? 'fixed' : 'sticky' }}
-      transition={{
-        type: 'spring',
-        duration: 0.3,
-        ease: 'linear',
-      }}
-    >
-      <CustomSection
-        className={classes.content}
-        card={`${classes.card} ${
-          isHomePage ? classes.transparent : classes.black
-        }`}
-      >
-        <motion.span
-          className={classes.card_action_wrapper}
-          initial={{ display: 'flex', alignItems: 'flex-start' }}
-          animate={{
-            display:
-              scrollY === 0
-                ? isSmall
-                  ? 'flex'
-                  : 'flex'
-                : isSmall
-                ? 'flex'
-                : 'none',
-            alignItems: scrollY === 0 ? 'flex-start' : 'center',
-          }}
-          transition={{ delay: scrollY === 0 ? 0.2 : 0, duration: 0 }}
-        >
-          {!isSmall && (
-            <>
-              {token ? (
-                <span className={classes.icon_pack_wrapper}>
-                  <LoginButton />
-                </span>
-              ) : (
-                <>
-                  <IconButton
-                    className={classes.login_btn}
-                    onClick={handleOpenModal}
-                    ishomepage={isHomePage}
-                  >
-                    <Tooltip title={t('login')} placement='top' arrow>
-                      {isHomePage ? (
-                        <Signin width={30} height={30} />
-                      ) : (
-                        <Signin_White width={30} height={30} />
-                      )}
-                    </Tooltip>
-                  </IconButton>
-                </>
-              )}
-            </>
-          )}
+ useEffect(() => {
+  getHeaderLinks();
+ }, [lng]);
 
-          {!isSmall && (
-            <>
-              {token && favorits && (
-                <span className={classes.icon_pack_wrapper}>
-                  <IconButton>
-                    <Badge
-                      badgeContent={favorits.length}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    >
-                      <Tooltip
-                        title={t('favorites')}
-                        placement='top'
-                        arrow
-                        sx={{
-                          '& .MuiTooltip-tooltip': {
-                            backgroundColor: 'red', // Change background color
-                          },
-                        }}
-                      >
-                        {isHomePage ? (
-                          <Heart_black
-                            width={isSmall ? '0px' : '28px'}
-                            height={isSmall ? '0px' : '28px'}
-                          />
-                        ) : (
-                          <Heart
-                            width={isSmall ? '0px' : '28px'}
-                            height={isSmall ? '0px' : '28px'}
-                          />
-                        )}
-                      </Tooltip>
-                    </Badge>
-                  </IconButton>
-                </span>
-              )}
-              <span className={classes.icon_pack_wrapper}>
-                <IconButton onClick={handleOpenCart}>
-                  <Badge
-                    badgeContent={cart?.products.length || 0}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  >
-                    <Tooltip title={t('cart')} placement='top' arrow>
-                      {isHomePage ? (
-                        <Basket_black
-                          width={isSmall ? '0px' : '30px'}
-                          height={isSmall ? '0px' : '30px'}
-                        />
-                      ) : (
-                        <Basket
-                          width={isSmall ? '0px' : '30px'}
-                          height={isSmall ? '0px' : '30px'}
-                        />
-                      )}
-                    </Tooltip>
-                  </Badge>
-                </IconButton>
-              </span>
-            </>
-          )}
-          {!isSmall && (
-            <span className={classes.icon_pack_wrapper}>
-              <ChangeLanguage
-                className={classes.card_icons}
-                ishomepage={isHomePage}
-              />
-            </span>
-          )}
-        </motion.span>
-        <motion.a
-          className={classes.logo_container}
-          initial={initialLogoState}
-          animate={returnLogoStyles}
-          transition={{ duration: 0.1, type: 'tween' }}
-          href={`/${lng}`}
-        >
-          {logo && (
-            <motion.img
-              className={classes.logo_img}
-              src={logo}
-              alt='Seranoco Logo'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: logo ? 1 : 1 }}
+ const handleCloseModal = () => {
+  dispatch(accesModalActions.close());
+ };
+
+ return (
+  <motion.header
+   className={classes.main}
+   initial={{ y: 0, height: '5rem' }}
+   animate={{
+    y: isHomePage && scrollY === 0 ? (isSmall ? '20px' : '50px') : 0,
+    height: scrollY !== 0 ? '3.5rem' : isSmall ? '4rem' : '5rem',
+    backgroundColor:
+     scrollY !== 0 ? 'rgba(255,255,255,0.6)' : 'rgba(0, 0, 0, 0)',
+    backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'blur(0px)',
+   }}
+   style={{ position: isFixed ? 'fixed' : 'sticky' }}
+   transition={{
+    type: 'spring',
+    duration: 0.3,
+    ease: 'linear',
+   }}>
+   <CustomSection
+    className={classes.content}
+    card={`${classes.card} ${
+     isHomePage ? classes.transparent : classes.black
+    }`}>
+    <motion.span
+     className={classes.card_action_wrapper}
+     initial={{ y: 0 }}
+     animate={{
+      y: scrollY === 0 ? 0 : -20,
+     }}
+     transition={{ duration: 0 }}>
+     {!isSmall && (
+      <>
+       {token ? (
+        <span className={classes.icon_pack_wrapper}>
+         <LoginButton />
+        </span>
+       ) : (
+        <>
+         <IconButton
+          className={classes.login_btn}
+          onClick={handleOpenModal}
+          ishomepage={isHomePage}>
+          <Tooltip title={t('login')} placement='top' arrow>
+           {isHomePage ? (
+            <Signin width={30} height={30} />
+           ) : (
+            <Signin_White width={30} height={30} />
+           )}
+          </Tooltip>
+         </IconButton>
+        </>
+       )}
+      </>
+     )}
+
+     {!isSmall && (
+      <>
+       {token && favorits && (
+        <span className={classes.icon_pack_wrapper}>
+         <IconButton>
+          <Badge
+           badgeContent={favorits.length}
+           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+           <Tooltip
+            title={t('favorites')}
+            placement='top'
+            arrow
+            sx={{
+             '& .MuiTooltip-tooltip': {
+              backgroundColor: 'red', // Change background color
+             },
+            }}>
+            {isHomePage ? (
+             <Heart_black
+              width={isSmall ? '0px' : '28px'}
+              height={isSmall ? '0px' : '28px'}
+             />
+            ) : (
+             <Heart
+              width={isSmall ? '0px' : '28px'}
+              height={isSmall ? '0px' : '28px'}
+             />
+            )}
+           </Tooltip>
+          </Badge>
+         </IconButton>
+        </span>
+       )}
+       <span className={classes.icon_pack_wrapper}>
+        <IconButton onClick={handleOpenCart}>
+         <Badge
+          badgeContent={cart?.products.length || 0}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+          <Tooltip title={t('cart')} placement='top' arrow>
+           {isHomePage ? (
+            <Basket_black
+             width={isSmall ? '0px' : '30px'}
+             height={isSmall ? '0px' : '30px'}
             />
-          )}
-        </motion.a>
-        <motion.span
-          className={classes.navigation_container}
-          initial={{ alignItems: 'center', marginTop: 0 }}
-          animate={returnButtonStyles}
-        >
-          {/* Header buttons  */}
-          {headerData
-            ? headerData
-                .sort((a, b) => {
-                  return lng === 'en' ? a.id - b.id : b.id - a.id;
-                })
-                .map((elem, i) => {
-                  let isFullUrl;
-                  if (elem.url) {
-                    isFullUrl = elem.url.charAt(0) === '/' ? false : true;
-                  } else {
-                    isFullUrl = null;
-                  }
+           ) : (
+            <Basket
+             width={isSmall ? '0px' : '30px'}
+             height={isSmall ? '0px' : '30px'}
+            />
+           )}
+          </Tooltip>
+         </Badge>
+        </IconButton>
+       </span>
+      </>
+     )}
+     {!isSmall && (
+      <span className={classes.icon_pack_wrapper}>
+       <ChangeLanguage className={classes.card_icons} ishomepage={isHomePage} />
+      </span>
+     )}
+    </motion.span>
+    <motion.a
+     className={classes.logo_container}
+     initial={initialLogoState}
+     animate={returnLogoStyles}
+     transition={{ duration: 0.1, type: 'tween' }}
+     href={`/${lng}`}>
+     {logo && (
+      <motion.img
+       className={classes.logo_img}
+       src={logo}
+       alt='Seranoco Logo'
+       initial={{ opacity: 0 }}
+       animate={{ opacity: logo ? 1 : 1 }}
+      />
+     )}
+    </motion.a>
+    <motion.span
+     className={classes.navigation_container}
+     initial={{ alignItems: 'center', marginTop: 0 }}
+     animate={returnButtonStyles}>
+     {/* Header buttons  */}
+     {headerData
+      ? headerData.map((elem, i) => {
+         let isFullUrl;
+         if (elem.url) {
+          isFullUrl = elem.url.charAt(0) === '/' ? false : true;
+         } else {
+          isFullUrl = null;
+         }
 
-                  return (
-                    <div className={classes.header_btn_wrapper} key={nanoid()}>
-                      <motion.div
-                        className={classes.header_btn}
-                        id='basic-button'
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup='true'
-                        aria-expanded={open ? 'true' : undefined}
-                        onMouseEnter={event => handleClick(event)}
-                        style={{ color: isHomePage ? '#000000' : '#ffffff' }}
-                      >
-                        {elem.label}
-                      </motion.div>
-                      {/* <div className={classes.mega_menu_backdropp} /> */}
+         return (
+          <div className={classes.header_btn_wrapper} key={nanoid()}>
+           <motion.div
+            className={classes.header_btn}
+            id='basic-button'
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup='true'
+            aria-expanded={open ? 'true' : undefined}
+            onMouseEnter={event => handleClick(event)}
+            style={{ color: isHomePage ? '#000000' : '#ffffff' }}>
+            {elem.label}
+           </motion.div>
+           {/* <div className={classes.mega_menu_backdropp} /> */}
 
-                      {/* Mega menu paper */}
-                      {elem.children && (
-                        <motion.div className={classes.mega_paper}>
-                          <div className={classes.sub_menu_wrapper}>
-                            {elem.children.map((el, i) => {
-                              const id = nanoid();
-                              return (
-                                <div key={el.id} className={classes.header_sub}>
-                                  <input
-                                    type='radio'
-                                    name='mega-menu'
-                                    id={id}
-                                    className={classes.label_radio}
-                                    defaultChecked={i === 0}
-                                  />
-                                  <label
-                                    className={classes.mega_title}
-                                    id={id}
-                                    htmlFor={id}
-                                  >
-                                    {el.label}
-                                  </label>
-                                  <div className={classes.link_menu_wrapper}>
-                                    {el.children &&
-                                      el.children.map(elc => {
-                                        return (
-                                          <div
-                                            className={classes.menu_item}
-                                            key={elc.id}
-                                          >
-                                            {elc.label}
-                                          </div>
-                                        );
-                                      })}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </div>
-                  );
-                })
-            : test.map((_, i) => {
-                return (
-                  <Skeleton
-                    className={classes.header_btn_skeleton}
-                    variant='text'
-                    key={nanoid()}
-                  />
-                );
-              })}
-        </motion.span>
-        <motion.span
-          className={`${classes.search_container}`}
-          initial={{ alignItems: 'flex-start' }}
-          animate={{ marginTop: scrollY === 0 ? '2rem' : '2rem' }}
-          transition={{ type: 'spring', damping: 100, stiffness: 1000 }}
-        >
-          {isSmall ? (
-            <div className={classes.mobile_actions_wrapper}>
-              <ChangeLanguage width={30} height={30} ishomepage={isHomePage} />
-              <IconButton onClick={() => closeDrawer(true)}>
-                <Menu
-                  className={classes.card_icons}
-                  sx={{
-                    width: '25px',
-                    height: '25px',
-                    color: isHomePage
-                      ? '#000000 !important'
-                      : '#ffffff !important',
-                  }}
-                />
-              </IconButton>
-              <MuiDrawer
-                anchor={'right'}
-                open={drawerOpen}
-                onClose={() => closeDrawer(false)}
-              >
-                <Box
-                  sx={{
-                    width: '90vw',
-                    height: '100%',
-                  }}
-                >
-                  <div className={classes.drawer_content}>
-                    <button
-                      className={classes.drawer_close}
-                      onClick={() => closeDrawer(false)}
-                    >
-                      <img
-                        className={classes.drawer_close_img}
-                        src={close}
-                        alt=''
-                      />
-                    </button>
-                    <Input
-                      className={classes.menu_input}
-                      endAdornment={
-                        <>
-                          <MUISearch sx={{ color: 'white' }} />
-                        </>
-                      }
-                    />
-                    <MobileDrawerList />
+           {/* Mega menu paper */}
+           {elem.children && (
+            <motion.div className={classes.mega_paper}>
+             <Body parentClass={classes.body}>
+              <Card className={classes.mega_card}>
+               <div className={classes.sub_menu_wrapper}>
+                {elem.children.map((el, i) => {
+                 const id = nanoid();
+                 return (
+                  <div key={el.id} className={classes.header_sub}>
+                   <input
+                    type='radio'
+                    name='mega-menu'
+                    id={id}
+                    className={classes.label_radio}
+                    defaultChecked={i === 0}
+                   />
+                   <label className={classes.mega_title} id={id} htmlFor={id}>
+                    {el.label}
+                   </label>
+                   <div className={classes.link_menu_wrapper}>
+                    {el.children &&
+                     el.children.map(elc => {
+                      return (
+                       <div className={classes.menu_item} key={elc.id}>
+                        {elc.label}
+                       </div>
+                      );
+                     })}
+                   </div>
                   </div>
-                </Box>
-              </MuiDrawer>
-            </div>
-          ) : (
-            <Search isHomePage={isHomePage} />
-          )}
-        </motion.span>
-      </CustomSection>
-      <AccessAccount open={modalOpen} onClose={handleCloseModal} />
-    </motion.header>
-  );
+                 );
+                })}
+               </div>
+              </Card>
+             </Body>
+            </motion.div>
+           )}
+          </div>
+         );
+        })
+      : test.map((_, i) => {
+         return (
+          <Skeleton
+           className={classes.header_btn_skeleton}
+           variant='text'
+           key={nanoid()}
+          />
+         );
+        })}
+    </motion.span>
+    <motion.span
+     className={`${classes.search_container}`}
+     transition={{ type: 'spring', damping: 100, stiffness: 1000 }}>
+     {isSmall ? (
+      <div className={classes.mobile_actions_wrapper}>
+       <ChangeLanguage width={30} height={30} ishomepage={isHomePage} />
+       <IconButton onClick={() => closeDrawer(true)}>
+        <Menu
+         className={classes.card_icons}
+         sx={{
+          width: '25px',
+          height: '25px',
+          color: isHomePage ? '#000000 !important' : '#ffffff !important',
+         }}
+        />
+       </IconButton>
+       <MuiDrawer
+        anchor={'right'}
+        open={drawerOpen}
+        onClose={() => closeDrawer(false)}>
+        <Box
+         sx={{
+          width: '90vw',
+          height: '100%',
+         }}>
+         <div className={classes.drawer_content}>
+          <button
+           className={classes.drawer_close}
+           onClick={() => closeDrawer(false)}>
+           <img className={classes.drawer_close_img} src={close} alt='' />
+          </button>
+          <Input
+           className={classes.menu_input}
+           endAdornment={
+            <>
+             <MUISearch sx={{ color: 'white' }} />
+            </>
+           }
+          />
+          <MobileDrawerList />
+         </div>
+        </Box>
+       </MuiDrawer>
+      </div>
+     ) : (
+      <Search isHomePage={isHomePage} />
+     )}
+    </motion.span>
+   </CustomSection>
+   <AccessAccount open={modalOpen} onClose={handleCloseModal} />
+  </motion.header>
+ );
 };
 
 export default Header;
