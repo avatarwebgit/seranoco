@@ -50,6 +50,7 @@ function App() {
  const NotFound = React.lazy(() => import('./pages/NotFound'));
  const ContactUs = React.lazy(() => import('./pages/ContactUs'));
  const Ticket = React.lazy(() => import('./pages/Ticket'));
+ const Blog = React.lazy(() => import('./pages/Blog'));
 
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
@@ -173,6 +174,10 @@ function App() {
     <Route
      path={`/:lng/support`}
      element={<Ticket windowSize={windowSize} />}
+    />
+    <Route
+     path={`/:lng/Blog`}
+     element={<Blog windowSize={windowSize} />}
     />
 
     <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />

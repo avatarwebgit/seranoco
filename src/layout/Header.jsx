@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { nanoid } from '@reduxjs/toolkit';
 
 import close from '../assets/svg/close.svg';
@@ -39,7 +39,8 @@ import classes from './Header.module.css';
 import AccessAccount from './AccessAccount';
 import LoginButton from '../components/header/LoginButton';
 const Header = ({ windowSize }) => {
- const { data: basicInformation } = useBasicInformation('en');
+ const lng = useSelector(state => state.localeStore.lng);
+ const { data: basicInformation } = useBasicInformation(lng);
 
  const [scrollY, setScrollY] = useState(0);
  const [size, setSize] = useState('');
@@ -53,7 +54,6 @@ const Header = ({ windowSize }) => {
 
  const test = [1, 2, 3, 4, 5, 6, 7];
 
- const lng = useSelector(state => state.localeStore.lng);
  const cart = useSelector(state => state.cartStore);
  const token = useSelector(state => state.userStore.token);
  const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
@@ -91,13 +91,11 @@ const Header = ({ windowSize }) => {
    setIsSmall(true);
    style = {
     opacity: scrollY === 0 ? '0' : 1,
-    marginTop: scrollY === 0 ? '5px' : '0px',
    };
   } else {
    setIsSmall(false);
    style = {
     alignItems: scrollY === 0 ? 'flex-end' : 'flex-end',
-    marginTop: scrollY === 0 ? '5px' : '0px',
    };
   }
 
@@ -187,7 +185,7 @@ const Header = ({ windowSize }) => {
    initial={{ y: 0, height: '5rem' }}
    animate={{
     y: isHomePage && scrollY === 0 ? (isSmall ? '20px' : '50px') : 0,
-    height: scrollY !== 0 ? '3.5rem' : isSmall ? '4rem' : '5rem',
+    height: scrollY !== 0 ? '5.5rem' : isSmall ? '5.5rem' : '5.5rem',
     backgroundColor:
      scrollY !== 0 ? 'rgba(255,255,255,0.6)' : 'rgba(0, 0, 0, 0)',
     backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'blur(0px)',
@@ -315,7 +313,7 @@ const Header = ({ windowSize }) => {
     </motion.a>
     <motion.span
      className={classes.navigation_container}
-     initial={{ alignItems: 'center', marginTop: 0 }}
+     initial={{ alignItems: 'center' }}
      animate={returnButtonStyles}>
      {/* Header buttons  */}
      {headerData
@@ -329,55 +327,72 @@ const Header = ({ windowSize }) => {
 
          return (
           <div className={classes.header_btn_wrapper} key={nanoid()}>
-           <motion.div
-            className={classes.header_btn}
-            id='basic-button'
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-            onMouseEnter={event => handleClick(event)}
-            style={{ color: isHomePage ? '#000000' : '#ffffff' }}>
-            {elem.label}
-           </motion.div>
-           {/* <div className={classes.mega_menu_backdropp} /> */}
-
-           {/* Mega menu paper */}
-           {elem.children && (
-            <motion.div className={classes.mega_paper}>
-             <Body parentClass={classes.body}>
-              <Card className={classes.mega_card}>
-               <div className={classes.sub_menu_wrapper}>
-                {elem.children.map((el, i) => {
-                 const id = nanoid();
-                 return (
-                  <div key={el.id} className={classes.header_sub}>
-                   <input
-                    type='radio'
-                    name='mega-menu'
-                    id={id}
-                    className={classes.label_radio}
-                    defaultChecked={i === 0}
-                   />
-                   <label className={classes.mega_title} id={id} htmlFor={id}>
-                    {el.label}
-                   </label>
-                   <div className={classes.link_menu_wrapper}>
-                    {el.children &&
-                     el.children.map(elc => {
-                      return (
-                       <div className={classes.menu_item} key={elc.id}>
-                        {elc.label}
-                       </div>
-                      );
-                     })}
-                   </div>
-                  </div>
-                 );
-                })}
-               </div>
-              </Card>
-             </Body>
-            </motion.div>
+           {elem.url ? (
+            <Link
+             className={classes.header_btn}
+             id='basic-button'
+             aria-controls={open ? 'basic-menu' : undefined}
+             aria-haspopup='true'
+             aria-expanded={open ? 'true' : undefined}
+             onMouseEnter={event => handleClick(event)}
+             style={{ color: isHomePage ? '#000000' : '#ffffff' }}
+             target={'_blank'}
+                 href={elem.url}
+                 to={elem.url}
+               >
+             {elem.label}
+            </Link>
+           ) : (
+            <>
+             <motion.div
+              className={classes.header_btn}
+              id='basic-button'
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+              onMouseEnter={event => handleClick(event)}
+              style={{ color: isHomePage ? '#000000' : '#ffffff' }}>
+              {elem.label}
+             </motion.div>
+             {/* Mega menu paper */}
+             {elem.children && (
+              <motion.div className={classes.mega_paper}>
+               <Body parentClass={classes.body}>
+                <Card className={classes.mega_card}>
+                 <div className={classes.sub_menu_wrapper}>
+                  {elem.children.map((el, i) => {
+                   const id = nanoid();
+                   return (
+                    <div key={el.id} className={classes.header_sub}>
+                     <input
+                      type='radio'
+                      name='mega-menu'
+                      id={id}
+                      className={classes.label_radio}
+                      defaultChecked={i === 0}
+                     />
+                     <label className={classes.mega_title} id={id} htmlFor={id}>
+                      {el.label}
+                     </label>
+                     <div className={classes.link_menu_wrapper}>
+                      {el.children &&
+                       el.children.map(elc => {
+                        return (
+                         <div className={classes.menu_item} key={elc.id}>
+                          {elc.label}
+                         </div>
+                        );
+                       })}
+                     </div>
+                    </div>
+                   );
+                  })}
+                 </div>
+                </Card>
+               </Body>
+              </motion.div>
+             )}
+            </>
            )}
           </div>
          );

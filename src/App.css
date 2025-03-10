@@ -14,6 +14,10 @@
   font-family: novares;
   src: url('/public/assets/fonts/novarese-medium.otf');
 }
+@font-face {
+  font-family: EuclidCircular;
+  src: url('/public/assets/fonts/Euclid Circular A Light.ttf');
+}
 
 .Toastify__progress-bar {
   background-color: var(--primary) !important;
@@ -39,7 +43,7 @@
   font-family: 'dana' !important;
 }
 .en * {
-  font-family: 'mulish' !important;
+  font-family: 'EuclidCircular' !important;
 }
 * {
   font-size: calc(10px + 2vmin);

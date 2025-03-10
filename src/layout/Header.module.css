@@ -30,7 +30,7 @@
  cursor: pointer;
  max-height: 2rem !important;
  position: absolute;
- top: 45%;
+ top: 30%;
  left: 50%;
  transform: translate(-50%, -50%) !important;
  transition: all 0.25s;
@@ -42,12 +42,13 @@
 }
 .navigation_container {
  width: fit-content;
- height: 100%;
  display: flex;
  align-items: center;
  justify-content: center;
- margin-left: 2%;
  z-index: 100;
+ margin-top: auto;
+ padding: 10px 0;
+ margin-left: 70px;
 }
 .search_container {
  width: 25%;
@@ -67,7 +68,7 @@
  cursor: pointer;
  border-bottom: 1px solid transparent;
  transition: all 0.25s;
- padding: 8px 25px;
+ padding: 0px 25px;
  white-space: nowrap;
  margin: 0 5px;
 }
@@ -109,7 +110,7 @@
  box-shadow: 0 5px 5px rgb(220, 220, 220);
  backdrop-filter: blur(20px) !important;
  position: absolute;
- top: 100%;
+ top: 120%;
  left: 0%;
  transform: translateX(0%);
  opacity: 0;
@@ -127,8 +128,8 @@
  content: '';
  position: absolute;
  width: 100%;
- height: 5px;
- background-color: transparent;
+ height: 40px;
+ background-color: #ffffff00;
  bottom: 100%;
  left: 0;
  right: 0;
@@ -243,12 +244,10 @@
 .card_action_wrapper {
  width: 20%;
  height: fit-content;
- position: absolute;
  top: 0;
  display: flex;
  justify-content: center;
  align-items: center;
- margin-top: 1rem;
  z-index: 1000;
 }
 .card_icons {
@@ -309,8 +308,8 @@
  justify-content: center;
 }
 
-.body{
-    min-height: 0;
+.body {
+ min-height: 0;
 }
 
 @keyframes fade_in {

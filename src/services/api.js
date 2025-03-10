@@ -816,3 +816,16 @@ export const getAllProductFromCategory = async id => {
  const result = await response.json();
  return { response, result };
 };
+
+export const getUserTokenGoogle = async code => {
+
+  const response = await fetch(`${baseUrl}/get-token-google`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+   },
+   body: JSON.stringify({token:code})
+ });
+  const result = await response.json();
+ return { response, result };
+};

@@ -1,28 +1,35 @@
 @import url(../../styles/variables.css);
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: scale(0.6);
-  position: relative;
-  cursor: pointer;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ transform: scale(0.6);
+ position: relative;
+ cursor: pointer;
+}
+
+.cb {
+ color: #000 !important;
+}
+.cw {
+ color: #fff !important;
 }
 
 .svg-border {
-  position: absolute;
+ position: absolute;
 }
 
 .neon {
-  filter: url(#neon);
+ filter: url(#neon);
 }
 
 .container span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 26px;
-  white-space: nowrap;
-  font-weight: bold;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ font-size: 26px;
+ white-space: nowrap;
+ font-weight: bold;
 }
