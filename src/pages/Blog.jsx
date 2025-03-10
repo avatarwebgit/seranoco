@@ -8,27 +8,20 @@ import Footer from '../layout/Footer';
 import PromotionalShopCard from '../components/PromotionalShopCard';
 import Guid from '../components/Guid';
 
-import classes from './Home.module.css';
 import BannerCarousel from '../components/BannerCarousel';
 import SecondaryPromotionShopCart from '../components/SecondaryPromotionShopCart';
-import { useSelector } from 'react-redux';
-import { useUser } from '../services/api';
-const Home = ({ windowSize }) => {
-  const token = useSelector(state => state.userStore.token);
-  const { data, error, isLoading } = useUser(token);
+
+import classes from './Blog.module.css';
+const Blog = ({ windowSize }) => {
   
   return (
     <section className={classes.home}>
       <BannerCarousel />
       <Header windowSize={windowSize} />
-      <Carousel windowSize={windowSize} />
-      <FilterLinks windowSize={windowSize} />
-      <PromotionalShopCard windowSize={windowSize} />
-      <SecondaryPromotionShopCart />
-      <Guid windowSize={windowSize} showMore={true}/>
+      <Guid></Guid>
       <Footer windowSize={windowSize} />
     </section>
   );
 };
 
-export default Home;
+export default Blog;
