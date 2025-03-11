@@ -8,7 +8,7 @@ import CustomSection from '../layout/CustomSection';
 import SingleBlog from '../components/SingleBlog';
 
 import classes from './Guid.module.css';
-const Guid = ({ showMore }) => {
+const Guid = ({ showMore=true }) => {
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
  return (

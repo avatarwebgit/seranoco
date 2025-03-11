@@ -13,11 +13,14 @@
 }
 
 .more_button {
- color: #000000 !important;
  display: flex !important;
  margin: 2rem 1rem 2rem auto !important;
  padding: 15px 25px !important;
  width: fit-content !important;
+ background-color: black !important;
+ color: #ffffff !important;
+ font-size: 10px !important;
+ font-weight: 900 !important;
 }
 
 @media only screen and (max-width: 480px) {

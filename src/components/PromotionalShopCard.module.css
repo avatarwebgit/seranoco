@@ -1,93 +1,94 @@
 @import url(../styles/variables.css);
 
 .main {
-  height: fit-content;
-  margin: 2rem 0 1rem 0;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
+ height: fit-content;
+ margin: 2rem 0 1rem 0;
+ background-attachment: fixed;
+ background-repeat: no-repeat;
+ background-size: cover;
 }
 .wrapper {
-  width: 100%;
-  height: 100%;
-  background: var(--color-black);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 1) 35%,
-    rgba(0, 0, 0, 0.7) 60%,
-    rgba(0, 0, 0, 0) 100%
-  );
+ width: 100%;
+ height: 100%;
+ background: var(--color-black);
+ background: linear-gradient(
+  90deg,
+  rgba(0, 0, 0, 1) 35%,
+  rgba(0, 0, 0, 0.7) 60%,
+  rgba(0, 0, 0, 0) 100%
+ );
 }
 .content {
-  height: 100%;
-  max-width: 2000px;
-  margin: 0 auto;
-  margin-right: var(--small-pc-padding);
-  margin-left: var(--small-pc-padding);
+ height: 100%;
+ max-width: 2000px;
+ margin: 0 auto;
+ margin-right: var(--small-pc-padding);
+ margin-left: var(--small-pc-padding);
 }
 .shop_hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  width: 20%;
-  height: 100%;
-  padding: 2rem 0;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ color: #ffffff;
+ width: 20%;
+ height: 100%;
+ padding: 2rem 0;
 }
 .shop_btn {
-  margin-top: 1rem !important;
-  background-color: var(--primary) !important;
-  color: #000000 !important;
-  font-size: 10px !important;
-  font-weight: 900 !important;
-  margin: 10px 0 !important;
-  color: #ffffff !important;
+ margin-top: 1rem !important;
+ background-color: var(--primary) !important;
+ color: #000000 !important;
+ font-size: 10px !important;
+ font-weight: 900 !important;
+ margin: 10px 0 !important;
+ color: #ffffff !important;
 }
 .title {
-  font-size: 1.5rem;
+ font-size: 1.5rem;
+ font-family: 'novares', sans-serif !important;
 }
 .caption {
-  font-size: 0.7rem;
-  margin-top: 5px;
+ font-size: 0.7rem;
+ margin-top: 5px;
 }
 @media only screen and (max-width: 480px) {
-  .shop_hero {
-    width: 50%;
-    text-align: center;
-    height: 100%;
-  }
-  .title {
-    font-size: 1.5rem;
-  }
+ .shop_hero {
+  width: 50%;
+  text-align: center;
+  height: 100%;
+ }
+ .title {
+  font-size: 1.5rem;
+ }
 }
 @media only screen and (min-width: 481px) and (max-width: 768px) {
-  .shop_hero {
-    width: 50%;
-    text-align: center;
-    height: 100%;
-  }
+ .shop_hero {
+  width: 50%;
+  text-align: center;
+  height: 100%;
+ }
 }
 @media only screen and (min-width: 769px) and (max-width: 1024px) {
-  .shop_hero {
-    width: 50%;
-    text-align: center;
-    padding: 2rem 0;
-  }
+ .shop_hero {
+  width: 50%;
+  text-align: center;
+  padding: 2rem 0;
+ }
 }
 @media only screen and (min-width: 1025px) and (max-width: 1200px) {
 }
 @media only screen and (min-width: 1025px) and (max-width: 1200px) {
-  .shop_hero {
-    width: 50%;
-    text-align: center;
-    padding: 2rem 0;
-  }
+ .shop_hero {
+  width: 50%;
+  text-align: center;
+  padding: 2rem 0;
+ }
 }
 @media only screen and (min-width: 1201px) {
-  .shop_hero {
-    width: 50%;
-    text-align: center;
-    padding: 2rem 0;
-  }
+ .shop_hero {
+  width: 50%;
+  text-align: center;
+  padding: 2rem 0;
+ }
 }

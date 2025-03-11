@@ -54,6 +54,8 @@ const Products = ({ windowSize }) => {
  const [variationDetail, setVariationDetail] = useState(null);
  const [productImages, setProductImages] = useState(null);
  const [productData, setProductData] = useState(null);
+ const [allImages, setAllImages] = useState([]);
+ const [mainImage, setMainImage] = useState('');
 
  const imageRef = useRef();
  const primaryImg = useRef();
@@ -113,6 +115,7 @@ const Products = ({ windowSize }) => {
     setSize(variationRes?.result?.product?.size);
    }
    if (serverRes.response.ok) {
+    setMainImage(serverRes.result.product.primary_image);
     setProductImages(serverRes.result.product.images);
     setDetailsData(serverRes.result);
     setProductData(serverRes);
@@ -175,12 +178,19 @@ const Products = ({ windowSize }) => {
   getDetails();
  }, [id]);
 
-  const handleSlideClick = index => {
+ useEffect(() => {
+  if (primaryImg && productImages) {
+   setAllImages([mainImage, ...productImages]);
+  }
+ }, [mainImage, productImages]);
+
+
+ const handleSlideClick = index => {
   if (primaryImg.current) {
-   primaryImg.current.src = productImages[index];
+   primaryImg.current.src = allImages[index];
   }
   if (imageRef.current) {
-   imageRef.current.src = productImages[index];
+   imageRef.current.src = allImages[index];
   }
  };
 
@@ -310,17 +320,21 @@ const Products = ({ windowSize }) => {
           color='inherit'
           variant='h3'>
           <div>
-           <span>{shape}</span>
+           <span>
+            <strong style={{ fontSize: '20px' }}>{shape}</strong>
+           </span>
            <span>{cuttingStyle} </span>
           </div>
           <div>
            <span>
-            <strong>{brand}</strong>
+            <strong style={{ fontSize: '20px' }}>{brand}</strong>
            </span>
            <span>{details}</span>
           </div>
           <div>
-           <span>{color}</span>
+           <span>
+            <strong style={{ fontSize: '20px' }}>{color}</strong>
+           </span>
            <span>{size}</span>
           </div>
          </Typography>
@@ -424,13 +438,26 @@ const Products = ({ windowSize }) => {
         <>
          <div className={classes.quantity_wrapper}>
           {detailsData ? (
-           <Typography
-            className={classes.product_serial}
-            color='inherit'
-            href={`/${lng}/shopbyshape`}
-            variant='h3'>
-            {t('quantity')}&nbsp;:&nbsp;
-           </Typography>
+           <div className={classes.flex}>
+            <div className={classes.quantity_total_wrapper}>
+             <Typography
+              className={`${classes.product_serial} ${classes.border}`}
+              color='inherit'
+              href={`/${lng}/shopbyshape`}
+              variant='h3'>
+              {t('quantity')}&nbsp;:&nbsp;
+             </Typography>
+             <p className={classes.quantity_text}>{quantity}</p>
+            </div>{' '}
+            <span className={classes.btn_wrapper}>
+             <button className={classes.quantity_a_b} onClick={handleIncrement}>
+              +
+             </button>
+             <button className={classes.quantity_a_b} onClick={handleDecrement}>
+              -
+             </button>
+            </span>
+           </div>
           ) : (
            <Skeleton
             variant='text'
@@ -440,15 +467,6 @@ const Products = ({ windowSize }) => {
            />
           )}
           <div className={classes.quantity_actions_wrapper}>
-           <p className={classes.quantity_text}>{quantity}</p>
-           <span className={classes.btn_wrapper}>
-            <button className={classes.quantity_a_b} onClick={handleIncrement}>
-             +
-            </button>
-            <button className={classes.quantity_a_b} onClick={handleDecrement}>
-             -
-            </button>
-           </span>
            <span className={classes.weight_wrapper}>
             <p>{t('total_weight')}</p>&nbsp;
             <p style={{ color: '#000000' }}>
@@ -578,22 +596,13 @@ const Products = ({ windowSize }) => {
         onClick={(swiper, event) => {
          handleSlideClick(swiper.clickedIndex);
         }}>
-        {productImages.map(el => {
+        {allImages && allImages.map(el => {
          return (
           <SwiperSlide className={classes.gallery_image_wrapper}>
            <img src={el} alt='' loading='lazy' />
           </SwiperSlide>
          );
         })}
-        {productData && (
-         <SwiperSlide className={classes.gallery_image_wrapper}>
-          <img
-           src={productData.result.product.primary_image}
-           alt=''
-           loading='lazy'
-          />
-         </SwiperSlide>
-        )}
        </Swiper>
       )}
      </div>

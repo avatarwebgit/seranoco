@@ -1,26 +1,37 @@
+import { useTranslation } from 'react-i18next';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-import Carousel from '../components/Carousel';
 import Header from '../layout/Header';
-import FilterLinks from '../components/FilterLinks';
 import Footer from '../layout/Footer';
-import PromotionalShopCard from '../components/PromotionalShopCard';
 import Guid from '../components/Guid';
-
+import Card from '../components/filters_page/Card';
+import Body from '../components/filters_page/Body';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 import BannerCarousel from '../components/BannerCarousel';
-import SecondaryPromotionShopCart from '../components/SecondaryPromotionShopCart';
 
 import classes from './Blog.module.css';
+
 const Blog = ({ windowSize }) => {
+   const { t } = useTranslation();
   
   return (
-    <section className={classes.home}>
-      <BannerCarousel />
-      <Header windowSize={windowSize} />
-      <Guid></Guid>
-      <Footer windowSize={windowSize} />
-    </section>
+   <section className={classes.home}>
+    <BannerCarousel />
+    <Header />
+    <Body className={classes.body} parentClass={classes.body}>
+     <Card>
+      <Breadcrumbs
+       linkDataProp={[
+        { pathname: t('home'), url: ' ' },
+        { pathname: t('blog'), url: 'blog' },
+       ]}
+      />
+     </Card>
+    </Body>
+    <Guid/>
+    <Footer windowSize={windowSize} />
+   </section>
   );
 };
 

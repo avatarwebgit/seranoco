@@ -7,7 +7,6 @@ import { nanoid } from '@reduxjs/toolkit';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import BreadCrumbs from '../components/common/Breadcrumbs';
 
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';

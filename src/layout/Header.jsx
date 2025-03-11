@@ -185,7 +185,7 @@ const Header = ({ windowSize }) => {
    initial={{ y: 0, height: '5rem' }}
    animate={{
     y: isHomePage && scrollY === 0 ? (isSmall ? '20px' : '50px') : 0,
-    height: scrollY !== 0 ? '5.5rem' : isSmall ? '5.5rem' : '5.5rem',
+    height: scrollY !== 0 ? '5.5rem' : isSmall ? '5.5rem' : '5rem',
     backgroundColor:
      scrollY !== 0 ? 'rgba(255,255,255,0.6)' : 'rgba(0, 0, 0, 0)',
     backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'blur(0px)',
@@ -203,10 +203,7 @@ const Header = ({ windowSize }) => {
     }`}>
     <motion.span
      className={classes.card_action_wrapper}
-     initial={{ y: 0 }}
-     animate={{
-      y: scrollY === 0 ? 0 : -20,
-     }}
+    
      transition={{ duration: 0 }}>
      {!isSmall && (
       <>
