@@ -10,10 +10,13 @@ import Card from '../components/filters_page/Card';
 import BannerCarousel from '../components/BannerCarousel';
 import SecondaryPromotionShopCart from '../components/SecondaryPromotionShopCart';
 
-import classes from './SingleBlog.module.css';
+import Breadcrumbs from '../components/common/Breadcrumbs';
+import { useTranslation } from 'react-i18next';
 
+import classes from './SingleBlog.module.css';
 const SingleBlog = ({ windowSize }) => {
  const lng = useSelector(state => state.localeStore.lng);
+ const {t} = useTranslation();
 
  return (
   <section className={classes.home}>
@@ -22,6 +25,13 @@ const SingleBlog = ({ windowSize }) => {
    <div dir={`${lng === 'fa' ? 'rtl' : 'ltr'}`}>
     <Body>
      <Card className={classes.card}>
+      <Breadcrumbs
+       linkDataProp={[
+        { pathname: t('home'), url: ' ' },
+        { pathname: t('blog'), url: 'blog' },
+        { pathname: t('blog'), url: 'blog' },
+       ]}
+      />
       <div className={classes.top_wrapper}>
        <div className={classes.img_wrapper}>
         <img
@@ -40,7 +50,12 @@ const SingleBlog = ({ windowSize }) => {
       <p
        className={classes.text}
        style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
-       Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, exercitationem! Omnis veniam eligendi sed similique a, molestiae quidem saepe magnam praesentium optio distinctio commodi tenetur in aperiam beatae assumenda ex?Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, laborum qui nostrum eos commodi illo quas fugit accusantium rem dignissimos!
+       Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta,
+       exercitationem! Omnis veniam eligendi sed similique a, molestiae quidem
+       saepe magnam praesentium optio distinctio commodi tenetur in aperiam
+       beatae assumenda ex?Lorem ipsum dolor sit amet consectetur adipisicing
+       elit. Pariatur, laborum qui nostrum eos commodi illo quas fugit
+       accusantium rem dignissimos!
       </p>
      </Card>
     </Body>

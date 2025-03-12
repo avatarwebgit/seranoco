@@ -125,6 +125,9 @@ a:visited {
 .css-12eb3rq-MuiStepLabel-label.MuiStepLabel-alternativeLabel {
   margin-top: 0px !important;
 }
+.css-l9xe8y{
+  padding: 0 !important;
+}
 @media only screen and (max-width: 480px) {
   .MuiBadge-badge {
     width: 15px !important;
