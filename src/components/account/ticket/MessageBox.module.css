@@ -1,0 +1,24 @@
+.main {
+ height: fit-content;
+ width: fit-content;
+ display: flex;
+}
+
+.message_box {
+ box-shadow: 0 0 5px gray;
+ padding: 15px;
+ margin:0 10px;
+ border-radius: 10px;
+ display: flex;
+ flex-direction: column-reverse;
+}
+
+.time {
+    font-size: 15px;
+    margin-top: 20px;
+    color: blue;
+}
+
+.message {
+    font-size: 20px;
+}

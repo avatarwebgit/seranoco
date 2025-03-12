@@ -8,9 +8,10 @@ import CustomSection from '../layout/CustomSection';
 import SingleBlog from '../components/SingleBlog';
 
 import classes from './Guid.module.css';
-const Guid = ({ showMore=true }) => {
+const Guid = ({ showMore = true }) => {
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
+
  return (
   <div>
    <CustomSection card={classes.card} className={classes.main}>
@@ -22,7 +23,7 @@ const Guid = ({ showMore=true }) => {
      description={
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, tenetur?'
      }
-     href={'public/assets/pdf/Document.pdf'}
+     href={`${lng}/blog/some title`}
     />
     <SingleBlog
      imgUrl={

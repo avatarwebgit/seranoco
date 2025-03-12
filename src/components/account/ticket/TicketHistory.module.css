@@ -15,24 +15,37 @@
 }
 
 .modal_content {
- width: 30vw;
+ width: 50vw;
  height: 100vh;
  background-color: #ffffff;
  border-radius: 10px;
  padding: 10px;
+ position: relative;
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-start;
+ padding-top: 50px;
 }
 
-.close_button{
-    
+.close_button {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
 }
 
 @media only screen and (max-width: 480px) {
+ .modal_content {
+  width: 100vw;
+ }
  .auto {
   width: 100%;
  }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
+ .modal_content {
+  width: 100vw;
+ }
  .auto {
   width: 100%;
  }
