@@ -12,23 +12,23 @@ const SearchResult = ({ dataProp }) => {
  const lng = useSelector(state => state.localeStore.lng);
 
  useEffect(() => {
-  if (dataProp) {
-   setData(dataProp);
-   console.log(dataProp);
+   if (dataProp) {
+     setData(dataProp);
+     console.log(data)
   }
  }, [dataProp]);
 
  return (
    <Link
     className={classes.main}
-    to={`/${lng}/products/${data?.product?.alias}/${data?.product?.variation_id}`}
+    to={`/${lng}/products/${data?.product.alias}/${data?.id}`}
     target='_blank'>
     <div className={classes.image_wrapper}>
        <img className={classes.img } src={data?.primary_image} alt=''/>
     </div>
     <div className={classes.text_wrapper}>
-     <div className={classes.name}>{data?.name}</div>
-     <div className={classes.size}>{data?.size}</div>
+     <div className={classes.name}>{data?.product?.name}</div>
+     <div className={classes.size}>{data?.height}</div>
     </div>
    </Link>
  );

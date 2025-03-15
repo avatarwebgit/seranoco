@@ -26,6 +26,9 @@ import ChangeLanguage from '../utils/ChangeLanguage';
 import Body from '../components/filters_page/Body';
 import Card from '../components/filters_page/Card';
 
+import img from '../assets/images/gems.test.jpeg';
+import img2 from '../assets/images/Gem.png';
+
 import { useBasicInformation, getHeaderMenus } from '../services/api';
 
 import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
@@ -203,7 +206,6 @@ const Header = ({ windowSize }) => {
     }`}>
     <motion.span
      className={classes.card_action_wrapper}
-    
      transition={{ duration: 0 }}>
      {!isSmall && (
       <>
@@ -334,9 +336,8 @@ const Header = ({ windowSize }) => {
              onMouseEnter={event => handleClick(event)}
              style={{ color: isHomePage ? '#000000' : '#ffffff' }}
              target={'_blank'}
-                 href={elem.url}
-                 to={elem.url}
-               >
+             href={elem.url}
+             to={elem.url}>
              {elem.label}
             </Link>
            ) : (
@@ -380,6 +381,12 @@ const Header = ({ windowSize }) => {
                          </div>
                         );
                        })}
+                      <div className={classes.mega_img_primary}>
+                       <img src={el.image} alt='' />
+                      </div>
+                      <div className={classes.mega_img}>
+                       <img src={img2} alt='' />
+                      </div>
                      </div>
                     </div>
                    );

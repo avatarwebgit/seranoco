@@ -6,6 +6,11 @@
  padding: 10px;
  cursor: pointer;
  transition: all 0.25s;
+ color: #000000;
+}
+
+.main:visited{
+    color: #000000;
 }
 
 .main:hover {
@@ -29,12 +34,14 @@
 }
 
 .name,
-.title {
+.title,
+.size {
  font-size: 15px;
 }
 
-.name {
-    margin-left: 10px;
+.name,
+.size {
+ margin-left: 10px;
 }
 
 .title {

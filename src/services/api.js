@@ -32,8 +32,8 @@ export const getHeaderMenus = async lng => {
    'Accept-Language': `${lng}`,
   },
  });
-   const result = await response.json();
-   console.log(response, result)
+ const result = await response.json();
+ console.log(response, result);
  return { response, result };
 };
 
@@ -192,8 +192,8 @@ export const getProductDetails = async (alias, token) => {
   },
  });
 
-  const result = await response.json();
-  console.log(result, response)
+ const result = await response.json();
+ console.log(result, response);
  return { response, result };
 };
 
@@ -500,7 +500,7 @@ export const useColors = () => {
     throw new Error('Failed to fetch colors');
    }
 
-      const result = await response.json();
+   const result = await response.json();
    return result;
   },
  });
@@ -818,14 +818,41 @@ export const getAllProductFromCategory = async id => {
 };
 
 export const getUserTokenGoogle = async code => {
-
-  const response = await fetch(`${baseUrl}/get-token-google`, {
+ const response = await fetch(`${baseUrl}/get-token-google`, {
   method: 'POST',
   headers: {
    'Content-Type': 'application/json',
-   },
-   body: JSON.stringify({token:code})
+  },
+  body: JSON.stringify({ token: code }),
  });
-  const result = await response.json();
+ const result = await response.json();
+ return { response, result };
+};
+
+export const getAllArticles = async () => {
+ const response = await fetch(`${baseUrl}/get/articles`, {
+  method: 'GET',
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const getSingleArticles = async alias => {
+ const response = await fetch(`${baseUrl}/get/article/${alias}`, {
+  method: 'GET',
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const contactUsSend = async (name, email, message) => {
+ const response = await fetch(`${baseUrl}/contact-us/send/request`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ name, email, message }),
+ });
+ const result = await response.json();
  return { response, result };
 };

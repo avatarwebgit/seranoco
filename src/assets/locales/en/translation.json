@@ -207,6 +207,11 @@
     "show":"Show",
     "ticket_no":"Ticket Number",
     "data":"Date"
+ },
+
+ "contact":{
+   "successfull":"Your Message Send Successfully.",
+   "error":"There was an Error Sending Message,"
  }
 
 }

@@ -181,7 +181,7 @@ function App() {
      element={<Blog windowSize={windowSize} />}
     />
     <Route
-     path={`/:lng/Blog/:title`}
+     path={`/:lng/Blog/:alias`}
      element={<SingleBlog windowSize={windowSize} />}
     />
 

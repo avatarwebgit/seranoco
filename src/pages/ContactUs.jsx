@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, TextareaAutosize, TextField } from '@mui/material';
@@ -13,11 +13,20 @@ import Card from '../components/filters_page/Card';
 import instagram from '../assets/svg/instagram.svg';
 import whatsapp from '../assets/svg/whatsapp.svg';
 import telegram from '../assets/svg/telegram.svg';
-import email from '../assets/svg/email.svg';
+
 import address from '../assets/svg/address.svg';
 
 import classes from './ContactUs.module.css';
+import { contactUsSend } from '../services/api';
+import { notify } from '../utils/helperFunctions';
 const ContactUs = ({ windowSize }) => {
+ const [name, setName] = useState('');
+ const [email, setEmail] = useState('');
+ const [desc, setDesc] = useState('');
+ const [isEmpty, setIsEmpty] = useState(false);
+
+ const form = useRef();
+
  const inputStyles = {
   mb: '0.5rem',
   width: '100%',
@@ -56,7 +65,27 @@ const ContactUs = ({ windowSize }) => {
   }
  }, [lng]);
 
- const handleSubmit = () => {};
+ const sendContactDetails = async (e, name, email, desc) => {
+  e.preventDefault();
+  const serverRes = await contactUsSend(name, email, desc);
+  if (serverRes.response.ok) {
+   notify(t('contact.successfull'));
+  } else {
+   notify(t('contact.error'));
+  }
+  form.current.reset();
+ };
+
+ const handleSubmit = e => {
+  const isNameValid = name.trim().length > 0;
+  const isEmailValid = email.trim().length > 0;
+  const isMessageValid = desc.trim().length > 0;
+  if ((isNameValid, isEmailValid, isMessageValid)) {
+   sendContactDetails(e, name, email, desc);
+  } else {
+   setIsEmpty(true);
+  }
+ };
 
  const formDir = () => {
   if (windowSize === 'xs' || windowSize === 's' || windowSize === 'm')
@@ -98,16 +127,13 @@ const ContactUs = ({ windowSize }) => {
          <img src={telegram} alt='' width={35} />
          <p>+98 912 2099144</p>
         </div>
-        <div className={classes.content}>
-         <img src={email} alt='' width={35} />
-         <p>+98 912 2099144</p>
-        </div>
        </div>
       </div>
       <form
-       onSubmit={handleSubmit}
+       onSubmit={e => handleSubmit(e)}
        className={classes.qst_wrapper}
-       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
+       ref={form}>
        <span>
         <h1>{t('cu.contact_us')}</h1>
         <p>
@@ -115,18 +141,32 @@ const ContactUs = ({ windowSize }) => {
          est.
         </p>
        </span>
-       <TextField label={t('signup.fname')} name='name' sx={inputStyles} />
-       <TextField label={t('signup.lname')} name='l-name' sx={inputStyles} />
+       <TextField
+        label={t('signup.fname')}
+        name='name'
+        sx={inputStyles}
+        onChange={e => setName(e.target.value)}
+        required
+       />
        <TextField
         label={t('signup.email')}
         name='email'
         type='email'
+        onChange={e => setEmail(e.target.value)}
         sx={inputStyles}
+        required
        />
        <label htmlFor='desc' style={{ color: '#000000', fontSize: '15px' }}>
         {t('caption')}
        </label>
-       <textarea name='desc' />
+       <textarea name='desc' onChange={e => setDesc(e.target.value)} required />
+       {isEmpty && (
+        <div
+         className={classes.error_text}
+         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+         {t('access.error_empty')}
+        </div>
+       )}
        <Button
         variant='contained'
         size='large'
