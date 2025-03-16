@@ -45,7 +45,6 @@ const Drawer = ({ children, size }) => {
     if (cart.products || drawerState) {
       setProductData(cart.products);
     }
-    console.log(cart);
   }, [cart, drawerState]);
 
   return (

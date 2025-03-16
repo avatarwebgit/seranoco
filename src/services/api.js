@@ -781,15 +781,29 @@ export const removeShoppingCart = async (token, cart_id) => {
  return { response, result };
 };
 
-export const sendcardPaymentData = async (token, data, order_id) => {
+export const sendcardPaymentData = async (token, data, file, order_id) => {
+ const formData = new FormData();
+
+ if (typeof data === 'object' && data !== null) {
+  for (const key in data) {
+   if (data.hasOwnProperty(key)) {
+    formData.append(key, data[key]);
+   }
+  }
+ } else {
+  formData.append('data', data);
+ }
+
+ formData.append('recScan', file);
+
  const response = await fetch(`${baseUrl}/order_cash2_submit/${order_id}`, {
   method: 'POST',
   headers: {
-   'Content-Type': 'application/json',
    Authorization: `bearer ${token}`,
   },
-  body: JSON.stringify({ data }),
+  body: formData,
  });
+
  const result = await response.json();
  return { response, result };
 };

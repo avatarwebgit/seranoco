@@ -59,19 +59,25 @@ const Carusel = ({ windowSize }) => {
     <div className={shared.content}>
      {/* ________________ MAIN SLIDER  ________________*/}
      <Swiper
-      modules={[Navigation, Pagination, Scrollbar, A11y, Thumbs]}
+      modules={[Navigation, Pagination, Scrollbar, A11y, Thumbs, Autoplay]}
       spaceBetween={0}
       slidesPerView={1}
       navigation
       onSlideChange={swiper => {
-       setActiveIndex(swiper.activeIndex);
+       setActiveIndex(swiper.realIndex);
       }}
       onSwiper={swiper => {
-       setActiveIndex(swiper.activeIndex);
+       setActiveIndex(swiper.realIndex);
+      }}
+      autoplay={{
+       delay: 7000,
+       disableOnInteraction: false,
+       reverseDirection: true,
       }}
       thumbs={{
        swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-      }}>
+      }}
+      loop={true}>
       {swiperData.map((slide, index) => (
        <SwiperSlide key={index} className={classes.slide}>
         <div className={classes.slider_image_wrapper}>
@@ -137,6 +143,7 @@ const Carusel = ({ windowSize }) => {
             style={{ width: '100%', height: 'auto' }}
             className={classes.thumb_img}
            />
+           {console.log(isActive)}
           </motion.div>
          )}
         </SwiperSlide>

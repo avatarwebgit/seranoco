@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { cartActions } from '../../store/store';
 
 import classes from './PaymentMethod.module.css';
 import { sendCartPrice } from '../../services/api';
+import { notify } from '../../utils/helperFunctions';
 const PaymentMethod = ({ dataProps }) => {
   const lng = useSelector(state => state.localeStore.lng);
   const cart = useSelector(state => state.cartStore);
   const token = useSelector(state => state.userStore.token);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [data, setData] = useState(null);
 
@@ -33,6 +35,9 @@ const PaymentMethod = ({ dataProps }) => {
   const sendData = async (token, address, method, amount) => {
     const serverRes = await sendCartPrice(token, address, method, amount);
     if (serverRes.response.ok) {
+      navigate(`/fa/order/pay/${serverRes.result.order.id}`)
+    } else {
+      notify(' خطایی رخ داد لطفا دوباره تلاش کنید')
     }
   };
 
@@ -61,7 +66,7 @@ const PaymentMethod = ({ dataProps }) => {
                   </button>
                 </>
               ) : (
-                <Link to={`/fa/order/pay`}>
+                <>
                 <button
                   onClick={() => handleSetPaymentMethod(el.id)}
                   className={`${classes.label}`}
@@ -77,7 +82,7 @@ const PaymentMethod = ({ dataProps }) => {
                   </div>
                   {lng === 'fa' ? el.title : el.name}
                 </button>
-                </Link>
+                </>
               )}
             </>
           );

@@ -72,7 +72,7 @@ const Profile = ({ windowSize }) => {
         {
           id: 'btn4',
           title: t('profile.pending'),
-          content: 'Content for Button 3',
+          content: '',
         },
         {
           id: 'btn45',

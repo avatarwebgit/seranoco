@@ -153,7 +153,7 @@ function App() {
      }
     />
     <Route
-     path={`/:lng/order/pay`}
+     path={`/:lng/order/pay/:id`}
      element={
       <RequireAuth>
        <PayByCart windowSize={windowSize} />
