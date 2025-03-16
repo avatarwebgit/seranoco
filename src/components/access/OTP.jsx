@@ -21,7 +21,6 @@ const OTP = () => {
   const handleFinish = (e, otp) => {
     if (e) e.preventDefault();
     const payload = otp || otpValue;
-    console.log(payload);
   };
 
   const handleGoToLogin = () => {
@@ -30,7 +29,6 @@ const OTP = () => {
 
   useEffect(() => {
     const data = localStorage.getItem('sis');
-    console.log(JSON.parse(data));
     if (data && data.length > 0) {
       setSignupValues(JSON.parse(data));
     }
@@ -43,7 +41,7 @@ const OTP = () => {
         const countdownEndTime = new Date(targetDate.getTime() + 2 * 60 * 1000);
         setTimeRemaining(countdownEndTime - new Date());
       } else {
-        console.error('Invalid createdAt date:', signupValues.createdAt);
+        // console.error('Invalid createdAt date:', signupValues.createdAt);
       }
     }
   }, [signupValues?.createdAt]);

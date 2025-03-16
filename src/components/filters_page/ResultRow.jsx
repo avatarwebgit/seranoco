@@ -61,11 +61,6 @@ const ResultRow = ({ dataProp }) => {
  };
 
  const handleAddToCart = el => {
-  console.log({
-   ...el,
-   selected_quantity: quantities[el.variation_id] || 1,
-   euro_price: euro,
-  });
   dispatch(
    cartActions.add({
     ...el,

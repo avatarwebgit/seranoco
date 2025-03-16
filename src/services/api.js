@@ -33,7 +33,6 @@ export const getHeaderMenus = async lng => {
   },
  });
  const result = await response.json();
- console.log(response, result);
  return { response, result };
 };
 
@@ -180,7 +179,6 @@ export const getPaginatedProductsByShape = async (id, page, per_page) => {
   },
  );
  const result = await response.json();
- console.log(response, result);
  return { response, result };
 };
 
@@ -193,7 +191,6 @@ export const getProductDetails = async (alias, token) => {
  });
 
  const result = await response.json();
- console.log(result, response);
  return { response, result };
 };
 
@@ -257,7 +254,6 @@ export const getProductsByShape = async (
 };
 
 export const getFilteredSizes = async (color_ids, shape_id, options = {}) => {
- console.log(color_ids, shape_id);
  const response = await fetch(`${baseUrl}/get/filterSizeByColor`, {
   method: 'POST',
   headers: {
@@ -269,7 +265,6 @@ export const getFilteredSizes = async (color_ids, shape_id, options = {}) => {
  });
 
  const result = await response.json();
- console.log(result, response);
  return { response, result };
 };
 
@@ -341,7 +336,6 @@ export const sendRegistrationData = async data => {
   body: JSON.stringify({ ...data }),
  });
  const result = await response.json();
- console.log(response, result);
  return { response, result };
 };
 
@@ -461,7 +455,6 @@ export const useFilteredShapes = (color_ids, options) => {
     ...options,
    });
    const result = await response.json();
-   console.log(result);
    return result.data;
   },
   staleTime: 1000 * 60 * 5,
@@ -721,7 +714,6 @@ export const getAllFavorites = async token => {
 };
 
 export const addToFavorite = async (token, alias, variation_id) => {
- console.log(token, alias, variation_id);
  const response = await fetch(`${baseUrl}/add/favorite/user`, {
   method: 'POST',
   headers: {
@@ -731,12 +723,10 @@ export const addToFavorite = async (token, alias, variation_id) => {
   body: JSON.stringify({ alias, variation_id }),
  });
  const result = await response.json();
- console.log(response, result);
  return { response, result };
 };
 
 export const removeFromFavorite = async (token, variation_id) => {
- console.log(token, variation_id);
  const response = await fetch(`${baseUrl}/favorite/remove/product/user`, {
   method: 'POST',
   headers: {
@@ -746,7 +736,6 @@ export const removeFromFavorite = async (token, variation_id) => {
   body: JSON.stringify({ variation_id: variation_id }),
  });
  const result = await response.json();
- console.log(response, result);
  return { response, result };
 };
 
@@ -756,7 +745,6 @@ export const sendShoppingCart = async (
  variation_id,
  quantity,
 ) => {
- console.log(product_id, variation_id, quantity);
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'POST',
   headers: {

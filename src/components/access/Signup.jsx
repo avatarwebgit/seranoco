@@ -106,7 +106,7 @@ const Signup = () => {
  const formRef = useRef();
 
  const handleGetScore = e => {
-  console.log(e.target.value);
+//   console.log(e.target.value);
  };
 
  const handleGoToLogin = () => {
@@ -191,7 +191,7 @@ const Signup = () => {
  };
 
  const login = useGoogleLogin({
-  onSuccess: token => console.log(token),
+//   onSuccess: token => console.log(token),
  });
 
  const handleLoginSuccess = async response => {

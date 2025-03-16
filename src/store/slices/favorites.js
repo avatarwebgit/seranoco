@@ -13,7 +13,6 @@ const favoriteSlice = createSlice({
       state.products = state.products.filter(
         el => el.variation_id !== action.payload,
       );
-      console.log(action.payload);
     },
     setFetchedProducts(state, action) {
       state.products = action.payload;

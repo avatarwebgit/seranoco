@@ -186,7 +186,6 @@ const FilterByShape = ({ windowSize }) => {
  }, [chunkedData]);
 
  const handleShapeClick = async (e, id) => {
-  console.log(e, id);
   abortControllerRef.current.abort();
   abortControllerRef.current = new AbortController();
   setProductDetails([]);
