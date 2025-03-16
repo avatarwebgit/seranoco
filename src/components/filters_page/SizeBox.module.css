@@ -25,6 +25,7 @@
   .main {
     padding: 6px 16px;
     background-color: var(--color-grey-2);
+    width: 30%;
   }
   .label {
     font-size: 0.7rem;
@@ -36,6 +37,7 @@
   .main {
     padding: 6px 16px;
     background-color: var(--color-grey-2);
+    width: 30%;
   }
   .label {
     font-size: 0.7rem;
