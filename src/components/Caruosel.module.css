@@ -84,7 +84,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 2vh;
+  bottom:2vh;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -181,6 +181,8 @@
   }
   .thumbs_wrapper {
     width: 50vw;
+      top: 22%;
+
   }
   .thumb {
     width: 35px;
@@ -196,6 +198,8 @@
   }
   .thumbs_wrapper {
     width: 25vw;
+      top: 22%;
+
   }
   .thumb {
     width: 55px;

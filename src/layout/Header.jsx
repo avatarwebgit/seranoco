@@ -368,7 +368,7 @@ const Header = ({ windowSize }) => {
                       id={id}
                       className={classes.label_radio}
                       defaultChecked={i === 0}
-                     />
+                         />
                      {el.url ? (
                       <Link
                        className={classes.mega_title}
