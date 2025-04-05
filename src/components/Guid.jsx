@@ -9,7 +9,7 @@ import CustomSection from '../layout/CustomSection';
 import SingleBlog from '../components/SingleBlog';
 
 import classes from './Guid.module.css';
-const Guid = ({ showMore = true }) => {
+const Guid = ({ showMore = true, isHomePage = false }) => {
  const [allArticlesData, setAllArticlesData] = useState([]);
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
@@ -26,7 +26,8 @@ const Guid = ({ showMore = true }) => {
  return (
   <div>
    <CustomSection card={classes.card} className={classes.main}>
-    {allArticlesData.map(el => {
+    {allArticlesData.map((el, i) => {
+     if (isHomePage && i >= 3) return;
      return (
       <SingleBlog
        imgUrl={el.image}
@@ -38,7 +39,7 @@ const Guid = ({ showMore = true }) => {
     })}
    </CustomSection>
    <CustomSection>
-    {showMore && (
+    {isHomePage && (
      <Button
       className={classes.more_button}
       href={`/${lng}/blog`}

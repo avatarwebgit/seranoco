@@ -369,9 +369,22 @@ const Header = ({ windowSize }) => {
                       className={classes.label_radio}
                       defaultChecked={i === 0}
                      />
-                     <label className={classes.mega_title} id={id} htmlFor={id}>
-                      {el.label}
-                     </label>
+                     {el.url ? (
+                      <Link
+                       className={classes.mega_title}
+                       to={el.url}
+                       target='_blank'>
+                       {el.label}
+                      </Link>
+                     ) : (
+                      <label
+                       className={classes.mega_title}
+                       id={id}
+                       htmlFor={id}>
+                       {el.label}
+                      </label>
+                     )}
+
                      <div className={classes.link_menu_wrapper}>
                       {el.children &&
                        el.children.map(elc => {

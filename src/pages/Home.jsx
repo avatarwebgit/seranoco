@@ -13,21 +13,21 @@ import SecondaryPromotionShopCart from '../components/SecondaryPromotionShopCart
 import { useSelector } from 'react-redux';
 import { useUser } from '../services/api';
 const Home = ({ windowSize }) => {
-  const token = useSelector(state => state.userStore.token);
-  const { data, error, isLoading } = useUser(token);
-  
-  return (
-    <section className={classes.home}>
-      <BannerCarousel />
-      <Header windowSize={windowSize} />
-      <Carousel windowSize={windowSize} />
-      <FilterLinks windowSize={windowSize} />
-      <PromotionalShopCard windowSize={windowSize} />
-      <SecondaryPromotionShopCart />
-      <Guid windowSize={windowSize} showMore={true}/>
-      <Footer windowSize={windowSize} />
-    </section>
-  );
+ const token = useSelector(state => state.userStore.token);
+ const { data, error, isLoading } = useUser(token);
+
+ return (
+  <section className={classes.home}>
+   <BannerCarousel />
+   <Header windowSize={windowSize} />
+   <Carousel windowSize={windowSize} />
+   <FilterLinks windowSize={windowSize} />
+   <PromotionalShopCard windowSize={windowSize} />
+   <SecondaryPromotionShopCart />
+   <Guid windowSize={windowSize} showMore={true} isHomePage={true} />
+   <Footer windowSize={windowSize} />
+  </section>
+ );
 };
 
 export default Home;
