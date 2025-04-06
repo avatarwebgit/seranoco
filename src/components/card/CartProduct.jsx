@@ -10,7 +10,6 @@ import classes from './CartProduct.module.css';
 import { DeleteForever, Info } from '@mui/icons-material';
 const CartProduct = data => {
   const [productData, setProductData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const { t } = useTranslation();
 
@@ -41,7 +40,7 @@ const CartProduct = data => {
       {productData && (
         <>
           <div
-            className={`${classes.main} ${isLoading ? classes.dn : classes.df}`}
+            className={`${classes.main}`}
             style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
           >
             <div className={classes.img_wrapper}>
@@ -49,8 +48,6 @@ const CartProduct = data => {
                 src={productData.primary_image}
                 alt=''
                 loading='lazy'
-                onLoad={() => setIsLoading(false)}
-                onError={() => setIsLoading(false)}
               />
             </div>
             <div className={classes.details_wrapper}>
@@ -118,13 +115,6 @@ const CartProduct = data => {
                 </Tooltip>
               )}
           </div>
-          <Skeleton
-            className={`${classes.s} ${!isLoading ? classes.dn : classes.df}`}
-            height='50px'
-            width='100%'
-            variant='rectangular'
-            animation='wave'
-          />
         </>
       )}
     </>

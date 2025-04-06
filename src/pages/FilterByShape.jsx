@@ -140,7 +140,7 @@ const FilterByShape = ({ windowSize }) => {
  };
 
  useEffect(() => {
-  document.title = 'Seranoco - Shop By Shape';
+  document.title = t('seranoco') + '/' + t('shop_by_shape');
   dispatch(productDetailActions.reset());
  }, []);
 

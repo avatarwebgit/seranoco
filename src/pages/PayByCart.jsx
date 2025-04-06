@@ -133,6 +133,7 @@ const PayByCart = ({ widnowSize }) => {
  };
 
  useEffect(() => {
+  document.title = t('seranoco') + '/' + t('paybycart');
   const today = moment().format('jYYYY/jMM/jDD');
   setSelectedDate(today);
   setDate(today);

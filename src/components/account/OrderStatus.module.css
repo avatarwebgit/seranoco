@@ -1,5 +1,21 @@
-.main{
-    width: 100%;
-    height: 10rem;
-    border: 1px solid red;
+.main {
+ width: 100%;
+ height: fit-content;
+}
+
+.table {
+ table-layout: fixed;
+ width: 100%;
+}
+
+.table * {
+ font-size: 13px;
+}
+
+.th {
+ padding-bottom: 1rem;
+}
+
+.td {
+ text-align: center;
 }

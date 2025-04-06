@@ -58,12 +58,8 @@ const ContactUs = ({ windowSize }) => {
  const lng = useSelector(state => state.localeStore.lng);
 
  useEffect(() => {
-  if (lng === 'fa') {
-   document.title = 'تماس با ما';
-  } else {
-   document.title = 'Contact Us';
-  }
- }, [lng]);
+    document.title = t('seranoco') + '/' + t('contactus');
+ }, []);
 
  const sendContactDetails = async (e, name, email, desc) => {
   e.preventDefault();

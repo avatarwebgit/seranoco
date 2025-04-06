@@ -397,9 +397,9 @@ const Header = ({ windowSize }) => {
                       <div className={classes.mega_img_primary}>
                        <img src={el.image} alt='' />
                       </div>
-                      <div className={classes.mega_img}>
+                      {/* <div className={classes.mega_img}>
                        <img src={img2} alt='' />
-                      </div>
+                      </div> */}
                      </div>
                     </div>
                    );

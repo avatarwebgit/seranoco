@@ -143,7 +143,6 @@ const Carusel = ({ windowSize }) => {
             style={{ width: '100%', height: 'auto' }}
             className={classes.thumb_img}
            />
-           {console.log(isActive)}
           </motion.div>
          )}
         </SwiperSlide>

@@ -13,6 +13,8 @@
  "title": "Tile",
  "caption": "Description",
 
+ "seranoco": "Seranoco",
+
  "shop_now": "SHOP NOW",
  "login": "Login",
  "home": "Home",
@@ -24,8 +26,8 @@
  "limited_edition": "Limited Edition",
  "birth_stones": "Birth Stones",
 
- "showmore":"Show More",
- "more":"More",
+ "showmore": "Show More",
+ "more": "More",
 
  "new": "New",
  "trending_new": "New",
@@ -48,8 +50,12 @@
  "add_to_card": "Add To Card",
  "brand": "Brand",
  "mine": "Mine",
- "categories":"Categories",
- "blog":"Blog",
+ "categories": "Categories",
+ "blog": "Blog",
+ "contactus": "Contact Us",
+ "paybycart": "Pay By Cart",
+ "precheckout": "Precheckout",
+ "notfound": "Not Found",
 
  "page": "Page",
  "select_shape": "Please Select A Shape ",
@@ -84,6 +90,7 @@
  "my_acc": "My Account",
  "byorder": "By Order",
  "add": "Add",
+ "trylater": "There Was An Error Please Try Again Later.",
 
  "profile": {
   "orders": "Orders",
@@ -200,18 +207,21 @@
   "contact_us": "Contact Us"
  },
 
- "ticket":{
-    "no":"NO",
-    "title":"Title",
-    "status":"Status",
-    "show":"Show",
-    "ticket_no":"Ticket Number",
-    "data":"Date"
+ "ticket": {
+  "no": "NO",
+  "title": "Title",
+  "status": "Status",
+  "show": "Show",
+  "ticket_no": "Ticket Number",
+  "data": "Date",
+  "upload":"Upload",
+  "send":"Send",
+  "ok":"Ticket Sent Successfully.",
+  "error":"There Was An Error Sending Ticket Please Try Again."
  },
 
- "contact":{
-   "successfull":"Your Message Send Successfully.",
-   "error":"There was an Error Sending Message,"
+ "contact": {
+  "successfull": "Your Message Send Successfully.",
+  "error": "There was an Error Sending Message,"
  }
-
 }

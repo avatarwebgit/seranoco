@@ -155,6 +155,7 @@
  cursor: pointer;
  height: 100%;
  position: relative;
+ color: #000000 !important;
 }
 
 .mega_title::after {

@@ -106,11 +106,15 @@ const Signup = () => {
  const formRef = useRef();
 
  const handleGetScore = e => {
-//   console.log(e.target.value);
+  //   console.log(e.target.value);
  };
 
  const handleGoToLogin = () => {
   dispatch(accesModalActions.login());
+ };
+
+ const handleGoToOtp = () => {
+  dispatch(accesModalActions.otp());
  };
 
  const handleChange = e => {
@@ -168,8 +172,8 @@ const Signup = () => {
    );
 
    try {
-    sendFormData({
-     password_confirmation: repeatPassword,
+      sendFormData({
+         password_confirmation: repeatPassword,
      password: repeatPassword,
      email: email,
      cellphone: phoneNumber,
@@ -177,7 +181,8 @@ const Signup = () => {
      first_name: firstname,
      city_id: selectedCity.id,
      country_id: selectedCountry.id,
-    });
+   });
+   handleGoToOtp();
    } catch (error) {
     if (errors) {
      dispatch(accesModalActions.otp());
@@ -191,7 +196,7 @@ const Signup = () => {
  };
 
  const login = useGoogleLogin({
-//   onSuccess: token => console.log(token),
+  //   onSuccess: token => console.log(token),
  });
 
  const handleLoginSuccess = async response => {
@@ -234,9 +239,8 @@ const Signup = () => {
  const sendFormData = async d => {
   const serverRes = await sendRegistrationData(d);
   if (serverRes.response.ok) {
-   console.log(serverRes.result);
   } else {
-     setErrors(serverRes.result.errors);
+   setErrors(serverRes.result.errors);
   }
  };
 
@@ -430,8 +434,9 @@ const Signup = () => {
           error={isError && !phoneNumber}
          />
         </span>
-       
-        {errors && Object.keys(errors)?.length > 0 &&
+
+        {errors &&
+         Object.keys(errors)?.length > 0 &&
          Object.values(errors).map(el => {
           return (
            <div

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Header from '../layout/Header';
@@ -15,6 +15,10 @@ import BannerCarousel from '../components/BannerCarousel';
 
 const Categories = () => {
  const { t } = useTranslation();
+ useEffect(() => {
+  document.title = t('seranoco') + '/' + t('categories');
+ }, []);
+
  return (
   <section className={classes.main}>
    <BannerCarousel />

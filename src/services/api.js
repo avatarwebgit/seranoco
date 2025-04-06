@@ -858,3 +858,52 @@ export const contactUsSend = async (name, email, message) => {
  const result = await response.json();
  return { response, result };
 };
+
+export const getOrders = async token => {
+ const response = await fetch(`${baseUrl}/orders`, {
+  method: 'GET',
+  headers: {
+   'Content-Type': 'application/json',
+   Authorization: `bearer ${token}`,
+  },
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const verifyOTP = async (otp, cellphone) => {
+ console.log(otp, cellphone);
+ const response = await fetch(`${baseUrl}/verify-otp`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ otp, cellphone }),
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const getAllTickets = async token => {
+ const response = await fetch(`${baseUrl}/tickets`, {
+  method: 'GET',
+  headers: {
+   Authorization: `bearer ${token}`,
+  },
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const sendTicket = async (token, subject, message, attachments) => {
+ const response = await fetch(`${baseUrl}/tickets`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+   Authorization: `bearer ${token}`,
+  },
+  body: JSON.stringify({ subject, message, attachments }),
+ });
+ const result = await response.json();
+ return { response, result };
+};
