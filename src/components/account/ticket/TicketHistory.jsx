@@ -1,14 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Modal } from '@mui/material';
+import { IconButton, Input, InputAdornment, Modal } from '@mui/material';
+import { Send } from '@mui/icons-material';
 
 import show from '../../../assets/svg/show.svg';
 import { ReactComponent as Close } from '../../../assets/svg/close.svg';
 
-import classes from './TicketHistory.module.css';
 import MessageBox from './MessageBox';
+
+import { ticketDetail, replyTicket } from '../../../services/api';
+
+import classes from './TicketHistory.module.css';
+import { useSelector } from 'react-redux';
 const TicketHistory = ({ dataProp }) => {
+ const token = useSelector(state => state.userStore.token);
+
  const [data, setData] = useState(null);
  const [modalOpen, setModalOpen] = useState(false);
+ const [message, setMessage] = useState('');
+
+ const handleSendTicket = async () => {
+  if (message.trim().length > 0 && data.id) {
+   const serverRes = await replyTicket(token, data.id, message);
+   console.log( serverRes);
+  }
+ };
+
+ const handleGetMessages = async () => {
+  if (data) {
+   const serverRes = await ticketDetail(token, data.id);
+   console.log(serverRes);
+  }
+ };
+
+ useEffect(() => {
+  if (modalOpen) {
+   handleGetMessages();
+  }
+ }, [modalOpen]);
 
  useEffect(() => {
   if (dataProp) {
@@ -39,6 +67,17 @@ const TicketHistory = ({ dataProp }) => {
        <IconButton className={classes.close_button} onClick={handleCloseModal}>
         <Close width={'30px'} height={'30px'} />
        </IconButton>
+       <Input
+        sx={{ margin: '0 auto', width: '50%', marginTop: 'auto' }}
+        onChange={e => setMessage(e.target.value)}
+        endAdornment={
+         <InputAdornment>
+          <IconButton onClick={handleSendTicket}>
+           <Send fontSize='15' />
+          </IconButton>
+         </InputAdornment>
+        }
+       />
       </div>
      </Modal>
      <tr className={classes.tr}>

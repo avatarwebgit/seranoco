@@ -1,29 +1,20 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 import Loading from './layout/Loading';
 import {
- accesModalActions,
  cartActions,
- favoriteActions,
- persistor,
- store,
- userActions,
 } from './store/store';
 
 import FixedNavigation from './layout/FixedNavigation';
 import Drawer from './layout/Drawer';
 
 import './App.css';
-import { PersistGate } from 'redux-persist/integration/react';
-import persistStore from 'redux-persist/es/persistStore';
-import { notify } from './utils/helperFunctions';
+
 import {
- getAllFavorites,
  useBasicInformation,
- useGetAllFavorites,
  useUser,
 } from './services/api';
 import { useTranslation } from 'react-i18next';
@@ -63,19 +54,11 @@ function App() {
  const { data: basicData, isLoading: basicDataIsloading } =
   useBasicInformation();
 
- useEffect(() => {
-  console.log(basicData);
- }, [basicData]);
-
  const dispatch = useDispatch();
 
  const RequireAuth = ({ children }) => {
   return token ? children : <Navigate to={`/${lng}`} replace />;
  };
-
- const memoizedToken = useMemo(() => {
-  return userData;
- }, [userData]);
 
  useEffect(() => {
   const calculeSize = () => {

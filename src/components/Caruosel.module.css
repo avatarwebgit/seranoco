@@ -40,8 +40,8 @@
 }
 .title {
   font-size: 1.8rem !important;
-  font-weight:900;
-  font-family: EuclidCircular, Courier, monospace !important;
+  font-weight:600;
+  font-family: novares, Courier, monospace !important;
   letter-spacing: 1px;
 }
 .caption {

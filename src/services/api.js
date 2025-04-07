@@ -907,3 +907,28 @@ export const sendTicket = async (token, subject, message, attachments) => {
  const result = await response.json();
  return { response, result };
 };
+
+export const ticketDetail = async (token, id) => {
+ const response = await fetch(`${baseUrl}/tickets/${id}`, {
+  method: 'GET',
+  headers: {
+   'Content-Type': 'application/json',
+   Authorization: `bearer ${token}`,
+  },
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const replyTicket = async (token, ticket_id, message) => {
+ const response = await fetch(`${baseUrl}/tickets/${ticket_id}/replies`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+   Authorization: `bearer ${token}`,
+  },
+  body: JSON.stringify({ message }),
+ });
+ const result = await response.json();
+ return { response, result };
+};
