@@ -41,7 +41,7 @@
 .title {
   font-size: 1.8rem !important;
   font-weight:900;
-  font-family: novares, Courier, monospace !important;
+  font-family: EuclidCircular, Courier, monospace !important;
   letter-spacing: 1px;
 }
 .caption {
@@ -56,7 +56,7 @@
   border: 2px solid black !important;
   cursor: pointer !important;
   transition: all 0.25s !important;
-  font-family: mulishBold !important;
+  font-family: EuclidCircular !important;
   font-weight: 900 !important;
 }
 .shop_btn:hover > .box {

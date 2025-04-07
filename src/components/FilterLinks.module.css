@@ -22,7 +22,7 @@
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: inherit;
+  font-family: EuclidCircular !important;
   font-weight: 900;
   color: #ffffff;
   font-size: large;

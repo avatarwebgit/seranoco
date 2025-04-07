@@ -104,7 +104,7 @@
 
 .mega_paper {
  transition: all 1s;
- height: 70vh;
+ height:50vh;
  width: 100vw;
  background-color: rgb(255, 255, 255);
  box-shadow: 0 5px 5px rgb(220, 220, 220);
@@ -156,6 +156,8 @@
  height: 100%;
  position: relative;
  color: #000000 !important;
+  text-align: right;
+
 }
 
 .mega_title::after {
@@ -168,7 +170,7 @@
  height: 1px;
  background-color: black;
  transition: all 0.35s ease-in-out;
- transform-origin: center;
+ transform-origin: right;
 }
 
 .mega_title:hover::after {
@@ -218,7 +220,7 @@
 }
 .link_menu_wrapper {
  width: 80%;
- height: 70vh;
+ height: 50vh;
  background-color: rgb(255, 255, 255);
  opacity: 0;
  display: none;
@@ -313,7 +315,7 @@
 }
 
 .mega_img_primary {
- grid-column: 2/4;
+ grid-column: 2/5;
 }
 
 .mega_img {
