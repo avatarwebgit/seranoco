@@ -368,7 +368,7 @@ const Header = ({ windowSize }) => {
                       id={id}
                       className={classes.label_radio}
                       defaultChecked={i === 0}
-                         />
+                     />
                      {el.url ? (
                       <Link
                        className={classes.mega_title}
@@ -386,24 +386,24 @@ const Header = ({ windowSize }) => {
                      )}
 
                      <div className={classes.link_menu_wrapper}>
-                      {el.children &&
-                       el.children.map(elc => {
-                        return (
-                         <div className={classes.menu_item} key={elc.id}>
-                          {elc.label}
-                         </div>
-                        );
-                       })}
-                      <div className={classes.mega_img_primary}>
-                       <img src={el.image} alt='' />
+                      <div className={classes.link_sub_wrapper}>
+                       {' '}
+                       {el.children &&
+                        el.children.map(elc => {
+                         return (
+                          <div className={classes.menu_item} key={elc.id}>
+                           {elc.label}
+                          </div>
+                         );
+                        })}
                       </div>
-                      {/* <div className={classes.mega_img}>
-                       <img src={img2} alt='' />
-                      </div> */}
                      </div>
                     </div>
                    );
-                  })}
+                  })}{' '}
+                  <div className={classes.mega_img_primary}>
+                   <img src={img} alt='' />
+                  </div>
                  </div>
                 </Card>
                </Body>

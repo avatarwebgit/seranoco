@@ -98,7 +98,7 @@ const Favorites = () => {
           </h3>
           <Wrapper>
             <div className={classes.actions_wrapper}>
-              <Autocomplete
+              {/* <Autocomplete
                 id='country-autocomplete'
                 disablePortal
                 size='small'
@@ -118,7 +118,7 @@ const Favorites = () => {
                 onChange={(e, newValue) => {
                   setSortOrder(newValue);
                 }}
-              />
+              /> */}
             </div>
             <div className={classes.item_wrapper}>
               {favorites ? (

@@ -54,7 +54,7 @@ export default function BasicTabs() {
        aria-label='basic tabs example'>
        <Tab label={t('profile.acc_info')} {...a11yProps(0)} />
        <Tab label={t('profile.favorites')} {...a11yProps(1)} />
-       {/* <Tab label={t('profile.order_status')} {...a11yProps(2)} /> */}
+       <Tab label={t('profile.order_status')} {...a11yProps(2)} />
        <Tab label={t('profile.ticket')} {...a11yProps(3)} />
       </Tabs>
      </Box>

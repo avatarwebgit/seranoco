@@ -42,10 +42,10 @@ const FilterLinks = () => {
    />
    <Link
     imgUrl={null}
-    title={t('limited_edition')}
+    title={t('new_product')}
     className={classes.new}
     helper_className={classes.helper}
-    hepler_text={t('limited_edition')}
+    hepler_text={t('new_product')}
     href={'limited-edition'}
    />
    {}

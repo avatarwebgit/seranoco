@@ -61,7 +61,7 @@ export default function BasicTabs({ dataProp }) {
      className={classes.detail_container}
      style={{
       direction: lng === 'fa' ? 'rtl' : 'ltr',
-      width: '50vw',
+      width: '40vw',
       minWidth: '300px',
      }}>
      {data && (
@@ -69,10 +69,21 @@ export default function BasicTabs({ dataProp }) {
        {data.product.attribute.map(el => {
         return (
          <span key={nanoid()}>
-          <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
-           {lng === 'fa' ? el.attribute.name_fa : el.attribute.name}
+          <p
+           style={{
+            textAlign: lng === 'fa' ? 'left' : 'right',
+            width: '80%',
+           }}>
+           <strong style={{ fontSize: '.5rem' }}>
+            {lng === 'fa' ? el.attribute.name_fa : el.attribute.name}&nbsp;:
+           </strong>
           </p>
-          <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
+
+          <p
+           style={{
+            textAlign: lng === 'fa' ? 'right' : 'left',
+            margin: '0 20px',
+           }}>
            {lng === 'fa' ? el.value.name_fa : el.value.name}
           </p>
          </span>
@@ -82,15 +93,26 @@ export default function BasicTabs({ dataProp }) {
      )}
     </div>
    </CustomTabPanel>
-     <CustomTabPanel value={value} index={1} >
+   <CustomTabPanel value={value} index={1}>
     <div
      className={classes.detail_container}
-         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr', display: 'flex', flexDirection: 'column',justifyContent:'flex-start'}}>
+     style={{
+      direction: lng === 'fa' ? 'rtl' : 'ltr',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+     }}>
      {data &&
       (lng === 'fa' ? (
-       <div dangerouslySetInnerHTML={{ __html: data.product.description_fa }}  className={classes.text_html}/>
+       <div
+        dangerouslySetInnerHTML={{ __html: data.product.description_fa }}
+        className={classes.text_html}
+       />
       ) : (
-       <div dangerouslySetInnerHTML={{ __html: data.product.description }} className={classes.text_html}/>
+       <div
+        dangerouslySetInnerHTML={{ __html: data.product.description }}
+        className={classes.text_html}
+       />
       ))}
     </div>
    </CustomTabPanel>

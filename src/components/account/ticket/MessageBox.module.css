@@ -2,12 +2,13 @@
  height: fit-content;
  width: fit-content;
  display: flex;
+ margin:10px 0;
 }
 
 .message_box {
  box-shadow: 0 0 5px gray;
  padding: 15px;
- margin:0 10px;
+ margin:0px 5px;
  border-radius: 10px;
  display: flex;
  flex-direction: column-reverse;
@@ -15,7 +16,7 @@
 
 .time {
     font-size: 15px;
-    margin-top: 20px;
+    margin-top: 10px;
     color: blue;
 }
 

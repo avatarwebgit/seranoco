@@ -75,7 +75,7 @@ const CustomAnimatedBtn = ({ children, type = 'dark', to }) => {
      <motion.path
       d={`M 0 0 h ${dimensions.width} v ${dimensions.height} h -${dimensions.width} v -${dimensions.height}`}
       stroke={type === 'dark' ? 'black' : 'white'}
-      strokeWidth='3'
+      strokeWidth='2'
       animate={{
        pathLength: [0, 0.75],
        pathOffset: [0, 0.2],

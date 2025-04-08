@@ -22,7 +22,7 @@ import Contact from '../components/account/Contact';
 
 import { userActions } from '../store/store';
 
-import { useUser, getOrders } from '../services/api';
+import { useUser, getOrders, getOrdersStatus } from '../services/api';
 
 import classes from './Profile.module.css';
 import Favorites from '../components/account/Favorites';
@@ -110,14 +110,6 @@ const Profile = ({ windowSize }) => {
   );
  };
 
- const handleFetchOeders = async () => {
-  const serverRes = await getOrders(token);
-  console.log(serverRes);
- };
-
- useEffect(() => {
-  handleFetchOeders();
- }, []);
 
  return (
   <div className={classes.main}>

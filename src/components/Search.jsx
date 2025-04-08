@@ -73,7 +73,7 @@ const Search = ({ isHomePage }) => {
    ref={searchRef}
    className={classes.main}
    initial={initial}
-   animate={{ width: isFullSize ? '100%' : 0 }}
+   animate={{ width: isFullSize ? '250px' : 0 }}
    transition={{ duration: 0.25, type: 'tween' }}>
    <motion.input
     onChange={e => handleInputChange(e)}

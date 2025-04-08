@@ -214,14 +214,22 @@
   "show": "Show",
   "ticket_no": "Ticket Number",
   "data": "Date",
-  "upload":"Upload",
-  "send":"Send",
-  "ok":"Ticket Sent Successfully.",
-  "error":"There Was An Error Sending Ticket Please Try Again."
+  "upload": "Upload",
+  "send": "Send",
+  "ok": "Ticket Sent Successfully.",
+  "error": "There Was An Error Sending Ticket Please Try Again."
  },
 
  "contact": {
   "successfull": "Your Message Send Successfully.",
   "error": "There was an Error Sending Message,"
+ },
+
+ "orders": {
+  "no": "NO",
+  "orderno": "Order NO",
+  "status": "Status",
+  "price": "Price",
+  "date": "Date"
  }
 }

@@ -176,7 +176,7 @@ const Products = ({ windowSize }) => {
    }
   };
   getDetails();
- }, [id]);
+ }, [id, lng]);
 
  useEffect(() => {
   if (primaryImg && productImages) {
@@ -309,6 +309,47 @@ const Products = ({ windowSize }) => {
        <div className={classes.tip_wrapper}>
         <p className={classes.tip_text}>{t('zoom_tip')}</p>
        </div>
+      </div>
+      <div className={`${classes.gallery} ${classes.mobile}`}>
+       {detailsData && (
+        <Swiper
+         modules={[Pagination]}
+         slidesPerView={5}
+         spaceBetween={0}
+         breakpoints={{
+          640: {
+           slidesPerView: 3,
+          },
+          768: {
+           slidesPerView: 4,
+          },
+          1024: {
+           slidesPerView: 5,
+          },
+         }}
+         style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+         }}
+         pagination={{
+          clickable: true,
+          dynamicBullets: true,
+         }}
+         onClick={(swiper, event) => {
+          handleSlideClick(swiper.clickedIndex);
+         }}>
+         {allImages &&
+          allImages.map(el => {
+           return (
+            <SwiperSlide className={classes.gallery_image_wrapper}>
+             <img src={el} alt='' loading='lazy' />
+            </SwiperSlide>
+           );
+          })}
+        </Swiper>
+       )}
       </div>
       <div
        className={classes.info}
@@ -566,7 +607,7 @@ const Products = ({ windowSize }) => {
        )}
       </div>
      </div>
-     <div className={classes.gallery}>
+     <div className={`${classes.gallery} ${classes.desktop}`}>
       {detailsData && (
        <Swiper
         modules={[Pagination]}
@@ -596,13 +637,14 @@ const Products = ({ windowSize }) => {
         onClick={(swiper, event) => {
          handleSlideClick(swiper.clickedIndex);
         }}>
-        {allImages && allImages.map(el => {
-         return (
-          <SwiperSlide className={classes.gallery_image_wrapper}>
-           <img src={el} alt='' loading='lazy' />
-          </SwiperSlide>
-         );
-        })}
+        {allImages &&
+         allImages.map(el => {
+          return (
+           <SwiperSlide className={classes.gallery_image_wrapper}>
+            <img src={el} alt='' loading='lazy' />
+           </SwiperSlide>
+          );
+         })}
        </Swiper>
       )}
      </div>
