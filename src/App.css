@@ -1,6 +1,6 @@
 @font-face {
-  font-family: dana;
-  src: url('/public/assets/fonts/dana-light.woff2');
+  font-family: IRANYekan;
+  src: url('/public/assets/fonts/IRENYekan.ttf');
 }
 @font-face {
   font-family: mulish;
@@ -40,10 +40,10 @@
   pointer-events: none;
 }
 .fa * {
-  font-family: 'dana' !important;
+  font-family: IRANYekan !important;
 }
 .en * {
-  font-family: 'EuclidCircular' !important;
+  font-family: EuclidCircular !important;
 }
 * {
   font-size: calc(10px + 2vmin);

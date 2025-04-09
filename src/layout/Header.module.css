@@ -57,6 +57,7 @@
  justify-content: center;
 }
 .header_btn_wrapper {
+  z-index: -100000;
 }
 .header_btn {
  border: none;

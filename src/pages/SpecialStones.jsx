@@ -34,6 +34,7 @@ import {
  getFilteredSizes,
  useShapes,
  getAllProductFromCategory,
+ homePageCategories,
 } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
@@ -76,6 +77,8 @@ const SpecialStones = ({ windowSize }) => {
  const [isLoadingSelectedItem, setIsLoadingSelectedItem] = useState(false);
  const [sortedColors, setSortedColors] = useState([]);
  const [sortedGroupColors, setSortedGroupColors] = useState([]);
+ const [categories, setCategories] = useState([]);
+ const [catName, setCatName] = useState('');
 
  const formRef = useRef();
  const sizeRef = useRef();
@@ -202,8 +205,11 @@ const SpecialStones = ({ windowSize }) => {
   }
  };
 
- useEffect(() => {
-  document.title = 'Seranoco - Shop By Color';
+ useEffect(async () => {
+  document.title = 'Seranoco - categories';
+  const serverRes = await homePageCategories();
+  setCategories(serverRes.result.data);
+
   handleFetchAllData(id);
   if (itemIds.length > 0) {
    dispatch(productDetailActions.reset());
@@ -212,6 +218,12 @@ const SpecialStones = ({ windowSize }) => {
    abortControllerRef.current.abort();
   };
  }, []);
+
+ useEffect(() => {
+  const categoryName = window.location.href.split('/').at(-1);
+  const foundCategory = categories.find(el => el.id === +categoryName);
+  setCatName(foundCategory);
+ }, [categories]);
 
  //api call
  useEffect(() => {
@@ -381,6 +393,10 @@ const SpecialStones = ({ windowSize }) => {
    setChunkedData(chunks);
   }
  }, [memoizedTableData]);
+  useEffect(() => {
+    console.log(catName)
+  }, [catName])
+  
  return (
   <div className={classes.main}>
    <BannerCarousel />
@@ -393,7 +409,11 @@ const SpecialStones = ({ windowSize }) => {
        <Breadcrumbs
         linkDataProp={[
          { pathname: t('home'), url: ' ' },
-         { pathname: t('shop_by_color'), url: 'shopbyshape' },
+         {
+          pathname:
+           (lng === 'en' ? catName?.name : catName?.name_fa),
+          url: 'shopbyshape',
+         },
         ]}
        />
        {isLoadingColors && <LoadingSpinner />}

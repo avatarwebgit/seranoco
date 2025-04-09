@@ -46,6 +46,9 @@
 }
 .title {
  font-size: 1.5rem;
+ font-family: novares !important;
+  font-weight: 600;
+
 }
 .caption {
  font-size: 0.7rem;

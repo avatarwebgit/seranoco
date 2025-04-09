@@ -11,6 +11,7 @@ import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
 
 import classes from './ResultRow.module.css';
 import { Lock } from '@mui/icons-material';
+import { formatNumber } from '../../utils/helperFunctions';
 const ResultRow = ({ dataProp }) => {
  const [data, setData] = useState(null);
  const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -84,8 +85,8 @@ const ResultRow = ({ dataProp }) => {
        </th>
        <th className={classes.title_text}>{t('size')}</th>
        <th className={classes.title_text}>{t('color')}</th>
+       <th className={classes.title_text}>{t('details')}</th>
        <th className={classes.title_text}>{t('country')}</th>
-       <th className={classes.title_text}>{t('agta')}</th>
        <th className={classes.title_text}>
         {t('price')}&nbsp;1{t('1_pcs')} / {t('m_unit')}
        </th>
@@ -104,7 +105,6 @@ const ResultRow = ({ dataProp }) => {
     <tbody>
      {data &&
       data.map(el => {
-       console.log(el);
        return (
         <tr className={classes.tr} key={el.id} style={{ height: '80px' }}>
          {/* Image Column */}
@@ -131,20 +131,34 @@ const ResultRow = ({ dataProp }) => {
          {/* Color */}
          <td className={classes.detail_text}>{el.color}</td>
          {/* Quality */}
-         <td className={classes.detail_text}>{el.country}</td>
-         {/* Report */}
-         <td className={classes.detail_text}>
-          {el?.attribute?.find(attr => attr.attribute.name === 'AGTA').value.name}
-         </td>
+
          {/* AGTA */}
+         <td className={classes.detail_text}>
+          {
+           el?.attribute?.find(attr => attr.attribute.name === 'Details').value
+            .name
+          }
+         </td>
+         <td className={classes.detail_text}>{el.country}</td>
          {/* Price */}
          <td
           className={classes.detail_text}
           style={{
            direction: lng === 'fa' ? 'rtl' : 'ltr',
           }}>
-          {el.price}
-          &nbsp;{t('m_unit')}
+          {lng === 'en' ? (
+           <>{el.price}{t('m_unit')}</>
+          ) : (
+           <>
+            <>
+             {formatNumber(el.price * euro)}&nbsp;
+             {t('m_unit')}
+            </>
+            <br />
+            (€&nbsp;{el.price})
+           </>
+          )}
+          &nbsp;
          </td>
          {/* Quantity Controls */}
          <td className={classes.detail_text}>
@@ -174,7 +188,17 @@ const ResultRow = ({ dataProp }) => {
           style={{
            direction: lng === 'fa' ? 'rtl' : 'ltr',
           }}>
-          &nbsp;{quantities[el.variation_id] * el.price || 0}&nbsp;
+          &nbsp;
+          {lng === 'en'
+           ? quantities[el.variation_id]
+             ? (+quantities[el.variation_id] * +el.price).toFixed(2)
+             : 0
+           : quantities[el.variation_id]
+           ? formatNumber(
+              Math.round(quantities[el.variation_id] * +el.price * euro),
+             )
+           : 0}
+          &nbsp;
           {t('m_unit')}
          </td>
          {/* Action Button */}
@@ -186,7 +210,9 @@ const ResultRow = ({ dataProp }) => {
              onClick={() => {
               handleAddToCart(el);
              }}>
-             {el?.variation?.quantity === 0 ? t('addtoorder') : t('add_to_card')}
+             {el?.variation?.quantity === 0
+              ? t('addtoorder')
+              : t('add_to_card')}
             </button>
            ) : (
             <button

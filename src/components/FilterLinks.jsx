@@ -6,6 +6,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import CustomSection from '../layout/CustomSection';
 import Link from './Link';
 
+
 import filterByShape from '../assets/images/Shop_by_Shape.webp';
 import filterByColor from '../assets/images/Shop_by-color_1.webp';
 import { homePageCategories } from '../services/api';
@@ -45,19 +46,19 @@ const FilterLinks = () => {
     title={t('new_product')}
     className={classes.new}
     helper_className={classes.helper}
-    hepler_text={t('new_product')}
-    href={'limited-edition'}
+    hepler_text={t('new')}
+    href={'new-products'}
    />
    {}
    {linkData &&
     linkData.map(elem => {
      return (
-      <Link
-       href={`special/${elem.id}`}
-       imgUrl={elem.primary_image}
-       title={lng === 'en' ? elem.name : elem.name_fa}
-       key={nanoid()}
-      />
+       <Link
+        href={`special/${elem.id}`}
+        imgUrl={elem.primary_image}
+        title={lng === 'en' ? elem.name : elem.name_fa}
+        key={nanoid()}
+       />
      );
     })}
   </CustomSection>
