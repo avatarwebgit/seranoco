@@ -43,13 +43,13 @@ const SecondaryPromotionShopCart = () => {
           <p className={classes.caption}>
            {lng === 'fa' ? el.text_fa : el.text}
           </p>
-           <CustomAnimatedBtn
-            className={classes.shop_btn}
-            variant='outlined'
-            type='light' to={el.link}>
-                 {t('shop_now')}
-                
-           </CustomAnimatedBtn>
+          <CustomAnimatedBtn
+           className={classes.shop_btn}
+           variant='outlined'
+           type='light'
+           to={el.link}>
+           {t('more_information')}
+          </CustomAnimatedBtn>
          </span>
         </div>
        </div>

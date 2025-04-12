@@ -65,7 +65,8 @@ tbody tr {
   height: fit-content !important;
   white-space: wrap !important;
   text-align: center !important;
-  word-break: break-all !important;
+  word-break: break-word !important;
+  
 }
 
 .add_to_card,

@@ -119,6 +119,7 @@ const Products = ({ windowSize }) => {
     setProductImages(serverRes.result.product.images);
     setDetailsData(serverRes.result);
     setProductData(serverRes);
+
     if (lng === 'fa') {
      setShape(
       serverRes.result.product_attributes.find(
@@ -184,7 +185,6 @@ const Products = ({ windowSize }) => {
   }
  }, [mainImage, productImages]);
 
-
  const handleSlideClick = index => {
   if (primaryImg.current) {
    primaryImg.current.src = allImages[index];
@@ -241,13 +241,6 @@ const Products = ({ windowSize }) => {
  }, [favorites]);
 
  const handleAddToCart = el => {
-  console.log({
-   ...el,
-   selected_quantity: quantity,
-   euro_price: euro,
-   variation_id: variation,
-   variation: { quantity: el.quantity },
-  });
   dispatch(
    cartActions.add({
     ...el,
@@ -378,6 +371,14 @@ const Products = ({ windowSize }) => {
            </span>
            <span>{size}</span>
           </div>
+          <div>
+           <span>
+            <strong style={{ fontSize: '20px' }}>
+             {t('product.total_height')}
+            </strong>
+           </span>
+           <span>{size}</span>
+          </div>
          </Typography>
         </div>
        ) : (
@@ -406,6 +407,7 @@ const Products = ({ windowSize }) => {
          href={`/${lng}/shopbyshape`}
          variant='h3'>
          {t('serial_number')}&nbsp;:&nbsp;
+         {variationDetail.product.variation.code}
          {detailsData && detailsData.product.product_code}
         </Typography>
        ) : (
@@ -425,7 +427,7 @@ const Products = ({ windowSize }) => {
             color='inherit'
             href={`/${lng}/shopbyshape`}
             variant='h3'>
-            {t('price')}&nbsp;:&nbsp;
+            {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:&nbsp;
            </Typography>
            {detailsData.product.sale_price !== detailsData.product.price && (
             <span
@@ -451,7 +453,7 @@ const Products = ({ windowSize }) => {
             color='inherit'
             href={`/${lng}/shopbyshape`}
             variant='h3'>
-            {t('price')}&nbsp;:&nbsp;
+            {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:&nbsp;
            </Typography>
            {detailsData.product?.sale_price !== detailsData.product?.price && (
             <span
@@ -489,7 +491,7 @@ const Products = ({ windowSize }) => {
               {t('quantity')}&nbsp;:&nbsp;
              </Typography>
              <p className={classes.quantity_text}>{quantity}</p>
-            </div>{' '}
+            </div>
             <span className={classes.btn_wrapper}>
              <button className={classes.quantity_a_b} onClick={handleIncrement}>
               +
@@ -572,7 +574,10 @@ const Products = ({ windowSize }) => {
          }}>
          {lng !== 'fa' ? (
           <div className={classes.payment_ct}>
-           <p className={classes.payment_title}>{t('payment')}:</p>
+           <p className={classes.payment_title}>
+            {t('shopping_cart.total')}&nbsp;
+            {t('payment')}:
+           </p>
            &nbsp;&nbsp;
            <p className={classes.payment_value}>
             {(+detailsData.product.price * quantity).toFixed(2)} {t('m_unit')}
@@ -595,12 +600,12 @@ const Products = ({ windowSize }) => {
              {t('m_unit')}
             </p>
            </span>
-           <span style={{ display: 'flex' }}>
+           {/* <span style={{ display: 'flex' }}>
             <p className={classes.payment_value}>
              مبنا نرخ یورو محاسباتی : {euro}
              {t('m_unit')}
             </p>
-           </span>
+           </span> */}
           </div>
          )}
         </div>

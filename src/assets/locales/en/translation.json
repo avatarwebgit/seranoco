@@ -19,6 +19,8 @@
  "login": "Login",
  "home": "Home",
 
+ "more_information":"More Information",
+
  "shop_by_color": "Shop by Color",
  "shop_by_shape": "Shop by Shape",
  "new_product": "New Products",
@@ -200,7 +202,8 @@
   "removed": "Product Successfully Removed From Favorites",
   "err": "Product Not Added To Favorites Please Try Again.",
   "remove": "Remove From Wish List",
-  "remove_ow": "Remove"
+  "remove_ow": "Remove",
+  "total_height":"Total Height"
  },
 
  "cu": {

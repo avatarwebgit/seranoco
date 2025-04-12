@@ -42,7 +42,7 @@ const PromotionalShopCard = () => {
          variant='outlined'
          type='light'
          to={proData.link}>
-         {t('shop_now')}
+         {t('more_information')}
         </CustomAnimatedBtn>
        </span>
       </div>
