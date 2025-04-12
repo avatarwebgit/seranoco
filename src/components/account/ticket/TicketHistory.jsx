@@ -74,7 +74,7 @@ const TicketHistory = ({ dataProp }) => {
         {allMessages.map(el => {
          return (
           <MessageBox
-           type={'rtl'}
+           type={el.type === 'user' ? 'ltr' : 'rtl'}
            message={el.message}
            time={new Date(el.created_at).toLocaleDateString()}
           />

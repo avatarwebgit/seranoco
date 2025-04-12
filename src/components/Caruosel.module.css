@@ -1,225 +1,222 @@
 @import url(../styles/variables.css);
 
 .slide {
-  height: calc(100vh - var(--top-slider-height)) - 50px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: transparent;
-  padding: 0 !important;
-  margin: 0 !important;
-  position: relative;
+ height: calc(100vh - var(--top-slider-height)) - 50px !important;
+ display: flex !important;
+ align-items: center !important;
+ justify-content: center !important;
+ background-color: transparent;
+ padding: 0 !important;
+ margin: 0 !important;
+ position: relative;
 }
 .top_slider {
-  height: var(--top-slider-height);
-  overflow: hidden;
+ height: var(--top-slider-height);
+ overflow: hidden;
 }
 .banner_img_wrapper {
-  width: 100%;
-  height: var(--top-slider-height);
+ width: 100%;
+ height: var(--top-slider-height);
 }
 .slider_image_wrapper {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+ height: 100vh;
+ width: 100vw;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
 }
 .about_product {
-  /* width: 10vw; */
-  height: 100vh;
-  position: absolute;
-  top: 60%;
-  left: 17%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+ /* width: 10vw; */
+ height: 100vh;
+ position: absolute;
+ top: 60%;
+ left: 17%;
+ transform: translateY(-50%);
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
 }
 .title {
-  font-size: 1.8rem !important;
-  font-weight:600;
-  font-family: novares, Courier, monospace !important;
-  letter-spacing: 1px;
+ font-size: 1.8rem !important;
+ font-family: novares, Courier, monospace !important;
+ letter-spacing: 1px;
 }
 .caption {
-  font-size: 1.1rem !important;
+ font-size: 1.1rem !important;
 }
 .shop_btn {
-  font-size: 0.7rem !important;
-  margin-top: 0.5rem !important;
-  color: #000000 !important;
-  background-color: transparent !important;
-  padding: 8px !important;
-  border: 2px solid black !important;
-  cursor: pointer !important;
-  transition: all 0.25s !important;
-  font-family: EuclidCircular !important;
-  font-weight: 900 !important;
+ font-size: 0.7rem !important;
+ margin-top: 0.5rem !important;
+ color: #000000 !important;
+ background-color: transparent !important;
+ padding: 8px !important;
+ border: 2px solid black !important;
+ cursor: pointer !important;
+ transition: all 0.25s !important;
+ font-family: EuclidCircular !important;
+ font-weight: 900 !important;
 }
 .shop_btn:hover > .box {
-  border: 0.35rem solid white !important;
-  border-image: none;
-  animation: none;
-  transition: all 0.25s;
+ border: 0.35rem solid white !important;
+ border-image: none;
+ animation: none;
+ transition: all 0.25s;
 }
 .product_img_wrapper {
-  position: absolute;
-  width: 17vw;
-  height: 17vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ position: absolute;
+ width: 17vw;
+ height: 17vw;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 .product_img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+ width: 100%;
+ height: 100%;
+ object-fit: contain;
 }
 .thumbs_wrapper {
-  width: 20vw;
-  height: 6rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom:2vh;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ width: 20vw;
+ height: 6rem;
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%);
+ bottom: 2vh;
+ z-index: 10;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 .thumbs_slider {
-  width: fit-content !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center;
+ width: fit-content !important;
+ display: flex !important;
+ align-items: center !important;
+ justify-content: center !important;
+ text-align: center;
 }
 .thumb {
-  width: 50px;
-  transition: all 0.25s;
-  cursor: pointer;
-  padding: 0.3rem;
+ width: 50px;
+ transition: all 0.25s;
+ cursor: pointer;
+ padding: 0.3rem;
 }
 .thumb_img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: all 0.25s;
+ width: 100%;
+ height: 100%;
+ object-fit: contain;
+ transition: all 0.25s;
 }
 .carousel-container {
-  position: relative;
+ position: relative;
 }
 
 .thumbnail-swiper {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
+ position: absolute;
+ bottom: 20px;
+ left: 50%;
+ transform: translateX(-50%);
+ display: flex;
+ justify-content: center;
 }
 
 .thumbnail {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+ transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .thumbnail img {
-  border-radius: 10px;
+ border-radius: 10px;
 }
 
 .thumbnail.active {
-  transform: scale(1.2);
-  opacity: 1;
+ transform: scale(1.2);
+ opacity: 1;
 }
 
 .thumbnail:not(.active) {
-  opacity: 0.5;
+ opacity: 0.5;
 }
 .skeleton_main {
-  width: 100% !important;
-  height: 100vh !important;
+ width: 100% !important;
+ height: 100vh !important;
 }
 .thumbnail-swiper .swiper-slide {
-  display: flex;
-  justify-content: center;
+ display: flex;
+ justify-content: center;
 }
 .thumb_wrapper {
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ height: 60px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 @property --border-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+ syntax: '<angle>';
+ initial-value: 0deg;
+ inherits: false;
 }
 
 @property --angle {
-  syntax: '<angle>';
-  initial-value: 90deg;
-  inherits: true;
+ syntax: '<angle>';
+ initial-value: 90deg;
+ inherits: true;
 }
 
 @property --gradX {
-  syntax: '<percentage>';
-  initial-value: 50%;
-  inherits: true;
+ syntax: '<percentage>';
+ initial-value: 50%;
+ inherits: true;
 }
 
 @property --gradY {
-  syntax: '<percentage>';
-  initial-value: 0%;
-  inherits: true;
+ syntax: '<percentage>';
+ initial-value: 0%;
+ inherits: true;
 }
 @media only screen and (max-width: 480px) {
-  .slider_image_wrapper{
-    height: 30vh;
-  }
-  .thumbs_wrapper {
-    width: 50vw;
-      top: 22%;
-
-  }
-  .thumb {
-    width: 35px;
-  }
-  .product_img_wrapper {
-    width: 70vw;
-    height: 100vh;
-  }
+ .slider_image_wrapper {
+  height: 30vh;
+ }
+ .thumbs_wrapper {
+  width: 50vw;
+  top: 22%;
+ }
+ .thumb {
+  width: 35px;
+ }
+ .product_img_wrapper {
+  width: 70vw;
+  height: 100vh;
+ }
 }
 @media only screen and (min-width: 351px) and (max-width: 768px) {
-  .slider_image_wrapper{
-    height: 30vh;
-  }
-  .thumbs_wrapper {
-    width: 25vw;
-      top: 22%;
-
-  }
-  .thumb {
-    width: 55px;
-  }
-  .product_img_wrapper {
-    width: 30vw;
-    height: 100vh;
-  }
+ .slider_image_wrapper {
+  height: 30vh;
+ }
+ .thumbs_wrapper {
+  width: 25vw;
+  top: 22%;
+ }
+ .thumb {
+  width: 55px;
+ }
+ .product_img_wrapper {
+  width: 30vw;
+  height: 100vh;
+ }
 }
 @media only screen and (min-width: 769px) and (max-width: 1024px) {
-  .thumbs_wrapper {
-    width: 25vw;
-  }
-  .thumb {
-    width: 55px;
-  }
-  .product_img_wrapper {
-    width: 20vw;
-    height: 100vh;
-  }
+ .thumbs_wrapper {
+  width: 25vw;
+ }
+ .thumb {
+  width: 55px;
+ }
+ .product_img_wrapper {
+  width: 20vw;
+  height: 100vh;
+ }
 }
 @media only screen and (min-width: 1025px) and (max-width: 1200px) {
 }

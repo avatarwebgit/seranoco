@@ -465,7 +465,11 @@ const FilterByShape = ({ windowSize }) => {
              checked={selectedIds.includes(slide.id)}
              onChange={e => handleCheckboxChange(e, slide.id)}
             />
-            <p className={classes.color_name}>{slide.description}</p>
+            <p
+             className={classes.color_name}
+             style={{ textAlign: lng !== 'en' ? 'end' : 'start' }}>
+             {lng !== 'fa' ? slide.description : slide.description_fa}
+            </p>
            </div>
           </SwiperSlide>
          ))}
@@ -508,7 +512,6 @@ const FilterByShape = ({ windowSize }) => {
          shapesData
           .sort((a, b) => a.priority - b.priority)
           .map((elem, i) => {
-           console.log(elem);
            return (
             <div key={nanoid()}>
              {elem.image && (

@@ -883,6 +883,18 @@ export const getOrdersStatus = async token => {
  return { response, result };
 };
 
+export const getOrderByStatus = async (token,status) => {
+    const response = await fetch(`${baseUrl}/orders/status/${status}`, {
+  method: 'GET',
+  headers: {
+   'Content-Type': 'application/json',
+   Authorization: `bearer ${token}`,
+  },
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
 export const verifyOTP = async (otp, cellphone) => {
  console.log(otp, cellphone);
  const response = await fetch(`${baseUrl}/verify-otp`, {

@@ -22,6 +22,8 @@ const TableGrid = ({
  const dispatch = useDispatch();
  const { t } = useTranslation();
 
+ const lng = useSelector(state => state.localeStore.lng);
+
  useEffect(() => {
   setIsLoading(isLoadingData);
   if (dataProp) {
@@ -80,7 +82,7 @@ const TableGrid = ({
          src={''}
          style={{ visibility: 'hidden' }}
         />
-         <p>{t('size')}</p>
+        <p>{t('size')}</p>
        </th>
        {data.map(el => {
         return (
@@ -93,7 +95,10 @@ const TableGrid = ({
            loading='lazy'
            alt=''
           />
-          <p>{Object.values(el)[0][0].color}</p>
+          <p>
+           {Object.values(el)[0][0].color}
+           {console.log(Object.values(el)[0][0])}
+          </p>
          </th>
         );
        })}

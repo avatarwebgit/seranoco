@@ -198,7 +198,7 @@ const Ticket = () => {
        {!loadingAllTickets ? (
         allTicketsData &&
         allTicketsData.map((el, i) => {
-         return <TicketHistory dataProp={(i, el)} key={el.id} />;
+         return <TicketHistory dataProp={(i, el)} key={el.id}  />;
         })
        ) : (
                  <div className={classes.loading_wrapper }>

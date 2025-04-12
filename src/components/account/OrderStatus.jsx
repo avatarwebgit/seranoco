@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Wrapper from './Wrapper';
-import TicketHistory from './ticket/TicketHistory';
+import OrderHistory from './orders/OrderHistory';
+
 import Body from '../filters_page/Body';
 import Card from '../filters_page/Card';
 
@@ -11,13 +12,15 @@ import { getOrders, getOrdersStatus } from '../../services/api';
 import classes from './OrderStatus.module.css';
 import { useSelector } from 'react-redux';
 const OrderStatus = () => {
+ const [orders, setOrders] = useState([]);
  const { t } = useTranslation();
 
  const token = useSelector(state => state.userStore.token);
 
  const handleFetchOeders = async () => {
   const serverRes = await getOrders(token);
-  console.log(serverRes);
+     setOrders(serverRes.result.orders);
+     console.log(serverRes.result)
  };
 
  const handleFetchOedersStatus = async () => {
@@ -46,7 +49,9 @@ const OrderStatus = () => {
         </tr>
        </thead>
        <tbody>
-        <TicketHistory />
+        {orders.map((order, i) => {
+         return <OrderHistory dataProp={order} key={order.id} number={i} />;
+        })}
        </tbody>
       </table>
      </Wrapper>

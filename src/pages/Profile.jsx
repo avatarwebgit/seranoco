@@ -70,11 +70,6 @@ const Profile = ({ windowSize }) => {
    title: t('profile.orders'),
    buttons: [
     {
-     id: 'btn4',
-     title: t('profile.pending'),
-     content: '',
-    },
-    {
      id: 'btn45',
      title: t('profile.order_status'),
      content: <OrderStatus />,
