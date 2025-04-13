@@ -7,10 +7,10 @@ import { ReactComponent as Close } from '../../../assets/svg/close.svg';
 
 import { ticketDetail, replyTicket } from '../../../services/api';
 
-import classes from './OrderHistory.module.css';
 import { useSelector } from 'react-redux';
 import { formatNumber } from '../../../utils/helperFunctions';
 import { useTranslation } from 'react-i18next';
+import classes from './OrderHistory.module.css';
 const OrderHistory = ({ dataProp,number }) => {
  const token = useSelector(state => state.userStore.token);
  const euro = useSelector(state => state.cartStore.euro);

@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { accesModalActions, cartActions } from '../../store/store';
+import {
+ accesModalActions,
+ cartActions,
+ drawerActions,
+} from '../../store/store';
 
 import { ReactComponent as Plus } from '../../assets/svg/plus.svg';
 import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
@@ -62,6 +66,7 @@ const ResultRow = ({ dataProp }) => {
  };
 
  const handleAddToCart = el => {
+  dispatch(drawerActions.open());
   dispatch(
    cartActions.add({
     ...el,
@@ -79,7 +84,7 @@ const ResultRow = ({ dataProp }) => {
       <tr>
        <th className={classes.title_text} style={{ opacity: 0 }}>
         {t('type')}
-       </th>{' '}
+       </th>
        <th className={classes.title_text}>
         {t('brand')}&nbsp;/&nbsp;{t('mine')}
        </th>
@@ -147,7 +152,10 @@ const ResultRow = ({ dataProp }) => {
            direction: lng === 'fa' ? 'rtl' : 'ltr',
           }}>
           {lng === 'en' ? (
-           <>{el.price}{t('m_unit')}</>
+           <>
+            {el.price}
+            {t('m_unit')}
+           </>
           ) : (
            <>
             <>

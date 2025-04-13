@@ -387,7 +387,6 @@ const Header = ({ windowSize }) => {
 
                      <div className={classes.link_menu_wrapper}>
                       <div className={classes.link_sub_wrapper}>
-                       {' '}
                        {el.children &&
                         el.children.map(elc => {
                          return (
@@ -400,9 +399,9 @@ const Header = ({ windowSize }) => {
                      </div>
                     </div>
                    );
-                  })}{' '}
+                  })}
                   <div className={classes.mega_img_primary}>
-                   <img src={img} alt='' />
+                   <img src={elem.url} alt='' />
                   </div>
                  </div>
                 </Card>

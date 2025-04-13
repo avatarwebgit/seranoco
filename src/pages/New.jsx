@@ -87,7 +87,6 @@ const New = ({ windowSize }) => {
 
  const lng = useSelector(state => state.localeStore.lng);
 
- const itemIds = useSelector(state => state.detailsStore.itemIds);
 
  const handlePrev = useCallback(() => {
   if (!sliderRef.current) return;

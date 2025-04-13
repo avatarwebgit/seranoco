@@ -37,13 +37,12 @@ const CustomAnimatedBtn = ({ children, type = 'dark', to }) => {
       y='-50%'
       width='200%'
       height='200%'>
-      <feGaussianBlur in='SourceGraphic' stdDeviation='5' result='blur5' />
+      <feGaussianBlur in='SourceGraphic' stdDeviation='2' result='blur2' />
+      <feGaussianBlur in='SourceGraphic' stdDeviation='4' result='blur4' />
+      <feGaussianBlur in='SourceGraphic' stdDeviation='6' result='blur6' />
+      <feGaussianBlur in='SourceGraphic' stdDeviation='8' result='blur8' />
       <feGaussianBlur in='SourceGraphic' stdDeviation='10' result='blur10' />
-      <feGaussianBlur in='SourceGraphic' stdDeviation='20' result='blur20' />
-      <feGaussianBlur in='SourceGraphic' stdDeviation='30' result='blur30' />
-      <feGaussianBlur in='SourceGraphic' stdDeviation='50' result='blur50' />
-      <feGaussianBlur in='SourceGraphic' stdDeviation='70' result='blur50' />
-      <feGaussianBlur in='SourceGraphic' stdDeviation='70' result='blur100' />
+      <feGaussianBlur in='SourceGraphic' stdDeviation='12' result='blur12' />
 
       <feMerge result='blur-merged'>
        <feMergeNode in='blur10' />
@@ -58,10 +57,10 @@ const CustomAnimatedBtn = ({ children, type = 'dark', to }) => {
        result='red-blur'
        in='blur-merged'
        type='matrix'
-       values='1 0 0 0 0 0 0
-                      0 0.06 0 0 0 0 0
-                      0 0 0.44 0 0 0 0
-                      0 0 0 1 0 0 0'
+       values='0.5 0 0 0 0
+          0 0.5 0 0 0
+          0 0 0.5 0 0
+          0 0 0 1 0'
       />
       <feMerge>
        <feMergeNode in='red-blur' />

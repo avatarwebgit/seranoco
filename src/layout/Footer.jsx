@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { basicInformation } from '../services/api';
 
-import logo from '../assets/svg/Serano-Logo - white.svg';
 import Body from '../components/filters_page/Body';
 import Card from '../components/filters_page/Card';
+
+import logo from '../assets/images/footer-logo.png'
 
 import classes from './Footer.module.css';
 import {
@@ -31,6 +32,11 @@ const Footer = () => {
     fetchFooterLinks();
   }, []);
 
+  useEffect(() => {
+    console.log(footerData)
+  }, [footerData])
+  
+
   const getKeys = (data, dataKey) => {
     const keys = Object.keys(data).filter(key => {
       const startsWithPrefix = key.startsWith(dataKey);
@@ -54,14 +60,14 @@ const Footer = () => {
                 <a href={`/${lng}/`} className={classes.image_wrapper}>
                   <img
                     className={classes.footer_logo}
-                    src={footerData.image_white}
+                    src={logo}
                     alt=''
                   />
                 </a>
                 <div className={classes.links}>
-                  <span>
+                  {/* <span>
                     <p className={classes.title}>{footerData.footer_5}</p>
-                  </span>
+                  </span> */}
                   <span>
                     <p className={classes.title}>{footerData.footer_1}</p>
                     {getKeys(footerData, 'footer_')}

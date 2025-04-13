@@ -51,14 +51,15 @@ const FilterLinks = () => {
    />
    {}
    {linkData &&
-    linkData.map(elem => {
+       linkData.map(elem => {
+      console.log(elem)
      return (
-       <Link
-        href={`special/${elem.id}`}
-        imgUrl={elem.primary_image}
-        title={lng === 'en' ? elem.name : elem.name_fa}
-        key={nanoid()}
-       />
+      <Link
+       href={`special/${elem.id}`}
+       imgUrl={elem.banner_image}
+       title={lng === 'en' ? elem.name : elem.name_fa}
+       key={nanoid()}
+      />
      );
     })}
   </CustomSection>
