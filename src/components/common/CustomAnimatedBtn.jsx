@@ -41,16 +41,16 @@ const CustomAnimatedBtn = ({ children, type = 'dark', to }) => {
       <feGaussianBlur in='SourceGraphic' stdDeviation='4' result='blur4' />
       <feGaussianBlur in='SourceGraphic' stdDeviation='6' result='blur6' />
       <feGaussianBlur in='SourceGraphic' stdDeviation='8' result='blur8' />
-      <feGaussianBlur in='SourceGraphic' stdDeviation='10' result='blur10' />
-      <feGaussianBlur in='SourceGraphic' stdDeviation='12' result='blur12' />
+      <feGaussianBlur in='SourceGraphic' stdDeviation='10' result='blur8' />
+      <feGaussianBlur in='SourceGraphic' stdDeviation='8' result='blur8' />
 
       <feMerge result='blur-merged'>
        <feMergeNode in='blur10' />
        <feMergeNode in='blur20' />
-       <feMergeNode in='blur30' />
+       {/* <feMergeNode in='blur30' />
+       <feMergeNode in='blur40' />
        <feMergeNode in='blur50' />
-       <feMergeNode in='blur70' />
-       <feMergeNode in='blur100' />
+       <feMergeNode in='blur100' /> */}
       </feMerge>
 
       <feColorMatrix

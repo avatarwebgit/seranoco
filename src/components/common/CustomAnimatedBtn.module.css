@@ -29,8 +29,8 @@
  top: 50%;
  left: 50%;
  transform: translate(-50%, -50%);
- font-size:25px;
+ font-size:26px;
  white-space: nowrap;
  font-weight: bold;
- font-family: EuclidCircular,sans-serif !important;
+ /* font-family: EuclidCircular,sans-serif !important; */
 }
