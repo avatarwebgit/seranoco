@@ -237,6 +237,7 @@ const PayByCart = ({ widnowSize }) => {
         error={isError && !date}
         value={selectedDate}
         className='calendar_parent'
+        ref={inputRef}
        />
        <TextField
         id='recNo'

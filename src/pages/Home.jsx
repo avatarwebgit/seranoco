@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Carousel from '../components/Carousel';
 import Header from '../layout/Header';
@@ -10,11 +10,20 @@ import Guid from '../components/Guid';
 import classes from './Home.module.css';
 import BannerCarousel from '../components/BannerCarousel';
 import SecondaryPromotionShopCart from '../components/SecondaryPromotionShopCart';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useUser } from '../services/api';
+import { favoriteActions } from '../store/store';
 const Home = ({ windowSize }) => {
+ const dispatch = useDispatch();
  const token = useSelector(state => state.userStore.token);
- const { data, error, isLoading } = useUser(token);
+    const { data, error, isLoading } = useUser(token);
+
+ useEffect(() => {
+     if (data) {
+      console.log(data)
+   dispatch(favoriteActions.setCount(data.user.FavoriteCount));
+  }
+ }, [data]);
 
  return (
   <section className={classes.home}>

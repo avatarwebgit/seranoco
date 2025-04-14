@@ -1,0 +1,69 @@
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getAdminCreatedPageDetails, getSingleArticles, useUser } from '../services/api';
+
+import Header from '../layout/Header';
+import Footer from '../layout/Footer';
+import Body from '../components/filters_page/Body';
+import Card from '../components/filters_page/Card';
+import BannerCarousel from '../components/BannerCarousel';
+
+import Breadcrumbs from '../components/common/Breadcrumbs';
+import { useTranslation } from 'react-i18next';
+
+import { useParams } from 'react-router-dom';
+import classes from './AdminPanelPage.module.css';
+const SingleBlog = ({ windowSize }) => {
+ const [blogData, setblogData] = useState(null);
+ const lng = useSelector(state => state.localeStore.lng);
+ const { t } = useTranslation();
+ const { alias } = useParams();
+
+ const getArticle = async () => {
+   const serverRes = await getAdminCreatedPageDetails(alias);
+   console.log(serverRes)
+  setblogData(serverRes.result.data);
+ };
+
+ useEffect(() => {
+  getArticle();
+ }, [alias]);
+
+ return (
+  <section className={classes.home}>
+   <BannerCarousel />
+   <Header windowSize={windowSize} />
+   {blogData && (
+    <div dir={`${lng === 'fa' ? 'rtl' : 'ltr'}`}>
+     <Body>
+      <Card className={classes.card}>
+       <Breadcrumbs
+        linkDataProp={[
+         { pathname: t('home'), url: ' ' },
+         { pathname: t('blog'), url: 'blog' },
+        ]}
+       />
+       <div className={classes.top_wrapper}>
+        <div className={classes.img_wrapper}>
+         <img src={blogData.image} alt={blogData.alt} />
+        </div>
+        <div className={classes.close_caption}>
+         <h2>{blogData.title}</h2>
+         <p>{blogData.shortDescription}</p>
+        </div>
+       </div>
+
+       <div
+        className={classes.text}
+        style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}
+        dangerouslySetInnerHTML={{ __html: blogData.description }}></div>
+      </Card>
+     </Body>
+    </div>
+   )}
+   <Footer windowSize={windowSize} />
+  </section>
+ );
+};
+
+export default SingleBlog;

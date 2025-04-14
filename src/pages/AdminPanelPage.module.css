@@ -1,0 +1,88 @@
+.card {
+ display: flex;
+ flex-direction: column;
+}
+
+.img_wrapper {
+ height: 50vh;
+ width: 50%;
+}
+
+.img_wrapper img {
+ height: 100%;
+ width: 100%;
+ object-fit: cover;
+}
+
+.top_wrapper {
+ display: flex;
+ flex-direction: row-reverse;
+ justify-content: space-between;
+}
+
+.close_caption {
+ padding: 15px 0;
+ width: 40%;
+}
+
+.close_caption h2 {
+ margin-top: 15px;
+ color: rgb(22, 22, 22);
+}
+
+.close_caption p {
+ font-size: 20px;
+ padding: 15px;
+}
+
+.text {
+ margin-top: 1rem;
+ width: 100%;
+ text-align: justify;
+ font-size: 18px;
+}
+
+@media only screen and (max-width: 480px) {
+ .top_wrapper {
+  flex-direction: column;
+ }
+ .img_wrapper,
+ .close_caption {
+  width: 100%;
+  padding: 0;
+ }
+ .close_caption h2 {
+  padding: 0;
+  margin-top: 15px;
+ }
+ .close_caption p {
+  padding: 15px;
+ }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+ .top_wrapper {
+  flex-direction: column;
+ }
+ .img_wrapper,
+ .close_caption {
+  width: 100%;
+  padding: 0;
+ }
+ .close_caption h2 {
+  padding: 0;
+  margin-top: 15px;
+ }
+ .close_caption p {
+  padding: 15px;
+ }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+
+@media only screen and (min-width: 1201px) {
+}

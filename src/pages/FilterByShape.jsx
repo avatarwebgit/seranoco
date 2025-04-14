@@ -1,8 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+ useCallback,
+ useEffect,
+ useMemo,
+ useRef,
+ useState,
+} from 'react';
 import BannerCarousel from '../components/BannerCarousel';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { useTranslation } from 'react-i18next';
-import { FormControl, InputLabel, MenuItem, Pagination as PaginationComponent, Select, Typography } from '@mui/material';
+import {
+ FormControl,
+ InputLabel,
+ MenuItem,
+ Pagination as PaginationComponent,
+ Select,
+ Typography,
+} from '@mui/material';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +31,15 @@ import Divider from '../components/filters_page/Divider';
 
 import { productDetailActions } from '../store/store';
 
-import { getFilteredSizes, getProduct, useShapes, useColors, getProductsByShape, getProductDetailsWithId, getAllAtrributes } from '../services/api';
+import {
+ getFilteredSizes,
+ getProduct,
+ useShapes,
+ useColors,
+ getProductsByShape,
+ getProductDetailsWithId,
+ getAllAtrributes,
+} from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
 import { scrollToTarget } from '../utils/helperFunctions';
@@ -50,7 +71,8 @@ const FilterByShape = ({ windowSize }) => {
  const [isSmallPage, setIsSmallPage] = useState(false);
  const [page, setPage] = useState(1);
  const [lastPage, setLastPage] = useState(null);
- const [isFilteredProductsLoading, setIsFilteredProductsLoading] = useState(false);
+ const [isFilteredProductsLoading, setIsFilteredProductsLoading] =
+  useState(false);
  const [ItemsPerPage, setItemsPerPage] = useState(10);
  const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(1);
  const [tableData, setTableData] = useState([]);
@@ -113,7 +135,9 @@ const FilterByShape = ({ windowSize }) => {
 
  const handleThumbClick = groupId => {
   setCurrentActiveGroupColor(groupId);
-  const firstMatchingSlideIndex = colorData.findIndex(slide => slide.group_id === groupId);
+  const firstMatchingSlideIndex = colorData.findIndex(
+   slide => slide.group_id === groupId,
+  );
 
   if (sliderRef.current && firstMatchingSlideIndex !== -1) {
    sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
@@ -148,7 +172,9 @@ const FilterByShape = ({ windowSize }) => {
 
  useEffect(() => {
   if (colorData && groupColors) {
-   const sortedGroupColorsP = groupColors.sort((a, b) => a.priority - b.priority);
+   const sortedGroupColorsP = groupColors.sort(
+    (a, b) => a.priority - b.priority,
+   );
    setSortedGroupColors(sortedGroupColorsP);
    setSortedColors(
     colorData.sort((a, b) => {
@@ -215,19 +241,38 @@ const FilterByShape = ({ windowSize }) => {
   }
  }, [selectedIds]);
 
- const handleGetFilterProducts = async (shape_id = shapeFormEntries, size_ids = dimensionEntries, color_ids = selectedIds, page = 1, per_page = ItemsPerPage) => {
+ const handleGetFilterProducts = async (
+  shape_id = shapeFormEntries,
+  size_ids = dimensionEntries,
+  color_ids = selectedIds,
+  page = 1,
+  per_page = ItemsPerPage,
+ ) => {
   setIsFilteredProductsLoading(true);
   try {
-   const serverRes = await getProduct(shape_id, size_ids, color_ids, page, per_page, {
-    signal: abortControllerRef.current.signal,
-   });
+   const serverRes = await getProduct(
+    shape_id,
+    size_ids,
+    color_ids,
+    page,
+    per_page,
+    {
+     signal: abortControllerRef.current.signal,
+    },
+   );
    if (serverRes.response.ok) {
     setLastPage(serverRes.result.data.last_page);
     setPage(serverRes.result.data.current_page);
     setProductDetails((prevData = []) => {
-     const newItems = Array.isArray(serverRes.result.data.data) ? serverRes.result.data.data : [];
-     const updatedData = prevData.filter(prevItem => newItems.some(newItem => newItem.id === prevItem.id));
-     const filteredNewItems = newItems.filter(newItem => !prevData.some(prevItem => prevItem.id === newItem.id));
+     const newItems = Array.isArray(serverRes.result.data.data)
+      ? serverRes.result.data.data
+      : [];
+     const updatedData = prevData.filter(prevItem =>
+      newItems.some(newItem => newItem.id === prevItem.id),
+     );
+     const filteredNewItems = newItems.filter(
+      newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
+     );
      return [...updatedData, ...filteredNewItems];
     });
    }
@@ -283,7 +328,11 @@ const FilterByShape = ({ windowSize }) => {
   }
 
   if (itemIds.length === 0) {
-   if (JSON.stringify(dimensionEntries) !== JSON.stringify(prevDimensionEntriesRef.current) || JSON.stringify(selectedIds) !== JSON.stringify(prevSelectedIdsRef.current)) {
+   if (
+    JSON.stringify(dimensionEntries) !==
+     JSON.stringify(prevDimensionEntriesRef.current) ||
+    JSON.stringify(selectedIds) !== JSON.stringify(prevSelectedIdsRef.current)
+   ) {
     prevDimensionEntriesRef.current = dimensionEntries;
     prevSelectedIdsRef.current = selectedIds;
    }
@@ -330,16 +379,34 @@ const FilterByShape = ({ windowSize }) => {
  }, [windowSize]);
 
  const handlePaginationChange = (e, value, itemsPerPage) => {
-  handleGetFilterProducts(shapeFormEntries, Object.keys(dimensionEntries), selectedIds, value, itemsPerPage);
+  handleGetFilterProducts(
+   shapeFormEntries,
+   Object.keys(dimensionEntries),
+   selectedIds,
+   value,
+   itemsPerPage,
+  );
   scrollToTarget(productsWrapperRef);
  };
 
- const handleFetchTableData = async (shpaId, colorIds, page, per_page, signal) => {
+ const handleFetchTableData = async (
+  shpaId,
+  colorIds,
+  page,
+  per_page,
+  signal,
+ ) => {
   abortControllerRef.current.abort();
   abortControllerRef.current = new AbortController();
   setIsTableDataLoading(true);
   try {
-   const serverRes = await getProductsByShape(shpaId, colorIds, page, per_page, { signal: abortControllerRef.current.signal });
+   const serverRes = await getProductsByShape(
+    shpaId,
+    colorIds,
+    page,
+    per_page,
+    { signal: abortControllerRef.current.signal },
+   );
 
    if (serverRes.response.ok) {
     setTableData(serverRes.result.data);
@@ -374,7 +441,8 @@ const FilterByShape = ({ windowSize }) => {
    {
     <Body>
      {
-      <Card className={`${classes.multi_select_wrapper} ${classes.colors_wrapper}`}>
+      <Card
+       className={`${classes.multi_select_wrapper} ${classes.colors_wrapper}`}>
        <Breadcrumbs
         linkDataProp={[
          { pathname: t('home'), url: ' ' },
@@ -409,7 +477,9 @@ const FilterByShape = ({ windowSize }) => {
      {shapeFormEntries && <Divider text={'Colors'} />}
      {
       <Card className={`${classes.size_wrapper} ${classes.colors_wrapper}`}>
-       {!shapeFormEntries && shapesData?.length > 0 && <p className={classes.alert}>{t('select_shape')}</p>}
+       {!shapeFormEntries && shapesData?.length > 0 && (
+        <p className={classes.alert}>{t('select_shape')}</p>
+       )}
        {isLoadingColors && <LoadingSpinner />}
        {colorData?.length > 9 && shapeFormEntries && (
         <>
@@ -446,13 +516,31 @@ const FilterByShape = ({ windowSize }) => {
          sortedColors.map((slide, index) => (
           <SwiperSlide key={index} className={classes.slide}>
            <div>
-            <label htmlFor={slide.id} className={`${classes.color_slider_label} `}>
+            <label
+             htmlFor={slide.id}
+             className={`${classes.color_slider_label} `}>
              <div className={classes.slider_image_wrapper}>
-              <img src={slide.image} alt='' className={classes.slider_img} loading='lazy' />
+              <img
+               src={slide.image}
+               alt=''
+               className={classes.slider_img}
+               loading='lazy'
+              />
              </div>
             </label>
-            <input type='checkbox' name={slide.id} id={slide.id} className={classes.slider_input} checked={selectedIds.includes(slide.id)} onChange={e => handleCheckboxChange(e, slide.id, slide)} />
-            <p className={classes.color_name}>{slide.description}</p>
+            <input
+             type='checkbox'
+             name={slide.id}
+             id={slide.id}
+             className={classes.slider_input}
+             checked={selectedIds.includes(slide.id)}
+             onChange={e => handleCheckboxChange(e, slide.id, slide)}
+            />
+            <p
+             className={classes.color_name}
+             style={{ textAlign: lng === 'en' ? 'left' : 'right' }}>
+             {lng === 'en' ? slide.description : slide.description_fa}
+            </p>
            </div>
           </SwiperSlide>
          ))}
@@ -463,9 +551,19 @@ const FilterByShape = ({ windowSize }) => {
          sortedGroupColors.map((slide, index) => {
           return (
            <>
-            <div key={index} className={`${classes.thumbnail} ${currentActiveGroupColor === slide.id && classes.thumbnail_active}`}>
+            <div
+             key={index}
+             className={`${classes.thumbnail} ${
+              currentActiveGroupColor === slide.id && classes.thumbnail_active
+             }`}>
              <div className={classes.slider_thumb_wrapper}>
-              <img src={slide.image} className={classes.slider_thumb_img} alt='' onClick={() => handleThumbClick(slide.id)} loading='lazy' />
+              <img
+               src={slide.image}
+               className={classes.slider_thumb_img}
+               alt=''
+               onClick={() => handleThumbClick(slide.id)}
+               loading='lazy'
+              />
              </div>
             </div>
            </>
@@ -535,7 +633,13 @@ const FilterByShape = ({ windowSize }) => {
         {memoizedChunkedData.map((el, i) => {
          return (
           <SwiperSlide key={i}>
-           <TableGrid dataProp={el} sizeProp={sizeData} selectedSizeProp={selectedSizesObject} isLoadingData={isLoadingSelectedItem} isSmall={isSmallPage} />
+           <TableGrid
+            dataProp={el}
+            sizeProp={sizeData}
+            selectedSizeProp={selectedSizesObject}
+            isLoadingData={isLoadingSelectedItem}
+            isSmall={isSmallPage}
+           />
           </SwiperSlide>
          );
         })}
@@ -543,51 +647,55 @@ const FilterByShape = ({ windowSize }) => {
       )}
      </Card>
      {shapeFormEntries && productDetails && (
-      <Card className={classes.products_result_wrapper} ref={productsWrapperRef}>
-       {lastPage > 1 && productDetails.length > 0 && !memoizedItemIds.length > 0 && (
-        <div
-         className={classes.pagination_wrapper}
-         style={{
-          alignSelf: lng === 'fa' ? 'flex-start' : 'flex-end',
-          direction: lng === 'fa' ? 'rtl' : 'ltr',
-          marginBottom: '2rem',
-         }}>
-         <InputLabel sx={{ fontSize: '.8rem' }} id='demo-simple-select-label'>
-          {t('items_per_page')}
-         </InputLabel>
-         <FormControl>
-          <Select
-           labelId='demo-simple-select-label'
-           id='demo-simple-select'
-           value={ItemsPerPage}
-           label='Age'
-           onChange={e => {
-            setItemsPerPage(e.target.value);
-            handlePaginationChange(e, page, +e.target.value);
-           }}
-           sx={{
-            borderRadius: '5px',
-            '.MuiOutlinedInput-notchedOutline': {
-             border: 'none',
-            },
-            '&:focus': { outline: 'none', boxShadow: 'none' },
-           }}>
-           <MenuItem value={5}>
-            <Typography sx={{ fontSize: '.8rem' }}>&nbsp;5&nbsp;</Typography>
-           </MenuItem>
-           <MenuItem value={10}>
-            <Typography sx={{ fontSize: '.8rem' }}>&nbsp; 10&nbsp;</Typography>
-           </MenuItem>
-           <MenuItem value={15}>
-            <Typography sx={{ fontSize: '.8rem' }}>&nbsp; 15&nbsp;</Typography>
-           </MenuItem>
-           <MenuItem value={20}>
-            <Typography sx={{ fontSize: '.8rem' }}>&nbsp; 20&nbsp;</Typography>
-           </MenuItem>
-          </Select>
-         </FormControl>
-        </div>
-       )}
+      <Card
+       className={classes.products_result_wrapper}
+       ref={productsWrapperRef}>
+       {lastPage > 1 &&
+        productDetails.length > 0 &&
+        !memoizedItemIds.length > 0 && (
+         <div
+          className={classes.pagination_wrapper}
+          style={{
+           alignSelf: lng === 'fa' ? 'flex-start' : 'flex-end',
+           direction: lng === 'fa' ? 'rtl' : 'ltr',
+           marginBottom: '2rem',
+          }}>
+          <InputLabel sx={{ fontSize: '.8rem' }} id='demo-simple-select-label'>
+           {t('items_per_page')}
+          </InputLabel>
+          <FormControl>
+           <Select
+            labelId='demo-simple-select-label'
+            id='demo-simple-select'
+            value={ItemsPerPage}
+            label='Age'
+            onChange={e => {
+             setItemsPerPage(e.target.value);
+             handlePaginationChange(e, page, +e.target.value);
+            }}
+            sx={{
+             borderRadius: '5px',
+             '.MuiOutlinedInput-notchedOutline': {
+              border: 'none',
+             },
+             '&:focus': { outline: 'none', boxShadow: 'none' },
+            }}>
+            <MenuItem value={5}>
+             <Typography sx={{ fontSize: '.8rem' }}>&nbsp;5&nbsp;</Typography>
+            </MenuItem>
+            <MenuItem value={10}>
+             <Typography sx={{ fontSize: '.8rem' }}>&nbsp; 10&nbsp;</Typography>
+            </MenuItem>
+            <MenuItem value={15}>
+             <Typography sx={{ fontSize: '.8rem' }}>&nbsp; 15&nbsp;</Typography>
+            </MenuItem>
+            <MenuItem value={20}>
+             <Typography sx={{ fontSize: '.8rem' }}>&nbsp; 20&nbsp;</Typography>
+            </MenuItem>
+           </Select>
+          </FormControl>
+         </div>
+        )}
 
        {windowSize === 'm' || windowSize === 'l' || windowSize === 'xl' ? (
         <>
@@ -602,31 +710,35 @@ const FilterByShape = ({ windowSize }) => {
         </>
        )}
        {isFilteredProductsLoading && <LoadingSpinner />}
-       {lastPage > 1 && productDetails.length > 0 && !memoizedItemIds.length > 0 && (
-        <div
-         className={classes.pagination_wrapper}
-         style={{
-          alignSelf: lng === 'fa' ? 'flex-start' : 'flex-end',
-          direction: lng === 'fa' ? 'rtl' : 'ltr',
-         }}>
-         <p className={classes.pagination_text}>{t('page')} :</p>
-         <PaginationComponent
-          count={lastPage}
-          page={page}
-          onChange={e => handlePaginationChange(e, e.target.value, ItemsPerPage)}
-          hideNextButton
-          hidePrevButton
-          variant='text'
-          className={classes.pagination_component}
-          size='small'
-          sx={{
-           '& .MuiPaginationItem-root': {
-            fontSize: '0.7rem',
-           },
-          }}
-         />
-        </div>
-       )}
+       {lastPage > 1 &&
+        productDetails.length > 0 &&
+        !memoizedItemIds.length > 0 && (
+         <div
+          className={classes.pagination_wrapper}
+          style={{
+           alignSelf: lng === 'fa' ? 'flex-start' : 'flex-end',
+           direction: lng === 'fa' ? 'rtl' : 'ltr',
+          }}>
+          <p className={classes.pagination_text}>{t('page')} :</p>
+          <PaginationComponent
+           count={lastPage}
+           page={page}
+           onChange={e =>
+            handlePaginationChange(e, e.target.value, ItemsPerPage)
+           }
+           hideNextButton
+           hidePrevButton
+           variant='text'
+           className={classes.pagination_component}
+           size='small'
+           sx={{
+            '& .MuiPaginationItem-root': {
+             fontSize: '0.7rem',
+            },
+           }}
+          />
+         </div>
+        )}
       </Card>
      )}
     </Body>

@@ -4,19 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 import Loading from './layout/Loading';
-import {
- cartActions,
-} from './store/store';
+import { cartActions } from './store/store';
 
 import FixedNavigation from './layout/FixedNavigation';
 import Drawer from './layout/Drawer';
 
 import './App.css';
 
-import {
- useBasicInformation,
- useUser,
-} from './services/api';
+import { useBasicInformation, useUser } from './services/api';
 import { useTranslation } from 'react-i18next';
 function App() {
  const [windowSize, setWindowSize] = useState(() => {
@@ -43,13 +38,12 @@ function App() {
  const Ticket = React.lazy(() => import('./pages/Ticket'));
  const Blog = React.lazy(() => import('./pages/Blog'));
  const SingleBlog = React.lazy(() => import('./pages/SingleBlog'));
+ const Page = React.lazy(() => import('./pages/AdminPanlePage'));
 
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
 
  const { t } = useTranslation();
-
- const { data: userData, isLoading } = useUser(token);
 
  const { data: basicData, isLoading: basicDataIsloading } =
   useBasicInformation();
@@ -159,13 +153,14 @@ function App() {
      path={`/:lng/support`}
      element={<Ticket windowSize={windowSize} />}
     />
-    <Route
-     path={`/:lng/Blog`}
-     element={<Blog windowSize={windowSize} />}
-    />
+    <Route path={`/:lng/Blog`} element={<Blog windowSize={windowSize} />} />
     <Route
      path={`/:lng/Blog/:alias`}
      element={<SingleBlog windowSize={windowSize} />}
+    />
+    <Route
+     path={`/:lng/page/:alias`}
+     element={<Page windowSize={windowSize} />}
     />
 
     <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />

@@ -19,6 +19,7 @@ import { formatNumber, notify } from '../utils/helperFunctions';
 
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
 import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
+import { ReactComponent as Shop } from '../assets/svg/add_basket.svg';
 
 import {
  addToFavorite,
@@ -34,8 +35,6 @@ import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
 
 import classes from './Products.module.css';
-import { Lock } from '@mui/icons-material';
-
 const Products = ({ windowSize }) => {
  const { id, variation } = useParams();
 
@@ -50,6 +49,7 @@ const Products = ({ windowSize }) => {
  const [details, setDetails] = useState('');
  const [color, setColor] = useState('');
  const [size, setSize] = useState('');
+ const [height, setHeight] = useState(0);
  const [isByOrder, setIsByOrder] = useState(false);
  const [variationDetail, setVariationDetail] = useState(null);
  const [productImages, setProductImages] = useState(null);
@@ -105,13 +105,13 @@ const Products = ({ windowSize }) => {
   const getDetails = async () => {
    const serverRes = await getProductDetails(id, token);
    const variationRes = await getProductDetailsWithId(variation, token);
-
+   console.log(serverRes, variationRes);
    if (variationRes.response.ok) {
     setVariationDetail(variationRes.result);
     if (variationRes.result.product.variation.quantity === 0) {
      setIsByOrder(true);
     }
-
+    setHeight(variationRes.result.product.variation.height);
     setSize(variationRes?.result?.product?.size);
    }
    if (serverRes.response.ok) {
@@ -371,14 +371,6 @@ const Products = ({ windowSize }) => {
            </span>
            <span>{size}</span>
           </div>
-          <div>
-           <span>
-            <strong style={{ fontSize: '20px' }}>
-             {t('product.total_height')}
-            </strong>
-           </span>
-           <span>{size}</span>
-          </div>
          </Typography>
         </div>
        ) : (
@@ -399,6 +391,25 @@ const Products = ({ windowSize }) => {
           earum.
          </p>
         </Typography>
+       )}
+
+       {detailsData ? (
+        <Typography
+         className={classes.product_serial}
+         color='inherit'
+         href={`/${lng}/shopbyshape`}
+         variant='h3'>
+         {t('product.total_height')}&nbsp;:&nbsp;
+         {height}
+         {}
+        </Typography>
+       ) : (
+        <Skeleton
+         variant='text'
+         sx={{ width: '10rem' }}
+         animation='wave'
+         className={classes.product_serial}
+        />
        )}
        {detailsData ? (
         <Typography
@@ -427,9 +438,9 @@ const Products = ({ windowSize }) => {
             color='inherit'
             href={`/${lng}/shopbyshape`}
             variant='h3'>
-            {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:&nbsp;
+            {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:
            </Typography>
-           {detailsData.product.sale_price !== detailsData.product.price && (
+           {detailsData.product.sale_price === detailsData.product.price && (
             <span
              className={classes.prev_price}
              style={{
@@ -441,7 +452,7 @@ const Products = ({ windowSize }) => {
              €&nbsp;{detailsData && detailsData.product.sale_price}
             </span>
            )}
-           &nbsp;&nbsp;
+           &nbsp;
            <p className={classes.current_price}>
             {detailsData && detailsData.product.price}&nbsp;€
            </p>
@@ -453,9 +464,9 @@ const Products = ({ windowSize }) => {
             color='inherit'
             href={`/${lng}/shopbyshape`}
             variant='h3'>
-            {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:&nbsp;
+            {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:
            </Typography>
-           {detailsData.product?.sale_price !== detailsData.product?.price && (
+           {detailsData.product?.sale_price === detailsData.product?.price && (
             <span
              className={classes.prev_price}
              style={{
@@ -464,13 +475,14 @@ const Products = ({ windowSize }) => {
              <p className={classes.off_text}>
               {detailsData.product.percent_sale_price}%
              </p>
-             تومان&nbsp;
+             &nbsp;
              {detailsData && detailsData.product?.sale_price * euro}
+             {t('m_unit')}
             </span>
            )}
-           &nbsp;&nbsp;
+           &nbsp;
            <p className={classes.current_price}>
-            {detailsData && detailsData?.product.price * euro}
+            {detailsData && formatNumber(detailsData?.product.price * euro)}
             تومان
            </p>
           </>
@@ -488,18 +500,40 @@ const Products = ({ windowSize }) => {
               color='inherit'
               href={`/${lng}/shopbyshape`}
               variant='h3'>
-              {t('quantity')}&nbsp;:&nbsp;
+              {t('quantity')}&nbsp;
              </Typography>
-             <p className={classes.quantity_text}>{quantity}</p>
+             <div className={classes.divider} />
+             <input
+              className={classes.quantity_text}
+              value={quantity}
+              onChange={e => setQuantity(e.target.value)}
+              type='number'
+              step='1'
+              inputMode='numeric'
+              pattern='\d*'
+              min='1'
+              onInput={e => {
+               e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
+              onKeyPress={e => {
+               if (e.charCode < 48 || e.charCode > 57) {
+                e.preventDefault();
+               }
+              }}
+              onBlur={e => {
+               e.target.value = Math.floor(e.target.value);
+               setQuantity(e.target.value);
+              }}
+             />
             </div>
-            <span className={classes.btn_wrapper}>
+            {/* <span className={classes.btn_wrapper}>
              <button className={classes.quantity_a_b} onClick={handleIncrement}>
               +
              </button>
              <button className={classes.quantity_a_b} onClick={handleDecrement}>
               -
              </button>
-            </span>
+            </span> */}
            </div>
           ) : (
            <Skeleton
@@ -524,45 +558,65 @@ const Products = ({ windowSize }) => {
           </div>
          </div>
 
-         {isFavorite ? (
-          <>
-           <IconButton
-            className={classes.wish_list}
-            onClick={handleRemoveToFavorites}>
-            <HeartRed width={15} height={15} />
-            <p>{t('product.remove')}</p>
-           </IconButton>
-          </>
-         ) : (
+         {!token && (
           <IconButton
            className={classes.wish_list}
-           onClick={handleAddToFavorites}>
+           onClick={() => {
+            dispatch(accesModalActions.login());
+           }}>
            <Heart width={15} height={15} />
            <p>{t('add_to_favorite')}</p>
           </IconButton>
          )}
+
+         {token && (
+          <>
+           {isFavorite ? (
+            <>
+             <IconButton
+              className={classes.wish_list}
+              onClick={handleRemoveToFavorites}>
+              <HeartRed width={15} height={15} />
+              <p>{t('product.remove')}</p>
+             </IconButton>
+            </>
+           ) : (
+            <IconButton
+             className={classes.wish_list}
+             onClick={handleAddToFavorites}>
+             <Heart width={15} height={15} />
+             <p>{t('add_to_favorite')}</p>
+            </IconButton>
+           )}
+          </>
+         )}
         </>
        )}
 
-       {token ? (
-        <Button
-         variant='contained'
-         size='large'
-         className={classes.addtocart}
-         onClick={() => handleAddToCart(detailsData.product)}>
-         {isByOrder ? t('addtoorder') : t('addtocart')}
-        </Button>
-       ) : (
-        <Button
-         variant='contained'
-         size='large'
-         className={classes.addtocart}
-         onClick={() => {
-          dispatch(accesModalActions.login());
-         }}>
-         {t('login')}
-         <Lock sx={{ width: '17px', height: '17px' }} />
-        </Button>
+       {detailsData && (
+        <>
+         {token ? (
+          <Button
+           variant='contained'
+           size='large'
+           className={classes.addtocart}
+           onClick={() => handleAddToCart(detailsData.product)}>
+           <Shop style={{ width: '25px', height: '25px', margin: '0 5px' }} />
+           {isByOrder ? t('addtoorder') : t('addtocart')}
+          </Button>
+         ) : (
+          <Button
+           variant='contained'
+           size='large'
+           className={classes.addtocart}
+           onClick={() => {
+            dispatch(accesModalActions.login());
+           }}>
+           <Shop style={{ width: '25px', height: '25px', margin: '0 5px' }} />
+           {isByOrder ? t('addtoorder') : t('addtocart')}
+          </Button>
+         )}
+        </>
        )}
 
        <span className={classes.divider} />
@@ -580,7 +634,8 @@ const Products = ({ windowSize }) => {
            </p>
            &nbsp;&nbsp;
            <p className={classes.payment_value}>
-            {(+detailsData.product.price * quantity).toFixed(2)} {t('m_unit')}
+            {(+detailsData.product.price * quantity).toFixed(2)}
+            {t('m_unit')}
            </p>
           </div>
          ) : (

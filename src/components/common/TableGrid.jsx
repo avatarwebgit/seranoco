@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { nanoid } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import LoadingSpinner from './LoadingSpinner';
-import { productDetailActions } from '../../store/store';
-import classes from './TableGrid.module.css';
 
+import LoadingSpinner from './LoadingSpinner';
+
+import { productDetailActions } from '../../store/store';
+
+import classes from './TableGrid.module.css';
 const TableGrid = ({
  dataProp,
  sizeProp,
@@ -96,8 +98,9 @@ const TableGrid = ({
            alt=''
           />
           <p>
-           {Object.values(el)[0][0].color}
-           {console.log(Object.values(el)[0][0])}
+           {lng === 'en'
+            ? Object.values(el)[0][0].color
+            : Object.values(el)[0][0].color_fa}
           </p>
          </th>
         );

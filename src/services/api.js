@@ -74,6 +74,23 @@ export const useSearch = param => {
  });
 };
 
+export const usePages = () => {
+ return useQuery({
+  queryKey: ['pages'],
+  queryFn: async () => {
+   const response = await fetch(`${baseUrl}/pages`, {
+    method: 'GET',
+   });
+
+   const result = await response.json();
+   return result;
+  },
+  staleTime: 1000 * 60 * 5,
+  cacheTime: 1000 * 60 * 1000,
+  refetchOnWindowFocus: false,
+ });
+};
+
 export const getNarrowBanners = async () => {
  const response = await fetch(`${baseUrl}/banners`, {
   method: 'GET',
@@ -872,7 +889,7 @@ export const getOrders = async token => {
 };
 
 export const getOrdersStatus = async token => {
- const response = await fetch(`${baseUrl}/orders/status`, {
+ const response = await fetch(`${baseUrl}/orders/get/status`, {
   method: 'GET',
   headers: {
    'Content-Type': 'application/json',
@@ -883,11 +900,21 @@ export const getOrdersStatus = async token => {
  return { response, result };
 };
 
-export const getOrderByStatus = async (token,status) => {
-    const response = await fetch(`${baseUrl}/orders/status/${status}`, {
+export const getOrderByStatus = async (token, status) => {
+ const response = await fetch(`${baseUrl}/orders/${status}`, {
   method: 'GET',
   headers: {
-   'Content-Type': 'application/json',
+   Authorization: `bearer ${token}`,
+  },
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const getOrderStatusDetail = async (token, id) => {
+ const response = await fetch(`${baseUrl}/order/${id}`, {
+  method: 'GET',
+  headers: {
    Authorization: `bearer ${token}`,
   },
  });
@@ -952,6 +979,14 @@ export const replyTicket = async (token, ticket_id, message) => {
    Authorization: `bearer ${token}`,
   },
   body: JSON.stringify({ message }),
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const getAdminCreatedPageDetails = async alias => {
+ const response = await fetch(`${baseUrl}/page/${alias}`, {
+  method: 'GET',
  });
  const result = await response.json();
  return { response, result };

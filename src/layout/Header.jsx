@@ -26,9 +26,6 @@ import ChangeLanguage from '../utils/ChangeLanguage';
 import Body from '../components/filters_page/Body';
 import Card from '../components/filters_page/Card';
 
-import img from '../assets/images/gems.test.jpeg';
-import img2 from '../assets/images/Gem.png';
-
 import { useBasicInformation, getHeaderMenus } from '../services/api';
 
 import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
@@ -38,9 +35,10 @@ import { ReactComponent as Basket_black } from '../assets/svg/basket.svg';
 import { ReactComponent as Signin } from '../assets/svg/signin.svg';
 import { ReactComponent as Signin_White } from '../assets/svg/signin_white.svg';
 
-import classes from './Header.module.css';
 import AccessAccount from './AccessAccount';
 import LoginButton from '../components/header/LoginButton';
+
+import classes from './Header.module.css';
 const Header = ({ windowSize }) => {
  const lng = useSelector(state => state.localeStore.lng);
  const { data: basicInformation } = useBasicInformation(lng);
@@ -60,7 +58,7 @@ const Header = ({ windowSize }) => {
  const cart = useSelector(state => state.cartStore);
  const token = useSelector(state => state.userStore.token);
  const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
- const favorits = useSelector(state => state.favoriteStore.products);
+ const favorits = useSelector(state => state.favoriteStore.count);
 
  const { t, i18n } = useTranslation();
  const location = useLocation();
@@ -238,7 +236,7 @@ const Header = ({ windowSize }) => {
         <span className={classes.icon_pack_wrapper}>
          <IconButton>
           <Badge
-           badgeContent={favorits.length}
+           badgeContent={favorits}
            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
            <Tooltip
             title={t('favorites')}
@@ -401,7 +399,7 @@ const Header = ({ windowSize }) => {
                    );
                   })}
                   <div className={classes.mega_img_primary}>
-                   <img src={elem.url} alt='' />
+                   <img src={elem.image} alt='' />
                   </div>
                  </div>
                 </Card>

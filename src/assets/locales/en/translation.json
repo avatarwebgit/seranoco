@@ -93,7 +93,9 @@
  "byorder": "By Order",
  "add": "Add",
  "trylater": "There Was An Error Please Try Again Later.",
+ "payment_method":"Payment Method",
 
+  "select_a_filter":"Select A Filter",
  "profile": {
   "orders": "Orders",
   "item_list": "Item Lists",
@@ -122,6 +124,7 @@
   "sbpd": "Sort By price (Decreasing)",
 
   "sort": "Sort",
+
 
   "err_add_add": "There Was An Error Adding This Address, Please Try Again Later",
   "suc_add_add": "Address Added Successfully.",
