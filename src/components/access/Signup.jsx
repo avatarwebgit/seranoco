@@ -172,8 +172,8 @@ const Signup = () => {
    );
 
    try {
-      sendFormData({
-         password_confirmation: repeatPassword,
+    sendFormData({
+     password_confirmation: repeatPassword,
      password: repeatPassword,
      email: email,
      cellphone: phoneNumber,
@@ -181,8 +181,8 @@ const Signup = () => {
      first_name: firstname,
      city_id: selectedCity.id,
      country_id: selectedCountry.id,
-   });
-   handleGoToOtp();
+    });
+ 
    } catch (error) {
     if (errors) {
      dispatch(accesModalActions.otp());
@@ -239,6 +239,7 @@ const Signup = () => {
  const sendFormData = async d => {
   const serverRes = await sendRegistrationData(d);
   if (serverRes.response.ok) {
+     handleGoToOtp();
   } else {
    setErrors(serverRes.result.errors);
   }

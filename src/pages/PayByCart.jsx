@@ -14,7 +14,7 @@ import { Autocomplete, Button, TextField, Input } from '@mui/material';
 import Calendar from 'react-calendar/dist/cjs/Calendar.js';
 import 'react-calendar/dist/Calendar.css';
 
-import { formatNumber } from '../utils/helperFunctions';
+import { formatNumber, notify } from '../utils/helperFunctions';
 
 import classes from './PayByCart.module.css';
 import { sendcardPaymentData } from '../services/api';
@@ -79,7 +79,7 @@ const PayByCart = ({ widnowSize }) => {
 
  const { t } = useTranslation();
 
- const handleSubmit = e => {
+ const handleSubmit = async e => {
   e.preventDefault();
   console.log('first');
   const requiredFields = [
@@ -97,7 +97,7 @@ const PayByCart = ({ widnowSize }) => {
   if (!isValid) {
    return setIsError(true);
   } else {
-   const res = sendcardPaymentData(
+   const res = await sendcardPaymentData(
     token,
     {
      billNo,
@@ -111,7 +111,10 @@ const PayByCart = ({ widnowSize }) => {
     },
     recScan,
     id,
-   );
+      );
+      if (res.response.ok) {
+          notify('اطلاعات با موقثیت ارسال شد .')
+      }
   }
  };
 
@@ -291,6 +294,7 @@ const PayByCart = ({ widnowSize }) => {
         value={lastFour}
         onFocus={() => setIsError(false)}
         error={isError && !lastFour}
+        inputProps={{ maxLength: 4 }}
        />
        <TextField
         id='dest-no'
@@ -307,6 +311,7 @@ const PayByCart = ({ widnowSize }) => {
         value={destCardNo}
         onFocus={() => setIsError(false)}
         error={isError && !destCardNo}
+        inputProps={{ maxLength: 16 }}
        />
        <Input
         id='file'

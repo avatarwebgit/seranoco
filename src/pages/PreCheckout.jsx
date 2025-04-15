@@ -58,7 +58,13 @@ const PreCheckout = ({ windowSize }) => {
 
  const handleSendShoppingCart = async (token, product) => {
   try {
-   const serverRes = await sendShoppingCart(
+    const serverRes = await sendShoppingCart(
+   //   token,
+   //   product.id,
+   //   +product.variation_id,
+   //   product.selected_quantity,
+    );
+   console.log(
     token,
     product.id,
     +product.variation_id,
