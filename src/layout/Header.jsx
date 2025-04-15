@@ -398,9 +398,11 @@ const Header = ({ windowSize }) => {
                     </div>
                    );
                   })}
-                  <div className={classes.mega_img_primary}>
-                   <img src={elem.image} alt='' />
-                  </div>
+                  {elem.image && elem.image !== '' && (
+                   <div className={classes.mega_img_primary}>
+                    <img src={elem.image} alt='' />
+                   </div>
+                  )}
                  </div>
                 </Card>
                </Body>
