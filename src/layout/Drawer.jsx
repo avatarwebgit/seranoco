@@ -11,7 +11,7 @@ import { KeyboardArrowRight, Lock } from '@mui/icons-material';
 import CartProduct from '../components/card/CartProduct';
 
 import classes from './Drawer.module.css';
-import { formatNumber } from '../utils/helperFunctions';
+import { formatNumber, notify } from '../utils/helperFunctions';
 const Drawer = ({ children, size }) => {
   const dispatch = useDispatch();
   const drawerState = useSelector(state => state.drawerStore.drawerOpen);
@@ -46,6 +46,8 @@ const Drawer = ({ children, size }) => {
       setProductData(cart.products);
     }
   }, [cart, drawerState]);
+
+   
 
   return (
     <motion.div

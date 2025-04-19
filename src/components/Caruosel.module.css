@@ -181,6 +181,7 @@
  .thumbs_wrapper {
   width: 50vw;
   top: 22%;
+  display: none;
  }
  .thumb {
   width: 35px;
@@ -197,6 +198,7 @@
  .thumbs_wrapper {
   width: 25vw;
   top: 22%;
+  display: none;
  }
  .thumb {
   width: 55px;

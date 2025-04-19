@@ -7,7 +7,7 @@ import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-import { accesModalActions, cartActions } from '../store/store';
+import { accesModalActions, cartActions, drawerActions } from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -26,6 +26,7 @@ import {
  getProductDetails,
  removeFromFavorite,
  getProductDetailsWithId,
+ sendShoppingCart,
 } from '../services/api';
 
 import 'swiper/css';
@@ -41,7 +42,7 @@ const Products = ({ windowSize }) => {
  const [zoomStyles, setZoomStyles] = useState({});
  const [detailsData, setDetailsData] = useState(null);
  const [isInViewbox, setIsInViewbox] = useState(false);
- const [quantity, setQuantity] = useState(0);
+ const [quantity, setQuantity] = useState(1);
  const [isFavorite, setIsFavorite] = useState(false);
  const [shape, setShape] = useState('');
  const [cuttingStyle, setCuttingStyle] = useState('');
@@ -105,7 +106,6 @@ const Products = ({ windowSize }) => {
   const getDetails = async () => {
    const serverRes = await getProductDetails(id, token);
    const variationRes = await getProductDetailsWithId(variation, token);
-   console.log(serverRes, variationRes);
    if (variationRes.response.ok) {
     setVariationDetail(variationRes.result);
     if (variationRes.result.product.variation.quantity === 0) {
@@ -240,16 +240,27 @@ const Products = ({ windowSize }) => {
   }
  }, [favorites]);
 
- const handleAddToCart = el => {
-  dispatch(
-   cartActions.add({
-    ...el,
-    selected_quantity: quantity,
-    euro_price: euro,
-    variation_id: variation,
-    variation: { quantity: el.quantity },
-   }),
-  );
+ const handleSendShoppingCart = async el => {
+  console.log('first');
+  const serverRes = await sendShoppingCart(token, el.id, +variation, +quantity);
+  try {
+   console.log(serverRes);
+   notify(t('orders.ok'));
+   if (serverRes.response.ok) {
+    dispatch(
+     cartActions.add({
+      ...el,
+      selected_quantity: quantity,
+      euro_price: euro,
+      variation_id: variation,
+      variation: { quantity: el.quantity },
+     }),
+    );
+   }
+   dispatch(drawerActions.open());
+  } catch (err) {
+   console.log(err);
+  }
  };
 
  return (
@@ -299,8 +310,47 @@ const Products = ({ windowSize }) => {
          />
         )}
        </div>
-       <div className={classes.tip_wrapper}>
-        <p className={classes.tip_text}>{t('zoom_tip')}</p>
+
+       <div className={`${classes.gallery} ${classes.desktop}`}>
+        {detailsData && (
+         <Swiper
+          modules={[Pagination]}
+          slidesPerView={5}
+          spaceBetween={0}
+          breakpoints={{
+           640: {
+            slidesPerView: 3,
+           },
+           768: {
+            slidesPerView: 4,
+           },
+           1024: {
+            slidesPerView: 5,
+           },
+          }}
+          style={{
+           width: '100%',
+           display: 'flex',
+           alignItems: 'center',
+           justifyContent: 'center',
+          }}
+          pagination={{
+           clickable: true,
+           dynamicBullets: true,
+          }}
+          onClick={(swiper, event) => {
+           handleSlideClick(swiper.clickedIndex);
+          }}>
+          {allImages &&
+           allImages.map(el => {
+            return (
+             <SwiperSlide className={classes.gallery_image_wrapper}>
+              <img src={el} alt='' loading='lazy' />
+             </SwiperSlide>
+            );
+           })}
+         </Swiper>
+        )}
        </div>
       </div>
       <div className={`${classes.gallery} ${classes.mobile}`}>
@@ -552,7 +602,7 @@ const Products = ({ windowSize }) => {
               +variationDetail.product.variation.weight.split(' ').at(0) *
               quantity
              )?.toFixed(3)}
-             &nbsp;ct
+             &nbsp;Ct
             </p>
            </span>
           </div>
@@ -600,7 +650,7 @@ const Products = ({ windowSize }) => {
            variant='contained'
            size='large'
            className={classes.addtocart}
-           onClick={() => handleAddToCart(detailsData.product)}>
+           onClick={() => handleSendShoppingCart(detailsData.product)}>
            <Shop style={{ width: '25px', height: '25px', margin: '0 5px' }} />
            {isByOrder ? t('addtoorder') : t('addtocart')}
           </Button>
@@ -667,46 +717,8 @@ const Products = ({ windowSize }) => {
        )}
       </div>
      </div>
-     <div className={`${classes.gallery} ${classes.desktop}`}>
-      {detailsData && (
-       <Swiper
-        modules={[Pagination]}
-        slidesPerView={5}
-        spaceBetween={0}
-        breakpoints={{
-         640: {
-          slidesPerView: 3,
-         },
-         768: {
-          slidesPerView: 4,
-         },
-         1024: {
-          slidesPerView: 5,
-         },
-        }}
-        style={{
-         width: '100%',
-         display: 'flex',
-         alignItems: 'center',
-         justifyContent: 'center',
-        }}
-        pagination={{
-         clickable: true,
-         dynamicBullets: true,
-        }}
-        onClick={(swiper, event) => {
-         handleSlideClick(swiper.clickedIndex);
-        }}>
-        {allImages &&
-         allImages.map(el => {
-          return (
-           <SwiperSlide className={classes.gallery_image_wrapper}>
-            <img src={el} alt='' loading='lazy' />
-           </SwiperSlide>
-          );
-         })}
-       </Swiper>
-      )}
+     <div className={classes.tip_wrapper}>
+      <p className={classes.tip_text}>{t('zoom_tip')}</p>
      </div>
      <div className={classes.grid_wrapper}>
       {detailsData && <CustomeTab dataProp={detailsData} />}

@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Skeleton, Tooltip } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
+import { DeleteForever, Info } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { cartActions } from '../../store/store';
+import { cartActions, drawerActions } from '../../store/store';
 
-import { formatNumber } from '../../utils/helperFunctions';
+import { getProductDetailsWithId } from '../../services/api';
+import { formatNumber, notify } from '../../utils/helperFunctions';
+import { sendShoppingCart } from '../../services/api';
 
 import classes from './CartProduct.module.css';
-import { DeleteForever, Info } from '@mui/icons-material';
-import { getProductDetailsWithId } from '../../services/api';
 const CartProduct = data => {
  const [productData, setProductData] = useState(null);
  const [variationPrice, setVariationPrice] = useState(0);
+ const [quantity, setQuantity] = useState(1);
+ const [variation, setVariation] = useState([]);
 
  const { t } = useTranslation();
 
  const lng = useSelector(state => state.localeStore.lng);
  const euro = useSelector(state => state.cartStore.euro);
+ const token = useSelector(state => state.userStore.token);
+ const totalPrice = useSelector(state => state.cartStore.totalPrice);
  const dispatch = useDispatch();
 
  useEffect(() => {
@@ -26,23 +31,60 @@ const CartProduct = data => {
    const getVariationDetails = async () => {
     const serverRes = await getProductDetailsWithId(data.data.variation_id);
     setVariationPrice(serverRes.result.product.sale_price);
+    setVariation(serverRes.result);
    };
    getVariationDetails();
   }
  }, [data]);
 
- const handleIncrement = () => {
-  dispatch(cartActions.increment(productData));
- };
+ useEffect(() => {
+  if (quantity && productData) {
+   console.log('first');
+   dispatch(
+    cartActions.setQuantity({ id: productData.id, quantity: quantity }),
+   );
+  }
+ }, [quantity]);
 
- const handleDecrement = () => {
-  dispatch(cartActions.decrement(productData));
- };
+ //  const handleIncrement = () => {
+ //   dispatch(cartActions.increment(productData));
+ //  };
+
+ //  const handleDecrement = () => {
+ //   dispatch(cartActions.decrement(productData));
+ //  };
 
  const handleRemveItem = () => {
   dispatch(cartActions.remove(productData));
  };
 
+ const handleSendShoppingCart = async () => {
+  const serverRes = await sendShoppingCart(
+   token,
+   productData.id,
+   variation.result.product.id,
+   +quantity,
+  );
+  try {
+   notify(t('orders.ok'));
+   if (serverRes.response.ok) {
+    dispatch(
+     cartActions.add({
+      ...productData,
+      selected_quantity: quantity,
+      euro_price: euro,
+      variation_id: variation.result.product.id.id,
+      variation: { quantity: quantity },
+     }),
+    );
+   }
+   dispatch(drawerActions.open());
+  } catch (err) {
+   console.log(err);
+  }
+ };
+
+ console.log(totalPrice);
  return (
   <>
    {productData && (
@@ -76,11 +118,20 @@ const CartProduct = data => {
        )}
       </div>
       <div className={classes.actions_wrapper}>
-       <div>{productData.selected_quantity}</div>
-       <span>
+       <div>
+        <input
+         type='number'
+         value={quantity}
+         onChange={e => {
+          setQuantity(e.target.value.replace(/[^0-9]/g, ''));
+         }}
+         className={classes.quantity_input}
+        />
+       </div>
+       {/* <span>
         <button onClick={handleIncrement}>+</button>
         <button onClick={handleDecrement}>-</button>
-       </span>
+       </span> */}
       </div>
       <div className={classes.final}>
        <button onClick={handleRemveItem}>
@@ -90,10 +141,8 @@ const CartProduct = data => {
         className={classes.price}
         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
         {lng !== 'fa'
-         ? (Math.round(
-            (variationPrice * productData.selected_quantity * 10) ,
-           )/ 10).toFixed(2)
-         : formatNumber(variationPrice * productData.selected_quantity * euro)}
+         ? (Math.round(totalPrice * 10) / 10).toFixed(2)
+         : formatNumber(totalPrice * euro)}
         &nbsp;{t('m_unit')}
        </span>
       </div>

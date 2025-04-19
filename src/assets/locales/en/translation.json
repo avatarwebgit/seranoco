@@ -236,6 +236,7 @@
   "orderno": "Order NO",
   "status": "Status",
   "price": "Price",
-  "date": "Date"
+  "date": "Date",
+  "ok":"Order Submited Successfully"
  }
 }

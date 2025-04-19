@@ -56,31 +56,30 @@ const PreCheckout = ({ windowSize }) => {
   }
  }, [card]);
 
- const handleSendShoppingCart = async (token, product) => {
-  try {
-    const serverRes = await sendShoppingCart(
-     token,
-     product.id,
-     +product.variation_id,
-     product.selected_quantity,
-    );
+//  const handleSendShoppingCart = async (token, product) => {
+//   try {
+//     const serverRes = await sendShoppingCart(
+//      token,
+//      product.id,
+//      +product.variation_id,
+//      product.selected_quantity,
+//     );
 
-   if (serverRes.response.ok) {
-    // console.log(serverRes);
-   }
-  } catch {}
- };
+//    if (serverRes.response.ok) {
+//    }
+//   } catch {}
+//  };
 
  const handleGotoNextStep = () => {
   if (step === 0) {
    const products = card.products.filter(el => el.selected_quantity !== 0);
    dispatch(cartActions.setFinalCart(products));
    setStep(step < 2 ? step + 1 : 2);
-   if (products) {
-    products.map(product => {
-     handleSendShoppingCart(token, product);
-    });
-   }
+  //  if (products) {
+  //   products.map(product => {
+  //    handleSendShoppingCart(token, product);
+  //   });
+  //  }
   }
   if (step === 1 && isDataValid) {
    setStep(step < 2 ? step + 1 : 2);

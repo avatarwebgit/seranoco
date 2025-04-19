@@ -108,3 +108,12 @@
 .df {
   display: flex !important;
 }
+
+.quantity_input{
+  border:none;
+  width: 100px;
+  outline: none;
+  text-decoration: underline;
+  font-size: 20px;
+  text-align: center;
+}
