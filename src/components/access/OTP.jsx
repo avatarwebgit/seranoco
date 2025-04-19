@@ -88,7 +88,8 @@ const OTP = () => {
  const handleVerifyOTP = async (code, cellphone) => {
   const serverRes = await verifyOTP(code, cellphone);
   if (serverRes.response.ok) {
-   dispatch(userActions.set(serverRes.result.user));
+      dispatch(userActions.setUser(serverRes.result.user));
+      dispatch(userActions.set(serverRes.result.token));
    console.log(serverRes.result);
    dispatch(accesModalActions.close());
   } else {

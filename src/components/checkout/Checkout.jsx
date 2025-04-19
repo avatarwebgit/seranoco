@@ -76,10 +76,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
   const { t } = useTranslation();
   const data = localStorage.getItem('sis');
 
-  const abortControllerRef = useRef(new AbortController());
-
   const token = useSelector(state => state.userStore.token);
-  const card = useSelector(state => state.cartStore);
 
   const dispatch = useDispatch();
 

@@ -762,6 +762,7 @@ export const sendShoppingCart = async (
  variation_id,
  quantity,
 ) => {
+ console.log(token, product_id, variation_id, quantity);
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'POST',
   headers: {
