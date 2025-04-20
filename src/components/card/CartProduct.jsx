@@ -15,6 +15,7 @@ const CartProduct = data => {
  const [variationPrice, setVariationPrice] = useState(0);
  const [quantity, setQuantity] = useState(1);
  const [variation, setVariation] = useState([]);
+ const [isMoreThanQuantity, setIsMoreThanQuantity] = useState(false);
 
  const { t } = useTranslation();
 
@@ -122,26 +123,48 @@ const CartProduct = data => {
       <div className={classes.actions_wrapper}>
        <div>
         {Object.keys(variation).length > 0 && (
-         <input
-          type='number'
-          value={quantity}
-          onChange={e => {
-           const inputValue = e.target.value.replace(/[^0-9]/g, ''); 
+         <div className={classes.input_wrapper}>
+          <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
+           {t('quantity')}:
+          </p>
+          <input
+           type='number'
+           value={quantity}
+           onChange={e => {
+            const inputValue = e.target.value.replace(/[^0-9]/g, '');
+            const availableQuantity = +variation?.product?.variation?.quantity;
 
-           if (
-            variation?.product?.variation?.is_not_available === 0 &&
-            +variation?.product?.variation?.quantity > 0
-           ) {
-            setQuantity(
-             Math.min(+inputValue, +variation.product.variation.quantity),
-            );
-           } else {
-    
-            setQuantity(inputValue);
-           }
-          }}
-          className={classes.quantity_input}
-         />
+            if (
+             variation?.product?.variation?.is_not_available === 0 &&
+             availableQuantity > 0
+            ) {
+             const newQuantity = +inputValue;
+             if (newQuantity > availableQuantity) {
+              setIsMoreThanQuantity(true);
+              setQuantity(availableQuantity);
+             } else {
+              setIsMoreThanQuantity(false);
+              setQuantity(newQuantity);
+             }
+            } else {
+             setIsMoreThanQuantity(false);
+             setQuantity(inputValue);
+            }
+           }}
+           className={classes.quantity_input}
+           style={{ borderColor: isMoreThanQuantity ? 'red' : 'black' }}
+          />
+          {
+           <p
+            style={{
+             opacity: `${isMoreThanQuantity ? 1 : 0}`,
+             color: 'red',
+             whiteSpace: 'nowrap',
+            }}>
+            {t('availableQuantity')}: {+variation.product.variation.quantity}
+           </p>
+          }
+         </div>
         )}
        </div>
        {/* <span>

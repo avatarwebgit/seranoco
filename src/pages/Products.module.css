@@ -380,6 +380,28 @@
  display: none;
 }
 
+.quantity_input {
+ border: none;
+ width: 100px;
+ outline: none;
+ font-size: 20px;
+ text-align: center;
+ border: 1px solid black;
+ border-radius: 5px;
+ padding: 5px;
+ margin: 5px 0;
+}
+
+.input_wrapper {
+ display: flex;
+ flex-direction: column;
+}
+
+.input_wrapper p {
+ font-size: 12px;
+}
+
+
 @media only screen and (max-width: 480px) {
  .content {
   flex-direction: column;

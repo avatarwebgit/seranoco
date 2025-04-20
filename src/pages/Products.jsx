@@ -57,6 +57,7 @@ const Products = ({ windowSize }) => {
  const [productData, setProductData] = useState(null);
  const [allImages, setAllImages] = useState([]);
  const [mainImage, setMainImage] = useState('');
+ const [isMoreThanQuantity, setIsMoreThanQuantity] = useState(false);
 
  const imageRef = useRef();
  const primaryImg = useRef();
@@ -553,28 +554,52 @@ const Products = ({ windowSize }) => {
               {t('quantity')}&nbsp;
              </Typography>
              <div className={classes.divider} />
-             <input
-              className={classes.quantity_text}
-              value={quantity}
-              onChange={e => setQuantity(e.target.value)}
-              type='number'
-              step='1'
-              inputMode='numeric'
-              pattern='\d*'
-              min='1'
-              onInput={e => {
-               e.target.value = e.target.value.replace(/[^0-9]/g, '');
-              }}
-              onKeyPress={e => {
-               if (e.charCode < 48 || e.charCode > 57) {
-                e.preventDefault();
+             {console.log(variationDetail)}
+             {variationDetail && (
+              <div className={classes.input_wrapper}>
+               <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
+                {t('quantity')}:
+               </p>
+               <input
+                type='number'
+                value={quantity}
+                onChange={e => {
+                 const inputValue = e.target.value.replace(/[^0-9]/g, '');
+                 const availableQuantity =
+                  +variationDetail?.product?.variation?.quantity;
+
+                 if (
+                  variationDetail?.product?.variation?.is_not_available === 0 &&
+                  availableQuantity > 0
+                 ) {
+                  const newQuantity = +inputValue;
+                  if (newQuantity > availableQuantity) {
+                   setIsMoreThanQuantity(true);
+                   setQuantity(availableQuantity);
+                  } else {
+                   setIsMoreThanQuantity(false);
+                   setQuantity(newQuantity);
+                  }
+                 } else {
+                  setIsMoreThanQuantity(false);
+                  setQuantity(inputValue);
+                 }
+                }}
+                className={classes.quantity_input}
+               />
+               {
+                <p
+                 style={{
+                  opacity: `${isMoreThanQuantity ? 1 : 0}`,
+                  color: 'red',
+                  whiteSpace: 'nowrap',
+                 }}>
+                 {t('availableQuantity')}:
+                 {+variationDetail.product.variation.quantity}
+                </p>
                }
-              }}
-              onBlur={e => {
-               e.target.value = Math.floor(e.target.value);
-               setQuantity(e.target.value);
-              }}
-             />
+              </div>
+             )}
             </div>
             {/* <span className={classes.btn_wrapper}>
              <button className={classes.quantity_a_b} onClick={handleIncrement}>
@@ -607,7 +632,18 @@ const Products = ({ windowSize }) => {
            </span>
           </div>
          </div>
-
+         {
+          <p
+           style={{
+            opacity: `${isMoreThanQuantity ? 1 : 0}`,
+            color: 'red',
+            whiteSpace: 'nowrap',
+            fontSize: '12px',
+           }}>
+           {t('availableQuantity')}:
+           {+variationDetail.product.variation.quantity}
+          </p>
+         }
          {!token && (
           <IconButton
            className={classes.wish_list}

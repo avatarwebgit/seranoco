@@ -58,11 +58,12 @@ const ContactUs = ({ windowSize }) => {
  const lng = useSelector(state => state.localeStore.lng);
 
  useEffect(() => {
-    document.title = t('seranoco') + '/' + t('contactus');
+  document.title = t('seranoco') + '/' + t('contactus');
  }, []);
 
  const sendContactDetails = async (e, name, email, desc) => {
-  e.preventDefault(); console.log('first')
+  e.preventDefault();
+  console.log('first');
   const serverRes = await contactUsSend(name, email, desc);
   if (serverRes.response.ok) {
    notify(t('contact.successfull'));
@@ -76,8 +77,7 @@ const ContactUs = ({ windowSize }) => {
   const isNameValid = name.trim().length > 0;
   const isEmailValid = email.trim().length > 0;
   const isMessageValid = desc.trim().length > 0;
-    if ((isNameValid, isEmailValid, isMessageValid)) {
-    
+  if ((isNameValid, isEmailValid, isMessageValid)) {
    sendContactDetails(e, name, email, desc);
   } else {
    setIsEmpty(true);
@@ -156,7 +156,12 @@ const ContactUs = ({ windowSize }) => {
        <label htmlFor='desc' style={{ color: '#000000', fontSize: '15px' }}>
         {t('caption')}
        </label>
-       <textarea name='desc' onChange={e => setDesc(e.target.value)} required />
+       <textarea
+        name='desc'
+        onChange={e => setDesc(e.target.value)}
+        required
+        style={{ width: '100%', minHeight: '100px' }}
+       />
        {isEmpty && (
         <div
          className={classes.error_text}

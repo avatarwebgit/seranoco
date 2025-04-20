@@ -639,7 +639,6 @@ export const sendCartPrice = async (
  payment_method,
  amount,
 ) => {
- // console.log(token, address_id, payment_method, amount);
  const response = await fetch(`${baseUrl}/payment`, {
   method: 'POST',
   headers: {
@@ -762,7 +761,6 @@ export const sendShoppingCart = async (
  variation_id,
  quantity,
 ) => {
- console.log(token, product_id, variation_id, quantity);
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'POST',
   headers: {
@@ -866,7 +864,6 @@ export const getSingleArticles = async alias => {
 };
 
 export const contactUsSend = async (name, email, message) => {
-    console.log(name, email,message)
  const response = await fetch(`${baseUrl}/contact-us/send/request`, {
   method: 'POST',
   headers: {
@@ -925,7 +922,6 @@ export const getOrderStatusDetail = async (token, id) => {
 };
 
 export const verifyOTP = async (otp, cellphone) => {
- console.log(otp, cellphone);
  const response = await fetch(`${baseUrl}/verify-otp`, {
   method: 'POST',
   headers: {

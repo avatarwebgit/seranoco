@@ -94,7 +94,7 @@
  "add": "Add",
  "trylater": "There Was An Error Please Try Again Later.",
  "payment_method":"Payment Method",
-
+  "availableQuantity":"Max Quantity",
   "select_a_filter":"Select A Filter",
  "profile": {
   "orders": "Orders",
@@ -124,6 +124,7 @@
   "sbpd": "Sort By price (Decreasing)",
 
   "sort": "Sort",
+
 
 
   "err_add_add": "There Was An Error Adding This Address, Please Try Again Later",
