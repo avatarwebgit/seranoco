@@ -20,6 +20,7 @@ const SecondaryPromotionShopCart = () => {
  useEffect(() => {
   if (data) {
    setProData(data.data);
+   console.log(data.data);
   }
  }, [data]);
 

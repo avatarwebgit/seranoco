@@ -51,10 +51,9 @@ const cartSlice = createSlice({
 
   setQuantity(state, action) {
    const product = state.products.find(
-    el => +el.variation_id === +action.payload.id.variation_id,
+    el => +el.variation_id === +action.payload.id,
    );
-
-   if (product) {
+     if (product) {
     product.selected_quantity = action.payload.quantity;
    }
 

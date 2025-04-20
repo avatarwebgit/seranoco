@@ -4,7 +4,7 @@
 }
 
 .main {
-  height: fit-content;
+  height: 250px;
   margin: 1rem 0;
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -42,7 +42,6 @@
   justify-content: center;
   color: #ffffff;
   width: 20%;
-  height: 100%;
   padding: 1rem 0 ;
 }
 
@@ -102,6 +101,6 @@
 @media only screen and (min-width: 1201px) {
   .shop_hero {
     text-align: center;
-    padding: 2rem 0;
+    padding: 1rem 0;
   }
 }

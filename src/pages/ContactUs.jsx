@@ -62,7 +62,7 @@ const ContactUs = ({ windowSize }) => {
  }, []);
 
  const sendContactDetails = async (e, name, email, desc) => {
-  e.preventDefault();
+  e.preventDefault(); console.log('first')
   const serverRes = await contactUsSend(name, email, desc);
   if (serverRes.response.ok) {
    notify(t('contact.successfull'));
@@ -76,7 +76,8 @@ const ContactUs = ({ windowSize }) => {
   const isNameValid = name.trim().length > 0;
   const isEmailValid = email.trim().length > 0;
   const isMessageValid = desc.trim().length > 0;
-  if ((isNameValid, isEmailValid, isMessageValid)) {
+    if ((isNameValid, isEmailValid, isMessageValid)) {
+    
    sendContactDetails(e, name, email, desc);
   } else {
    setIsEmpty(true);

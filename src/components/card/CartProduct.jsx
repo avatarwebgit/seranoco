@@ -39,9 +39,12 @@ const CartProduct = data => {
 
  useEffect(() => {
   if (quantity && productData) {
-   console.log('first');
+   console.log(variation);
    dispatch(
-    cartActions.setQuantity({ id: productData.id, quantity: quantity }),
+    cartActions.setQuantity({
+     id: +variation.product.variation_id,
+     quantity: quantity,
+    }),
    );
   }
  }, [quantity]);
@@ -84,7 +87,6 @@ const CartProduct = data => {
   }
  };
 
- console.log(totalPrice);
  return (
   <>
    {productData && (
@@ -119,14 +121,28 @@ const CartProduct = data => {
       </div>
       <div className={classes.actions_wrapper}>
        <div>
-        <input
-         type='number'
-         value={quantity}
-         onChange={e => {
-          setQuantity(e.target.value.replace(/[^0-9]/g, ''));
-         }}
-         className={classes.quantity_input}
-        />
+        {Object.keys(variation).length > 0 && (
+         <input
+          type='number'
+          value={quantity}
+          onChange={e => {
+           const inputValue = e.target.value.replace(/[^0-9]/g, ''); 
+
+           if (
+            variation?.product?.variation?.is_not_available === 0 &&
+            +variation?.product?.variation?.quantity > 0
+           ) {
+            setQuantity(
+             Math.min(+inputValue, +variation.product.variation.quantity),
+            );
+           } else {
+    
+            setQuantity(inputValue);
+           }
+          }}
+          className={classes.quantity_input}
+         />
+        )}
        </div>
        {/* <span>
         <button onClick={handleIncrement}>+</button>
@@ -141,8 +157,8 @@ const CartProduct = data => {
         className={classes.price}
         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
         {lng !== 'fa'
-         ? (Math.round(totalPrice * 10) / 10).toFixed(2)
-         : formatNumber(totalPrice * euro)}
+         ? (Math.round(quantity * productData.sale_price * 10) / 10).toFixed(2)
+         : formatNumber(quantity * productData.sale_price * euro)}
         &nbsp;{t('m_unit')}
        </span>
       </div>

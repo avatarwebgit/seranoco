@@ -866,6 +866,7 @@ export const getSingleArticles = async alias => {
 };
 
 export const contactUsSend = async (name, email, message) => {
+    console.log(name, email,message)
  const response = await fetch(`${baseUrl}/contact-us/send/request`, {
   method: 'POST',
   headers: {

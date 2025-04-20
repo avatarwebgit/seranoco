@@ -232,21 +232,13 @@ const Header = ({ windowSize }) => {
 
      {!isSmall && (
       <>
-       {token && favorits && (
+       {token && favorits.lenght>0 && (
         <span className={classes.icon_pack_wrapper}>
          <IconButton>
           <Badge
            badgeContent={favorits}
            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-           <Tooltip
-            title={t('favorites')}
-            placement='top'
-            arrow
-            sx={{
-             '& .MuiTooltip-tooltip': {
-              backgroundColor: 'red', // Change background color
-             },
-            }}>
+           <Tooltip title={t('favorites')} placement='top' arrow>
             {isHomePage ? (
              <Heart_black
               width={isSmall ? '0px' : '28px'}
@@ -266,7 +258,7 @@ const Header = ({ windowSize }) => {
        <span className={classes.icon_pack_wrapper}>
         <IconButton onClick={handleOpenCart}>
          <Badge
-          badgeContent={cart?.products.length || 0}
+          badgeContent={cart?.products.length}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
           <Tooltip title={t('cart')} placement='top' arrow>
            {isHomePage ? (

@@ -21,7 +21,7 @@ const CustomAnimatedBtn = ({ children, type = 'dark', to }) => {
  }, [divRef.current]);
 
  return (
-  <Link ref={divRef} className={classes.container} to={to}>
+  <Link ref={divRef} className={classes.container} to={to} target='_blank'>
    <motion.svg
     className={classes.svg_border}
     width={dimensions.width + 250}
