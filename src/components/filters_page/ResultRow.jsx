@@ -160,11 +160,11 @@ const ResultRow = ({ dataProp }) => {
           ) : (
            <>
             <>
-             {formatNumber(el.price * euro)}&nbsp;
+             {formatNumber(el.sale_price * euro)}&nbsp;
              {t('m_unit')}
             </>
             <br />
-            (€&nbsp;{el.price})
+            (€&nbsp;{el.sale_price})
            </>
           )}
           &nbsp;

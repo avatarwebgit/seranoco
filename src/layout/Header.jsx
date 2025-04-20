@@ -232,7 +232,7 @@ const Header = ({ windowSize }) => {
 
      {!isSmall && (
       <>
-       {token && favorits.lenght>0 && (
+       {token && favorits && favorits.lenght > 0 && (
         <span className={classes.icon_pack_wrapper}>
          <IconButton>
           <Badge

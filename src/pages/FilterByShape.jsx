@@ -209,6 +209,7 @@ const FilterByShape = ({ windowSize }) => {
 
  const handleShapeClick = async (e, id) => {
   setProductDetails([]);
+  setSelectedSizesObject([]);
   setChunkedData([]);
   setTableData([]);
   setIsLoading(true);

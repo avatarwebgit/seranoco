@@ -142,6 +142,7 @@ const FilterByShape = ({ windowSize }) => {
  const handleResetSelections = () => {
   setShapeFormEntries([]);
   setDimensionEntries([]);
+  setSelectedSizesObject([]);
   setSelectedIds([]);
   setSizeData([]);
   dispatch(productDetailActions.reset());
