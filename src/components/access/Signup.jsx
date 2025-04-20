@@ -182,7 +182,6 @@ const Signup = () => {
      city_id: selectedCity.id,
      country_id: selectedCountry.id,
     });
- 
    } catch (error) {
     if (errors) {
      dispatch(accesModalActions.otp());
@@ -239,11 +238,22 @@ const Signup = () => {
  const sendFormData = async d => {
   const serverRes = await sendRegistrationData(d);
   if (serverRes.response.ok) {
-     handleGoToOtp();
+   handleGoToOtp();
   } else {
    setErrors(serverRes.result.errors);
   }
  };
+
+  const filterExactMatch = (options, { inputValue }) => {
+   if (!inputValue) {
+    return options; // Show all options when input is empty
+   }
+   const lowerInputValue = inputValue.toLowerCase();
+   return options.filter(option =>
+    option.label.toLowerCase().includes(lowerInputValue),
+   );
+  };
+
 
  return (
   <div className={classes.content_wrapper}>
@@ -365,7 +375,10 @@ const Signup = () => {
          }}
          onFocus={() => setIsError(false)}
          disableInteractive={false}
+         getOptionLabel={option => option.label || ''}
         />
+        {console.log(countryData)}
+        {console.log(cityData)}
         <Autocomplete
          id='city-autocomplete'
          disablePortal
@@ -373,6 +386,7 @@ const Signup = () => {
          sx={inputStyles}
          value={selectedCity}
          options={cityData || []}
+         filterOptions={filterExactMatch}
          renderInput={params => (
           <TextField
            {...params}
@@ -388,6 +402,7 @@ const Signup = () => {
           setSelectedCity(newValue);
          }}
          onFocus={() => setIsError(false)}
+         getOptionLabel={option => option.label || ''}
         />
         <span className={classes.phone_wrapper}>
          <TextField
