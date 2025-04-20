@@ -482,6 +482,7 @@ const Products = ({ windowSize }) => {
        )}
        {detailsData && (
         <div className={classes.price_wrapper}>
+         {console.log(detailsData)}
          {lng !== 'fa' ? (
           <>
            <Typography
@@ -491,7 +492,7 @@ const Products = ({ windowSize }) => {
             variant='h3'>
             {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:
            </Typography>
-           {detailsData.product.sale_price === detailsData.product.price && (
+           {+detailsData.product.percent_sale_price !== 0 && (
             <span
              className={classes.prev_price}
              style={{
@@ -500,12 +501,12 @@ const Products = ({ windowSize }) => {
              <p className={classes.off_text}>
               {detailsData.product.percent_sale_price}%
              </p>
-             €&nbsp;{detailsData && detailsData.product.sale_price}
+             €&nbsp;{detailsData && variationDetail.product.sale_price}
             </span>
            )}
            &nbsp;
            <p className={classes.current_price}>
-            {detailsData && detailsData.product.price}&nbsp;€
+            {detailsData && variationDetail.product.sale_price}&nbsp;€
            </p>
           </>
          ) : (
@@ -517,7 +518,7 @@ const Products = ({ windowSize }) => {
             variant='h3'>
             {t('price')}/1&nbsp;{t('1_pcs')}&nbsp;:
            </Typography>
-           {detailsData.product?.sale_price === detailsData.product?.price && (
+           {+detailsData.product?.percent_sale_price !== 0 && (
             <span
              className={classes.prev_price}
              style={{
@@ -527,13 +528,14 @@ const Products = ({ windowSize }) => {
               {detailsData.product.percent_sale_price}%
              </p>
              &nbsp;
-             {detailsData && detailsData.product?.sale_price * euro}
+             {detailsData && variationDetail.product?.sale_price * euro}
              {t('m_unit')}
             </span>
            )}
            &nbsp;
            <p className={classes.current_price}>
-            {detailsData && formatNumber(detailsData?.product.price * euro)}
+            {detailsData &&
+             formatNumber(variationDetail?.product.sale_price * euro)}
             تومان
            </p>
           </>
@@ -554,7 +556,6 @@ const Products = ({ windowSize }) => {
               {t('quantity')}&nbsp;
              </Typography>
              <div className={classes.divider} />
-             {console.log(variationDetail)}
              {variationDetail && (
               <div className={classes.input_wrapper}>
                <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>

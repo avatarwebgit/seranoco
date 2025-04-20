@@ -216,6 +216,7 @@ const FilterByShape = ({ windowSize }) => {
   abortControllerRef.current.abort();
   abortControllerRef.current = new AbortController();
   setProductDetails([]);
+  setSelectedSizesObject([]);
   setTableData([]);
   setSizeData([]);
   setIsFilteredProductsLoading(true);
