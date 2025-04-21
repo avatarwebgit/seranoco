@@ -70,7 +70,7 @@
 
  "related": "Related Bestsellers",
  "views": "People Who Viewed These Items Ultimately Bought",
- "reset_selections": "Reset Selections",
+ "reset_selections": "Reset All Filters",
 
  "more_info": "Technical Information",
  "description": "More Information",
@@ -94,7 +94,7 @@
  "add": "Add",
  "trylater": "There Was An Error Please Try Again Later.",
  "payment_method":"Payment Method",
-  "availableQuantity":"Max Quantity",
+  "availableQuantity":"Available Pcs",
   "select_a_filter":"Select A Filter",
  "profile": {
   "orders": "Orders",

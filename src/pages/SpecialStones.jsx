@@ -111,6 +111,19 @@ const SpecialStones = ({ windowSize }) => {
   const formData = new FormData(form);
   const formEntries = Object.fromEntries(formData.entries());
   setDimensionEntries(formEntries);
+
+  // const numericDimensionEntries = Object.keys(dimensionEntries).map(entry =>
+  //  Number(entry),
+  // );
+  // console.log(numericDimensionEntries);
+  // handleGetFilterProducts(
+  //  shapeFormEntries,
+  //  numericDimensionEntries,
+  //  selectedIds,
+  //  page,
+  //  ItemsPerPage,
+  // );
+
   if (e.target.checked) {
    setSelectedSizesObject(prev => [...prev, elem]);
   } else {
@@ -309,10 +322,15 @@ const SpecialStones = ({ windowSize }) => {
  useEffect(() => {
   abortControllerRef.current.abort();
   abortControllerRef.current = new AbortController();
+
+  const numericDimensionEntries = Object.keys(dimensionEntries).map(entry =>
+   Number(entry),
+  );
+
   handleGetFilterProducts(
    shapeFormEntries,
+   numericDimensionEntries,
    selectedIds,
-   dimensionEntries,
    page,
    ItemsPerPage,
   );
@@ -393,10 +411,10 @@ const SpecialStones = ({ windowSize }) => {
    setChunkedData(chunks);
   }
  }, [memoizedTableData]);
-  useEffect(() => {
-    console.log(catName)
-  }, [catName])
-  
+ useEffect(() => {
+  console.log(catName);
+ }, [catName]);
+
  return (
   <div className={classes.main}>
    <BannerCarousel />
@@ -410,8 +428,7 @@ const SpecialStones = ({ windowSize }) => {
         linkDataProp={[
          { pathname: t('home'), url: ' ' },
          {
-          pathname:
-           (lng === 'en' ? catName?.name : catName?.name_fa),
+          pathname: lng === 'en' ? catName?.name : catName?.name_fa,
           url: 'shopbyshape',
          },
         ]}

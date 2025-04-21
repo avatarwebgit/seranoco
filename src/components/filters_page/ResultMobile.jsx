@@ -19,7 +19,7 @@ const ResultMobile = ({ dataProps }) => {
 
  useEffect(() => {
   if (dataProps) {
-   setData(dataProps);
+    setData(dataProps);
   }
  }, [dataProps]);
 

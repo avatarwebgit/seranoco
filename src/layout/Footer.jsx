@@ -51,7 +51,7 @@ const Footer = () => {
          <img className={classes.footer_logo} src={logo} alt='' />
         </a>
         <div className={classes.links}>
-         <span>
+         <span style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
           <p className={classes.title}>{footerData.footer_1}</p>
 
           {pageData &&
@@ -65,7 +65,7 @@ const Footer = () => {
             }
            })}
          </span>
-         <span>
+         <span style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
           <p className={classes.title}>{footerData.footer_2}</p>
           {pageData &&
            pageData.data.map((elem, i) => {
@@ -78,7 +78,9 @@ const Footer = () => {
             }
            })}
          </span>
-         <span className={classes.support}>
+         <span
+          className={classes.support}
+          style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
           <p className={classes.title}>{footerData.footer_3}</p>
           {pageData &&
            pageData.data.map((elem, i) => {

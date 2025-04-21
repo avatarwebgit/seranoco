@@ -35,6 +35,7 @@ const ResultRow = ({ dataProp }) => {
  useEffect(() => {
   if (dataProp) {
    setData(dataProp);
+   console.log(dataProp);
   }
   if (isLoadingImage) {
    setIsLoading(true);
@@ -43,7 +44,7 @@ const ResultRow = ({ dataProp }) => {
   }
  }, [dataProp, isLoadingImage]);
 
-  const handleAddQuantity = el => {
+ const handleAddQuantity = el => {
   setQuantities(prevQuantities => {
    const newQuantity = prevQuantities[el.variation_id]
     ? prevQuantities[el.variation_id] + 1
@@ -109,8 +110,7 @@ const ResultRow = ({ dataProp }) => {
     </thead>
     <tbody>
      {data &&
-           data.map(el => {
-        console.log(el)
+      data.map(el => {
        return (
         <tr className={classes.tr} key={el.id} style={{ height: '80px' }}>
          {/* Image Column */}

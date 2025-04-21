@@ -14,7 +14,7 @@ const SearchResult = ({ dataProp }) => {
  useEffect(() => {
    if (dataProp) {
      setData(dataProp);
-    //  console.log(data)
+     console.log(dataProp)
   }
  }, [dataProp]);
 
@@ -28,7 +28,7 @@ const SearchResult = ({ dataProp }) => {
     </div>
     <div className={classes.text_wrapper}>
      <div className={classes.name}>{data?.product?.name}</div>
-     <div className={classes.size}>{data?.height}</div>
+     <div className={classes.size}>{data?.size}</div>
     </div>
    </Link>
  );

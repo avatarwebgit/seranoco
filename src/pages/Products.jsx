@@ -124,12 +124,12 @@ const Products = ({ windowSize }) => {
     if (lng === 'fa') {
      setShape(
       serverRes.result.product_attributes.find(
-       attr => attr.attribute.name === 'Shapes',
+       attr => attr.attribute.name === 'Shape',
       )?.value.name_fa,
      );
      setColor(
       serverRes.result.product_attributes.find(
-       attr => attr.attribute.name === 'Colors',
+       attr => attr.attribute.name === 'Color',
       )?.value.name_fa,
      );
      setBrand(
@@ -452,7 +452,6 @@ const Products = ({ windowSize }) => {
          variant='h3'>
          {t('product.total_height')}&nbsp;:&nbsp;
          {height}
-         {}
         </Typography>
        ) : (
         <Skeleton
@@ -536,7 +535,8 @@ const Products = ({ windowSize }) => {
            <p className={classes.current_price}>
             {detailsData &&
              formatNumber(variationDetail?.product.sale_price * euro)}
-            تومان
+            تومان (&nbsp;€&nbsp;
+            {detailsData && variationDetail.product.sale_price} )
            </p>
           </>
          )}
@@ -721,7 +721,7 @@ const Products = ({ windowSize }) => {
            </p>
            &nbsp;&nbsp;
            <p className={classes.payment_value}>
-            {(+detailsData.product.price * quantity).toFixed(2)}
+            {(+variationDetail.product.sale_price * quantity).toFixed(2)}
             {t('m_unit')}
            </p>
           </div>
@@ -734,13 +734,25 @@ const Products = ({ windowSize }) => {
             flexDirection: 'column',
             alignItems: 'flex-start',
            }}>
-           <span style={{ display: 'flex' }}>
-            <p className={classes.payment_title}>{t('payment')}:</p>
-            &nbsp;&nbsp;
-            <p className={classes.payment_value}>
-             {formatNumber(+detailsData.product.price * quantity * +euro)}
-             {t('m_unit')}
-            </p>
+           <span className={classes.total_fee_wrapper}>
+            <span>
+             <p className={classes.payment_title}>{t('payment')}:</p>
+             &nbsp;
+             <p className={classes.payment_value}>
+              {formatNumber(
+               +variationDetail.product.sale_price * quantity * +euro,
+              )}
+              {t('m_unit')}
+             </p>
+            </span>
+            <span>
+             {console.log(productData)}
+             <p className={classes.payment_value}>
+              {(+variationDetail.product.sale_price * quantity).toFixed(2)}€
+             </p>
+             &nbsp;
+             <p className={classes.payment_title}>:Total</p>
+            </span>
            </span>
            {/* <span style={{ display: 'flex' }}>
             <p className={classes.payment_value}>

@@ -99,7 +99,7 @@ const Carusel = ({ windowSize }) => {
           alt={`Slide ${index + 1}`}
           style={{ width: '100%', height: '100%' }}
          />
-         {!isSmallSize && (
+         {/* {!isSmallSize && ( */}
           <span className={classes.about_product}>
            <p className={classes.title}>{slide.title}</p>
            <p className={classes.caption}>{slide.text}</p>
@@ -108,7 +108,7 @@ const Carusel = ({ windowSize }) => {
             {t('shop_now')}
            </CustomAnimatedBtn>
           </span>
-         )}
+         {/* )} */}
         </div>
        </SwiperSlide>
       ))}

@@ -58,7 +58,7 @@ export default function BasicTabs({ dataProp }) {
    </Box>
    <CustomTabPanel value={value} index={0}>
     <div
-     className={classes.detail_container}
+     className={`${classes.detail_container} ${classes.tech_container}`}
      style={{
       direction: lng === 'fa' ? 'rtl' : 'ltr',
       width: '40vw',

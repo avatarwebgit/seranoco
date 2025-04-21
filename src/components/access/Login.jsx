@@ -11,6 +11,7 @@ import {
 import { Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { notify } from '../../utils/helperFunctions';
 
 import { accesModalActions, signupActions } from '../../store/store';
 
@@ -22,7 +23,6 @@ import logo from '../../assets/images/logo_trasnparent.png';
 import { userActions } from '../../store/store';
 
 import classes from './Login.module.css';
-import { notify } from '../../utils/helperFunctions';
 const Login = () => {
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
@@ -31,6 +31,7 @@ const Login = () => {
  const [showPassword, setShowPassword] = useState(false);
  const [token, settoken] = useState(null);
  const [errors, setErrors] = useState([]);
+ const [recaptchaToekn, setRecaptchaToekn] = useState(null);
 
  const dispatch = useDispatch();
 
@@ -74,7 +75,7 @@ const Login = () => {
 
  const handleGetScore = value => {
   try {
-   console.log(value);
+   setRecaptchaToekn(value);
   } catch (error) {
    // console.error('Error getting reCAPTCHA score:', error);
   }
@@ -93,7 +94,7 @@ const Login = () => {
  };
 
  const handleLogin = async () => {
-  const serverRes = await login(email, password);
+  const serverRes = await login(email, password, recaptchaToekn);
   if (serverRes.response.ok) {
    if (serverRes.result.token) {
     dispatch(userActions.set(serverRes.result.token));
@@ -110,7 +111,7 @@ const Login = () => {
     );
    }
   } else {
-    setErrors(serverRes.result.errors);
+   setErrors(serverRes.result.errors);
   }
  };
 
@@ -161,13 +162,10 @@ const Login = () => {
          ),
         }}
         onChange={e => setPassword(e.target.value)}
-             />
-             {
-               console.log(errors)
-             }
+       />
+       {console.log(errors)}
        {Object.keys(errors).length > 0 &&
         Object.values(errors).map(el => {
-         console.log(el);
          return (
           <div
            className={classes.error_text}

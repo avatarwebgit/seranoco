@@ -246,7 +246,7 @@ const Signup = () => {
 
   const filterExactMatch = (options, { inputValue }) => {
    if (!inputValue) {
-    return options; // Show all options when input is empty
+    return options; 
    }
    const lowerInputValue = inputValue.toLowerCase();
    return options.filter(option =>

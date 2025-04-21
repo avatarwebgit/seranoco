@@ -310,14 +310,13 @@ export const getCitiesByCountry = async (country_id, options) => {
  return { response, result };
 };
 
-export const login = async (email, password, options) => {
+export const login = async (email, password, token) => {
  const response = await fetch(`${baseUrl}/login`, {
   method: 'POST',
   headers: {
    'Content-type': 'application/json',
   },
-  body: JSON.stringify({ email, password }),
-  ...options,
+  body: JSON.stringify({ email, password, token }),
  });
  const result = await response.json();
  return { response, result };

@@ -390,6 +390,7 @@
  border-radius: 5px;
  padding: 5px;
  margin: 5px 0;
+ border-right: none;
 }
 
 .input_wrapper {
@@ -398,9 +399,19 @@
 }
 
 .input_wrapper p {
- font-size: 12px;
+ font-size: 15px;
 }
 
+.total_fee_wrapper {
+ display: flex;
+ justify-content: space-between;
+ width: 100%;
+}
+
+.total_fee_wrapper span {
+ display: flex;
+ align-items: center;
+}
 
 @media only screen and (max-width: 480px) {
  .content {
