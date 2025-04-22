@@ -21,8 +21,8 @@ const SingleBlog = ({ windowSize }) => {
 
  const getArticle = async () => {
    const serverRes = await getAdminCreatedPageDetails(alias);
-   console.log(serverRes)
-  setblogData(serverRes.result.data);
+
+   setblogData(serverRes.result.data);
  };
 
  useEffect(() => {
