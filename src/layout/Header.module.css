@@ -92,16 +92,6 @@
  display: none;
 }
 
-.header_btn_wrapper:hover .mega_menu_backdropp,
-.header_btn_wrapper:hover .mega_paper {
- display: block;
- animation: fade_in 0.15s ease-in-out forwards;
-}
-
-.mega_menu_backdropp:hover {
- display: none !important;
-}
-
 .mega_paper {
  transition: all 1s;
  height:50vh;
@@ -119,6 +109,18 @@
  display: none;
  z-index: 100000;
 }
+
+.mega_menu_backdropp:hover {
+ display: none !important;
+}
+
+.header_btn_wrapper:hover .mega_menu_backdropp,
+.header_btn_wrapper:hover .mega_paper {
+ display: block;
+ animation: fade_in 0.15s ease-in-out forwards;
+}
+
+
 
 .mega_card {
  padding: 0 110px;

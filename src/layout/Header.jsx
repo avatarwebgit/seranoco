@@ -319,15 +319,10 @@ const Header = ({ windowSize }) => {
            {elem.url ? (
             <Link
              className={classes.header_btn}
-             id='basic-button'
-             aria-controls={open ? 'basic-menu' : undefined}
-             aria-haspopup='true'
-             aria-expanded={open ? 'true' : undefined}
-             onMouseEnter={event => handleClick(event)}
              style={{ color: isHomePage ? '#000000' : '#ffffff' }}
              target={'_blank'}
              href={elem.url}
-             to={elem.url}>
+             to={elem.url} key={nanoid()}>
              {elem.label}
             </Link>
            ) : (
@@ -335,10 +330,6 @@ const Header = ({ windowSize }) => {
              <motion.div
               className={classes.header_btn}
               id='basic-button'
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup='true'
-              aria-expanded={open ? 'true' : undefined}
-              onMouseEnter={event => handleClick(event)}
               style={{ color: isHomePage ? '#000000' : '#ffffff' }}>
               {elem.label}
              </motion.div>
