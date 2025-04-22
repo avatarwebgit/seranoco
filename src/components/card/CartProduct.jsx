@@ -10,6 +10,7 @@ import { formatNumber, notify } from '../../utils/helperFunctions';
 import { sendShoppingCart } from '../../services/api';
 
 import classes from './CartProduct.module.css';
+import { Link } from 'react-router-dom';
 const CartProduct = data => {
  const [productData, setProductData] = useState(null);
  const [variationPrice, setVariationPrice] = useState(0);
@@ -62,32 +63,6 @@ const CartProduct = data => {
   dispatch(cartActions.remove(productData));
  };
 
- const handleSendShoppingCart = async () => {
-  const serverRes = await sendShoppingCart(
-   token,
-   productData.id,
-   variation.result.product.id,
-   +quantity,
-  );
-  try {
-   notify(t('orders.ok'));
-   if (serverRes.response.ok) {
-    dispatch(
-     cartActions.add({
-      ...productData,
-      selected_quantity: quantity,
-      euro_price: euro,
-      variation_id: variation.result.product.id.id,
-      variation: { quantity: quantity },
-     }),
-    );
-   }
-   dispatch(drawerActions.open());
-  } catch (err) {
-   console.log(err);
-  }
- };
-
  return (
   <>
    {productData && (
@@ -95,9 +70,12 @@ const CartProduct = data => {
      <div
       className={`${classes.main}`}
       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-      <div className={classes.img_wrapper}>
+      <Link
+       className={classes.img_wrapper}
+       to={`${lng}/products/${productData.alias}/${variation.product.variation_id}`}>
+       {console.log(variation)}
        <img src={productData.primary_image} alt='' loading='lazy' />
-      </div>
+      </Link>
       <div className={classes.details_wrapper}>
        <span className={classes.color}>
         {t('color')}:{productData.color}
