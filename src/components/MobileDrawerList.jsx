@@ -142,8 +142,6 @@ const MobileDrawerList = () => {
   let updatedItems = [];
   if (data) {
    data.map(el => {
-    if (el.label === 'کلیه خدمات') console.log(el);
-    console.log(el);
     if (el.children) {
      const children = [];
      el.children.map(child => {
