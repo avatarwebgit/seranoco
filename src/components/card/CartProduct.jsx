@@ -72,7 +72,7 @@ const CartProduct = data => {
       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
       <Link
        className={classes.img_wrapper}
-       to={`${lng}/products/${productData.alias}/${variation.product.variation_id}`}>
+       to={`${lng}/products/${productData.alias}/${variation?.product?.variation_id}`} target='_blank'>
        {console.log(variation)}
        <img src={productData.primary_image} alt='' loading='lazy' />
       </Link>
