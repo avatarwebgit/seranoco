@@ -10,13 +10,15 @@
  "header_button_9": "دکمه 9",
  "header_button_10": "دکمه 10",
 
+ "validation": "نماد ها و اعتبارات",
+
  "seranoco": "سرانوکو",
 
  "title": "کاشی",
  "caption": "توضیحات",
  "shop_now": " خرید",
  "login": "ورود ",
- "logout":"خروج",
+ "logout": "خروج",
  "home": "صفحه اصلی",
  "shop_by_color": "دسته بندی بر اساس رنگ",
  "shop_by_shape": "دسته بندی بر اساس شکل",

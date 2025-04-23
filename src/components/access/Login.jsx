@@ -163,7 +163,7 @@ const Login = () => {
         }}
         onChange={e => setPassword(e.target.value)}
        />
-       {console.log(errors)}
+
        {Object.keys(errors).length > 0 &&
         Object.values(errors).map(el => {
          return (

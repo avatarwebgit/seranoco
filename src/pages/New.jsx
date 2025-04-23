@@ -53,7 +53,7 @@ const New = ({ windowSize }) => {
  const [colorData, setColorData] = useState([]);
  const [sizeData, setSizeData] = useState([]);
  const [groupColors, setGroupColors] = useState([]);
- const [shapeFormEntries, setShapeFormEntries] = useState(46);
+ const [shapeFormEntries, setShapeFormEntries] = useState([]);
  const [dimensionEntries, setDimensionEntries] = useState([]);
  const [selectedIds, setSelectedIds] = useState([]);
  const [isLoading, setIsLoading] = useState(false);
@@ -130,7 +130,7 @@ const New = ({ windowSize }) => {
  };
 
  const handleResetSelections = () => {
-  setShapeFormEntries('');
+  setShapeFormEntries([]);
   setDimensionEntries([]);
   setSelectedIds([]);
   dispatch(productDetailActions.reset());
@@ -144,7 +144,7 @@ const New = ({ windowSize }) => {
 
  useEffect(() => {
   dispatch(productDetailActions.reset());
-  handleShapeClick('', 46);
+  handleShapeClick('', '');
   document.title = t('seranoco') + '/'  +t('new');
   getInfo();
  }, []);

@@ -10,11 +10,14 @@ import logo from '../assets/images/footer-logo.png';
 import classes from './Footer.module.css';
 import { Facebook, Instagram } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 const Footer = () => {
  const [footerData, setFooterData] = useState(null);
  const { data: pageData } = usePages();
 
  const lng = useSelector(state => state.localeStore.lng);
+
+ const { t } = useTranslation();
 
  const fetchFooterLinks = async () => {
   const serverRes = await basicInformation();
@@ -93,7 +96,30 @@ const Footer = () => {
             }
            })}
          </span>
+         <span
+          className={classes.support}
+          style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
+          <p className={classes.title}>{t('validation')}</p>
+          <a
+           referrerpolicy='origin'
+           className={classes.image_wrapper}
+           target='_blank'
+           href={
+            'https://trustseal.enamad.ir/?id=602035&Code=sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
+           }>
+           <img
+            referrerpolicy='origin'
+            src={
+             'https://trustseal.enamad.ir/logo.aspx?id=602035&Code=sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
+            }
+            alt=''
+            style={{ cursor: 'pointer' }}
+            code='sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
+           />
+          </a>
+         </span>
         </div>
+        <div></div>
        </div>
        <div className={classes.divider}></div>
        <div className={classes.social_media_links}>

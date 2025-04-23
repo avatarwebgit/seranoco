@@ -610,6 +610,7 @@ export const getAllNewProducts = async (
  page,
  per_page,
 ) => {
+ console.log(shape_id, color_ids, size_ids, page, per_page);
  const response = await fetch(
   `${baseUrl}/get/products/new?page=${page}&per_page=${per_page}`,
   {

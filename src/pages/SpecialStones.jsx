@@ -30,15 +30,14 @@ import {
  getProduct,
  useColors,
  getProductDetailsWithId,
- useFilteredShapes,
  getFilteredSizes,
- useShapes,
  getAllProductFromCategory,
  homePageCategories,
 } from '../services/api';
 import ResultRow from '../components/filters_page/ResultRow';
 import ResultMobile from '../components/filters_page/ResultMobile';
 import Breadcrumbs from '../components/common/Breadcrumbs';
+import { useParams } from 'react-router-dom';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -49,7 +48,6 @@ import '../styles/carousel.css';
 import { scrollToTarget } from '../utils/helperFunctions';
 
 import classes from './SpecialStones.module.css';
-import { useParams } from 'react-router-dom';
 const SpecialStones = ({ windowSize }) => {
  const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
  const [colorData, setColorData] = useState(null);
@@ -112,17 +110,17 @@ const SpecialStones = ({ windowSize }) => {
   const formEntries = Object.fromEntries(formData.entries());
   setDimensionEntries(formEntries);
 
-  // const numericDimensionEntries = Object.keys(dimensionEntries).map(entry =>
-  //  Number(entry),
-  // );
-  // console.log(numericDimensionEntries);
-  // handleGetFilterProducts(
-  //  shapeFormEntries,
-  //  numericDimensionEntries,
-  //  selectedIds,
-  //  page,
-  //  ItemsPerPage,
-  // );
+  const numericDimensionEntries = Object.keys(dimensionEntries).map(entry =>
+   Number(entry),
+  );
+
+   handleGetFilterProducts(
+   shapeFormEntries,
+   numericDimensionEntries,
+   selectedIds,
+   page,
+   ItemsPerPage,
+  );
 
   if (e.target.checked) {
    setSelectedSizesObject(prev => [...prev, elem]);
@@ -163,12 +161,13 @@ const SpecialStones = ({ windowSize }) => {
      signal: abortControllerRef.current.signal,
     },
    );
-   if (serverRes.response.ok) {
+    if (serverRes.response.ok) {
+
     setLastPage(serverRes.result.data.last_page);
     setPage(serverRes.result.data.current_page);
     setProductDetails((prevData = []) => {
-     const newItems = Array.isArray(serverRes.result.data.data)
-      ? serverRes.result.data.data
+     const newItems = Array.isArray(serverRes.result.data)
+      ? serverRes.result.data
       : [];
      const updatedData = prevData.filter(prevItem =>
       newItems.some(newItem => newItem.id === prevItem.id),
@@ -210,11 +209,12 @@ const SpecialStones = ({ windowSize }) => {
  const handleFetchAllData = async id => {
   const serverRes = await getAllProductFromCategory(id);
   if (serverRes.response.ok) {
-   setColorData(serverRes.result.colors);
+
+    setColorData(serverRes.result.colors);
    setShapesData(serverRes.result.shapes);
    setGroupColors(serverRes.result.group_colors);
    setSizeData(serverRes.result.sizes);
-   setProductDetails(serverRes.result.data);
+  //  setProductDetails(serverRes.result.data);
   }
  };
 
@@ -284,7 +284,6 @@ const SpecialStones = ({ windowSize }) => {
   abortControllerRef.current = new AbortController();
   setProductDetails([]);
   setTableData([]);
-  setSizeData([]);
   setIsFilteredProductsLoading(true);
   setIsLoading(true);
  };
@@ -326,6 +325,7 @@ const SpecialStones = ({ windowSize }) => {
   const numericDimensionEntries = Object.keys(dimensionEntries).map(entry =>
    Number(entry),
   );
+  setProductDetails([]);
 
   handleGetFilterProducts(
    shapeFormEntries,
@@ -353,7 +353,7 @@ const SpecialStones = ({ windowSize }) => {
    try {
     const serverRes = await getProductDetailsWithId(id);
     if (serverRes.response.ok) {
-     setProductDetails(prev => [...prev, serverRes.result.product]);
+     setProductDetails(prev => [...prev, serverRes.result.data]);
     }
    } catch (error) {
     // console.error('Error fetching product details:', error);
@@ -411,9 +411,6 @@ const SpecialStones = ({ windowSize }) => {
    setChunkedData(chunks);
   }
  }, [memoizedTableData]);
- useEffect(() => {
-  console.log(catName);
- }, [catName]);
 
  return (
   <div className={classes.main}>
@@ -552,7 +549,6 @@ const SpecialStones = ({ windowSize }) => {
      }
 
      <Divider text={'Size mm'} />
-     {isLoading && <LoadingSpinner />}
 
      {
       <Card className={classes.size_wrapper}>
@@ -584,7 +580,8 @@ const SpecialStones = ({ windowSize }) => {
        ref={productsWrapperRef}>
        {windowSize === 'm' || windowSize === 'l' || windowSize === 'xl' ? (
         <>
-         <ResultRow dataProp={productDetails} />
+                 <ResultRow dataProp={productDetails} />
+                 {console.log(productDetails)}
         </>
        ) : (
         <>
