@@ -166,11 +166,12 @@ const Login = () => {
 
        {Object.keys(errors).length > 0 &&
         Object.values(errors).map(el => {
-         return (
+
+          return (
           <div
            className={classes.error_text}
            style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-           {el}
+           {lng === 'fa' ? el.fa : el.en}
           </div>
          );
         })}
