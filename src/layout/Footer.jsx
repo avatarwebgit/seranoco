@@ -103,6 +103,7 @@ const Footer = () => {
           <a
            referrerpolicy='origin'
            className={classes.image_wrapper}
+           style={{ width: '100%', height: '100%' }}
            target='_blank'
            href={
             'https://trustseal.enamad.ir/?id=602035&Code=sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'

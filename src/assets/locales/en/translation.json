@@ -10,7 +10,7 @@
  "header_button_9": "button 9",
  "header_button_10": "button 10",
 
- "validation":"Validations",
+ "validation": "Validations",
 
  "title": "Tile",
  "caption": "Description",
@@ -21,7 +21,7 @@
  "login": "Login",
  "home": "Home",
 
- "more_information":"More Information",
+ "more_information": "More Information",
 
  "shop_by_color": "Shop by Color",
  "shop_by_shape": "Shop by Shape",
@@ -95,9 +95,9 @@
  "byorder": "By Order",
  "add": "Add",
  "trylater": "There Was An Error Please Try Again Later.",
- "payment_method":"Payment Method",
-  "availableQuantity":"Available Pcs",
-  "select_a_filter":"Select A Filter",
+ "payment_method": "Payment Method",
+ "availableQuantity": "Available Pcs",
+ "select_a_filter": "Select A Filter",
  "profile": {
   "orders": "Orders",
   "item_list": "Item Lists",
@@ -126,8 +126,6 @@
   "sbpd": "Sort By price (Decreasing)",
 
   "sort": "Sort",
-
-
 
   "err_add_add": "There Was An Error Adding This Address, Please Try Again Later",
   "suc_add_add": "Address Added Successfully.",
@@ -185,7 +183,7 @@
   "nstep": "Next Step",
   "pstep": "Back",
   "receiver": "Receiver",
-  "postalcode": "Post Code",
+  "postalcode": "Postal Code",
   "title": "Tile",
   "submit": "ُSubmit",
   "off": "Discount",
@@ -209,7 +207,7 @@
   "err": "Product Not Added To Favorites Please Try Again.",
   "remove": "Remove From Wish List",
   "remove_ow": "Remove",
-  "total_height":"Total Height"
+  "total_height": "Total Height"
  },
 
  "cu": {
@@ -240,6 +238,13 @@
   "status": "Status",
   "price": "Price",
   "date": "Date",
-  "ok":"Order Submited Successfully"
+  "ok": "Order Submited Successfully",
+  "doctype": "Document Type",
+  "payment_code": "Payment Code",
+  "bank_name": "Bank Name",
+  "mobile_nu": "Mobile Number",
+  "delivery_price": "Delivery Price",
+  "paying_amout":"Paying Amount",
+  "payment_status":"Payment Status"
  }
 }

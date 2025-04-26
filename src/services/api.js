@@ -639,6 +639,7 @@ export const sendCartPrice = async (
  payment_method,
  amount,
 ) => {
+ console.log(token, address_id, payment_method, amount);
  const response = await fetch(`${baseUrl}/payment`, {
   method: 'POST',
   headers: {

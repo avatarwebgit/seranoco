@@ -15,6 +15,9 @@ const cartSlice = createSlice({
  name: 'cart',
  initialState,
  reducers: {
+  set(state, action) {
+   state.products = action.payload;
+  },
   add(state, action) {
    if (
     !state.products.find(
@@ -53,7 +56,7 @@ const cartSlice = createSlice({
    const product = state.products.find(
     el => +el.variation_id === +action.payload.id,
    );
-     if (product) {
+   if (product) {
     product.selected_quantity = action.payload.quantity;
    }
 

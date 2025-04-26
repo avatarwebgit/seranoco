@@ -56,19 +56,19 @@ const PreCheckout = ({ windowSize }) => {
   }
  }, [card]);
 
-//  const handleSendShoppingCart = async (token, product) => {
-//   try {
-//     const serverRes = await sendShoppingCart(
-//      token,
-//      product.id,
-//      +product.variation_id,
-//      product.selected_quantity,
-//     );
+ const handleSendShoppingCart = async (token, product) => {
+  try {
+    const serverRes = await sendShoppingCart(
+     token,
+     product.id,
+     +product.variation_id,
+     product.selected_quantity,
+    );
 
-//    if (serverRes.response.ok) {
-//    }
-//   } catch {}
-//  };
+   if (serverRes.response.ok) {
+   }
+  } catch {}
+ };
 
  const handleGotoNextStep = () => {
   if (step === 0) {

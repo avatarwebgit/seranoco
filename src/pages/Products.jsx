@@ -245,8 +245,8 @@ const Products = ({ windowSize }) => {
   console.log('first');
   const serverRes = await sendShoppingCart(token, el.id, +variation, +quantity);
   try {
-   console.log(serverRes);
-   notify(t('orders.ok'));
+
+    notify(t('orders.ok'));
    if (serverRes.response.ok) {
     dispatch(
      cartActions.add({

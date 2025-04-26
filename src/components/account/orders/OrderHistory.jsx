@@ -10,10 +10,13 @@ import { ReactComponent as Close } from '../../../assets/svg/close.svg';
 
 import { replyTicket, getOrderStatusDetail } from '../../../services/api';
 
-import { formatNumber } from '../../../utils/helperFunctions';
+import Card from '../../filters_page/Card';
+
+import { formatNumber, notify } from '../../../utils/helperFunctions';
 
 import classes from './OrderHistory.module.css';
 const OrderHistory = ({ dataProp, number }) => {
+ const [detailsData, setDetailsData] = useState(null);
  const token = useSelector(state => state.userStore.token);
  const euro = useSelector(state => state.cartStore.euro);
  const lng = useSelector(state => state.localeStore.lng);
@@ -28,7 +31,13 @@ const OrderHistory = ({ dataProp, number }) => {
  const handleGetdetails = async () => {
   if (data) {
    const serverRes = await getOrderStatusDetail(token, data.id);
-   console.log(serverRes);
+
+   if (serverRes.response.ok) {
+    setDetailsData(serverRes.result.orders);
+    console.log(serverRes.result.orders);
+   } else {
+    notify(t('trylater'));
+   }
   }
  };
 
@@ -54,18 +63,97 @@ const OrderHistory = ({ dataProp, number }) => {
       open={modalOpen}
       onClose={handleCloseModal}
       className={classes.modal}>
-      <div className={classes.modal_content}>
-       {/* <div className={classes.messages_wrapper} ref={messagesRef}>
-        {allMessages.map(el => {
-         return (
-          <MessageBox
-           type={el.type === 'user' ? 'ltr' : 'rtl'}
-           message={el.message}
-           time={new Date(el.created_at).toLocaleDateString()}
-          />
-         );
-        })}
-       </div> */}
+      <div className={classes.sheet}>
+       {detailsData && (
+        <>
+         
+       
+         <div className={classes.modal_content}>  <div className={classes.content}>
+          <div>
+           <label>{t('signup.fname')}</label>
+           <input type='text' readOnly value={detailsData.address.title} />
+           <label>{t('signup.pnumber')}</label>
+           <input type='text' readOnly value={detailsData.address.cellphone} />
+           <label>{t('signup.city')}</label>
+           <input type='text' readOnly value={detailsData.address.city_id} />
+           <label>{t('pc.postalcode')}</label>
+           <input
+            type='text'
+            readOnly
+            value={detailsData.address.postal_code}
+           />
+           <label></label>
+           <input type='text' readOnly />
+           <label></label>
+           <input type='text' readOnly />
+          </div>
+          <div>
+           <label></label>
+           <input type='text' readOnly />
+           <label></label>
+           <input type='text' readOnly />
+           <label></label>
+           <input type='text' readOnly />
+           <label></label>
+           <input type='text' readOnly />
+           <label></label>
+           <input type='text' readOnly />
+           <label></label>
+           <input type='text' readOnly />
+          </div>
+         </div>
+          <table className={classes.table}>
+           <thead>
+            <tr className={classes.tr}>
+             <td className={classes.td}>{t('pc.image')}</td>
+             <td className={classes.td}>{t('pc.color')}</td>
+             <td className={classes.td}>{t('pc.size')}</td>
+             <td className={classes.td}>
+              {t('pc.price')}/{t('1_pcs')}
+             </td>
+             <td className={classes.td}>{t('quantity')}</td>
+             <td className={classes.td}>{t('pc.payment')}</td>
+            </tr>
+           </thead>
+           <tbody>
+            {detailsData.products.map(el => {
+             return (
+              <tr className={classes.tr} key={el.id}>
+               <td className={classes.td}>
+                <div className={classes.img_wrapper}>
+                 <img src={el.product.primary_image} alt='' loading='lazy' />
+                </div>
+               </td>
+               <td className={classes.td}>
+                {lng === 'fa' ? el.product.color_fa : el.product.color}
+               </td>
+               <td className={classes.td}>{el.product.size}</td>
+               <td
+                className={classes.td}
+                style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+                {lng !== 'fa'
+                 ? el.price
+                 : formatNumber(el.product.price * euro)}
+                &nbsp;{t('m_unit')}
+               </td>
+               <td className={classes.td}>{el.selected_quantity}</td>
+               <td
+                className={classes.td}
+                style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+                {lng === 'fa'
+                 ? formatNumber(el.total_price * euro)
+                 : +el.total_price.toFixed(2)}
+                &nbsp;{t('m_unit')}
+               </td>
+              </tr>
+             );
+            })}
+           </tbody>
+          </table>
+         </div>
+         
+        </>
+       )}
       </div>
      </Modal>
      <tr className={classes.tr}>

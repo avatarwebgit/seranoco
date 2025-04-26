@@ -408,7 +408,7 @@ const FilterByShape = ({ windowSize }) => {
     per_page,
     { signal: abortControllerRef.current.signal },
    );
-
+   console.log(serverRes);
    if (serverRes.response.ok) {
     setTableData(serverRes.result.data);
    }

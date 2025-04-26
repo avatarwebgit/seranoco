@@ -8,87 +8,93 @@ import classes from './PaymentMethod.module.css';
 import { sendCartPrice } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
 const PaymentMethod = ({ dataProps }) => {
-  const lng = useSelector(state => state.localeStore.lng);
-  const cart = useSelector(state => state.cartStore);
-  const token = useSelector(state => state.userStore.token);
+ const lng = useSelector(state => state.localeStore.lng);
+ const cart = useSelector(state => state.cartStore);
+ const token = useSelector(state => state.userStore.token);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
+ const dispatch = useDispatch();
+ const navigate = useNavigate();
 
-  const [data, setData] = useState(null);
+ const [data, setData] = useState(null);
 
-  useEffect(() => {
-    if (dataProps) {
-      setData(dataProps);
-    }
-  }, [dataProps]);
+ useEffect(() => {
+  if (dataProps) {
+   setData(dataProps);
+  }
+ }, [dataProps]);
 
-  const handleSetPaymentMethod = id => {
-    dispatch(cartActions.setPaymentMethod(id));
-    try {
-      sendData(token, cart.selectedAddress, id, cart.finalPayment * cart.euro);
-    } catch {
-    } finally {
-    }
-  };
+ const handleSetPaymentMethod = async id => {
+  dispatch(cartActions.setPaymentMethod(id));
+  try {
+   const serverRes = await sendData(
+    token,
+    cart.selectedAddress,
+    id,
+    cart.finalPayment * cart.euro,
+   );
+  //  console.log(serverRes);
+  } catch {
+  } finally {
+  }
+ };
 
-  const sendData = async (token, address, method, amount) => {
-    const serverRes = await sendCartPrice(token, address, method, amount);
-    if (serverRes.response.ok) {
-      navigate(`/fa/order/pay/${serverRes.result.order.id}`)
-    } else {
-      notify(' خطایی رخ داد لطفا دوباره تلاش کنید')
-    }
-  };
+ const sendData = async (token, address, method, amount) => {
+  const serverRes = await sendCartPrice(token, address, method, amount);
 
-  return (
-    <div className={classes.wrapper}>
-      {data &&
-        data.map(el => {
-          return (
-            <>
-              {el.id !== 10 ? (
-                <>
-                  <button
-                    onClick={() => handleSetPaymentMethod(el.id)}
-                    className={`${classes.label}`}
-                    key={el.id}
-                  >
-                    <div className={classes.img_wrpper}>
-                      <img
-                        className={`${classes.img}`}
-                        src={el.image}
-                        alt={''}
-                        loading='lazy'
-                      />
-                    </div>
-                    {lng === 'fa' ? el.title : el.name}
-                  </button>
-                </>
-              ) : (
-                <>
-                <button
-                  onClick={() => handleSetPaymentMethod(el.id)}
-                  className={`${classes.label}`}
-                  key={el.id}
-                >
-                  <div className={classes.img_wrpper}>
-                    <img
-                      className={`${classes.img}`}
-                      src={el.image}
-                      alt={''}
-                      loading='lazy'
-                    />
-                  </div>
-                  {lng === 'fa' ? el.title : el.name}
-                </button>
-                </>
-              )}
-            </>
-          );
-        })}
-    </div>
-  );
+   if (serverRes.response.ok) {
+    navigate(`/fa/order/pay/${serverRes.result.order.id}`);
+  } else {
+   notify(' خطایی رخ داد لطفا دوباره تلاش کنید');
+  }
+ };
+
+ return (
+  <div className={classes.wrapper}>
+   {data &&
+    data.map(el => {
+
+      return (
+      <>
+       {el.id !== 10 ? (
+        <>
+         <button
+          onClick={() => handleSetPaymentMethod(el.id)}
+          className={`${classes.label}`}
+          key={el.id}>
+          <div className={classes.img_wrpper}>
+           <img
+            className={`${classes.img}`}
+            src={el.image}
+            alt={''}
+            loading='lazy'
+           />
+          </div>
+          {lng === 'fa' ? el.title : el.name}
+         </button>
+        </>
+       ) : (
+        <>
+         <button
+          onClick={() => handleSetPaymentMethod(el.id)}
+          className={`${classes.label}`}
+          key={el.id}>
+          <div className={classes.img_wrpper}>
+           <img
+            className={`${classes.img}`}
+            src={el.image}
+            alt={''}
+            loading='lazy'
+           />
+          </div>
+          {lng === 'fa' ? el.title : el.name}
+         </button>
+        </>
+       )}
+      </>
+     );
+    })}
+  </div>
+ );
 };
 
 export default PaymentMethod;
