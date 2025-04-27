@@ -13,6 +13,7 @@ import Card from '../components/filters_page/Card';
 import instagram from '../assets/svg/instagram.svg';
 import whatsapp from '../assets/svg/whatsapp.svg';
 import telegram from '../assets/svg/telegram.svg';
+import clock from '../assets/svg/clock.svg';
 
 import address from '../assets/svg/address.svg';
 
@@ -137,6 +138,10 @@ const ContactUs = ({ windowSize }) => {
          <div className={classes.content}>
           <img src={telegram} alt='' width={35} />
           <p>{data.tel3}</p>
+         </div>
+         <div className={classes.content}>
+          <img src={clock} alt='' width={35} />
+          <p>{lng === 'fa' ? data.contact_5 : data.contact_5_en}</p>
          </div>
         </div>
        </div>

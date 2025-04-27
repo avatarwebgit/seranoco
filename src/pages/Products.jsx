@@ -151,12 +151,12 @@ const Products = ({ windowSize }) => {
     } else {
      setShape(
       serverRes.result.product_attributes.find(
-       attr => attr.attribute.name === 'Shapes',
+       attr => attr.attribute.name === 'Shape',
       )?.value.name,
      );
      setColor(
       serverRes.result.product_attributes.find(
-       attr => attr.attribute.name === 'Colors',
+       attr => attr.attribute.name === 'Color',
       )?.value.name,
      );
      setBrand(

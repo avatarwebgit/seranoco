@@ -114,7 +114,7 @@ const SpecialStones = ({ windowSize }) => {
    Number(entry),
   );
 
-   handleGetFilterProducts(
+  handleGetFilterProducts(
    shapeFormEntries,
    numericDimensionEntries,
    selectedIds,
@@ -161,8 +161,7 @@ const SpecialStones = ({ windowSize }) => {
      signal: abortControllerRef.current.signal,
     },
    );
-    if (serverRes.response.ok) {
-
+   if (serverRes.response.ok) {
     setLastPage(serverRes.result.data.last_page);
     setPage(serverRes.result.data.current_page);
     setProductDetails((prevData = []) => {
@@ -209,12 +208,12 @@ const SpecialStones = ({ windowSize }) => {
  const handleFetchAllData = async id => {
   const serverRes = await getAllProductFromCategory(id);
   if (serverRes.response.ok) {
-
-    setColorData(serverRes.result.colors);
+   console.log(serverRes);
+   setColorData(serverRes.result.colors);
    setShapesData(serverRes.result.shapes);
    setGroupColors(serverRes.result.group_colors);
    setSizeData(serverRes.result.sizes);
-  //  setProductDetails(serverRes.result.data);
+   //  setProductDetails(serverRes.result.data);
   }
  };
 
@@ -580,8 +579,8 @@ const SpecialStones = ({ windowSize }) => {
        ref={productsWrapperRef}>
        {windowSize === 'm' || windowSize === 'l' || windowSize === 'xl' ? (
         <>
-                 <ResultRow dataProp={productDetails} />
-                 {console.log(productDetails)}
+         <ResultRow dataProp={productDetails} />
+         {console.log(productDetails)}
         </>
        ) : (
         <>

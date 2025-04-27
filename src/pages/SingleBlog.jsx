@@ -24,6 +24,7 @@ const SingleBlog = ({ windowSize }) => {
  const getArticle = async () => {
   const serverRes = await getSingleArticles(alias);
   setblogData(serverRes.result.data.article);
+  console.log(serverRes);
  };
 
  useEffect(() => {
@@ -50,15 +51,21 @@ const SingleBlog = ({ windowSize }) => {
          <img src={blogData.image} alt={blogData.alt} />
         </div>
         <div className={classes.close_caption}>
-         <h2>{blogData.title}</h2>
-         <p>{blogData.shortDescription}</p>
+         <h2>{lng === 'fa' ? blogData.title : blogData.title_en}</h2>
+         <p>
+          {lng === 'fa'
+           ? blogData.shortDescription
+           : blogData.shortDescription_en}
+         </p>
         </div>
        </div>
 
        <div
         className={classes.text}
         style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}
-        dangerouslySetInnerHTML={{__html:blogData.description}}></div>
+        dangerouslySetInnerHTML={{
+         __html: lng === 'fa' ? blogData.description : blogData.description_en,
+        }}></div>
       </Card>
      </Body>
     </div>

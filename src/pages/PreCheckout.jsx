@@ -104,9 +104,9 @@ const PreCheckout = ({ windowSize }) => {
        {card && (
         <>
          {step !== 2 ? (
-          <span className={classes.amont}>
+                   <span className={classes.amont}>
            {lng !== 'fa'
-            ? card?.totalPrice.toFixed(2)
+            ? card?.totalPrice?.toFixed(2)
             : formatNumber(+card?.totalPrice * card.euro)}
            &nbsp;{t('m_unit')}
           </span>

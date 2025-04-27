@@ -5,7 +5,10 @@ import { DeleteForever, Info } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { cartActions, drawerActions } from '../../store/store';
 
-import { getProductDetailsWithId } from '../../services/api';
+import {
+ getProductDetailsWithId,
+ removeShoppingCart,
+} from '../../services/api';
 import { formatNumber, notify } from '../../utils/helperFunctions';
 import { sendShoppingCart } from '../../services/api';
 
@@ -41,7 +44,7 @@ const CartProduct = data => {
 
  useEffect(() => {
   if (quantity && productData) {
-   console.log(variation);
+   console.log(variation, productData);
    dispatch(
     cartActions.setQuantity({
      id: +variation.product.variation_id,
@@ -59,8 +62,14 @@ const CartProduct = data => {
  //   dispatch(cartActions.decrement(productData));
  //  };
 
- const handleRemveItem = () => {
-  dispatch(cartActions.remove(productData));
+  const handleRemveItem = async () => {
+   console.log(data)
+  const serverRes = await removeShoppingCart(token,);
+  if (serverRes.response.ok) {
+   dispatch(cartActions.remove(productData));
+  } else {
+   notify(t(''));
+  }
  };
 
  return (

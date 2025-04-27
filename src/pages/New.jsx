@@ -62,7 +62,7 @@ const New = ({ windowSize }) => {
  const [slidesPerView, setSlidesPerView] = useState(5);
  const [productDetails, setProductDetails] = useState([]);
  const [isSmallPage, setIsSmallPage] = useState(false);
- const [page, setPage] = useState(1);
+ const [page, setPage] = useState(3);
  const [isFilteredProductsLoading, setIsFilteredProductsLoading] =
   useState(false);
  const [ItemsPerPage, setItemsPerPage] = useState(24);
@@ -86,7 +86,6 @@ const New = ({ windowSize }) => {
  const dispatch = useDispatch();
 
  const lng = useSelector(state => state.localeStore.lng);
-
 
  const handlePrev = useCallback(() => {
   if (!sliderRef.current) return;
@@ -145,7 +144,7 @@ const New = ({ windowSize }) => {
  useEffect(() => {
   dispatch(productDetailActions.reset());
   handleShapeClick('', '');
-  document.title = t('seranoco') + '/'  +t('new');
+  document.title = t('seranoco') + '/' + t('new');
   getInfo();
  }, []);
 
@@ -216,7 +215,6 @@ const New = ({ windowSize }) => {
   per_page = ItemsPerPage,
  ) => {
   setIsFilteredProductsLoading(true);
-  console.log(shape_id);
 
   if (abortControllerRef.current) {
    abortControllerRef.current.abort();
@@ -232,7 +230,7 @@ const New = ({ windowSize }) => {
     per_page,
     abortControllerRef.current.signal,
    );
-
+   console.log('all new products', serverRes, pagee);
    if (serverRes.response.ok) {
     if (pagee === 1) {
      setProductDetails(serverRes.result.data);
@@ -311,7 +309,6 @@ const New = ({ windowSize }) => {
 
  useEffect(() => {
   if (isFilteredProductsLoading) return;
-  setPage(prevPage => prevPage + 1);
   const observer = new IntersectionObserver(
    entries => {
     setIsIntersecting(entries[0].isIntersecting);
@@ -336,8 +333,8 @@ const New = ({ windowSize }) => {
  useEffect(() => {
   if (isIntersecting && !isFilteredProductsLoading) {
    console.log('first');
-   handleGetNewProducts(shapeFormEntries, selectedIds, [], page, ItemsPerPage);
-   setPage(page + 1);
+   handleGetNewProducts(shapeFormEntries, selectedIds, [], +page, ItemsPerPage);
+   setPage(prev => prev + 1);
   }
  }, [isIntersecting]);
 
