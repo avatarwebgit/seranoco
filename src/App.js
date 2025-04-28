@@ -39,6 +39,7 @@ function App() {
  const Blog = React.lazy(() => import('./pages/Blog'));
  const SingleBlog = React.lazy(() => import('./pages/SingleBlog'));
  const Page = React.lazy(() => import('./pages/AdminPanlePage'));
+ const Factor = React.lazy(() => import('./pages/Factor'));
 
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
@@ -162,6 +163,7 @@ function App() {
      path={`/:lng/page/:alias`}
      element={<Page windowSize={windowSize} />}
     />
+    <Route path={`/:lng/factor/:id`} element={<Factor />} />
 
     <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
    </Routes>

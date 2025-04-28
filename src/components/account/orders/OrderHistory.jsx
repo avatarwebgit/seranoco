@@ -1,40 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IconButton, Input, InputAdornment, Modal } from '@mui/material';
+import { IconButton, Modal } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Send } from '@mui/icons-material';
+import { ReceiptOutlined, Send } from '@mui/icons-material';
 
 import show from '../../../assets/svg/show.svg';
-import { ReactComponent as Close } from '../../../assets/svg/close.svg';
-
-import { replyTicket, getOrderStatusDetail } from '../../../services/api';
-
-import Card from '../../filters_page/Card';
 
 import { formatNumber, notify } from '../../../utils/helperFunctions';
 
 import classes from './OrderHistory.module.css';
+import { getOrderStatusDetail } from '../../../services/api';
 const OrderHistory = ({ dataProp, number }) => {
  const [detailsData, setDetailsData] = useState(null);
+ const [totalWieght, setTotalWieght] = useState(0);
+ const [data, setData] = useState(null);
+ const [modalOpen, setModalOpen] = useState(false);
+
  const token = useSelector(state => state.userStore.token);
  const euro = useSelector(state => state.cartStore.euro);
  const lng = useSelector(state => state.localeStore.lng);
 
  const { t } = useTranslation();
 
- const [data, setData] = useState(null);
- const [modalOpen, setModalOpen] = useState(false);
-
  const messagesRef = useRef(null);
 
  const handleGetdetails = async () => {
   if (data) {
    const serverRes = await getOrderStatusDetail(token, data.id);
-
    if (serverRes.response.ok) {
     setDetailsData(serverRes.result.orders);
-    console.log(serverRes.result.orders);
    } else {
     notify(t('trylater'));
    }
@@ -53,6 +49,24 @@ const OrderHistory = ({ dataProp, number }) => {
   }
  }, [dataProp]);
 
+ useEffect(() => {
+  if (detailsData) {
+
+    const weights = detailsData.products
+    .map(item => item.product?.variation?.weight)
+    .filter(weight => weight !== undefined && weight !== null);
+   console.log(weights);
+   const numericWeights = weights.map(el => {
+    return +el.split(' ').at(0);
+   });
+   const sumOfWeights = numericWeights.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0,
+   );
+   setTotalWieght(sumOfWeights);
+  }
+ }, [detailsData]);
+
  const handleCloseModal = () => setModalOpen(false);
 
  return (
@@ -66,42 +80,84 @@ const OrderHistory = ({ dataProp, number }) => {
       <div className={classes.sheet}>
        {detailsData && (
         <>
-         
-       
-         <div className={classes.modal_content}>  <div className={classes.content}>
-          <div>
-           <label>{t('signup.fname')}</label>
-           <input type='text' readOnly value={detailsData.address.title} />
-           <label>{t('signup.pnumber')}</label>
-           <input type='text' readOnly value={detailsData.address.cellphone} />
-           <label>{t('signup.city')}</label>
-           <input type='text' readOnly value={detailsData.address.city_id} />
-           <label>{t('pc.postalcode')}</label>
-           <input
-            type='text'
-            readOnly
-            value={detailsData.address.postal_code}
-           />
-           <label></label>
-           <input type='text' readOnly />
-           <label></label>
-           <input type='text' readOnly />
+         <div
+          className={classes.modal_content}
+          dir={lng === 'fa' ? 'rtl' : 'ltr'}>
+          <div className={classes.content}>
+           <div>
+            <label>{t('signup.fname')}</label>
+            <input type='text' readOnly value={detailsData.address.title} />
+            <label>{t('signup.pnumber')}</label>
+            <input type='text' readOnly value={detailsData.address.cellphone} />
+            <label>{t('signup.city')}</label>
+            <input type='text' readOnly value={detailsData.address.City} />
+            <label>{t('pc.postalcode')}</label>
+            <input
+             type='text'
+             readOnly
+             value={detailsData.address.postal_code}
+            />
+            <label>{t('orders.payment_status')}</label>
+            <input
+             type='text'
+             readOnly
+             value={
+              lng === 'fa'
+               ? detailsData.order.payment_status
+               : detailsData.order.payment_status_en
+             }
+            />
+            <label>{t('total_weight')}</label>
+            <input type='text' readOnly value={`${totalWieght} Ct`} />
+           </div>
+           <div>
+            <label>{t('profile.order_status')}</label>
+            <input
+             type='text'
+             readOnly
+             value={
+              lng === 'fa'
+               ? detailsData.OrderStatus
+               : detailsData.OrderStatus_en
+             }
+            />
+            {detailsData.order.payment_type === '3' && (
+             <>
+              <label>{t('orders.payment_type')}</label>
+              <input
+               type='text'
+               readOnly
+               value={detailsData.order.payment_method.short_description}
+              />
+              <label>{t('orders.bank_name')}</label>
+              <input type='text' readOnly value={detailsData.order.bank_name} />
+              <label>{t('orders.doctype')}</label>
+              <input type='text' readOnly value={detailsData.order.doc_type} />
+             </>
+            )}
+            <label>{t('orders.total_amount')}</label>
+            <input
+             type='text'
+             readOnly
+             value={
+              lng === 'fa'
+               ? `${detailsData.order.total_amount}  ${t('m_unit')}`
+               : `${detailsData.order.total_amount_fa} ${t('m_unit')}`
+             }
+            />
+            <label>{t('orders.total_payment')}</label>
+            <input
+             type='text'
+             readOnly
+             value={
+              lng === 'fa'
+               ? `${detailsData.order.paying_amount}  ${t('m_unit')}`
+               : `${detailsData.order.paying_amount_fa} ${t('m_unit')}`
+             }
+             dir={lng === 'fa' ? 'rtl' : 'ltr'}
+            />
+           </div>
           </div>
-          <div>
-           <label></label>
-           <input type='text' readOnly />
-           <label></label>
-           <input type='text' readOnly />
-           <label></label>
-           <input type='text' readOnly />
-           <label></label>
-           <input type='text' readOnly />
-           <label></label>
-           <input type='text' readOnly />
-           <label></label>
-           <input type='text' readOnly />
-          </div>
-         </div>
           <table className={classes.table}>
            <thead>
             <tr className={classes.tr}>
@@ -150,8 +206,16 @@ const OrderHistory = ({ dataProp, number }) => {
             })}
            </tbody>
           </table>
+          <IconButton className={classes.factor_button} disableRipple>
+           <ReceiptOutlined />
+           <Link
+            to={`/${lng}/factor/${data.id}`}
+            className={classes.factor_link}
+            target='_blank'>
+            {t('orders.get_invoice')}
+           </Link>
+          </IconButton>
          </div>
-         
         </>
        )}
       </div>

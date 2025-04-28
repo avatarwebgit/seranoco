@@ -34,7 +34,6 @@ const OrderStatus = () => {
  const handleFetchOrders = async () => {
   const serverRes = await getOrders(token);
      setOrders(serverRes.result.orders);
-     console.log(serverRes)
  };
 
  const handleFetchOrdersStatus = async () => {
