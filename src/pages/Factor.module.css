@@ -55,6 +55,10 @@
 .dateWrapper span {
  text-align: right;
  font-size: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ padding: 0 10px;
 }
 
 .center {
@@ -103,8 +107,8 @@
 .productInfoDetails span,
 .productInfoHeader span {
  padding: 5px 10px;
- width: 14.28%;
-    text-align: center;
+ width: 9%;
+ text-align: center;
  display: flex;
  align-items: center;
  justify-content: center;
@@ -135,7 +139,7 @@
 }
 
 .totalInfo {
- width: 14.28%;
+ width: 9%;
  padding: 5px 10px;
 }
 

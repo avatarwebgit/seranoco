@@ -253,7 +253,7 @@
   "get_invoice": "Get Invoice"
  },
 
- "factor":{
+ "factor": {
   "Serial_Number": "Serial Number:",
   "Date": "Date:",
   "Expiry_Date": "Expiry Date:",
@@ -274,7 +274,7 @@
   "Item": "Item",
   "Invoice_Number_ID": "Invoice Number/ID",
   "Description_of_Goods_Service": "Description of Goods/Service",
-  "Quantity_Amount": "Quantity/Amount",
+  "Quantity_Amount": "Quantity",
   "Unit_Price": "Unit Price",
   "Unit_Weight": "Unit Weight",
   "Total_Amount": "Total Amount",
@@ -289,6 +289,9 @@
   "Non_Cash": "Non-Cash",
   "Description": "Description",
   "Buyers_Stamp_and_Signature": "Buyer's Stamp and Signature",
-  "Shops_Stamp_and_Signature": "Shop's Stamp and Signature"
+  "Shops_Stamp_and_Signature": "Shop's Stamp and Signature",
+  "off": "Off",
+  "club": "Loyalty Club",
+  "shipping": "Shipping"
  }
 }

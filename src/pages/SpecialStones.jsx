@@ -27,7 +27,7 @@ import Divider from '../components/filters_page/Divider';
 import { productDetailActions } from '../store/store';
 
 import {
- getProduct,
+ getCategoryProduct,
  useColors,
  getProductDetailsWithId,
  getFilteredSizes,
@@ -109,10 +109,11 @@ const SpecialStones = ({ windowSize }) => {
   const formData = new FormData(form);
   const formEntries = Object.fromEntries(formData.entries());
   setDimensionEntries(formEntries);
-
   const numericDimensionEntries = Object.keys(dimensionEntries).map(entry =>
    Number(entry),
   );
+
+  setProductDetails([]);
 
   handleGetFilterProducts(
    shapeFormEntries,
@@ -151,12 +152,13 @@ const SpecialStones = ({ windowSize }) => {
   abortControllerRef.current = new AbortController();
   setIsFilteredProductsLoading(true);
   try {
-   const serverRes = await getProduct(
+   const serverRes = await getCategoryProduct(
     shape_id,
     size_ids,
     color_ids,
     page,
     per_page,
+    id,
     {
      signal: abortControllerRef.current.signal,
     },
@@ -164,6 +166,7 @@ const SpecialStones = ({ windowSize }) => {
    if (serverRes.response.ok) {
     setLastPage(serverRes.result.data.last_page);
     setPage(serverRes.result.data.current_page);
+    setSizeData(serverRes.result.sizes);
     setProductDetails((prevData = []) => {
      const newItems = Array.isArray(serverRes.result.data)
       ? serverRes.result.data
@@ -283,36 +286,37 @@ const SpecialStones = ({ windowSize }) => {
   abortControllerRef.current = new AbortController();
   setProductDetails([]);
   setTableData([]);
+  setSizeData([]);
   setIsFilteredProductsLoading(true);
   setIsLoading(true);
  };
 
- useEffect(() => {
-  const getSizes = async () => {
-   try {
-    const serverRes = await getFilteredSizes(
-     selectedIds,
-     shapeFormEntries || 46,
-     {},
-    );
-    if (serverRes.response.ok) {
-     setSizeData(serverRes.result.data.sizes);
-    }
-   } catch (error) {
-    if (error.name !== 'AbortError') {
-     // console.error('Fetch error:', error);
-    }
-   } finally {
-    setIsFilteredProductsLoading(false);
-    setIsLoading(false);
-   }
-  };
-  if (selectedIds.length > 0) {
-   setChunkedData([]);
-   setTableData([]);
-   getSizes();
-  }
- }, [selectedIds, shapeFormEntries]);
+ //  useEffect(() => {
+ //   const getSizes = async () => {
+ //    try {
+ //     const serverRes = await getFilteredSizes(
+ //      selectedIds,
+ //      shapeFormEntries || 46,
+ //      {},
+ //     );
+ //     if (serverRes.response.ok) {
+ //      setSizeData(serverRes.result.data.sizes);
+ //     }
+ //    } catch (error) {
+ //     if (error.name !== 'AbortError') {
+ //      // console.error('Fetch error:', error);
+ //     }
+ //    } finally {
+ //     setIsFilteredProductsLoading(false);
+ //     setIsLoading(false);
+ //    }
+ //   };
+ //   if (selectedIds.length > 0) {
+ //    setChunkedData([]);
+ //    setTableData([]);
+ //    getSizes();
+ //   }
+ //  }, [selectedIds, shapeFormEntries]);
 
  const prevDimensionEntriesRef = useRef(dimensionEntries);
  const prevSelectedIdsRef = useRef(selectedIds);

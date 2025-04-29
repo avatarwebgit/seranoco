@@ -11,7 +11,9 @@ const Factor = () => {
  const [detailsData, setDetailsData] = useState(null);
  const [storeData, setStoreData] = useState(null);
  const [totalWeight, setTotalWeight] = useState(0);
- const componentRef = useRef(); // Create a ref for the component
+ const [totalQuantity, setTotalQuantity] = useState(0);
+
+ const componentRef = useRef();
 
  const { id } = useParams();
  const { data: storeInformation, isLoading: storeInformationLoading } =
@@ -40,6 +42,12 @@ const Factor = () => {
  }, [id]);
 
  useEffect(() => {
+  if (storeInformation) {
+   setStoreData(storeInformation.data.at(0));
+  }
+ }, [storeInformation]);
+
+ useEffect(() => {
   if (detailsData) {
    const weights = detailsData.products
     .map(item => item.product?.variation?.weight)
@@ -52,48 +60,45 @@ const Factor = () => {
     (accumulator, currentValue) => accumulator + currentValue,
     0,
    );
+   const total = detailsData.products
+    .map(item => item.selected_quantity)
+    .filter(q => q !== undefined && q !== null);
+
+   const numericquantities = total.map(el => {
+    return +el;
+   });
+   const sumOfTotal = numericquantities.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0,
+   );
+   setTotalQuantity(sumOfTotal);
    setTotalWeight(sumOfWeights);
   }
- }, [detailsData]);
 
- useEffect(() => {
-  if (storeInformation) {
-   setStoreData(storeInformation.data.at(0));
-  }
- }, [storeInformation]);
-
- useEffect(() => {
-  console.log(detailsData);
- }, [detailsData]);
-
- useEffect(() => {
-  // Check if detailsData is available and the component has rendered
   if (detailsData && componentRef.current) {
    const element = componentRef.current;
    const opt = {
     margin: 10,
-    filename: `factor-${detailsData.order.order_number}.pdf`, // Use a dynamic filename
+    filename: `factor-${detailsData.order.order_number}.pdf`,
+
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
    };
 
-   // Use html2pdf().from().set().save()
-   html2pdf()
-    .from(element)
-    .set(opt)
-    .save()
-    .catch(err => {
-     console.error('Error generating PDF:', err); // Handle errors during PDF generation
-     notify('Failed to download PDF. Please try again.'); // Inform the user
-    });
+      html2pdf()
+       .from(element)
+       .set(opt)
+       .save()
+       .catch(err => {
+        console.error('Error generating PDF:', err);
+        notify('Failed to download PDF. Please try again.');
+       });
   }
- }, [detailsData]); // Trigger when detailsData changes, and the component is mounted
+ }, [detailsData]);
 
  return (
   <div ref={componentRef}>
-   {' '}
-   {/* Wrap the table with a div and assign the ref */}
    <table className={classes.factorTable} dir={lng === 'fa' ? 'rtl' : 'ltr'}>
     <thead>
      {detailsData && (
@@ -198,14 +203,28 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('factor.Invoice_Number_ID')}
+         {t('type')}
         </span>
         <span
          style={{
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('factor.Description_of_Goods_Service')}
+         {t('cut')}
+        </span>
+        <span
+         style={{
+          borderRight: lng === 'fa' && '1px solid black',
+          borderLeft: lng !== 'fa' && '1px solid black',
+         }}>
+         {t('size')}
+        </span>
+        <span
+         style={{
+          borderRight: lng === 'fa' && '1px solid black',
+          borderLeft: lng !== 'fa' && '1px solid black',
+         }}>
+         {t('color')}
         </span>
         <span
          style={{
@@ -219,6 +238,20 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
+         {t('factor.Unit_Weight')}
+        </span>
+        <span
+         style={{
+          borderRight: lng === 'fa' && '1px solid black',
+          borderLeft: lng !== 'fa' && '1px solid black',
+         }}>
+         {t('factor.Total_Weight')}
+        </span>
+        <span
+         style={{
+          borderRight: lng === 'fa' && '1px solid black',
+          borderLeft: lng !== 'fa' && '1px solid black',
+         }}>
          {t('factor.Unit_Price')}
         </span>
         <span
@@ -226,7 +259,7 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('factor.Unit_Weight')}
+         {t('factor.off')}
         </span>
         <span
          style={{
@@ -237,34 +270,65 @@ const Factor = () => {
         </span>
        </span>
        {detailsData &&
-        detailsData.products.map(product => {
+        detailsData.products.map((product, i) => {
          const prod = product.product;
+         const weight = product.product.variation.weight.split(' ').at(0);
          return (
           <span key={product.id} className={classes.productInfoDetails}>
            <span
             style={{
              border: 'none',
             }}>
-            {product.id}
+            {i + 1}
            </span>
            <span
             style={{
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            2
+            {lng === 'fa' ? prod.stone_fa : prod.stone}
            </span>
            <span
             style={{
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
-            }}></span>
+            }}>
+            {lng === 'fa' ? prod.cut_fa : prod.cut}
+           </span>
+           <span
+            style={{
+             borderRight: lng === 'fa' && '1px solid black',
+             borderLeft: lng !== 'fa' && '1px solid black',
+            }}>
+            {prod.size}
+           </span>
+           <span
+            style={{
+             borderRight: lng === 'fa' && '1px solid black',
+             borderLeft: lng !== 'fa' && '1px solid black',
+            }}>
+            {lng === 'fa' ? prod.color_fa : prod.color}
+           </span>
            <span
             style={{
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
             {product.selected_quantity}
+           </span>
+           <span
+            style={{
+             borderRight: lng === 'fa' && '1px solid black',
+             borderLeft: lng !== 'fa' && '1px solid black',
+            }}>
+            {weight}
+           </span>
+           <span
+            style={{
+             borderRight: lng === 'fa' && '1px solid black',
+             borderLeft: lng !== 'fa' && '1px solid black',
+            }}>
+            {product.selected_quantity * weight}
            </span>
            <span
             style={{
@@ -280,7 +344,7 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            {prod.variation.weight}
+            ---
            </span>
            <span
             style={{
@@ -296,7 +360,72 @@ const Factor = () => {
           </span>
          );
         })}
-
+       <span
+        className={classes.productInfoTotalWrapper}
+        style={{ borderBottom: '1px solid black' }}>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}>
+         {t('shopping_cart.total')}:
+        </span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}>
+         {totalQuantity}
+        </span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}>
+         {totalWeight}
+        </span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          borderRight: lng === 'fa' && '1px solid black',
+          borderLeft: lng !== 'fa' && '1px solid black',
+         }}></span>
+       </span>
        <span
         className={classes.productInfoTotalWrapper}
         style={{ borderBottom: '1px solid black' }}>
@@ -329,8 +458,28 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
          }}>
-         {t('factor.Grand_Total')}
+         {t('factor.club')}
         </span>
         {detailsData && (
          <span
@@ -340,12 +489,82 @@ const Factor = () => {
            borderLeft: lng !== 'fa' && '1px solid black',
           }}>
           {lng === 'fa'
-           ? `${detailsData.order.paying_amount_fa} ${t('m_unit')}`
-           : `${detailsData.order.paying_amount} ${t('m_unit')}`}
+           ? `${detailsData.order.off} %`
+           : `${detailsData.order.off} %`}
+         </span>
+        )}
+       </span>
+       <span
+        className={classes.productInfoTotalWrapper}
+        style={{ borderBottom: '1px solid black' }}>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}>
+         {t('factor.shipping')}
+        </span>
+        {detailsData && (
+         <span
+          className={classes.totalInfo}
+          style={{
+           borderRight: lng === 'fa' && '1px solid black',
+           borderLeft: lng !== 'fa' && '1px solid black',
+          }}>
+          {detailsData.shipping}
          </span>
         )}
        </span>
        <span className={classes.productInfoTotalWrapper}>
+        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
+        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
+        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
+        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>

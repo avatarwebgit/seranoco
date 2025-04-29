@@ -62,9 +62,12 @@ const CartProduct = data => {
  //   dispatch(cartActions.decrement(productData));
  //  };
 
-  const handleRemveItem = async () => {
-   console.log(data)
-  const serverRes = await removeShoppingCart(token,);
+ const handleRemveItem = async () => {
+  const serverRes = await removeShoppingCart(
+   token,
+   productData.id,
+   variation.id,
+  );
   if (serverRes.response.ok) {
    dispatch(cartActions.remove(productData));
   } else {

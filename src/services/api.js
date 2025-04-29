@@ -188,6 +188,29 @@ export const getProduct = async (
  return { response, result };
 };
 
+export const getCategoryProduct = async (
+ shape_id,
+ size_ids,
+ color_ids,
+ page,
+ per_page,
+ category_id,
+) => {
+ const response = await fetch(
+  `${baseUrl}/product/category/filter?page=${page}&per_page=${per_page}`,
+  {
+   method: 'POST',
+   headers: {
+    'Content-type': 'application/json',
+   },
+
+   body: JSON.stringify({ shape_id, size_ids, color_ids, category_id }),
+  },
+ );
+ const result = await response.json();
+ return { response, result };
+};
+
 export const getPaginatedProductsByShape = async (id, page, per_page) => {
  const response = await fetch(
   `${baseUrl}/products-paginate?id=${id}&per_page=${per_page}&page=${page}`,
@@ -786,13 +809,17 @@ export const getShoppingCart = async token => {
  return { response, result };
 };
 
-export const removeShoppingCart = async (token, cart_id) => {
- const response = await fetch(`${baseUrl}/cart/${cart_id}`, {
+export const removeShoppingCart = async (token, product_id, variation_id) => {
+ const response = await fetch(`${baseUrl}/cart`, {
   method: 'DELETE',
   headers: {
    'Content-Type': 'application/json',
    Authorization: `bearer ${token}`,
   },
+  body: JSON.stringify({
+   product_id,
+   variation_id,
+  }),
  });
  const result = await response.json();
  return { response, result };
