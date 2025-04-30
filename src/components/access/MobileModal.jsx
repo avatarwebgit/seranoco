@@ -11,13 +11,14 @@ import {
 } from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
 
-import classes from './OTP.module.css';
 import { verifyOTP } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
+
+import classes from './MobileModal.module.css';
 const MobileModal = () => {
  const [signupValues, setSignupValues] = useState(null);
  const [otpValue, setOtpValue] = useState([]);
- const [timeRemaining, setTimeRemaining] = useState(0); // Initialize with 0
+ const [timeRemaining, setTimeRemaining] = useState(0);
 
  const lng = useSelector(state => state.localeStore.lng);
  const signupInfo = useSelector(state => state.signupStore.data);
@@ -88,8 +89,8 @@ const MobileModal = () => {
  const handleVerifyOTP = async (code, cellphone) => {
   const serverRes = await verifyOTP(code, cellphone);
   if (serverRes.response.ok) {
-      dispatch(userActions.setUser(serverRes.result.user));
-      dispatch(userActions.set(serverRes.result.token));
+   dispatch(userActions.setUser(serverRes.result.user));
+   dispatch(userActions.set(serverRes.result.token));
    console.log(serverRes.result);
    dispatch(accesModalActions.close());
   } else {
@@ -111,6 +112,7 @@ const MobileModal = () => {
        ref={formRef}
        className={classes.form}>
        <InputOTP
+        length={11}
         onChange={setOtpValue}
         value={otpValue}
         autoSubmit={otp => handleFinish(null, otp)}

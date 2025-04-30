@@ -88,8 +88,8 @@ const OTP = () => {
  const handleVerifyOTP = async (code, cellphone) => {
   const serverRes = await verifyOTP(code, cellphone);
   if (serverRes.response.ok) {
-      dispatch(userActions.setUser(serverRes.result.user));
-      dispatch(userActions.set(serverRes.result.token));
+   dispatch(userActions.setUser(serverRes.result.user));
+   dispatch(userActions.set(serverRes.result.token));
    console.log(serverRes.result);
    dispatch(accesModalActions.close());
   } else {
@@ -117,6 +117,7 @@ const OTP = () => {
         variant='outlined'
         type='number'
         inputClassName={classes.otp_input}
+        count={6}
        />
       </form>
      </div>

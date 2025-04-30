@@ -35,6 +35,8 @@ const Login = () => {
 
  const dispatch = useDispatch();
 
+ const recaptchaRef = useRef(null);
+
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
 
@@ -89,8 +91,8 @@ const Login = () => {
   dispatch(accesModalActions.signup());
  };
 
- const handleOpenOtp = () => {
-  dispatch(accesModalActions.otp());
+ const handleOpenMobileModal = () => {
+  dispatch(accesModalActions.mobile());
  };
 
  const handleLogin = async () => {
@@ -112,6 +114,11 @@ const Login = () => {
    }
   } else {
    setErrors(serverRes.result.errors);
+   console.log(serverRes.result.errors);
+   if (recaptchaRef.current) {
+    // recaptchaRef.current.reset();
+   }
+   //  setRecaptchaToekn(null);
   }
  };
 
@@ -166,8 +173,7 @@ const Login = () => {
 
        {Object.keys(errors).length > 0 &&
         Object.values(errors).map(el => {
-
-          return (
+         return (
           <div
            className={classes.error_text}
            style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
@@ -192,6 +198,7 @@ const Login = () => {
       </div>
 
       <ReCAPTCHA
+       ref={recaptchaRef}
        sitekey={`${process.env.REACT_APP_GOOGLE_RECAPTCHA_CLIENT_ID}`}
        className={classes.rec}
        onChange={handleGetScore}
@@ -219,7 +226,9 @@ const Login = () => {
                   <p>{t('access.swg')}</p>
                 </IconButton> */}
        </div>
-       <div className={classes.google_login_wrapper} onClick={handleOpenOtp}>
+       <div
+        className={classes.google_login_wrapper}
+        onClick={handleOpenMobileModal}>
         <IconButton className={classes.mobile_login} disableRipple>
          <AdUnits sx={{ fontSize: '20px !important' }} />
          <p>{t('access.swotp')}</p>

@@ -810,7 +810,7 @@ export const getShoppingCart = async token => {
 };
 
 export const removeShoppingCart = async (token, product_id, variation_id) => {
- const response = await fetch(`${baseUrl}/cart`, {
+ const response = await fetch(`${baseUrl}/cart/remove`, {
   method: 'DELETE',
   headers: {
    'Content-Type': 'application/json',

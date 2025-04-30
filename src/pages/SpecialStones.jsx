@@ -53,7 +53,7 @@ const SpecialStones = ({ windowSize }) => {
  const [colorData, setColorData] = useState(null);
  const [sizeData, setSizeData] = useState([]);
  const [groupColors, setGroupColors] = useState([]);
- const [shapeFormEntries, setShapeFormEntries] = useState(46);
+ const [shapeFormEntries, setShapeFormEntries] = useState('');
  const [dimensionEntries, setDimensionEntries] = useState([]);
  const [selectedIds, setSelectedIds] = useState([]);
  const [shapesData, setShapesData] = useState([]);
@@ -77,6 +77,8 @@ const SpecialStones = ({ windowSize }) => {
  const [sortedGroupColors, setSortedGroupColors] = useState([]);
  const [categories, setCategories] = useState([]);
  const [catName, setCatName] = useState('');
+ const [isLoadingShapes, setIsLoadingShapes] = useState(true);
+ const [isLoadingSizes, setIsLoadingSizes] = useState(true);
 
  const formRef = useRef();
  const sizeRef = useRef();
@@ -167,18 +169,20 @@ const SpecialStones = ({ windowSize }) => {
     setLastPage(serverRes.result.data.last_page);
     setPage(serverRes.result.data.current_page);
     setSizeData(serverRes.result.sizes);
-    setProductDetails((prevData = []) => {
-     const newItems = Array.isArray(serverRes.result.data)
-      ? serverRes.result.data
-      : [];
-     const updatedData = prevData.filter(prevItem =>
-      newItems.some(newItem => newItem.id === prevItem.id),
-     );
-     const filteredNewItems = newItems.filter(
-      newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
-     );
-     return [...updatedData, ...filteredNewItems];
-    });
+    if (shapeFormEntries) {
+     setProductDetails((prevData = []) => {
+      const newItems = Array.isArray(serverRes.result.data)
+       ? serverRes.result.data
+       : [];
+      const updatedData = prevData.filter(prevItem =>
+       newItems.some(newItem => newItem.id === prevItem.id),
+      );
+      const filteredNewItems = newItems.filter(
+       newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
+      );
+      return [...updatedData, ...filteredNewItems];
+     });
+    }
    }
   } catch (error) {
    if (error.name !== 'AbortError') {
@@ -209,14 +213,23 @@ const SpecialStones = ({ windowSize }) => {
  };
 
  const handleFetchAllData = async id => {
-  const serverRes = await getAllProductFromCategory(id);
-  if (serverRes.response.ok) {
-   console.log(serverRes);
-   setColorData(serverRes.result.colors);
-   setShapesData(serverRes.result.shapes);
-   setGroupColors(serverRes.result.group_colors);
-   setSizeData(serverRes.result.sizes);
-   //  setProductDetails(serverRes.result.data);
+  try {
+   setIsLoadingShapes(true);
+   setIsLoadingSizes(true);
+   const serverRes = await getAllProductFromCategory(id);
+   if (serverRes.response.ok) {
+    setColorData(serverRes.result.colors);
+    setShapesData(serverRes.result.shapes);
+    setGroupColors(serverRes.result.group_colors);
+    setSizeData(serverRes.result.sizes);
+    //  setProductDetails(serverRes.result.data);
+   }
+  } catch (error) {
+   setIsLoadingShapes(false);
+   setIsLoadingSizes(false);
+  } finally {
+   setIsLoadingShapes(false);
+   setIsLoadingSizes(false);
   }
  };
 
@@ -521,7 +534,7 @@ const SpecialStones = ({ windowSize }) => {
 
      {
       <Card className={classes.multi_select_wrapper}>
-       {/* {isLoadingShapes && <LoadingSpinner />} */}
+       {isLoadingShapes && <LoadingSpinner />}
 
        <form ref={formRef} className={classes.grid_form}>
         {shapesData &&
@@ -541,7 +554,7 @@ const SpecialStones = ({ windowSize }) => {
                 handleShapeClick(e, elem.id);
                 setShapeFormEntries(elem.id);
                }}
-               isSelected={shapeFormEntries || 46}
+               isSelected={shapeFormEntries }
               />
              )}
             </div>
@@ -552,6 +565,7 @@ const SpecialStones = ({ windowSize }) => {
      }
 
      <Divider text={'Size mm'} />
+     {isLoadingSizes && <LoadingSpinner />}
 
      {
       <Card className={classes.size_wrapper}>
@@ -584,7 +598,6 @@ const SpecialStones = ({ windowSize }) => {
        {windowSize === 'm' || windowSize === 'l' || windowSize === 'xl' ? (
         <>
          <ResultRow dataProp={productDetails} />
-         {console.log(productDetails)}
         </>
        ) : (
         <>
