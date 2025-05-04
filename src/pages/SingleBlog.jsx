@@ -24,7 +24,6 @@ const SingleBlog = ({ windowSize }) => {
  const getArticle = async () => {
   const serverRes = await getSingleArticles(alias);
   setblogData(serverRes.result.data.article);
-  console.log(serverRes);
  };
 
  useEffect(() => {

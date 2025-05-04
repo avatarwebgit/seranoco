@@ -14,7 +14,6 @@ const SearchResult = ({ dataProp }) => {
  useEffect(() => {
    if (dataProp) {
      setData(dataProp);
-     console.log(dataProp)
   }
  }, [dataProp]);
 

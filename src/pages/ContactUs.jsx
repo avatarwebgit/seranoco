@@ -102,9 +102,7 @@ const ContactUs = ({ windowSize }) => {
   else return { flexDirection: 'row' };
  };
 
- useEffect(() => {
-  console.log(data);
- }, [data]);
+ useEffect(() => {}, [data]);
 
  return (
   <div>

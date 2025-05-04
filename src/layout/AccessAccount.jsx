@@ -6,6 +6,7 @@ import Login from '../components/access/Login';
 import Signup from '../components/access/Signup';
 import OTP from '../components/access/OTP';
 import MobileModal from '../components/access/MobileModal';
+import LoginOTP from '../components/access/LoginOTP';
 
 import classes from './AccessAccount.module.css';
 const AccessAccount = ({ open, onClose }) => {
@@ -13,6 +14,7 @@ const AccessAccount = ({ open, onClose }) => {
  const isSignup = useSelector(state => state.accessModalStore.signup);
  const isOTP = useSelector(state => state.accessModalStore.otp);
  const isMobile = useSelector(state => state.accessModalStore.mobile);
+ const isMobileOtp = useSelector(state => state.accessModalStore.loginOTP);
 
  return (
   <Modal
@@ -30,6 +32,7 @@ const AccessAccount = ({ open, onClose }) => {
     {isSignup && <Signup />}
     {isOTP && <OTP />}
     {isMobile && <MobileModal />}
+    {isMobileOtp && <LoginOTP />}
    </div>
   </Modal>
  );

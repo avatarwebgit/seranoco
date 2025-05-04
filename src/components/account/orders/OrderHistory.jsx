@@ -55,7 +55,6 @@ const OrderHistory = ({ dataProp, number }) => {
     const weights = detailsData.products
     .map(item => item.product?.variation?.weight)
     .filter(weight => weight !== undefined && weight !== null);
-   console.log(weights);
    const numericWeights = weights.map(el => {
     return +el.split(' ').at(0);
    });
@@ -140,9 +139,9 @@ const OrderHistory = ({ dataProp, number }) => {
              type='text'
              readOnly
              value={
-              lng === 'fa'
+              lng !== 'fa'
                ? `${detailsData.order.total_amount}  ${t('m_unit')}`
-               : `${detailsData.order.total_amount_fa} ${t('m_unit')}`
+               : `${formatNumber(detailsData.order.total_amount_fa)} ${t('m_unit')}`
              }
             />
             <label>{t('orders.total_payment')}</label>
@@ -150,9 +149,9 @@ const OrderHistory = ({ dataProp, number }) => {
              type='text'
              readOnly
              value={
-              lng === 'fa'
+              lng !== 'fa'
                ? `${detailsData.order.paying_amount}  ${t('m_unit')}`
-               : `${detailsData.order.paying_amount_fa} ${t('m_unit')}`
+               : `${formatNumber(detailsData.order.paying_amount_fa)} ${t('m_unit')}`
              }
              dir={lng === 'fa' ? 'rtl' : 'ltr'}
             />

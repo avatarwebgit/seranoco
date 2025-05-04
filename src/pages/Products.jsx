@@ -481,7 +481,6 @@ const Products = ({ windowSize }) => {
        )}
        {detailsData && (
         <div className={classes.price_wrapper}>
-         {console.log(detailsData)}
          {lng !== 'fa' ? (
           <>
            <Typography

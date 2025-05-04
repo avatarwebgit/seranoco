@@ -81,7 +81,7 @@ const PayByCart = ({ widnowSize }) => {
 
  const handleSubmit = async e => {
   e.preventDefault();
-  console.log('first');
+
   const requiredFields = [
    DocType?.label?.trim(),
    amount?.trim(),
@@ -111,10 +111,10 @@ const PayByCart = ({ widnowSize }) => {
     },
     recScan,
     id,
-      );
-      if (res.response.ok) {
-          notify('اطلاعات با موقثیت ارسال شد .')
-      }
+   );
+   if (res.response.ok) {
+    notify('اطلاعات با موقثیت ارسال شد .');
+   }
   }
  };
 

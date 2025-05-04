@@ -232,7 +232,7 @@ const Header = ({ windowSize }) => {
 
      {!isSmall && (
       <>
-       {token && favorits && favorits.lenght > 0 && (
+       {token && favorits && favorits > 0 && (
         <span className={classes.icon_pack_wrapper}>
          <IconButton>
           <Badge
@@ -322,7 +322,8 @@ const Header = ({ windowSize }) => {
              style={{ color: isHomePage ? '#000000' : '#ffffff' }}
              target={'_blank'}
              href={elem.url}
-             to={elem.url} key={nanoid()}>
+             to={elem.url}
+             key={nanoid()}>
              {elem.label}
             </Link>
            ) : (

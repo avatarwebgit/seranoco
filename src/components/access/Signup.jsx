@@ -106,7 +106,7 @@ const Signup = () => {
  const formRef = useRef();
 
  const handleGetScore = e => {
-  //   console.log(e.target.value);
+  //
  };
 
  const handleGoToLogin = () => {
@@ -195,7 +195,7 @@ const Signup = () => {
  };
 
  const login = useGoogleLogin({
-  //   onSuccess: token => console.log(token),
+  //   onSuccess: token =>
  });
 
  const handleLoginSuccess = async response => {
@@ -210,7 +210,7 @@ const Signup = () => {
    },
   ).then(res => res.json());
 
-  //  console.log('User Info:', userInfo);
+  //
  };
  // api calls
 
@@ -244,16 +244,15 @@ const Signup = () => {
   }
  };
 
-  const filterExactMatch = (options, { inputValue }) => {
-   if (!inputValue) {
-    return options; 
-   }
-   const lowerInputValue = inputValue.toLowerCase();
-   return options.filter(option =>
-    option.label.toLowerCase().includes(lowerInputValue),
-   );
-  };
-
+ const filterExactMatch = (options, { inputValue }) => {
+  if (!inputValue) {
+   return options;
+  }
+  const lowerInputValue = inputValue.toLowerCase();
+  return options.filter(option =>
+   option.label.toLowerCase().includes(lowerInputValue),
+  );
+ };
 
  return (
   <div className={classes.content_wrapper}>
@@ -377,8 +376,6 @@ const Signup = () => {
          disableInteractive={false}
          getOptionLabel={option => option.label || ''}
         />
-        {console.log(countryData)}
-        {console.log(cityData)}
         <Autocomplete
          id='city-autocomplete'
          disablePortal

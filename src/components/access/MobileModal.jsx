@@ -4,14 +4,10 @@ import { InputOTP } from 'antd-input-otp';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 
-import {
- accesModalActions,
- signupActions,
- userActions,
-} from '../../store/store';
+import { accesModalActions, signupActions } from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
 
-import { verifyOTP } from '../../services/api';
+import { sendOTP, verifyOTP2 } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
 
 import classes from './MobileModal.module.css';
@@ -27,12 +23,13 @@ const MobileModal = () => {
  const formRef = useRef();
  const dispatch = useDispatch();
 
- const handleFinish = (e, otp) => {
+ const handleSendOtp = (e, otp) => {
   if (e) e.preventDefault();
   const payload = otp || otpValue;
   const code = payload.join('');
-  if (code && signupInfo.phonenumber) {
-   handleVerifyOTP(code, signupInfo.phonenumber);
+  if (code) {
+
+      handleVerifyOTP0(code);
   }
  };
 
@@ -86,13 +83,10 @@ const MobileModal = () => {
   );
  };
 
- const handleVerifyOTP = async (code, cellphone) => {
-  const serverRes = await verifyOTP(code, cellphone);
+ const handleVerifyOTP0 = async cellphone => {
+  const serverRes = await sendOTP(cellphone);
   if (serverRes.response.ok) {
-   dispatch(userActions.setUser(serverRes.result.user));
-   dispatch(userActions.set(serverRes.result.token));
-   console.log(serverRes.result);
-   dispatch(accesModalActions.close());
+   dispatch(accesModalActions.loginOtp());
   } else {
    notify(t('trylater'));
    dispatch(accesModalActions.close());
@@ -108,14 +102,14 @@ const MobileModal = () => {
     <div className={classes.otp_wrapper}>
      <div className={classes.actions}>
       <form
-       onSubmit={e => handleFinish(e, otpValue)}
+       onSubmit={e => handleSendOtp(e, otpValue)}
        ref={formRef}
        className={classes.form}>
        <InputOTP
-        length={11}
+        length={10}
         onChange={setOtpValue}
         value={otpValue}
-        autoSubmit={otp => handleFinish(null, otp)}
+        autoSubmit={otp => handleSendOtp(null, otp)}
         variant='outlined'
         type='number'
         inputClassName={classes.otp_input}

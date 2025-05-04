@@ -6,6 +6,7 @@ const initialState = {
  otp: false,
  mobile: false,
  modalOpen: false,
+ loginOTP: false,
 };
 
 const accessModalSlice = createSlice({
@@ -18,6 +19,7 @@ const accessModalSlice = createSlice({
    state.signup = false;
    state.otp = false;
    state.mobile = false;
+   state.loginOTP = false;
   },
   signup(state) {
    state.modalOpen = true;
@@ -25,6 +27,7 @@ const accessModalSlice = createSlice({
    state.login = false;
    state.otp = false;
    state.mobile = false;
+   state.loginOTP = false;
   },
   otp(state) {
    state.modalOpen = true;
@@ -32,6 +35,7 @@ const accessModalSlice = createSlice({
    state.login = false;
    state.signup = false;
    state.mobile = false;
+   state.loginOTP = false;
   },
   mobile(state) {
    state.modalOpen = true;
@@ -39,6 +43,15 @@ const accessModalSlice = createSlice({
    state.login = false;
    state.signup = false;
    state.mobile = true;
+   state.loginOTP = false;
+  },
+  loginOtp(state) {
+   state.modalOpen = true;
+   state.otp = false;
+   state.login = false;
+   state.signup = false;
+   state.mobile = false;
+   state.loginOTP = true;
   },
   close(state) {
    state.modalOpen = false;

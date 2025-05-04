@@ -319,11 +319,9 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
          )}
          onInputChange={(e, value) => {
           setCity(value);
-          console.log(value);
          }}
          onChange={(e, newValue) => {
           setSelectedCity(newValue);
-          console.log(newValue);
          }}
          onFocus={() => setIsError(false)}
          disableInteractive={false}

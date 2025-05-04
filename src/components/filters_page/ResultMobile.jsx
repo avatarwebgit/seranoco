@@ -62,7 +62,6 @@ const ResultMobile = ({ dataProps }) => {
            </p>
           </span>
           <span className={classes.value_wrapper}>
-           {console.log(el)}
            <p className={classes.detail_text}>{el.type || 'none'}</p>
            <p className={classes.detail_text}>{el.quality || 'none'}</p>
            <p className={classes.detail_text}>{el.size || 'none'}</p>

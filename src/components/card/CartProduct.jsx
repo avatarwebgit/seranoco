@@ -36,7 +36,8 @@ const CartProduct = data => {
    const getVariationDetails = async () => {
     const serverRes = await getProductDetailsWithId(data.data.variation_id);
     setVariationPrice(serverRes.result.product.sale_price);
-    setVariation(serverRes.result);
+     setVariation(serverRes.result);
+     console.log(serverRes)
    };
    getVariationDetails();
   }
@@ -44,7 +45,6 @@ const CartProduct = data => {
 
  useEffect(() => {
   if (quantity && productData) {
-   console.log(variation, productData);
    dispatch(
     cartActions.setQuantity({
      id: +variation.product.variation_id,
@@ -66,7 +66,7 @@ const CartProduct = data => {
   const serverRes = await removeShoppingCart(
    token,
    productData.id,
-   variation.id,
+   variation.product.variation_id,
   );
   if (serverRes.response.ok) {
    dispatch(cartActions.remove(productData));

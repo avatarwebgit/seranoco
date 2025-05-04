@@ -83,7 +83,6 @@ const SpecialStones = ({ windowSize }) => {
  const formRef = useRef();
  const sizeRef = useRef();
  const sliderRef = useRef();
- const gridSliderRef = useRef();
  const productsWrapperRef = useRef();
  const abortControllerRef = useRef(new AbortController());
 
@@ -169,6 +168,7 @@ const SpecialStones = ({ windowSize }) => {
     setLastPage(serverRes.result.data.last_page);
     setPage(serverRes.result.data.current_page);
     setSizeData(serverRes.result.sizes);
+    setShapesData(serverRes.result.shapes);
     if (shapeFormEntries) {
      setProductDetails((prevData = []) => {
       const newItems = Array.isArray(serverRes.result.data)
@@ -218,11 +218,12 @@ const SpecialStones = ({ windowSize }) => {
    setIsLoadingSizes(true);
    const serverRes = await getAllProductFromCategory(id);
    if (serverRes.response.ok) {
+    console.log(serverRes);
     setColorData(serverRes.result.colors);
     setShapesData(serverRes.result.shapes);
     setGroupColors(serverRes.result.group_colors);
     setSizeData(serverRes.result.sizes);
-    //  setProductDetails(serverRes.result.data);
+    setProductDetails(serverRes.result.data);
    }
   } catch (error) {
    setIsLoadingShapes(false);
@@ -232,6 +233,10 @@ const SpecialStones = ({ windowSize }) => {
    setIsLoadingSizes(false);
   }
  };
+
+ useEffect(() => {
+  console.log(shapesData);
+ }, [shapesData]);
 
  useEffect(async () => {
   document.title = 'Seranoco - categories';
@@ -554,7 +559,7 @@ const SpecialStones = ({ windowSize }) => {
                 handleShapeClick(e, elem.id);
                 setShapeFormEntries(elem.id);
                }}
-               isSelected={shapeFormEntries }
+               isSelected={shapeFormEntries}
               />
              )}
             </div>

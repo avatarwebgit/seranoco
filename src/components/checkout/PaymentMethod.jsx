@@ -32,7 +32,6 @@ const PaymentMethod = ({ dataProps }) => {
     id,
     cart.finalPayment * cart.euro,
    );
-  //  console.log(serverRes);
   } catch {
   } finally {
   }

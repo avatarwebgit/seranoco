@@ -74,7 +74,6 @@ const Ticket = () => {
   try {
    const serverRes = await getAllTickets(t);
    if (serverRes.response.ok) {
-    console.log(serverRes);
     setAllTicketsData(serverRes.result);
    }
   } catch (err) {

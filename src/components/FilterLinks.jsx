@@ -52,7 +52,6 @@ const FilterLinks = () => {
    {}
    {linkData &&
        linkData.map(elem => {
-      console.log(elem)
      return (
       <Link
        href={`special/${elem.id}`}

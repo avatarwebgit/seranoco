@@ -220,11 +220,11 @@ const FilterByShape = ({ windowSize }) => {
    //     ItemsPerPage,
    //   );
    //   if (allProductsRes.response.ok) {
-   //     console.log(allProductsRes.result);
+   //
    //     setProductDetails(allProductsRes.result.data.products.data);
    //     setLastPage(allProductsRes.result.data.products.last_page);
    //     setPage(allProductsRes.result.data.products.current_page);
-   //     console.log(allProductsRes.result);
+   //
    //   }
   } catch (error) {
    if (error.name !== 'AbortError') {
@@ -408,7 +408,7 @@ const FilterByShape = ({ windowSize }) => {
     per_page,
     { signal: abortControllerRef.current.signal },
    );
-   console.log(serverRes);
+
    if (serverRes.response.ok) {
     setTableData(serverRes.result.data);
    }

@@ -633,7 +633,6 @@ export const getAllNewProducts = async (
  page,
  per_page,
 ) => {
- console.log(shape_id, color_ids, size_ids, page, per_page);
  const response = await fetch(
   `${baseUrl}/get/products/new?page=${page}&per_page=${per_page}`,
   {
@@ -662,7 +661,6 @@ export const sendCartPrice = async (
  payment_method,
  amount,
 ) => {
- console.log(token, address_id, payment_method, amount);
  const response = await fetch(`${baseUrl}/payment`, {
   method: 'POST',
   headers: {
@@ -1013,6 +1011,43 @@ export const replyTicket = async (token, ticket_id, message) => {
 export const getAdminCreatedPageDetails = async alias => {
  const response = await fetch(`${baseUrl}/page/${alias}`, {
   method: 'GET',
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const sendOTP = async cellphone => {
+ console.log({cellphone});
+ const response = await fetch(`${baseUrl}/login/otp`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ cellphone }),
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const verifyOTP2 = async cellphone => {
+ const response = await fetch(`${baseUrl}/login/verify/otp`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(cellphone),
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const resendOTP = async cellphone => {
+ const response = await fetch(`${baseUrl}/resend/verify/otp`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(cellphone),
  });
  const result = await response.json();
  return { response, result };

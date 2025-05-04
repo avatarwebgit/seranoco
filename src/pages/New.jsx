@@ -187,7 +187,7 @@ const New = ({ windowSize }) => {
     setSizeData(serverRes?.result.data.sizes);
    }
   } catch (error) {
-   // console.log(error)
+   //
   } finally {
    setIsLoading(false);
   }
@@ -230,7 +230,7 @@ const New = ({ windowSize }) => {
     per_page,
     abortControllerRef.current.signal,
    );
-   console.log('all new products', serverRes, pagee);
+
    if (serverRes.response.ok) {
     if (pagee === 1) {
      setProductDetails(serverRes.result.data);
@@ -246,9 +246,7 @@ const New = ({ windowSize }) => {
    setIsFilteredProductsLoading(false);
   }
  };
- useEffect(() => {
-  console.log(productDetails);
- }, [productDetails]);
+ useEffect(() => {}, [productDetails]);
 
  const prevDimensionEntriesRef = useRef(dimensionEntries);
  const prevSelectedIdsRef = useRef(selectedIds);
@@ -276,7 +274,7 @@ const New = ({ windowSize }) => {
  //       prevSelectedIdsRef.current = selectedIds;
  //     }
  //   }
- //   console.log(selectedIds, shapeFormEntries);
+ //
  // }, [selectedIds, shapeFormEntries]);
 
  useEffect(() => {
@@ -332,7 +330,6 @@ const New = ({ windowSize }) => {
 
  useEffect(() => {
   if (isIntersecting && !isFilteredProductsLoading) {
-   console.log('first');
    handleGetNewProducts(shapeFormEntries, selectedIds, [], +page, ItemsPerPage);
    setPage(prev => prev + 1);
   }

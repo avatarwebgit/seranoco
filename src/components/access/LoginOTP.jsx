@@ -11,9 +11,10 @@ import {
 } from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
 
-import classes from './OTP.module.css';
-import { verifyOTP } from '../../services/api';
+import { verifyOTP2 } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
+
+import classes from './OTP.module.css';
 const OTP = () => {
  const [signupValues, setSignupValues] = useState(null);
  const [otpValue, setOtpValue] = useState([]);
@@ -86,7 +87,7 @@ const OTP = () => {
  };
 
  const handleVerifyOTP = async (code, cellphone) => {
-  const serverRes = await verifyOTP(code, cellphone);
+  const serverRes = await verifyOTP2(code, cellphone);
   if (serverRes.response.ok) {
    dispatch(userActions.setUser(serverRes.result.user));
    dispatch(userActions.set(serverRes.result.token));

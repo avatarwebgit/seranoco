@@ -57,9 +57,6 @@ const OrderStatus = () => {
   handleFetchOrdersByStatus(selectedValue);
  };
 
- useEffect(() => {
-  console.log(selectedOption);
- }, [selectedOption]);
 
  return (
   <section className={classes.main}>

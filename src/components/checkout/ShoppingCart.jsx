@@ -52,7 +52,6 @@ const ShoppingCart = () => {
      <tbody>
 
        {card.products.map(el => {
-         console.log(el)
      const isByOrder =
       el?.quantity === 0 && el?.variation.is_not_available === 0;
      const totalPrice = el.selected_quantity * el.price;

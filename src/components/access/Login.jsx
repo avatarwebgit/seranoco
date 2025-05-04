@@ -116,7 +116,7 @@ const Login = () => {
    setErrors(serverRes.result.errors);
    console.log(serverRes.result.errors);
    if (recaptchaRef.current) {
-    // recaptchaRef.current.reset();
+    recaptchaRef.current.reset();
    }
    //  setRecaptchaToekn(null);
   }
