@@ -7,6 +7,7 @@ const initialState = {
  mobile: false,
  modalOpen: false,
  loginOTP: false,
+ mobileNo: 0,
 };
 
 const accessModalSlice = createSlice({
@@ -52,6 +53,9 @@ const accessModalSlice = createSlice({
    state.signup = false;
    state.mobile = false;
    state.loginOTP = true;
+  },
+  setMobile(state, action) {
+   state.mobileNo = action.payload;
   },
   close(state) {
    state.modalOpen = false;

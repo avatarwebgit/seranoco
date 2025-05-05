@@ -22,6 +22,7 @@ const OTP = () => {
 
  const lng = useSelector(state => state.localeStore.lng);
  const signupInfo = useSelector(state => state.signupStore.data);
+ const cellphone = useSelector(state => state.accessModalStore.mobileNo);
 
  const { t } = useTranslation();
  const formRef = useRef();
@@ -31,8 +32,8 @@ const OTP = () => {
   if (e) e.preventDefault();
   const payload = otp || otpValue;
   const code = payload.join('');
-  if (code && signupInfo.phonenumber) {
-   handleVerifyOTP(code, signupInfo.phonenumber);
+  if (code) {
+   handleVerifyOTP(code, cellphone);
   }
  };
 

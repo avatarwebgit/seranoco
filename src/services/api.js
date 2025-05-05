@@ -1017,7 +1017,7 @@ export const getAdminCreatedPageDetails = async alias => {
 };
 
 export const sendOTP = async cellphone => {
- console.log({cellphone});
+ console.log({ cellphone });
  const response = await fetch(`${baseUrl}/login/otp`, {
   method: 'POST',
   headers: {
@@ -1029,13 +1029,13 @@ export const sendOTP = async cellphone => {
  return { response, result };
 };
 
-export const verifyOTP2 = async cellphone => {
+export const verifyOTP2 = async (otp, cellphone) => {
  const response = await fetch(`${baseUrl}/login/verify/otp`, {
   method: 'POST',
   headers: {
    'Content-Type': 'application/json',
   },
-  body: JSON.stringify(cellphone),
+  body: JSON.stringify({ otp, cellphone }),
  });
  const result = await response.json();
  return { response, result };

@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { accesModalActions, signupActions } from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
 
-import { sendOTP, verifyOTP2 } from '../../services/api';
+import { sendOTP } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
 
 import classes from './MobileModal.module.css';
@@ -28,8 +28,8 @@ const MobileModal = () => {
   const payload = otp || otpValue;
   const code = payload.join('');
   if (code) {
-
-      handleVerifyOTP0(code);
+   handleVerifyOTP0(code);
+   dispatch(accesModalActions.mobile());
   }
  };
 
@@ -85,6 +85,7 @@ const MobileModal = () => {
 
  const handleVerifyOTP0 = async cellphone => {
   const serverRes = await sendOTP(cellphone);
+  dispatch(accesModalActions.setMobile(cellphone));
   if (serverRes.response.ok) {
    dispatch(accesModalActions.loginOtp());
   } else {
