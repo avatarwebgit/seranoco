@@ -7,7 +7,12 @@ import { Skeleton } from '@mui/material';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Thumbs, Pagination } from 'swiper/modules';
 
-import { accesModalActions, cartActions, drawerActions } from '../store/store';
+import {
+ accesModalActions,
+ cartActions,
+ drawerActions,
+ favoriteActions,
+} from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
 import Body from '../components/filters_page/Body';
 import Header from '../layout/Header';
@@ -66,6 +71,7 @@ const Products = ({ windowSize }) => {
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
  const favorites = useSelector(state => state.favoriteStore.products);
+ const favoritesCount = useSelector(state => state.favoriteStore.count);
  const euro = useSelector(state => state.cartStore.euro);
 
  const location = useLocation();
@@ -206,19 +212,20 @@ const Products = ({ windowSize }) => {
   }
  }, [detailsData]);
 
- const handleIncrement = () => {
-  if (quantity < detailsData.product.quantity) setQuantity(quantity + 1);
- };
+ //  const handleIncrement = () => {
+ //   if (quantity < detailsData.product.quantity) setQuantity(quantity + 1);
+ //  };
 
- const handleDecrement = () => {
-  if (quantity === 0) return;
-  setQuantity(quantity - 1);
- };
+ //  const handleDecrement = () => {
+ //   if (quantity === 0) return;
+ //   setQuantity(quantity - 1);
+ //  };
 
  const handleAddToFavorites = async () => {
   const serverRes = await addToFavorite(token, id, +variation);
   if (serverRes.response.ok) {
    notify(t('product.added'));
+   dispatch(favoriteActions.setCount(favoritesCount + 1));
    setIsFavorite(true);
   } else {
    notify(t('product.err'));
@@ -229,6 +236,7 @@ const Products = ({ windowSize }) => {
   const serverRes = await removeFromFavorite(token, +variation);
   if (serverRes.response.ok) {
    notify(t('product.removed'));
+   dispatch(favoriteActions.setCount(favoritesCount - 1));
    setIsFavorite(false);
   } else {
    notify(t('product.err'));
@@ -242,11 +250,9 @@ const Products = ({ windowSize }) => {
  }, [favorites]);
 
  const handleSendShoppingCart = async el => {
-  console.log('first');
   const serverRes = await sendShoppingCart(token, el.id, +variation, +quantity);
   try {
-
-    notify(t('orders.ok'));
+   notify(t('orders.ok'));
    if (serverRes.response.ok) {
     dispatch(
      cartActions.add({

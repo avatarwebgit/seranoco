@@ -180,6 +180,10 @@ const Header = ({ windowSize }) => {
   dispatch(accesModalActions.close());
  };
 
+ const handleOpenFavoritesDrawer = () => {
+  dispatch(drawerActions.favoritesOpen());
+ };
+
  return (
   <motion.header
    className={classes.main}
@@ -232,13 +236,13 @@ const Header = ({ windowSize }) => {
 
      {!isSmall && (
       <>
-       {token && favorits && favorits > 0 && (
+       {token && (
         <span className={classes.icon_pack_wrapper}>
-         <IconButton>
-          <Badge
-           badgeContent={favorits}
-           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-           <Tooltip title={t('favorites')} placement='top' arrow>
+         <Tooltip title={t('favorites')} placement='top' arrow>
+          <IconButton onClick={handleOpenFavoritesDrawer}>
+           <Badge
+            badgeContent={favorits }
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
             {isHomePage ? (
              <Heart_black
               width={isSmall ? '0px' : '28px'}
@@ -250,9 +254,9 @@ const Header = ({ windowSize }) => {
               height={isSmall ? '0px' : '28px'}
              />
             )}
-           </Tooltip>
-          </Badge>
-         </IconButton>
+           </Badge>
+          </IconButton>
+         </Tooltip>
         </span>
        )}
        <span className={classes.icon_pack_wrapper}>
@@ -340,48 +344,50 @@ const Header = ({ windowSize }) => {
                <Body parentClass={classes.body}>
                 <Card className={classes.mega_card}>
                  <div className={classes.sub_menu_wrapper}>
-                  {elem.children.map((el, i) => {
-                   const id = nanoid();
-                   return (
-                    <div key={el.id} className={classes.header_sub}>
-                     <input
-                      type='radio'
-                      name='mega-menu'
-                      id={id}
-                      className={classes.label_radio}
-                      defaultChecked={i === 0}
-                     />
-                     {el.url ? (
-                      <Link
-                       className={classes.mega_title}
-                       to={el.url}
-                       target='_blank'>
-                       {el.label}
-                      </Link>
-                     ) : (
-                      <label
-                       className={classes.mega_title}
+                  <div className={classes.link_part}>
+                   {elem.children.map((el, i) => {
+                    const id = nanoid();
+                    return (
+                     <div key={el.id} className={classes.header_sub}>
+                      <input
+                       type='radio'
+                       name='mega-menu'
                        id={id}
-                       htmlFor={id}>
-                       {el.label}
-                      </label>
-                     )}
+                       className={classes.label_radio}
+                       defaultChecked={i === 0}
+                      />
+                      {el.url ? (
+                       <Link
+                        className={classes.mega_title}
+                        to={el.url}
+                        target='_blank'>
+                        {el.label}
+                       </Link>
+                      ) : (
+                       <label
+                        className={classes.mega_title}
+                        id={id}
+                        htmlFor={id}>
+                        {el.label}
+                       </label>
+                      )}
 
-                     <div className={classes.link_menu_wrapper}>
-                      <div className={classes.link_sub_wrapper}>
-                       {el.children &&
-                        el.children.map(elc => {
-                         return (
-                          <div className={classes.menu_item} key={elc.id}>
-                           {elc.label}
-                          </div>
-                         );
-                        })}
+                      <div className={classes.link_menu_wrapper}>
+                       <div className={classes.link_sub_wrapper}>
+                        {el.children &&
+                         el.children.map(elc => {
+                          return (
+                           <div className={classes.menu_item} key={elc.id}>
+                            {elc.label}
+                           </div>
+                          );
+                         })}
+                       </div>
                       </div>
                      </div>
-                    </div>
-                   );
-                  })}
+                    );
+                   })}
+                  </div>
                   {elem.image && elem.image !== '' && (
                    <div className={classes.mega_img_primary}>
                     <img src={elem.image} alt='' />

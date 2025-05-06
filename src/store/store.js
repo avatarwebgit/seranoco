@@ -11,7 +11,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-// Import your existing slices
+
 import localeSlice from './slices/localeSlice';
 import productSlice from './slices/productSlice';
 import productDetailSlice from './slices/productDetail';
@@ -57,6 +57,7 @@ const store = configureStore({
    },
   }),
 });
+
 // Create Persistor
 const persistor = persistStore(store);
 

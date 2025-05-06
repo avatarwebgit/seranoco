@@ -3,10 +3,12 @@ import { Skeleton, Tooltip } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { DeleteForever, Info } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { cartActions, drawerActions } from '../../store/store';
+import { cartActions, drawerActions, favoriteActions } from '../../store/store';
 
 import {
+  getAllFavorites,
  getProductDetailsWithId,
+ removeFromFavorite,
  removeShoppingCart,
 } from '../../services/api';
 import { formatNumber, notify } from '../../utils/helperFunctions';
@@ -14,12 +16,11 @@ import { sendShoppingCart } from '../../services/api';
 
 import classes from './CartProduct.module.css';
 import { Link } from 'react-router-dom';
-const CartProduct = data => {
+const FavoriteCart = data => {
  const [productData, setProductData] = useState(null);
  const [variationPrice, setVariationPrice] = useState(0);
  const [quantity, setQuantity] = useState(1);
  const [variation, setVariation] = useState([]);
- const [isMoreThanQuantity, setIsMoreThanQuantity] = useState(false);
 
  const { t } = useTranslation();
 
@@ -27,6 +28,8 @@ const CartProduct = data => {
  const euro = useSelector(state => state.cartStore.euro);
  const token = useSelector(state => state.userStore.token);
  const totalPrice = useSelector(state => state.cartStore.totalPrice);
+ const favoritesCount = useSelector(state => state.favoriteStore.count);
+ const favorites = useSelector(state => state.favoriteStore.products);
  const dispatch = useDispatch();
 
  useEffect(() => {
@@ -53,6 +56,13 @@ const CartProduct = data => {
   }
  }, [quantity]);
 
+ const getFavoriteItems = async () => {
+  const serverRes = await getAllFavorites(token);
+  if (serverRes.response.ok) {
+   dispatch(favoriteActions.setFetchedProducts(serverRes.result.wishlist));
+  }
+ };
+
  //  const handleIncrement = () => {
  //   dispatch(cartActions.increment(productData));
  //  };
@@ -60,17 +70,14 @@ const CartProduct = data => {
  //  const handleDecrement = () => {
  //   dispatch(cartActions.decrement(productData));
  //  };
-
- const handleRemveItem = async () => {
-  const serverRes = await removeShoppingCart(
-   token,
-   productData.id,
-   variation.product.variation_id,
-  );
+ const handleRemoveToFavorites = async () => {
+  const serverRes = await removeFromFavorite(token, +data.data.variation_id);
   if (serverRes.response.ok) {
-   dispatch(cartActions.remove(productData));
+   notify(t('product.removed'));
+  //  dispatch(favoriteActions.setCount(favoritesCount - 1));
+   getFavoriteItems();
   } else {
-   notify(t(''));
+   notify(t('product.err'));
   }
  };
 
@@ -109,60 +116,9 @@ const CartProduct = data => {
         </span>
        )}
       </div>
-      <div className={classes.actions_wrapper}>
-       <div>
-        {Object.keys(variation).length > 0 && (
-         <div className={classes.input_wrapper}>
-          <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
-           {t('quantity')}:
-          </p>
-          <input
-           type='number'
-           value={quantity}
-           onChange={e => {
-            const inputValue = e.target.value.replace(/[^0-9]/g, '');
-            const availableQuantity = +variation?.product?.variation?.quantity;
-
-            if (
-             variation?.product?.variation?.is_not_available === 0 &&
-             availableQuantity > 0
-            ) {
-             const newQuantity = +inputValue;
-             if (newQuantity > availableQuantity) {
-              setIsMoreThanQuantity(true);
-              setQuantity(availableQuantity);
-             } else {
-              setIsMoreThanQuantity(false);
-              setQuantity(newQuantity);
-             }
-            } else {
-             setIsMoreThanQuantity(false);
-             setQuantity(inputValue);
-            }
-           }}
-           className={classes.quantity_input}
-           style={{ borderColor: isMoreThanQuantity ? 'red' : 'black' }}
-          />
-          {
-           <p
-            style={{
-             opacity: `${isMoreThanQuantity ? 1 : 0}`,
-             color: 'red',
-             whiteSpace: 'nowrap',
-            }}>
-            {t('availableQuantity')}: {+variation.product.variation.quantity}
-           </p>
-          }
-         </div>
-        )}
-       </div>
-       {/* <span>
-        <button onClick={handleIncrement}>+</button>
-        <button onClick={handleDecrement}>-</button>
-       </span> */}
-      </div>
+      <div className={classes.actions_wrapper}></div>
       <div className={classes.final}>
-       <button onClick={handleRemveItem}>
+       <button onClick={handleRemoveToFavorites}>
         <DeleteForever color='error' />
        </button>
        <span
@@ -174,16 +130,6 @@ const CartProduct = data => {
         &nbsp;{t('m_unit')}
        </span>
       </div>
-      {productData.variation?.quantity === 0 &&
-       productData.variation?.is_not_available === 0 && (
-        <Tooltip
-         title={t('byorder')}
-         className={classes.tip}
-         arrow
-         placement='left'>
-         <Info className={classes.info} fontSize='8px' />
-        </Tooltip>
-       )}
      </div>
     </>
    )}
@@ -191,4 +137,4 @@ const CartProduct = data => {
  );
 };
 
-export default CartProduct;
+export default FavoriteCart;

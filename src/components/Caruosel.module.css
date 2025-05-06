@@ -78,12 +78,11 @@
  object-fit: contain;
 }
 .thumbs_wrapper {
- width: 20vw;
- height: 6rem;
+ width: fit-content;
  position: absolute;
  left: 50%;
  transform: translateX(-50%);
- bottom: 2vh;
+ bottom: 0;
  z-index: 10;
  display: flex;
  align-items: center;

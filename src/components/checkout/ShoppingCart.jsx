@@ -22,7 +22,8 @@ const ShoppingCart = () => {
  const handleGetShoppingCart = async () => {
   const serverRes = await getShoppingCart(token);
 
-   if (serverRes.response.ok) {
+  if (serverRes.response.ok) {
+   console.log(serverRes);
    dispatch(cartActions.set(serverRes.result.cart));
   }
  };
@@ -49,9 +50,8 @@ const ShoppingCart = () => {
      <td className={classes.td}>{t('pc.payment')}</td>
     </tr>
    </thead>
-     <tbody>
-
-       {card.products.map(el => {
+   <tbody>
+    {card.products.map(el => {
      const isByOrder =
       el?.quantity === 0 && el?.variation.is_not_available === 0;
      const totalPrice = el.selected_quantity * el.price;

@@ -218,7 +218,6 @@ const SpecialStones = ({ windowSize }) => {
    setIsLoadingSizes(true);
    const serverRes = await getAllProductFromCategory(id);
    if (serverRes.response.ok) {
-    console.log(serverRes);
     setColorData(serverRes.result.colors);
     setShapesData(serverRes.result.shapes);
     setGroupColors(serverRes.result.group_colors);
@@ -233,10 +232,6 @@ const SpecialStones = ({ windowSize }) => {
    setIsLoadingSizes(false);
   }
  };
-
- useEffect(() => {
-  console.log(shapesData);
- }, [shapesData]);
 
  useEffect(async () => {
   document.title = 'Seranoco - categories';

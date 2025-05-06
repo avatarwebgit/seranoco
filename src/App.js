@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -11,8 +11,8 @@ import Drawer from './layout/Drawer';
 
 import './App.css';
 
-import { useBasicInformation, useUser } from './services/api';
-import { useTranslation } from 'react-i18next';
+import { useBasicInformation } from './services/api';
+import FavoritesDrawer from './layout/FavoritesDrawer';
 function App() {
  const [windowSize, setWindowSize] = useState(() => {
   const width = window.innerWidth;
@@ -44,10 +44,7 @@ function App() {
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
 
- const { t } = useTranslation();
-
- const { data: basicData, isLoading: basicDataIsloading } =
-  useBasicInformation();
+ const { data: basicData } = useBasicInformation();
 
  const dispatch = useDispatch();
 
@@ -170,6 +167,7 @@ function App() {
    {windowSize === 'xs' && <FixedNavigation />}
    {windowSize === 's' && <FixedNavigation />}
    <Drawer size={windowSize} />
+   <FavoritesDrawer size={windowSize} />
    <ToastContainer
     theme='dark'
     className={'toast'}

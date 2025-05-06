@@ -15,7 +15,8 @@ import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
 
 import classes from './ResultRow.module.css';
 import { Lock } from '@mui/icons-material';
-import { formatNumber } from '../../utils/helperFunctions';
+import { formatNumber, notify } from '../../utils/helperFunctions';
+import { sendShoppingCart } from '../../services/api';
 const ResultRow = ({ dataProp }) => {
  const [data, setData] = useState(null);
  const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -74,6 +75,27 @@ const ResultRow = ({ dataProp }) => {
     euro_price: euro,
    }),
   );
+ };
+
+ const handleSendShoppingCart = async (el, variation, quantity) => {
+  const serverRes = await sendShoppingCart(token, el.id, +variation, +quantity);
+  try {
+   notify(t('orders.ok'));
+   if (serverRes.response.ok) {
+    dispatch(
+     cartActions.add({
+      ...el,
+      selected_quantity: quantity,
+      euro_price: euro,
+      variation_id: variation,
+      variation: { quantity: el.quantity },
+     }),
+    );
+   }
+   dispatch(drawerActions.open());
+  } catch (err) {
+   console.log(err);
+  }
  };
 
  return (
@@ -216,7 +238,11 @@ const ResultRow = ({ dataProp }) => {
             <button
              className={classes.add_to_card}
              onClick={() => {
-              handleAddToCart(el);
+              handleSendShoppingCart(
+               el,
+               el.variation_id,
+               quantities[el.variation_id],
+              );
              }}>
              {el?.variation?.quantity === 0
               ? t('addtoorder')

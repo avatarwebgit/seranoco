@@ -139,6 +139,9 @@ a:visited {
  gap: 5px !important;
  min-width: 40px !important;
 }
+html {
+  scrollbar-gutter: stable;
+}
 @media only screen and (max-width: 480px) {
  .MuiBadge-badge {
   width: 15px !important;

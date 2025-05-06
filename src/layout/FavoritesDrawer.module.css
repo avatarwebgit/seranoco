@@ -1,0 +1,135 @@
+@import url(../styles/variables.css);
+
+.main {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  transform-origin: left;
+}
+
+.content {
+  width: 30%;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 1500;
+  overflow: hidden;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.backdrop {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+}
+
+.close_btn {
+}
+
+.header_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 0 3px 5px var(--color-grey-2);
+}
+
+.items_wrapper {
+  flex: 1 1 auto;
+  height: fit-content;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+}
+
+.items_wrapper::-webkit-scrollbar-button {
+  display: none;
+}
+
+.actions_wrapper {
+  width: 100%;
+  height: fit-content;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -3px 5px var(--color-grey-2);
+}
+
+.close_icon {
+  width: 40px;
+  height: 40px;
+}
+
+.pay_btn {
+  font-size: 0.6rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  transition: all 0.5s !important;
+  border: 1px solid #000000 !important;
+  direction: rtl !important;
+  background-color: black !important;
+  color: #ffffff !important;
+}
+
+.total {
+  display: flex;
+}
+
+.total * {
+  font-size: 0.8rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .content {
+    width: 100%;
+  }
+  .header_wrapper,
+  .actions_wrapper {
+    padding: 5px 10px;
+  }
+  .close_icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .content {
+    width: 100%;
+  }
+  .header_wrapper,
+  .actions_wrapper {
+    padding: 5px 10px;
+  }
+  .close_icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+
+@media only screen and (min-width: 1201px) {
+}
