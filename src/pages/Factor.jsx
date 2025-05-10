@@ -85,14 +85,14 @@ const Factor = () => {
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
    };
 
-   //  html2pdf()
-   //   .from(element)
-   //   .set(opt)
-   //   .save()
-   //   .catch(err => {
-   //    console.error('Error generating PDF:', err);
-   //    notify('Failed to download PDF. Please try again.');
-   //   });
+    html2pdf()
+     .from(element)
+     .set(opt)
+     .save()
+     .catch(err => {
+      console.error('Error generating PDF:', err);
+      notify('Failed to download PDF. Please try again.');
+     });
   }
  }, [detailsData]);
 
