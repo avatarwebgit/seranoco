@@ -165,24 +165,25 @@ const SpecialStones = ({ windowSize }) => {
     },
    );
    if (serverRes.response.ok) {
-    setLastPage(serverRes.result.data.last_page);
-    setPage(serverRes.result.data.current_page);
+    setLastPage(serverRes.result.pagination.last_page);
+    setPage(serverRes.result.pagination.current_page);
     setSizeData(serverRes.result.sizes);
     setShapesData(serverRes.result.shapes);
-    if (shapeFormEntries) {
-     setProductDetails((prevData = []) => {
-      const newItems = Array.isArray(serverRes.result.data)
-       ? serverRes.result.data
-       : [];
-      const updatedData = prevData.filter(prevItem =>
-       newItems.some(newItem => newItem.id === prevItem.id),
-      );
-      const filteredNewItems = newItems.filter(
-       newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
-      );
-      return [...updatedData, ...filteredNewItems];
-     });
-    }
+    setProductDetails(serverRes.result.data);
+    // if (shapeFormEntries) {
+    //  setProductDetails((prevData = []) => {
+    //   const newItems = Array.isArray(serverRes.result.data)
+    //    ? serverRes.result.data
+    //    : [];
+    //   const updatedData = prevData.filter(prevItem =>
+    //    newItems.some(newItem => newItem.id === prevItem.id),
+    //   );
+    //   const filteredNewItems = newItems.filter(
+    //    newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
+    //   );
+    //   return [...updatedData, ...filteredNewItems];
+    //  });
+    // }
    }
   } catch (error) {
    if (error.name !== 'AbortError') {
@@ -201,7 +202,7 @@ const SpecialStones = ({ windowSize }) => {
   dispatch(productDetailActions.reset());
   setTableData([]);
   setChunkedData([]);
-  scrollToTarget(formRef, 1000);
+  scrollToTarget(formRef, 1200);
  };
 
  const handleCheckboxChange = (e, slideId) => {
@@ -618,7 +619,7 @@ const SpecialStones = ({ windowSize }) => {
          <p className={classes.pagination_text}>{t('page')} :</p>
          <PaginationComponent
           count={lastPage}
-          page={page}
+          page={+page}
           onChange={handlePaginationChange}
           hideNextButton
           hidePrevButton

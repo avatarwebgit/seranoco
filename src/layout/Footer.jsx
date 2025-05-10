@@ -55,27 +55,31 @@ const Footer = () => {
         </a>
         <div className={classes.links}>
          <span style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
-          <p className={classes.title}>{footerData.footer_1}</p>
+          <p className={classes.title}>
+           {lng === 'fa' ? footerData.footer_1 : footerData.footer_1_en}
+          </p>
 
           {pageData &&
            pageData.data.map((elem, i) => {
             if (i < 5) {
              return (
               <a key={i} href={`/${lng}/page/${elem.alias}`}>
-               {elem.title}
+               {lng === 'fa' ? elem.title : elem.title_en}
               </a>
              );
             }
            })}
          </span>
          <span style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
-          <p className={classes.title}>{footerData.footer_2}</p>
+          <p className={classes.title}>
+           {lng === 'fa' ? footerData.footer_2 : footerData.footer_2_en}
+          </p>
           {pageData &&
            pageData.data.map((elem, i) => {
             if (i >= 5 && i < 7) {
              return (
               <a key={i} href={`/${lng}/page/${elem.alias}`}>
-               {elem.title}
+               {lng === 'fa' ? elem.title : elem.title_en}
               </a>
              );
             }
@@ -84,13 +88,15 @@ const Footer = () => {
          <span
           className={classes.support}
           style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
-          <p className={classes.title}>{footerData.footer_3}</p>
+          <p className={classes.title}>
+           {lng === 'fa' ? footerData.footer_3 : footerData.footer_3_en}
+          </p>
           {pageData &&
            pageData.data.map((elem, i) => {
             if (i >= 7 && i < 9) {
              return (
               <a key={i} href={`/${lng}/page/${elem.alias}`}>
-               {elem.title}
+               {lng === 'fa' ? elem.title : elem.title_en}
               </a>
              );
             }

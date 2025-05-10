@@ -26,7 +26,6 @@ const Factor = () => {
  const { t } = useTranslation();
 
  const handleGetdetails = async orderId => {
-  // Changed id to orderId
   if (orderId) {
    const serverRes = await getOrderStatusDetail(token, orderId);
    if (serverRes.response.ok) {
@@ -86,14 +85,14 @@ const Factor = () => {
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
    };
 
-     html2pdf()
-      .from(element)
-      .set(opt)
-      .save()
-      .catch(err => {
-       console.error('Error generating PDF:', err);
-       notify('Failed to download PDF. Please try again.');
-      });
+   //  html2pdf()
+   //   .from(element)
+   //   .set(opt)
+   //   .save()
+   //   .catch(err => {
+   //    console.error('Error generating PDF:', err);
+   //    notify('Failed to download PDF. Please try again.');
+   //   });
   }
  }, [detailsData]);
 
@@ -258,6 +257,13 @@ const Factor = () => {
          style={{
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
+         }}>
+         {t('availability')}
+        </span>
+        <span
+         style={{
+          borderRight: lng === 'fa' && '1px solid black',
+          borderLeft: lng !== 'fa' && '1px solid black',
           color: 'red',
          }}>
          {t('factor.off')}
@@ -287,7 +293,7 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            {lng === 'fa' ? prod.stone_fa : prod.stone}
+            {lng === 'fa' ? prod.detail_fa : prod.detail}
            </span>
            <span
             style={{
@@ -345,6 +351,15 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
+            {!prod.variation.is_not_available
+             ? t('available')
+             : t('newpage.newpage')}
+           </span>
+           <span
+            style={{
+             borderRight: lng === 'fa' && '1px solid black',
+             borderLeft: lng !== 'fa' && '1px solid black',
+            }}>
             ---
            </span>
            <span
@@ -367,6 +382,11 @@ const Factor = () => {
        <span
         className={classes.productInfoTotalWrapper}
         style={{ borderBottom: '1px solid black' }}>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
         <span
          className={classes.totalInfo}
          style={{
@@ -498,6 +518,11 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
           color: 'red',
          }}>
          {t('factor.club')}
@@ -567,6 +592,11 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
          }}>
          {t('factor.shipping')}
         </span>
@@ -582,6 +612,7 @@ const Factor = () => {
         )}
        </span>
        <span className={classes.productInfoTotalWrapper}>
+        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>

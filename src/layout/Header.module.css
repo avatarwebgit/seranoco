@@ -154,6 +154,8 @@
  width: 50%;
  display: grid;
  grid-template-columns: 50% 50%;
+ grid-template-rows: 35px 35px 35px 35px 35px 35px 35px 35px 35px 35px;
+ grid-auto-flow: column;
 }
 .mega_title {
  font-size: 15px;

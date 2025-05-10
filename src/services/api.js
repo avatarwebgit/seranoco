@@ -748,6 +748,7 @@ export const getAllFavorites = async token => {
  });
 
  const result = await response.json();
+
  return { response, result };
 };
 
@@ -1017,7 +1018,6 @@ export const getAdminCreatedPageDetails = async alias => {
 };
 
 export const sendOTP = async cellphone => {
- console.log({ cellphone });
  const response = await fetch(`${baseUrl}/login/otp`, {
   method: 'POST',
   headers: {

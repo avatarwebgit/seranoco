@@ -16,7 +16,7 @@ import { KeyboardArrowRight, Lock } from '@mui/icons-material';
 import CartProduct from '../components/card/CartProduct';
 
 import classes from './Drawer.module.css';
-import { getAllFavorites } from '../services/api';
+import { getAllFavorites, getShoppingCart } from '../services/api';
 import FavoriteCart from '../components/card/FavoriteCart';
 const FavoritesDrawer = ({ children, size }) => {
  const dispatch = useDispatch();
@@ -56,6 +56,8 @@ const FavoritesDrawer = ({ children, size }) => {
    document.body.style.overflow = '';
   };
  }, [drawerState]);
+
+
 
  return (
   <motion.div

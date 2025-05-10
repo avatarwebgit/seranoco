@@ -12,125 +12,127 @@ import CartProduct from '../components/card/CartProduct';
 
 import classes from './Drawer.module.css';
 import { formatNumber, notify } from '../utils/helperFunctions';
+import { getShoppingCart } from '../services/api';
 const Drawer = ({ children, size }) => {
-  const dispatch = useDispatch();
-  const drawerState = useSelector(state => state.drawerStore.drawerOpen);
-  const cart = useSelector(state => state.cartStore);
+ const dispatch = useDispatch();
+ const drawerState = useSelector(state => state.drawerStore.drawerOpen);
+ const cart = useSelector(state => state.cartStore);
 
-  const lng = useSelector(state => state.localeStore.lng);
-  const token = useSelector(state => state.userStore.token);
+ const lng = useSelector(state => state.localeStore.lng);
+ const token = useSelector(state => state.userStore.token);
 
-  const [productData, setProductData] = useState([]);
+ const [productData, setProductData] = useState([]);
 
-  const { t } = useTranslation();
+ const { t } = useTranslation();
 
-  const toggleDrawer = () => {
-    dispatch(drawerActions.close());
+ const toggleDrawer = () => {
+  dispatch(drawerActions.close());
+ };
+
+ const handleGetShoppingCart = async () => {
+  const serverRes = await getShoppingCart(token);
+
+  if (serverRes.response.ok) {
+   dispatch(cartActions.set(serverRes.result.cart));
+  }
+ };
+
+ useEffect(() => {
+  if (drawerState) {
+   dispatch(cartActions.calculateTotalPrice());
+   handleGetShoppingCart();
+   document.body.style.overflow = 'hidden';
+  } else {
+   document.body.style.overflow = '';
+  }
+
+  return () => {
+   document.body.style.overflow = '';
   };
+ }, [drawerState]);
 
-  useEffect(() => {
-    if (drawerState) {
-      dispatch(cartActions.calculateTotalPrice());
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+ useEffect(() => {
+  if (cart.products || drawerState) {
+   setProductData(cart.products);
+  }
+ }, [cart, drawerState]);
 
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [drawerState]);
+ return (
+  <motion.div
+   className={`${classes.main}`}
+   initial={{ display: 'none' }}
+   animate={{ display: drawerState ? 'flex' : 'none' }}
+   transition={{ duration: 0.3, delay: drawerState ? 0 : 0.3 }}>
+   <motion.div
+    className={classes.content}
+    initial={{ x: '-100%' }}
+    animate={{ x: drawerState ? 0 : '-100%' }}
+    transition={{ type: 'spring', bounce: false, duration: 0.3 }}>
+    <div
+     className={classes.header_wrapper}
+     style={{ flexDirection: lng === 'fa' ? 'row-reverse' : 'row' }}>
+     <span className={classes.header_text}>
+      <h2>{t('shopping_cart.cart')}</h2>
+     </span>
+     <IconButton
+      className={classes.close_btn}
+      onClick={toggleDrawer}
+      disableRipple={true}>
+      <Close className={classes.close_icon} />
+     </IconButton>
+    </div>
+    <div className={classes.items_wrapper}>
+     <div className={classes.items_sheet}>
+      {productData.map(el => {
+       return <CartProduct key={el.id} data={el} />;
+      })}
+     </div>
+    </div>
 
-  useEffect(() => {
-    if (cart.products || drawerState) {
-      setProductData(cart.products);
-    }
-  }, [cart, drawerState]);
-
-   
-
-  return (
-    <motion.div
-      className={`${classes.main}`}
-      initial={{ display: 'none' }}
-      animate={{ display: drawerState ? 'flex' : 'none' }}
-      transition={{ duration: 0.3, delay: drawerState ? 0 : 0.3 }}
-    >
-      <motion.div
-        className={classes.content}
-        initial={{ x: '-100%' }}
-        animate={{ x: drawerState ? 0 : '-100%' }}
-        transition={{ type: 'spring', bounce: false, duration: 0.3 }}
-      >
-        <div
-          className={classes.header_wrapper}
-          style={{ flexDirection: lng === 'fa' ? 'row-reverse' : 'row' }}
-        >
-          <span className={classes.header_text}>
-            <h2>{t('shopping_cart.cart')}</h2>
-          </span>
-          <IconButton
-            className={classes.close_btn}
-            onClick={toggleDrawer}
-            disableRipple={true}
-          >
-            <Close className={classes.close_icon} />
-          </IconButton>
-        </div>
-        <div className={classes.items_wrapper}>
-          <div className={classes.items_sheet}>
-            {productData.map(el => {
-              return <CartProduct key={el.id} data={el} />;
-            })}
-          </div>
-        </div>
-
-        <div className={classes.actions_wrapper}>
-          {token ? (
-            <Link to={`/${lng}/precheckout`}>
-              <IconButton className={classes.pay_btn} disableRipple={true}>
-                <KeyboardArrowRight fontSize='10' />
-                &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;
-              </IconButton>
-            </Link>
-          ) : (
-            <IconButton
-              className={classes.pay_btn}
-              onClick={() => {
-                dispatch(accesModalActions.login());
-              }}
-            >
-              <Lock fontSize='17px !important' />
-              &nbsp;&nbsp; {t('login')}&nbsp;&nbsp;
-            </IconButton>
-          )}
-          <span
-            className={classes.total}
-            style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}
-          >
-            <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
-            <span>
-              {cart.totalPrice && lng !== 'fa'
-                ? cart?.totalPrice?.toFixed(2)
-                : formatNumber(cart.totalPrice * cart.euro)}
-              &nbsp;
-              {t('m_unit')}
-            </span>
-          </span>
-        </div>
-      </motion.div>
-      <motion.div
-        className={classes.backdrop}
-        initial={{ display: 'none', opacity: 0 }}
-        animate={{
-          display: drawerState ? 'flex' : 'none',
-          opacity: drawerState ? 1 : 0,
-        }}
-        onClick={toggleDrawer}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.div>
-  );
+    <div className={classes.actions_wrapper}>
+     {token ? (
+      <Link to={`/${lng}/precheckout`}>
+       <IconButton className={classes.pay_btn} disableRipple={true}>
+        <KeyboardArrowRight fontSize='10' />
+        &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;
+       </IconButton>
+      </Link>
+     ) : (
+      <IconButton
+       className={classes.pay_btn}
+       onClick={() => {
+        dispatch(accesModalActions.login());
+       }}>
+       <Lock fontSize='17px !important' />
+       &nbsp;&nbsp; {t('login')}&nbsp;&nbsp;
+      </IconButton>
+     )}
+     <span
+      className={classes.total}
+      style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+      <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
+      <span>
+       {cart.totalPrice && lng !== 'fa'
+        ? cart?.totalPrice?.toFixed(2)
+        : formatNumber(cart.totalPrice * cart.euro)}
+       &nbsp;
+       {t('m_unit')}
+      </span>
+     </span>
+    </div>
+   </motion.div>
+   <motion.div
+    className={classes.backdrop}
+    initial={{ display: 'none', opacity: 0 }}
+    animate={{
+     display: drawerState ? 'flex' : 'none',
+     opacity: drawerState ? 1 : 0,
+    }}
+    onClick={toggleDrawer}
+    transition={{ duration: 0.3 }}
+   />
+  </motion.div>
+ );
 };
 
 export default Drawer;

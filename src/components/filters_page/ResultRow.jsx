@@ -13,10 +13,10 @@ import {
 import { ReactComponent as Plus } from '../../assets/svg/plus.svg';
 import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
 
-import classes from './ResultRow.module.css';
 import { Lock } from '@mui/icons-material';
 import { formatNumber, notify } from '../../utils/helperFunctions';
 import { sendShoppingCart } from '../../services/api';
+import classes from './ResultRow.module.css';
 const ResultRow = ({ dataProp }) => {
  const [data, setData] = useState(null);
  const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -36,6 +36,7 @@ const ResultRow = ({ dataProp }) => {
  useEffect(() => {
   if (dataProp) {
    setData(dataProp);
+   console.log(dataProp);
   }
   if (isLoadingImage) {
    setIsLoading(true);
@@ -78,23 +79,26 @@ const ResultRow = ({ dataProp }) => {
  };
 
  const handleSendShoppingCart = async (el, variation, quantity) => {
-  const serverRes = await sendShoppingCart(token, el.id, +variation, +quantity);
+  console.log(el.id, +variation, 1);
+
   try {
-   notify(t('orders.ok'));
-   if (serverRes.response.ok) {
-    dispatch(
-     cartActions.add({
-      ...el,
-      selected_quantity: quantity,
-      euro_price: euro,
-      variation_id: variation,
-      variation: { quantity: el.quantity },
-     }),
-    );
-   }
+   const serverRes = await sendShoppingCart(token, el.id, +variation, 1);
+   //  if (serverRes.response.ok) {
+   //   dispatch(
+   //    cartActions.add({
+   //     ...el,
+   //     selected_quantity: quantity,
+   //     euro_price: euro,
+   //     variation_id: +variation,
+   //     variation: { quantity: el.quantity },
+   //    }),
+   //   );
+   //  }
    dispatch(drawerActions.open());
   } catch (err) {
-   console.log(err);
+   //  console.log(err);
+  } finally {
+   notify(t('orders.ok'));
   }
  };
 

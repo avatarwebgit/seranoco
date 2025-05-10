@@ -90,7 +90,8 @@
 
  "m_unit": "€",
  "search": "Search",
-
+ "availability": "Availability",
+ "available": "Available",
  "my_acc": "My Account",
  "byorder": "By Order",
  "add": "Add",

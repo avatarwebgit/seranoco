@@ -40,11 +40,11 @@ const Login = () => {
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
 
- const googleLogin = useGoogleLogin({
-  onSuccess: token => console.log(token),
-  flow: 'auth-code',
-  login_hint: '',
- });
+//  const googleLogin = useGoogleLogin({
+//   onSuccess: token => console.log(token),
+//   flow: 'auth-code',
+//   login_hint: '',
+//  });
 
  const inputStyles = {
   m: '0.5rem 0',
@@ -114,7 +114,6 @@ const Login = () => {
    }
   } else {
    setErrors(serverRes.result.errors);
-   console.log(serverRes.result.errors);
    if (recaptchaRef.current) {
     recaptchaRef.current.reset();
    }

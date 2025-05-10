@@ -266,7 +266,7 @@ const Products = ({ windowSize }) => {
    }
    dispatch(drawerActions.open());
   } catch (err) {
-   console.log(err);
+  //  console.log(err);
   }
  };
 
@@ -751,7 +751,6 @@ const Products = ({ windowSize }) => {
              </p>
             </span>
             <span>
-             {console.log(productData)}
              <p className={classes.payment_value}>
               {(+variationDetail.product.sale_price * quantity).toFixed(2)}€
              </p>

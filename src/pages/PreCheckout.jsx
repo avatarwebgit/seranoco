@@ -15,17 +15,23 @@ import Payment from '../components/checkout/Payment';
 import Checkout from '../components/checkout/Checkout';
 import CustomStepper from '../components/common/CustomStepper';
 
-import { getPayments, sendCartPrice, sendShoppingCart } from '../services/api';
+import {
+ getOrderStatusDetail,
+ getPayments,
+ sendCartPrice,
+ sendShoppingCart,
+} from '../services/api';
 
 import classes from './PreCheckout.module.css';
 import { Button } from '@mui/material';
-import { formatNumber } from '../utils/helperFunctions';
+import { formatNumber, notify } from '../utils/helperFunctions';
 import PaymentMethod from '../components/checkout/PaymentMethod';
 import { useNavigate } from 'react-router-dom';
 const PreCheckout = ({ windowSize }) => {
  const [step, setStep] = useState(0);
  const [isDataValid, setIsDataValid] = useState(false);
  const [paymentMethods, setPaymentMethods] = useState([]);
+ const [detailsData, setDetailsData] = useState([]);
 
  const { t } = useTranslation();
 
@@ -43,11 +49,23 @@ const PreCheckout = ({ windowSize }) => {
   }
  };
 
+ const handleGetdetails = async orderId => {
+  if (orderId) {
+   const serverRes = await getOrderStatusDetail(token, orderId);
+   if (serverRes.response.ok) {
+    setDetailsData(serverRes.result.orders);
+   } else {
+    notify(t('trylater'));
+   }
+  }
+ };
+
  useEffect(() => {
   document.title = t('seranoco') + '/' + t('precheckout');
   dispatch(drawerActions.close());
   dispatch(cartActions.calculateTotalPrice());
   p();
+  handleGetdetails();
  }, []);
 
  useEffect(() => {
@@ -58,12 +76,12 @@ const PreCheckout = ({ windowSize }) => {
 
  const handleSendShoppingCart = async (token, product) => {
   try {
-    const serverRes = await sendShoppingCart(
-     token,
-     product.id,
-     +product.variation_id,
-     product.selected_quantity,
-    );
+   const serverRes = await sendShoppingCart(
+    token,
+    product.id,
+    +product.variation_id,
+    product.selected_quantity,
+   );
 
    if (serverRes.response.ok) {
    }
@@ -75,11 +93,11 @@ const PreCheckout = ({ windowSize }) => {
    const products = card.products.filter(el => el.selected_quantity !== 0);
    dispatch(cartActions.setFinalCart(products));
    setStep(step < 2 ? step + 1 : 2);
-  //  if (products) {
-  //   products.map(product => {
-  //    handleSendShoppingCart(token, product);
-  //   });
-  //  }
+   //  if (products) {
+   //   products.map(product => {
+   //    handleSendShoppingCart(token, product);
+   //   });
+   //  }
   }
   if (step === 1 && isDataValid) {
    setStep(step < 2 ? step + 1 : 2);
@@ -104,7 +122,7 @@ const PreCheckout = ({ windowSize }) => {
        {card && (
         <>
          {step !== 2 ? (
-                   <span className={classes.amont}>
+          <span className={classes.amont}>
            {lng !== 'fa'
             ? card?.totalPrice?.toFixed(2)
             : formatNumber(+card?.totalPrice * card.euro)}

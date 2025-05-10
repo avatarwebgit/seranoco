@@ -169,7 +169,7 @@ const CartProduct = data => {
         className={classes.price}
         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
         {lng !== 'fa'
-         ? (Math.round(quantity * productData.sale_price * 10) / 10).toFixed(2)
+         ? (quantity * productData.sale_price).toFixed(2)
          : formatNumber(quantity * productData.sale_price * euro)}
         &nbsp;{t('m_unit')}
        </span>

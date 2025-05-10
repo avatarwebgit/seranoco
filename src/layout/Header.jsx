@@ -167,6 +167,7 @@ const Header = ({ windowSize }) => {
  const getHeaderLinks = async () => {
   setHeaderData(null);
   const serverRes = await getHeaderMenus(lng);
+  // console.log(serverRes);
   if (serverRes.response.ok) {
    setHeaderData(serverRes.result);
   }
@@ -241,7 +242,7 @@ const Header = ({ windowSize }) => {
          <Tooltip title={t('favorites')} placement='top' arrow>
           <IconButton onClick={handleOpenFavoritesDrawer}>
            <Badge
-            badgeContent={favorits }
+            badgeContent={favorits}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
             {isHomePage ? (
              <Heart_black

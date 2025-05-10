@@ -76,6 +76,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
  const [parsedData, setParsedData] = useState([]);
  const [postalCode, setPostalCode] = useState('');
  const [options, setOptions] = useState([]);
+ const [isLoadingOptions, setIsLoadingOptions] = useState(true);
  const [selectedAddress, setSelectedAddress] = useState([]);
  const [selectedCountry, setSelectedCountry] = useState(null);
  const [country, setCountry] = useState('');
@@ -105,15 +106,13 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
  }, [selectedCountry]);
 
  useEffect(() => {
-  const cData = JSON.parse(data);
-  setParsedData(cData);
-  if (cData.selectedCountry) {
-   getCities(cData.selectedCountry.id);
-   setphoneCode(cData.selectedCountry.phonecode);
+  if (selectedCountry) {
+   getCities(selectedCountry.id);
+   setphoneCode(selectedCountry.phonecode);
   }
 
   return () => {};
- }, [data.selectedCountry]);
+ }, [selectedCountry]);
 
  const handleSubmit = e => {
   e.preventDefault();
@@ -169,8 +168,14 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
  const allAddresses = async () => {
   const serverRes = await getAllAddresses(token);
   setOptions([]);
-  if (serverRes.response.ok) {
-   setAddressData(serverRes.result.address);
+  setIsLoadingOptions(true);
+  try {
+   if (serverRes.response.ok) {
+    setAddressData(serverRes.result.address);
+   }
+  } catch (error) {
+  } finally {
+   setIsLoadingOptions(false);
   }
  };
 
@@ -217,6 +222,13 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
       label={t('profile.address')}
       error={isError && !selectedCity}
       name='city'
+      placeholder={
+       isLoadingOptions
+        ? 'Loading addresses...'
+        : options?.length === 0
+        ? 'No addresses found'
+        : ''
+      }
      />
     )}
     onInputChange={(e, value) => {
