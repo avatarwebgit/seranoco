@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getAdminCreatedPageDetails, getSingleArticles, useUser } from '../services/api';
+import {
+ getAdminCreatedPageDetails,
+ getSingleArticles,
+ useUser,
+} from '../services/api';
 
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
@@ -20,9 +24,9 @@ const SingleBlog = ({ windowSize }) => {
  const { alias } = useParams();
 
  const getArticle = async () => {
-   const serverRes = await getAdminCreatedPageDetails(alias);
+  const serverRes = await getAdminCreatedPageDetails(alias);
 
-   setblogData(serverRes.result.data);
+  setblogData(serverRes.result.data);
  };
 
  useEffect(() => {
@@ -48,15 +52,21 @@ const SingleBlog = ({ windowSize }) => {
          <img src={blogData.image} alt={blogData.alt} />
         </div>
         <div className={classes.close_caption}>
-         <h2>{blogData.title}</h2>
-         <p>{blogData.shortDescription}</p>
+         <h2>{lng === 'fa' ? blogData.title : blogData.title_en}</h2>
+         <p>
+          {lng === 'fa'
+           ? blogData.shortDescription
+           : blogData.shortDescription_en}
+         </p>
         </div>
        </div>
 
        <div
         className={classes.text}
         style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}
-        dangerouslySetInnerHTML={{ __html: blogData.description }}></div>
+        dangerouslySetInnerHTML={{
+         __html: lng === 'fa' ? blogData.description : blogData.description_en,
+        }}></div>
       </Card>
      </Body>
     </div>

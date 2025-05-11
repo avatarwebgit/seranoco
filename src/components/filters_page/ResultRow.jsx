@@ -179,7 +179,7 @@ const ResultRow = ({ dataProp }) => {
           }}>
           {lng === 'en' ? (
            <>
-            {el.price}
+            {+el.sale_price?.toFixed(2)}
             {t('m_unit')}
            </>
           ) : (
@@ -189,7 +189,7 @@ const ResultRow = ({ dataProp }) => {
              {t('m_unit')}
             </>
             <br />
-            (€&nbsp;{el.sale_price})
+            (€&nbsp; {+el.sale_price?.toFixed(2)})
            </>
           )}
           &nbsp;

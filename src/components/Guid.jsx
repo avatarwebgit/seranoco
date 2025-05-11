@@ -31,8 +31,8 @@ const Guid = ({ showMore = true, isHomePage = false }) => {
      return (
       <SingleBlog
        imgUrl={el.image}
-       title={el.title}
-       description={el.shortDescription}
+       title={lng === 'fa' ? el.title : el.title_en}
+       description={lng === 'fa' ? el.shortDescription : el.shortDescription_en}
        href={`/${lng}/blog/${el.alias}`}
       />
      );

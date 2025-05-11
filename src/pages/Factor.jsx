@@ -85,14 +85,14 @@ const Factor = () => {
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
    };
 
-    html2pdf()
-     .from(element)
-     .set(opt)
-     .save()
-     .catch(err => {
-      console.error('Error generating PDF:', err);
-      notify('Failed to download PDF. Please try again.');
-     });
+   html2pdf()
+    .from(element)
+    .set(opt)
+    .save()
+    .catch(err => {
+     console.error('Error generating PDF:', err);
+     notify('Failed to download PDF. Please try again.');
+    });
   }
  }, [detailsData]);
 
@@ -368,7 +368,6 @@ const Factor = () => {
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
             <strong>
-             {' '}
              {lng === 'fa'
               ? `${formatNumber(
                  +prod.sale_price * euro * product.selected_quantity,
@@ -406,11 +405,6 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
          }}>
          {t('shopping_cart.total')}:
         </span>
@@ -420,6 +414,7 @@ const Factor = () => {
           border: 'none',
          }}>
          {totalQuantity}
+         {t('pcs')}
         </span>
         <span
          className={classes.totalInfo}
@@ -431,8 +426,13 @@ const Factor = () => {
          style={{
           border: 'none',
          }}>
-         {totalWeight}
+         {totalWeight}&nbsp;Ct
         </span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}></span>
         <span
          className={classes.totalInfo}
          style={{
@@ -457,10 +457,14 @@ const Factor = () => {
              <br />
              {t('m_unit')}
              <br />
-             (€&nbsp;{detailsData.order.paying_amount})
+             (€&nbsp;{detailsData.order.paying_amount}
+             {t('m_unit')})
             </>
            ) : (
-            <>{detailsData.order.paying_amount}</>
+            <>
+             {detailsData.order.paying_amount}
+             {t('m_unit')}
+            </>
            )}
           </strong>
          </span>

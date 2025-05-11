@@ -62,7 +62,8 @@ const Footer = () => {
           {pageData &&
            pageData.data.map((elem, i) => {
             if (i < 5) {
-             return (
+
+              return (
               <a key={i} href={`/${lng}/page/${elem.alias}`}>
                {lng === 'fa' ? elem.title : elem.title_en}
               </a>
