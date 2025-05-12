@@ -33,7 +33,8 @@ const Drawer = ({ children, size }) => {
   const serverRes = await getShoppingCart(token);
 
   if (serverRes.response.ok) {
-   dispatch(cartActions.set(serverRes.result.cart));
+      dispatch(cartActions.set(serverRes.result.cart));
+    //   dispatch(cartActions.setTotalPrice(serverRes.result.))
   }
  };
 
@@ -91,7 +92,7 @@ const Drawer = ({ children, size }) => {
 
     <div className={classes.actions_wrapper}>
      {token ? (
-      <Link to={`/${lng}/precheckout`}>
+      <Link to={`/${lng}/precheckout`} target='_blank'>
        <IconButton className={classes.pay_btn} disableRipple={true}>
         <KeyboardArrowRight fontSize='10' />
         &nbsp;&nbsp; {t('shopping_cart.pay')}&nbsp;&nbsp;

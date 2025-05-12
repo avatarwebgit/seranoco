@@ -26,15 +26,15 @@ const FavoriteCart = data => {
 
  const lng = useSelector(state => state.localeStore.lng);
  const euro = useSelector(state => state.cartStore.euro);
-    const token = useSelector(state => state.userStore.token);
-    
+ const token = useSelector(state => state.userStore.token);
+
  const dispatch = useDispatch();
 
  useEffect(() => {
   if (data) {
    setProductData(data.data);
 
-      const getVariationDetails = async () => {
+   const getVariationDetails = async () => {
     const serverRes = await getProductDetailsWithId(data.data.variation_id);
     setVariationPrice(serverRes.result.product.sale_price);
     setVariation(serverRes.result);
@@ -86,34 +86,36 @@ const FavoriteCart = data => {
      <div
       className={`${classes.main}`}
       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-      <Link
-       className={classes.img_wrapper}
-       to={`${lng}/products/${productData.alias}/${variation?.product?.variation_id}`}
-       target='_blank'>
-       <img src={productData.primary_image} alt='' loading='lazy' />
-      </Link>
-      <div className={classes.details_wrapper}>
-       <span className={classes.color}>
-        {t('color')}:{productData.color}
-       </span>
-       <span className={classes.size}>
-        {t('size')}:{productData.size}
-       </span>
-       <span className={classes.price}>
-        {t('price')}:
-        {lng !== 'fa'
-         ? productData.sale_price
-         : formatNumber(productData.sale_price * euro)}
-        &nbsp;{t('m_unit')}
-       </span>
-       {lng === 'fa' && (
+      <span className={classes.righ_wrapper}>
+       <Link
+        className={classes.img_wrapper}
+        to={`${lng}/products/${productData.alias}/${variation?.product?.variation_id}`}
+        target='_blank'>
+        <img src={productData.primary_image} alt='' loading='lazy' />
+       </Link>
+       <div className={classes.details_wrapper}>
+        <span className={classes.color}>
+         {t('color')}:{productData.color}
+        </span>
+        <span className={classes.size}>
+         {t('size')}:{productData.size}
+        </span>
         <span className={classes.price}>
-         قیمت یورو:
-         {formatNumber(+euro)}
+         {t('price')}:
+         {lng !== 'fa'
+          ? productData.sale_price
+          : formatNumber(productData.sale_price * euro)}
          &nbsp;{t('m_unit')}
         </span>
-       )}
-      </div>
+        {lng === 'fa' && (
+         <span className={classes.price}>
+          قیمت یورو:
+          {formatNumber(+euro)}
+          &nbsp;{t('m_unit')}
+         </span>
+        )}
+       </div>
+      </span>
       <div className={classes.actions_wrapper}></div>
       <div className={classes.final}>
        <button onClick={handleRemoveToFavorites}>

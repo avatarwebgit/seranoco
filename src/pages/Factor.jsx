@@ -230,13 +230,6 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('factor.Quantity_Amount')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
          {t('factor.Unit_Weight')}
         </span>
         <span
@@ -245,6 +238,13 @@ const Factor = () => {
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
          {t('factor.Total_Weight')}
+        </span>{' '}
+        <span
+         style={{
+          borderRight: lng === 'fa' && '1px solid black',
+          borderLeft: lng !== 'fa' && '1px solid black',
+         }}>
+         {t('factor.Quantity_Amount')}
         </span>
         <span
          style={{
@@ -321,13 +321,6 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            {product.selected_quantity}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
             {weight}
            </span>
            <span
@@ -336,6 +329,13 @@ const Factor = () => {
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
             {product.selected_quantity * weight}
+           </span>{' '}
+           <span
+            style={{
+             borderRight: lng === 'fa' && '1px solid black',
+             borderLeft: lng !== 'fa' && '1px solid black',
+            }}>
+            {product.selected_quantity}
            </span>
            <span
             style={{
@@ -406,7 +406,19 @@ const Factor = () => {
          style={{
           border: 'none',
          }}>
-         {t('shopping_cart.total')}:
+        
+        </span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}> {t('shopping_cart.total')}:</span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+         }}>
+         {totalWeight}&nbsp;Ct
         </span>
         <span
          className={classes.totalInfo}
@@ -415,18 +427,6 @@ const Factor = () => {
          }}>
          {totalQuantity}
          {t('pcs')}
-        </span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}>
-         {totalWeight}&nbsp;Ct
         </span>
         <span
          className={classes.totalInfo}

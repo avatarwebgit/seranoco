@@ -21,7 +21,6 @@ const ShoppingCart = () => {
 
  const handleGetShoppingCart = async () => {
   const serverRes = await getShoppingCart(token);
-
   if (serverRes.response.ok) {
    dispatch(cartActions.set(serverRes.result.cart));
   }

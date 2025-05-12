@@ -13,6 +13,14 @@
  position: relative;
 }
 
+
+.righ_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   }
+   
+
 .s {
  margin: 5px 0 !important;
 }

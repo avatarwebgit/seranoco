@@ -99,6 +99,9 @@ const cartSlice = createSlice({
   setPaymentMethod(state, action) {
    state.paymentMethod = action.payload;
   },
+  setTotalPrice(state, action) {
+   state.totalPrice = action.payload;
+  },
  },
 });
 

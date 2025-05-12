@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Skeleton, Tooltip } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { DeleteForever, Info } from '@mui/icons-material';
@@ -61,6 +61,33 @@ const CartProduct = data => {
  //   dispatch(cartActions.decrement(productData));
  //  };
 
+  const handleSendShoppingCart = async () => {
+  console.log(data.data.id, +variation.product.variation_id, +quantity);
+  const serverRes = await sendShoppingCart(
+   token,
+   data.data.id,
+   +variation.product.variation_id,
+   +quantity,
+  );
+  try {
+   notify(t('orders.ok'));
+   if (serverRes.response.ok) {
+    dispatch(
+     cartActions.add({
+      ...data,
+      sdataected_quantity: quantity,
+      euro_price: euro,
+      variation_id: variation,
+      variation: { quantity: data.quantity },
+     }),
+    );
+   }
+   dispatch(drawerActions.open());
+  } catch (err) {
+   //  console.log(err);
+  }
+ };
+
  const handleRemveItem = async () => {
   const serverRes = await removeShoppingCart(
    token,
@@ -81,99 +108,106 @@ const CartProduct = data => {
      <div
       className={`${classes.main}`}
       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-      <Link
-       className={classes.img_wrapper}
-       to={`${lng}/products/${productData.alias}/${variation?.product?.variation_id}`}
-       target='_blank'>
-       <img src={productData.primary_image} alt='' loading='lazy' />
-      </Link>
-      <div className={classes.details_wrapper}>
-       <span className={classes.color}>
-        {t('color')}:{productData.color}
-       </span>
-       <span className={classes.size}>
-        {t('size')}:{productData.size}
-       </span>
-       <span className={classes.price}>
-        {t('price')}:
-        {lng !== 'fa'
-         ? productData.sale_price
-         : formatNumber(productData.sale_price * euro)}
-        &nbsp;{t('m_unit')}
-       </span>
-       {lng === 'fa' && (
+      <span className={classes.righ_wrapper}>
+       <Link
+        className={classes.img_wrapper}
+        to={`${lng}/products/${productData.alias}/${variation?.product?.variation_id}`}
+        target='_blank'>
+        <img src={productData.primary_image} alt='' loading='lazy' />
+       </Link>
+       <div className={classes.details_wrapper}>
+        <span className={classes.color}>
+         {t('color')}:{productData.color}
+        </span>
+        <span className={classes.size}>
+         {t('size')}:{productData.size}
+        </span>
         <span className={classes.price}>
-         قیمت یورو:
-         {formatNumber(+euro)}
+         {t('price')}:
+         {lng !== 'fa'
+          ? productData.sale_price
+          : formatNumber(productData.sale_price * euro)}
          &nbsp;{t('m_unit')}
         </span>
-       )}
-      </div>
-      <div className={classes.actions_wrapper}>
-       <div>
-        {Object.keys(variation).length > 0 && (
-         <div className={classes.input_wrapper}>
-          <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
-           {t('quantity')}:
-          </p>
-          <input
-           type='number'
-           value={quantity}
-           onChange={e => {
-            const inputValue = e.target.value.replace(/[^0-9]/g, '');
-            const availableQuantity = +variation?.product?.variation?.quantity;
-
-            if (
-             variation?.product?.variation?.is_not_available === 0 &&
-             availableQuantity > 0
-            ) {
-             const newQuantity = +inputValue;
-             if (newQuantity > availableQuantity) {
-              setIsMoreThanQuantity(true);
-              setQuantity(availableQuantity);
-             } else {
-              setIsMoreThanQuantity(false);
-              setQuantity(newQuantity);
-             }
-            } else {
-             setIsMoreThanQuantity(false);
-             setQuantity(inputValue);
-            }
-           }}
-           className={classes.quantity_input}
-           style={{ borderColor: isMoreThanQuantity ? 'red' : 'black' }}
-          />
-          {
-           <p
-            style={{
-             opacity: `${isMoreThanQuantity ? 1 : 0}`,
-             color: 'red',
-             whiteSpace: 'nowrap',
-            }}>
-            {t('availableQuantity')}: {+variation.product.variation.quantity}
-           </p>
-          }
-         </div>
+        {lng === 'fa' && (
+         <span className={classes.price}>
+          قیمت یورو:
+          {formatNumber(+euro)}
+          &nbsp;{t('m_unit')}
+         </span>
         )}
        </div>
-       {/* <span>
+      </span>
+      <span className={classes.left_wrapper}>
+       <div className={classes.actions_wrapper}>
+        <div>
+         {Object.keys(variation).length > 0 && (
+          <div className={classes.input_wrapper}>
+           <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
+            {t('quantity')}:
+           </p>
+           <input
+            type='number'
+            value={quantity}
+            onChange={e => {
+             const inputValue = e.target.value.replace(/[^0-9]/g, '');
+             const availableQuantity = +variation?.product?.variation?.quantity;
+
+             if (
+              variation?.product?.variation?.is_not_available === 0 &&
+              availableQuantity > 0
+             ) {
+              const newQuantity = +inputValue;
+              if (newQuantity > availableQuantity) {
+               setIsMoreThanQuantity(true);
+               setQuantity(availableQuantity);
+              } else {
+               setIsMoreThanQuantity(false);
+               setQuantity(newQuantity);
+               handleSendShoppingCart();
+              }
+             } else {
+              setIsMoreThanQuantity(false);
+              setQuantity(inputValue);
+              handleSendShoppingCart();
+             }
+            }}
+            className={classes.quantity_input}
+            style={{ borderColor: isMoreThanQuantity ? 'red' : 'black' }}
+           />
+           {
+            <p
+             style={{
+              opacity: `${isMoreThanQuantity ? 1 : 0}`,
+              color: 'red',
+              whiteSpace: 'nowrap',
+             }}>
+             {t('availableQuantity')}: {+variation.product.variation.quantity}
+            </p>
+           }
+          </div>
+         )}
+        </div>
+        {/* <span>
         <button onClick={handleIncrement}>+</button>
         <button onClick={handleDecrement}>-</button>
        </span> */}
-      </div>
-      <div className={classes.final}>
-       <button onClick={handleRemveItem}>
-        <DeleteForever color='error' />
-       </button>
-       <span
-        className={classes.price}
-        style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-        {lng !== 'fa'
-         ? (quantity * productData.sale_price).toFixed(2)
-         : formatNumber(quantity * productData.sale_price * euro)}
-        &nbsp;{t('m_unit')}
-       </span>
-      </div>
+       </div>
+       <div className={classes.final}>
+        <button onClick={handleRemveItem}>
+         <DeleteForever color='error' />
+        </button>
+        <span
+         className={classes.price}
+         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+         {lng !== 'fa'
+          ? (quantity * productData.sale_price).toFixed(2)
+          : formatNumber(quantity * productData.sale_price * euro)}
+         &nbsp;{t('m_unit')}
+        </span>
+       </div>
+      </span>
+
       {productData.variation?.quantity === 0 &&
        productData.variation?.is_not_available === 0 && (
         <Tooltip
@@ -191,4 +225,4 @@ const CartProduct = data => {
  );
 };
 
-export default CartProduct;
+export default memo(CartProduct);

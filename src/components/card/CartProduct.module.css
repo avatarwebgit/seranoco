@@ -13,6 +13,22 @@
  position: relative;
 }
 
+.righ_wrapper,
+.left_wrapper {
+ display: flex;
+ align-items: center;
+}
+
+.righ_wrapper {
+ width: 60%;
+ justify-content: flex-start;
+}
+.left_wrapper {
+ width: 35%;
+ margin: 2.5%;
+ justify-content: space-around;
+}
+
 .s {
  margin: 5px 0 !important;
 }
@@ -51,6 +67,7 @@
 .img_wrapper {
  width: 60px;
  height: 60px;
+ margin: 0 5px;
 }
 
 .img_wrapper img {
@@ -111,7 +128,7 @@
 
 .quantity_input {
  border: none;
- width: 100%;
+ width: 50px;
  outline: none;
  font-size: 20px;
  text-align: center;
