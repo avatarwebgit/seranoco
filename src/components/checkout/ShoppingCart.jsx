@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,8 @@ import { cartActions } from '../../store/store';
 
 import classes from './ShoppingCart.module.css';
 const ShoppingCart = () => {
+ const [advancedPayment, setAdvancedPayment] = useState(1);
+
  const { t } = useTranslation();
 
  const card = useSelector(state => state.cartStore);
@@ -70,8 +72,10 @@ const ShoppingCart = () => {
        </td>
        <td className={classes.td}>{el.selected_quantity}</td>
        <td className={classes.td}>
-        {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
-        {isByOrder && lng === 'fa' && formatNumber(totalPrice * 0.2 * euro)}
+        {isByOrder && lng !== 'fa' && (totalPrice * advancedPayment).toFixed(2)}
+        {isByOrder &&
+         lng === 'fa' &&
+         formatNumber(totalPrice * advancedPayment * euro)}
         &nbsp;{isByOrder ? t('m_unit') : '_'}
        </td>
        <td
@@ -87,8 +91,10 @@ const ShoppingCart = () => {
         {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
         {!isByOrder && lng === 'fa' && formatNumber(totalPrice * euro)}
         &nbsp;{!isByOrder && t('m_unit')}
-        {isByOrder && lng !== 'fa' && (totalPrice * 0.2).toFixed(2)}
-        {isByOrder && lng === 'fa' && formatNumber(totalPrice * 0.2 * euro)}
+        {isByOrder && lng !== 'fa' && (totalPrice * advancedPayment).toFixed(2)}
+        {isByOrder &&
+         lng === 'fa' &&
+         formatNumber(totalPrice * advancedPayment * euro)}
         &nbsp;{isByOrder && t('m_unit')}
        </td>
       </tr>

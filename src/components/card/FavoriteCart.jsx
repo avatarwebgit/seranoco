@@ -27,6 +27,7 @@ const FavoriteCart = data => {
  const lng = useSelector(state => state.localeStore.lng);
  const euro = useSelector(state => state.cartStore.euro);
  const token = useSelector(state => state.userStore.token);
+ const favoritesCount = useSelector(state => state.favoriteStore.count);
 
  const dispatch = useDispatch();
 
@@ -36,7 +37,6 @@ const FavoriteCart = data => {
 
    const getVariationDetails = async () => {
     const serverRes = await getProductDetailsWithId(data.data.variation_id);
-    setVariationPrice(serverRes.result.product.sale_price);
     setVariation(serverRes.result);
    };
    getVariationDetails();
@@ -72,7 +72,7 @@ const FavoriteCart = data => {
   const serverRes = await removeFromFavorite(token, +data.data.variation_id);
   if (serverRes.response.ok) {
    notify(t('product.removed'));
-   //  dispatch(favoriteActions.setCount(favoritesCount - 1));
+   dispatch(favoriteActions.setCount(favoritesCount - 1));
    getFavoriteItems();
   } else {
    notify(t('product.err'));

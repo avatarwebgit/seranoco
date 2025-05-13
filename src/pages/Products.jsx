@@ -266,7 +266,7 @@ const Products = ({ windowSize }) => {
    }
    dispatch(drawerActions.open());
   } catch (err) {
-  //  console.log(err);
+   //  console.log(err);
   }
  };
 
@@ -557,7 +557,7 @@ const Products = ({ windowSize }) => {
               className={`${classes.product_serial} ${classes.border}`}
               color='inherit'
               href={`/${lng}/shopbyshape`}
-              variant='h3'>
+              variant='h3' sx={{borderRight:'1px solid'}}>
               {t('quantity')}&nbsp;
              </Typography>
              <div className={classes.divider} />

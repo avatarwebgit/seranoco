@@ -160,7 +160,7 @@ const FilterByShape = ({ windowSize }) => {
  };
 
  useEffect(() => {
-  document.title = t('seranoco') + '/' + t('shop_by_color');
+  document.title =  t('shop_by_color');
 
   handleShapeClick('', 46);
   if (itemIds.length > 0) {

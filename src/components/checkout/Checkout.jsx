@@ -183,6 +183,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
   addressData.map(el => {
    return setOptions(prev => [...prev, { id: el.id, label: el.address }]);
   });
+  console.log(addressData);
  }, [addressData]);
 
  useEffect(() => {
@@ -213,7 +214,6 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
     size='medium'
     name='selectedaddress'
     sx={{ ...inputStyles, width: '100%', mb: '2rem' }}
-    value={selectedAddress.label}
     options={options || []}
     error={isError && !selectedCity}
     renderInput={params => (

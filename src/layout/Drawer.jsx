@@ -33,14 +33,13 @@ const Drawer = ({ children, size }) => {
   const serverRes = await getShoppingCart(token);
 
   if (serverRes.response.ok) {
-      dispatch(cartActions.set(serverRes.result.cart));
-    //   dispatch(cartActions.setTotalPrice(serverRes.result.))
+   dispatch(cartActions.set(serverRes.result.cart));
+   //   dispatch(cartActions.setTotalPrice(serverRes.result.))
   }
  };
 
  useEffect(() => {
   if (drawerState) {
-   dispatch(cartActions.calculateTotalPrice());
    handleGetShoppingCart();
    document.body.style.overflow = 'hidden';
   } else {
@@ -53,6 +52,9 @@ const Drawer = ({ children, size }) => {
  }, [drawerState]);
 
  useEffect(() => {
+  if (drawerState) {
+   dispatch(cartActions.calculateTotalPrice());
+  }
   if (cart.products || drawerState) {
    setProductData(cart.products);
   }

@@ -16,7 +16,7 @@ const Blog = ({ windowSize }) => {
  const { t } = useTranslation();
 
  useEffect(() => {
-  document.title = t('seranoco') + '/' + t('blog');
+  document.title =  t('blog');
  }, []);
 
  return (

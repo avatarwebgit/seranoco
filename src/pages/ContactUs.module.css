@@ -31,6 +31,17 @@
  margin-bottom: 2rem;
 }
 
+.rec {
+ margin: 15px auto !important;
+ margin-bottom: 0 !important;
+ width: 100% !important;
+ display: flex !important;
+ justify-content: center;
+ min-width: 0 !important;
+ max-width: 0 !important;
+ cursor: pointer !important;
+}
+
 .qst_wrapper {
  height: 80%;
  width: 58%;
@@ -76,9 +87,9 @@
 }
 
 .error_text {
-  font-size: 10px;
-  color: red;
-  width: 100%;
+ font-size: 10px;
+ color: red;
+ width: 100%;
 }
 
 @media only screen and (max-width: 480px) {

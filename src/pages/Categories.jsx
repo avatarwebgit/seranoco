@@ -16,7 +16,7 @@ import BannerCarousel from '../components/BannerCarousel';
 const Categories = () => {
  const { t } = useTranslation();
  useEffect(() => {
-  document.title = t('seranoco') + '/' + t('categories');
+  document.title =  t('categories');
  }, []);
 
  return (

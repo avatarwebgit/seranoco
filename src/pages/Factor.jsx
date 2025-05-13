@@ -12,6 +12,8 @@ const Factor = () => {
  const [storeData, setStoreData] = useState(null);
  const [totalWeight, setTotalWeight] = useState(0);
  const [totalQuantity, setTotalQuantity] = useState(0);
+ const [loyaltyOff, setLoyaltyOff] = useState(0);
+ const [shippingCost, setShippingCost] = useState(0);
 
  const componentRef = useRef();
 
@@ -30,6 +32,8 @@ const Factor = () => {
    const serverRes = await getOrderStatusDetail(token, orderId);
    if (serverRes.response.ok) {
     setDetailsData(serverRes.result.orders);
+    setShippingCost(serverRes.result.orders.shipping || 0);
+    setLoyaltyOff(serverRes.result.orders.loyalty || 0);
    } else {
     notify(t('trylater'));
    }
@@ -85,14 +89,14 @@ const Factor = () => {
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
    };
 
-   html2pdf()
-    .from(element)
-    .set(opt)
-    .save()
-    .catch(err => {
-     console.error('Error generating PDF:', err);
-     notify('Failed to download PDF. Please try again.');
-    });
+      html2pdf()
+       .from(element)
+       .set(opt)
+       .save()
+       .catch(err => {
+        console.error('Error generating PDF:', err);
+        notify('Failed to download PDF. Please try again.');
+       });
   }
  }, [detailsData]);
 
@@ -405,18 +409,21 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
+         }}></span>
+        <span
+         className={classes.totalInfo}
+         style={{
+          border: 'none',
+          fontWeight: 'bold',
          }}>
-        
+         {' '}
+         {t('shopping_cart.total')}:
         </span>
         <span
          className={classes.totalInfo}
          style={{
           border: 'none',
-         }}> {t('shopping_cart.total')}:</span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
+          fontWeight: 'bold',
          }}>
          {totalWeight}&nbsp;Ct
         </span>
@@ -424,6 +431,7 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
+          fontWeight: 'bold',
          }}>
          {totalQuantity}
          {t('pcs')}
@@ -537,10 +545,11 @@ const Factor = () => {
           style={{
            borderRight: lng === 'fa' && '1px solid black',
            borderLeft: lng !== 'fa' && '1px solid black',
+           display: 'flex',
+           alignItems: 'center',
+           justifyContent: 'center',
           }}>
-          {lng === 'fa'
-           ? `${detailsData.order.off} %`
-           : `${detailsData.order.off} %`}
+          {loyaltyOff}&nbsp;%
          </span>
         )}
        </span>
@@ -611,7 +620,7 @@ const Factor = () => {
            borderRight: lng === 'fa' && '1px solid black',
            borderLeft: lng !== 'fa' && '1px solid black',
           }}>
-          {detailsData.shipping}
+          {shippingCost}
          </span>
         )}
        </span>
@@ -626,16 +635,36 @@ const Factor = () => {
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}>
-         {t('factor.Total_Weight')}
+        <span
+         className={classes.totalInfo}
+         style={{ border: 'none', fontWeight: 'bold' }}>
+         {t('orders.total_payment')}
         </span>
         <span
          className={classes.totalInfo}
          style={{
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontWeight: 'bold',
          }}>
-         {totalWeight}&nbsp;Ct
+         {lng === 'fa' ? (
+          <>
+           {formatNumber(+detailsData?.order.paying_amount_fa)}
+           <br />
+           {t('m_unit')}
+           <br />
+           (€&nbsp;{detailsData?.order.paying_amount}
+           {t('m_unit')})
+          </>
+         ) : (
+          <>
+           {detailsData?.order.paying_amount}
+           {t('m_unit')}
+          </>
+         )}
         </span>
        </span>
       </td>

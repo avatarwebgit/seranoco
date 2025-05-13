@@ -20,14 +20,18 @@ import address from '../assets/svg/address.svg';
 import classes from './ContactUs.module.css';
 import { contactUsSend, useBasicInformation } from '../services/api';
 import { notify } from '../utils/helperFunctions';
+import ReCAPTCHA from 'react-google-recaptcha';
 const ContactUs = ({ windowSize }) => {
  const [name, setName] = useState('');
  const [email, setEmail] = useState('');
+ const [phoneNumber, setPhoneNumber] = useState(0);
  const [desc, setDesc] = useState('');
  const [isEmpty, setIsEmpty] = useState(false);
  const [data, setData] = useState(null);
+ const [recaptchaToekn, setRecaptchaToekn] = useState(null);
 
  const form = useRef();
+ const recaptchaRef = useRef();
 
  const { data: basicData, isLoading: basicDataIsloading } =
   useBasicInformation();
@@ -63,19 +67,20 @@ const ContactUs = ({ windowSize }) => {
  };
 
  useEffect(() => {
-  document.title = t('seranoco') + '/' + t('contactus');
+  document.title =  t('contactus');
  }, []);
 
  useEffect(() => {
   if (basicData) {
    setData(basicData.data.at(0));
+   console.log(basicData.data.at(0));
   }
  }, [basicData]);
 
- const sendContactDetails = async (e, name, email, desc) => {
+ const sendContactDetails = async (e, name, email, desc, phone) => {
   e.preventDefault();
 
-  const serverRes = await contactUsSend(name, email, desc);
+  const serverRes = await contactUsSend(name, email, desc, phone);
   if (serverRes.response.ok) {
    notify(t('contact.successfull'));
   } else {
@@ -88,8 +93,9 @@ const ContactUs = ({ windowSize }) => {
   const isNameValid = name.trim().length > 0;
   const isEmailValid = email.trim().length > 0;
   const isMessageValid = desc.trim().length > 0;
-  if ((isNameValid, isEmailValid, isMessageValid)) {
-   sendContactDetails(e, name, email, desc);
+  const isPhoneValid = phoneNumber.trim().length > 0;
+  if ((isNameValid && isEmailValid && isMessageValid, isPhoneValid)) {
+   sendContactDetails(e, name, email, desc, phoneNumber);
   } else {
    setIsEmpty(true);
   }
@@ -104,6 +110,12 @@ const ContactUs = ({ windowSize }) => {
 
  useEffect(() => {}, [data]);
 
+ const handleGetScore = value => {
+  try {
+   setRecaptchaToekn(value);
+  } catch (error) {}
+ };
+
  return (
   <div>
    <BannerCarousel />
@@ -117,25 +129,25 @@ const ContactUs = ({ windowSize }) => {
         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
         <h1>{t('cu.contact_us')}</h1>
         <p>
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit,
-         est.
+         {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit,
+         est. */}
         </p>
         <div className={classes.content}>
          <img src={address} alt='' width={35} style={{ margin: '35px 10px' }} />
-         {data.address}
+         {lng === 'fa' ? data.address : data.address_en}
         </div>
         <div className={classes.social_wrapper}>
          <div className={classes.content} style={{ margin: 0 }}>
           <img src={instagram} alt='' width={35} />
-          <p>{data.tel1}</p>
+          <p>{lng === 'fa' ? data.tel : data.tel2}</p>
          </div>
          <div className={classes.content}>
           <img src={whatsapp} alt='' width={35} />
-          <p>{data.tel2}</p>
+          <p>{lng === 'fa' ? data.tel : data.tel2}</p>
          </div>
          <div className={classes.content}>
           <img src={telegram} alt='' width={35} />
-          <p>{data.tel3}</p>
+          <p>{lng === 'fa' ? data.tel : data.tel2}</p>
          </div>
          <div className={classes.content}>
           <img src={clock} alt='' width={35} />
@@ -151,8 +163,8 @@ const ContactUs = ({ windowSize }) => {
         <span>
          <h1>{t('cu.contact_us')}</h1>
          <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Reprehenderit, est.
+          {/* Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Reprehenderit, est. */}
          </p>
         </span>
         <TextField
@@ -165,8 +177,20 @@ const ContactUs = ({ windowSize }) => {
         <TextField
          label={t('signup.email')}
          name='email'
-         type='email'
+         type='number'
          onChange={e => setEmail(e.target.value)}
+         sx={inputStyles}
+         required
+        />
+        <TextField
+         label={t('signup.pnumber')}
+         name='email'
+         type='email'
+         onChange={e => {
+          const value = e.target.value;
+          const numericValue = value.replace(/\D/g, '');
+          setPhoneNumber(numericValue);
+         }}
          sx={inputStyles}
          required
         />
@@ -186,6 +210,13 @@ const ContactUs = ({ windowSize }) => {
           {t('access.error_empty')}
          </div>
         )}
+        <ReCAPTCHA
+         ref={recaptchaRef}
+         sitekey={`${process.env.REACT_APP_GOOGLE_RECAPTCHA_CLIENT_ID}`}
+         className={classes.rec}
+         onChange={handleGetScore}
+         style={{ width: '100%' }}
+        />
         <Button
          variant='contained'
          size='large'

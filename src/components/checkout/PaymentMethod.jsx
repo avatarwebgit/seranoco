@@ -85,7 +85,7 @@ const PaymentMethod = ({ dataProps }) => {
             loading='lazy'
            />
           </div>
-          {lng === 'fa' ? el.title : el.name}
+          { el.title}
          </button>
         </>
        )}

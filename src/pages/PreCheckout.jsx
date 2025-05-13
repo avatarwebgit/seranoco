@@ -61,7 +61,7 @@ const PreCheckout = ({ windowSize }) => {
  };
 
  useEffect(() => {
-  document.title = t('seranoco') + '/' + t('precheckout');
+  document.title =  t('precheckout');
   dispatch(drawerActions.close());
   dispatch(cartActions.calculateTotalPrice());
   p();

@@ -67,22 +67,11 @@ const ResultRow = ({ dataProp }) => {
   });
  };
 
- const handleAddToCart = el => {
-  dispatch(drawerActions.open());
-  dispatch(
-   cartActions.add({
-    ...el,
-    selected_quantity: quantities[el.variation_id] || 1,
-    euro_price: euro,
-   }),
-  );
- };
-
  const handleSendShoppingCart = async (el, variation, quantity) => {
-  console.log(el.id, +variation, 1);
+  console.log(el.id, +variation, quantity);
 
   try {
-   const serverRes = await sendShoppingCart(token, el.id, +variation, 1);
+   const serverRes = await sendShoppingCart(token, el.id, +variation, quantity);
    //  if (serverRes.response.ok) {
    //   dispatch(
    //    cartActions.add({
@@ -245,7 +234,7 @@ const ResultRow = ({ dataProp }) => {
               handleSendShoppingCart(
                el,
                el.variation_id,
-               quantities[el.variation_id],
+               quantities[el.variation_id] || 1,
               );
              }}>
              {el?.variation?.quantity === 0

@@ -144,7 +144,7 @@ const New = ({ windowSize }) => {
  useEffect(() => {
   dispatch(productDetailActions.reset());
   handleShapeClick('', '');
-  document.title = t('seranoco') + '/' + t('new');
+  document.title = t('new');
   getInfo();
  }, []);
 

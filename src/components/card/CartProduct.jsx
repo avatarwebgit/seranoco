@@ -32,11 +32,12 @@ const CartProduct = data => {
  useEffect(() => {
   if (data) {
    setProductData(data.data);
-
+    console.log(data.data)
    const getVariationDetails = async () => {
     const serverRes = await getProductDetailsWithId(data.data.variation_id);
     setVariationPrice(serverRes.result.product.sale_price);
-    setVariation(serverRes.result);
+     setVariation(serverRes.result);
+     setQuantity(data.data.selected_quantity);
    };
    getVariationDetails();
   }
@@ -129,13 +130,6 @@ const CartProduct = data => {
           : formatNumber(productData.sale_price * euro)}
          &nbsp;{t('m_unit')}
         </span>
-        {lng === 'fa' && (
-         <span className={classes.price}>
-          قیمت یورو:
-          {formatNumber(+euro)}
-          &nbsp;{t('m_unit')}
-         </span>
-        )}
        </div>
       </span>
       <span className={classes.left_wrapper}>

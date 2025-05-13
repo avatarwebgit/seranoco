@@ -11,7 +11,7 @@ const NotFound = ({ windowSize }) => {
  const { t } = useTranslation();
 
  useEffect(() => {
-  document.title = t('seranoco') + '/' + t('shop_by_color');
+  document.title =  t('shop_by_color');
  }, []);
 
  return (
