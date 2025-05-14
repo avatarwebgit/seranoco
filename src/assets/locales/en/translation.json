@@ -293,7 +293,9 @@
   "Buyers_Stamp_and_Signature": "Buyer's Stamp and Signature",
   "Shops_Stamp_and_Signature": "Shop's Stamp and Signature",
   "off": "% Off",
-  "club": "Loyalty Club",
-  "shipping": "Shipping"
+  "club": "Club Points",
+  "shipping": "Shipping",
+  "type":"Stone Type",
+  "pcs":"PCS"
  }
 }

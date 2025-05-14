@@ -50,19 +50,30 @@ const Factor = () => {
   }
  }, [storeInformation]);
 
+ function calculateTotalProductWeight(data) {
+  let totalWeight = 0;
+
+  data.products.forEach(item => {
+   if (
+    item.product &&
+    item.product.variation &&
+    item.product.variation.weight
+   ) {
+    const weightString = item.product.variation.weight.trim();
+    const numericWeight = parseFloat(weightString.split(' ')[0]);
+
+    if (!isNaN(numericWeight)) {
+     totalWeight += numericWeight;
+    }
+   }
+  });
+
+  setTotalWeight(totalWeight);
+ }
+
  useEffect(() => {
   if (detailsData) {
-   const weights = detailsData.products
-    .map(item => item.product?.variation?.weight)
-    .filter(weight => weight !== undefined && weight !== null);
-
-   const numericWeights = weights.map(el => {
-    return +el.split(' ').at(0);
-   });
-   const sumOfWeights = numericWeights.reduce(
-    (accumulator, currentValue) => accumulator + currentValue,
-    0,
-   );
+   calculateTotalProductWeight(detailsData);
    const total = detailsData.products
     .map(item => item.selected_quantity)
     .filter(q => q !== undefined && q !== null);
@@ -75,7 +86,6 @@ const Factor = () => {
     0,
    );
    setTotalQuantity(sumOfTotal);
-   setTotalWeight(sumOfWeights);
   }
 
   if (detailsData && componentRef.current) {
@@ -89,14 +99,14 @@ const Factor = () => {
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
    };
 
-      html2pdf()
-       .from(element)
-       .set(opt)
-       .save()
-       .catch(err => {
-        console.error('Error generating PDF:', err);
-        notify('Failed to download PDF. Please try again.');
-       });
+   //   html2pdf()
+   //    .from(element)
+   //    .set(opt)
+   //    .save()
+   //    .catch(err => {
+   //     console.error('Error generating PDF:', err);
+   //     notify('Failed to download PDF. Please try again.');
+   //    });
   }
  }, [detailsData]);
 
@@ -206,7 +216,7 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('type')}
+         {t('factor.type')}
         </span>
         <span
          style={{
@@ -297,7 +307,7 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            {lng === 'fa' ? prod.detail_fa : prod.detail}
+            {prod.detail}
            </span>
            <span
             style={{
@@ -332,7 +342,7 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            {product.selected_quantity * weight}
+            {+(product.selected_quantity * weight).toFixed(3)}
            </span>{' '}
            <span
             style={{
@@ -423,9 +433,10 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
-          fontWeight: 'bold',
+             fontWeight: 'bold',
+          direction:'ltr'
          }}>
-         {totalWeight}&nbsp;Ct
+         {+totalWeight.toFixed(3)}&nbsp;Ct
         </span>
         <span
          className={classes.totalInfo}
@@ -434,7 +445,7 @@ const Factor = () => {
           fontWeight: 'bold',
          }}>
          {totalQuantity}
-         {t('pcs')}
+         &nbsp;{t('factor.pcs')}&nbsp;
         </span>
         <span
          className={classes.totalInfo}
@@ -465,8 +476,7 @@ const Factor = () => {
              <br />
              {t('m_unit')}
              <br />
-             (€&nbsp;{detailsData.order.paying_amount}
-             {t('m_unit')})
+             (€&nbsp;{detailsData.order.paying_amount})
             </>
            ) : (
             <>
@@ -619,6 +629,9 @@ const Factor = () => {
           style={{
            borderRight: lng === 'fa' && '1px solid black',
            borderLeft: lng !== 'fa' && '1px solid black',
+           display: 'flex',
+           alignItems: 'center',
+           justifyContent: 'center',
           }}>
           {shippingCost}
          </span>
@@ -656,8 +669,7 @@ const Factor = () => {
            <br />
            {t('m_unit')}
            <br />
-           (€&nbsp;{detailsData?.order.paying_amount}
-           {t('m_unit')})
+           (€&nbsp;{detailsData?.order.paying_amount})
           </>
          ) : (
           <>
