@@ -197,7 +197,7 @@ const CartProduct = data => {
          {lng !== 'fa'
           ? (quantity * productData.sale_price).toFixed(2)
           : formatNumber(quantity * productData.sale_price * euro)}
-         &nbsp;{t('m_unit')}
+         &nbsp;<br/>{t('m_unit')}
         </span>
        </div>
       </span>

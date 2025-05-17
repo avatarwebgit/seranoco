@@ -36,7 +36,6 @@ const ResultRow = ({ dataProp }) => {
  useEffect(() => {
   if (dataProp) {
    setData(dataProp);
-   console.log(dataProp);
   }
   if (isLoadingImage) {
    setIsLoading(true);
@@ -72,18 +71,9 @@ const ResultRow = ({ dataProp }) => {
 
   try {
    const serverRes = await sendShoppingCart(token, el.id, +variation, quantity);
-   //  if (serverRes.response.ok) {
-   //   dispatch(
-   //    cartActions.add({
-   //     ...el,
-   //     selected_quantity: quantity,
-   //     euro_price: euro,
-   //     variation_id: +variation,
-   //     variation: { quantity: el.quantity },
-   //    }),
-   //   );
-   //  }
-   dispatch(drawerActions.open());
+   if (serverRes.response.ok) {
+    dispatch(drawerActions.open());
+   }
   } catch (err) {
    //  console.log(err);
   } finally {
