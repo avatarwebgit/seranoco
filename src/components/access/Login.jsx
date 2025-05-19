@@ -91,6 +91,10 @@ const Login = () => {
   dispatch(accesModalActions.signup());
  };
 
+ const handleOpenResetPassword = () => {
+  dispatch(accesModalActions.resetPassword());
+ };
+
  const handleOpenMobileModal = () => {
   dispatch(accesModalActions.mobile());
  };
@@ -239,6 +243,13 @@ const Login = () => {
        style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
        <p>{t('access.create_acc')}</p>&nbsp;
        <button onClick={handleOpenSignup}>{t('signup.sign_up')}</button>
+       &nbsp;
+      </div>
+      <div
+       className={classes.signup_link}
+       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+       <p>{t('access.create_acc')}</p>&nbsp;
+       <button onClick={handleOpenResetPassword}>{t('signup.sign_up')}</button>
        &nbsp;
       </div>
      </div>

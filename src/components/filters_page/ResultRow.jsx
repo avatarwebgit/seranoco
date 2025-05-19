@@ -158,7 +158,7 @@ const ResultRow = ({ dataProp }) => {
           }}>
           {lng === 'en' ? (
            <>
-            {+el.sale_price?.toFixed(2)}
+            {+el.sale_price}
             {t('m_unit')}
            </>
           ) : (

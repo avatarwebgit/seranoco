@@ -34,12 +34,11 @@ const Drawer = ({ children, size }) => {
 
   if (serverRes.response.ok) {
    dispatch(cartActions.set(serverRes.result.cart));
-   //   dispatch(cartActions.setTotalPrice(serverRes.result.))
   }
  };
 
  useEffect(() => {
-  if (drawerState) {
+  if (drawerState && token) {
    handleGetShoppingCart();
    document.body.style.overflow = 'hidden';
   } else {
@@ -49,7 +48,7 @@ const Drawer = ({ children, size }) => {
   return () => {
    document.body.style.overflow = '';
   };
- }, [drawerState]);
+ }, [drawerState, token]);
 
  useEffect(() => {
   if (drawerState) {

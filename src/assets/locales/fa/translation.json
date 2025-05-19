@@ -102,6 +102,8 @@
  "payment_method": "نوع پرداخت",
  "availableQuantity": "موجودی ",
  "select_a_filter": "تر را انتخاب کنیدیک فیل",
+ "code": "کد",
+
  "profile": {
   "orders": "سفارشات",
   "item_list": "لیست محصولات ",

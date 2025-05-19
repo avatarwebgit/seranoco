@@ -1052,3 +1052,30 @@ export const resendOTP = async cellphone => {
  const result = await response.json();
  return { response, result };
 };
+
+export const sendResetPasswordEmail = async email => {
+ const response = await fetch(`${baseUrl}/forgot-password`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+   Accept: 'application/json',
+  },
+  body: JSON.stringify({ email }),
+  credentials: 'include',
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const sendResetPasswordPassword = async (data) => {
+ const response = await fetch(`${baseUrl}/reset-password`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+   Accept: 'application/json',
+  },
+  body: JSON.stringify({data}),
+ });
+ const result = await response.json();
+ return { response, result };
+};

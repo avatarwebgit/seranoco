@@ -100,6 +100,7 @@
  "payment_method": "Payment Method",
  "availableQuantity": "Available Pcs",
  "select_a_filter": "Select A Filter",
+ "code": "Code",
  "profile": {
   "orders": "Orders",
   "item_list": "Item Lists",
@@ -295,7 +296,7 @@
   "off": "% Off",
   "club": "Club Points",
   "shipping": "Shipping",
-  "type":"Stone Type",
-  "pcs":"PCS"
+  "type": "Stone Type",
+  "pcs": "PCS"
  }
 }

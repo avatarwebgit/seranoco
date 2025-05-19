@@ -40,6 +40,7 @@ function App() {
  const SingleBlog = React.lazy(() => import('./pages/SingleBlog'));
  const Page = React.lazy(() => import('./pages/AdminPanlePage'));
  const Factor = React.lazy(() => import('./pages/Factor'));
+ const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
 
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
@@ -85,7 +86,7 @@ function App() {
 
  useEffect(() => {
   if (basicData) {
-   dispatch(cartActions.setEuro(basicData.data[0].price_euro));
+   //    dispatch(cartActions?.setEuro(basicData?.data[0].price_euro));
   }
  }, [basicData]);
 
@@ -161,6 +162,8 @@ function App() {
      element={<Page windowSize={windowSize} />}
     />
     <Route path={`/:lng/factor/:id`} element={<Factor />} />
+
+    <Route path={`/:lng/reset-password`} element={<ResetPassword />} />
 
     <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
    </Routes>

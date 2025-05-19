@@ -32,12 +32,12 @@ const CartProduct = data => {
  useEffect(() => {
   if (data) {
    setProductData(data.data);
-    console.log(data.data)
+   console.log(data.data);
    const getVariationDetails = async () => {
     const serverRes = await getProductDetailsWithId(data.data.variation_id);
     setVariationPrice(serverRes.result.product.sale_price);
-     setVariation(serverRes.result);
-     setQuantity(data.data.selected_quantity);
+    setVariation(serverRes.result);
+    setQuantity(data.data.selected_quantity);
    };
    getVariationDetails();
   }
@@ -62,27 +62,17 @@ const CartProduct = data => {
  //   dispatch(cartActions.decrement(productData));
  //  };
 
-  const handleSendShoppingCart = async () => {
-  console.log(data.data.id, +variation.product.variation_id, +quantity);
+ const handleSendShoppingCart = async () => {
   const serverRes = await sendShoppingCart(
    token,
    data.data.id,
    +variation.product.variation_id,
    +quantity,
   );
+
   try {
    notify(t('orders.ok'));
-   if (serverRes.response.ok) {
-    dispatch(
-     cartActions.add({
-      ...data,
-      sdataected_quantity: quantity,
-      euro_price: euro,
-      variation_id: variation,
-      variation: { quantity: data.quantity },
-     }),
-    );
-   }
+
    dispatch(drawerActions.open());
   } catch (err) {
    //  console.log(err);
@@ -197,7 +187,9 @@ const CartProduct = data => {
          {lng !== 'fa'
           ? (quantity * productData.sale_price).toFixed(2)
           : formatNumber(quantity * productData.sale_price * euro)}
-         &nbsp;<br/>{t('m_unit')}
+         &nbsp;
+         <br />
+         {t('m_unit')}
         </span>
        </div>
       </span>

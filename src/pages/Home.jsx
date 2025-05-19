@@ -20,7 +20,7 @@ const Home = ({ windowSize }) => {
 
  useEffect(() => {
   if (data) {
-   dispatch(favoriteActions.setCount(data.user.FavoriteCount));
+   dispatch(favoriteActions.setCount(data?.user?.FavoriteCount));
   }
  }, [data]);
 

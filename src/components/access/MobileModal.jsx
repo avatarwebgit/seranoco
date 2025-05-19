@@ -117,7 +117,7 @@ const MobileModal = () => {
        />
       </form>
      </div>
-     <div>
+     {/* <div>
       {timeRemaining > 0 ? (
        <center className={classes.time}>
         <h2>{`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
@@ -137,7 +137,7 @@ const MobileModal = () => {
         </Button>
        </center>
       )}
-     </div>
+     </div> */}
     </div>
     <div
      className={classes.signup_link}

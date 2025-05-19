@@ -154,7 +154,7 @@
  width: 50%;
  display: grid;
  grid-template-columns: 50% 50%;
- grid-template-rows: 35px 35px 35px 35px 35px 35px 35px 35px 35px 35px;
+ grid-template-rows: 35px 35px 35px 35px 35px 35px 35px 35px 35px;
  white-space: nowrap;
  grid-auto-flow: column;
 }
