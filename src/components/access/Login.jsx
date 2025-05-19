@@ -248,8 +248,8 @@ const Login = () => {
       <div
        className={classes.signup_link}
        style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-       <p>{t('access.create_acc')}</p>&nbsp;
-       <button onClick={handleOpenResetPassword}>{t('signup.sign_up')}</button>
+       <p>{t('access.pass')}</p>&nbsp;
+       <button onClick={handleOpenResetPassword}>{t('signup.recover')}</button>
        &nbsp;
       </div>
      </div>

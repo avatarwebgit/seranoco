@@ -146,6 +146,8 @@
   "error": "Email or password is wrong please try again.",
   "error_empty": "Please Enter Email and Password",
   "create_acc": "Don't have an account?",
+  "pass": "Did You Forget Your Password?",
+  "recover": "Recover Password",
   "have_acc": "Have an account?",
   "swg": "Sign in with Google",
   "swotp": "Sign in with OTP"
