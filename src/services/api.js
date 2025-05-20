@@ -777,12 +777,12 @@ export const removeFromFavorite = async (token, variation_id) => {
  const result = await response.json();
  return { response, result };
 };
-
 export const sendShoppingCart = async (
  token,
  product_id,
  variation_id,
  quantity,
+ signal, 
 ) => {
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'POST',
@@ -791,11 +791,13 @@ export const sendShoppingCart = async (
    Authorization: `bearer ${token}`,
   },
   body: JSON.stringify({ product_id, variation_id, quantity }),
+  signal, 
  });
+
  const result = await response.json();
  return { response, result };
 };
-
+  
 export const getShoppingCart = async token => {
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'GET',

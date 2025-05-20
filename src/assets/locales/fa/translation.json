@@ -29,6 +29,7 @@
 
  "showmore": "بیشتر",
  "more": "مشاهده همه",
+ "Noـmoreـitems": "محصولی وجود ندارد",
 
  "more_information": "اطلاعات بیشتر ",
 
@@ -103,6 +104,7 @@
  "availableQuantity": "موجودی ",
  "select_a_filter": "تر را انتخاب کنیدیک فیل",
  "code": "کد",
+ "load_more": "بارگذاری بیشتر ...",
 
  "profile": {
   "orders": "سفارشات",
