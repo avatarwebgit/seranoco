@@ -795,19 +795,19 @@ export const sendShoppingCart = async (
  const result = await response.json();
  return { response, result };
 };
-
-export const getShoppingCart = async token => {
+export const getShoppingCart = async (token, signal) => {
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'GET',
   headers: {
    'Content-Type': 'application/json',
    Authorization: `bearer ${token}`,
   },
+  signal, 
  });
+
  const result = await response.json();
  return { response, result };
 };
-
 export const removeShoppingCart = async (token, product_id, variation_id) => {
  const response = await fetch(`${baseUrl}/cart/remove`, {
   method: 'DELETE',

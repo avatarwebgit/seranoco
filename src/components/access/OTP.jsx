@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { InputOTP } from 'antd-input-otp';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 
 import {
  accesModalActions,
@@ -10,6 +10,7 @@ import {
  userActions,
 } from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
+import { ReactComponent as Close } from '../../assets/svg/close.svg';
 
 import classes from './OTP.module.css';
 import { verifyOTP } from '../../services/api';
@@ -97,8 +98,18 @@ const OTP = () => {
   }
  };
 
+ const handleCloseModal = () => {
+  dispatch(accesModalActions.close());
+ };
+
  return (
   <div className={classes.content_wrapper}>
+   <IconButton
+    className={classes.close_btn}
+    disableRipple={true}
+    onClick={handleCloseModal}>
+    <Close width={30} height={30} />
+   </IconButton>
    <div className={classes.sheet}>
     <div className={classes.logo_wrapper}>
      <img className={classes.logo} src={logo} alt='' loading='lazy' />

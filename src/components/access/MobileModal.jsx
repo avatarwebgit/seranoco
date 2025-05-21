@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { InputOTP } from 'antd-input-otp';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@mui/material';
+import { Button, Input, InputAdornment, TextField } from '@mui/material';
 
 import { accesModalActions, signupActions } from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
@@ -11,6 +11,7 @@ import { sendOTP } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
 
 import classes from './MobileModal.module.css';
+import Flag from 'react-world-flags';
 const MobileModal = () => {
  const [signupValues, setSignupValues] = useState(null);
  const [otpValue, setOtpValue] = useState([]);
@@ -26,7 +27,7 @@ const MobileModal = () => {
  const handleSendOtp = (e, otp) => {
   if (e) e.preventDefault();
   const payload = otp || otpValue;
-  const code = payload.join('');
+  const code = payload;
   if (code) {
    handleVerifyOTP0(code);
    dispatch(accesModalActions.mobile());
@@ -106,15 +107,25 @@ const MobileModal = () => {
        onSubmit={e => handleSendOtp(e, otpValue)}
        ref={formRef}
        className={classes.form}>
-       <InputOTP
-        length={10}
-        onChange={setOtpValue}
+       <p className={classes.text} dir={`${lng === 'fa' ? 'rtl' : 'ltr'}`}>
+        {t('enter_mobile_number')}
+       </p>
+       <TextField
+        onChange={e => setOtpValue(e.target.value)}
         value={otpValue}
-        autoSubmit={otp => handleSendOtp(null, otp)}
-        variant='outlined'
         type='number'
-        inputClassName={classes.otp_input}
+        InputProps={{
+         startAdornment: (
+          <InputAdornment position='start'>
+           <Flag code={'IR'} style={{ width: '20px', height: 'auto' }} />
+           +98
+          </InputAdornment>
+         ),
+        }}
        />
+       <Button type='submit' className={classes.login_btn}>
+        {t('submit')}
+       </Button>
       </form>
      </div>
      {/* <div>
