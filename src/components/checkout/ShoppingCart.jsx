@@ -21,15 +21,8 @@ const ShoppingCart = () => {
 
  const dispatch = useDispatch();
 
- const handleGetShoppingCart = async () => {
-  const serverRes = await getShoppingCart(token);
-  if (serverRes.response.ok) {
-   dispatch(cartActions.set(serverRes.result.cart));
-  }
- };
-
  useEffect(() => {
-  const controller = new AbortController(); 
+  const controller = new AbortController();
 
   const handleGetShoppingCart = async () => {
    try {
@@ -49,9 +42,9 @@ const ShoppingCart = () => {
   handleGetShoppingCart();
 
   return () => {
-   controller.abort(); 
+   controller.abort();
   };
- }, [token, dispatch]);
+ }, [token, dispatch, card]);
 
  return (
   <table className={classes.table}>

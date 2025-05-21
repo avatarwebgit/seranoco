@@ -25,7 +25,7 @@ import { formatNumber, notify } from '../../utils/helperFunctions';
 
 import classes from './Checkout.module.css';
 import { Add } from '@mui/icons-material';
-import AddressTable from '../account/accountInformation/AddressTable';
+
 import { cartActions } from '../../store/store';
 const Checkout = ({ isDataValid, sendOrderData }) => {
  const lng = useSelector(state => state.localeStore.lng);

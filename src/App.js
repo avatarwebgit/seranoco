@@ -13,6 +13,7 @@ import './App.css';
 
 import { useBasicInformation } from './services/api';
 import FavoritesDrawer from './layout/FavoritesDrawer';
+import i18next from 'i18next';
 function App() {
  const [windowSize, setWindowSize] = useState(() => {
   const width = window.innerWidth;
@@ -89,6 +90,38 @@ function App() {
    //    dispatch(cartActions?.setEuro(basicData?.data[0].price_euro));
   }
  }, [basicData]);
+    
+ useEffect(() => {
+  const updateMetaTag = () => {
+   const lang = i18next.language;
+   const existingMeta = document.querySelector('meta[name="enamad"]');
+
+   if (lang === 'fa') {
+    if (!existingMeta) {
+     const meta = document.createElement('meta');
+     meta.name = 'enamad';
+     meta.content = '39218540';
+     document.head.appendChild(meta);
+    }
+   } else {
+    if (existingMeta) {
+     document.head.removeChild(existingMeta);
+    }
+   }
+  };
+
+  updateMetaTag(); // Initial check
+
+  const handleLangChanged = () => {
+   updateMetaTag();
+  };
+
+  i18next.on('languageChanged', handleLangChanged);
+
+  return () => {
+   i18next.off('languageChanged', handleLangChanged);
+  };
+ }, [lng]);
 
  return (
   <Suspense fallback={<Loading />}>

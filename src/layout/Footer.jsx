@@ -62,8 +62,7 @@ const Footer = () => {
           {pageData &&
            pageData.data.map((elem, i) => {
             if (i < 5) {
-
-              return (
+             return (
               <a key={i} href={`/${lng}/page/${elem.alias}`}>
                {lng === 'fa' ? elem.title : elem.title_en}
               </a>
@@ -107,24 +106,26 @@ const Footer = () => {
           className={classes.support}
           style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
           <p className={classes.title}>{t('validation')}</p>
-          <a
-           referrerpolicy='origin'
-           className={classes.image_wrapper}
-           style={{ width: '100%', height: '100%' }}
-           target='_blank'
-           href={
-            'https://trustseal.enamad.ir/?id=602035&Code=sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
-           }>
-           <img
+          {lng === 'fa' && (
+           <a
             referrerpolicy='origin'
-            src={
-             'https://trustseal.enamad.ir/logo.aspx?id=602035&Code=sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
-            }
-            alt=''
-            style={{ cursor: 'pointer' }}
-            code='sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
-           />
-          </a>
+            className={classes.image_wrapper}
+            style={{ width: '100%', height: '100%' }}
+            target='_blank'
+            href={
+             'https://trustseal.enamad.ir/?id=602035&Code=sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
+            }>
+            <img
+             referrerpolicy='origin'
+             src={
+              'https://trustseal.enamad.ir/logo.aspx?id=602035&Code=sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
+             }
+             alt=''
+             style={{ cursor: 'pointer' }}
+             code='sKIlA1X6dHsFDqMNTCEJhTVjsyLagYcw'
+            />
+           </a>
+          )}
          </span>
         </div>
         <div></div>

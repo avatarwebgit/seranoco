@@ -444,8 +444,7 @@ const Products = ({ windowSize }) => {
          color='inherit'
          variant='p'>
          <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus,
-          earum.
+          {t('by_order_notice')}
          </p>
         </Typography>
        )}

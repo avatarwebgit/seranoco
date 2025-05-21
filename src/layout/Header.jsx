@@ -209,7 +209,8 @@ const Header = ({ windowSize }) => {
     }`}>
     <motion.span
      className={classes.card_action_wrapper}
-     transition={{ duration: 0 }}>
+         transition={{ duration: 0 }}>
+         {}
      {!isSmall && (
       <>
        {token ? (

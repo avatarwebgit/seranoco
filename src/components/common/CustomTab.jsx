@@ -66,29 +66,31 @@ export default function BasicTabs({ dataProp }) {
      }}>
      {data && (
       <>
-       {data.product.attribute.map(el => {
-        return (
-         <span key={nanoid()}>
-          <p
-           style={{
-            textAlign: lng === 'fa' ? 'left' : 'right',
-            width: '80%',
-           }}>
-           <strong style={{ fontSize: '.5rem' }}>
-            {lng === 'fa' ? el.attribute.name_fa : el.attribute.name}&nbsp;:
-           </strong>
-          </p>
+       {data.product.attribute
+        .sort((a, b) => a.priority - b.priority)
+        .map(el => {
+         return (
+          <span key={nanoid()}>
+           <p
+            style={{
+             textAlign: lng === 'fa' ? 'left' : 'right',
+             width: '80%',
+            }}>
+            <strong style={{ fontSize: '.5rem' }}>
+             {lng === 'fa' ? el.attribute.name_fa : el.attribute.name}&nbsp;:
+            </strong>
+           </p>
 
-          <p
-           style={{
-            textAlign: lng === 'fa' ? 'right' : 'left',
-            margin: '0 20px',
-           }}>
-           {lng === 'fa' ? el.value.name_fa : el.value.name}
-          </p>
-         </span>
-        );
-       })}
+           <p
+            style={{
+             textAlign: lng === 'fa' ? 'right' : 'left',
+             margin: '0 20px',
+            }}>
+            {lng === 'fa' ? el.value.name_fa : el.value.name}
+           </p>
+          </span>
+         );
+        })}
       </>
      )}
     </div>
