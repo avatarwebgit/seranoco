@@ -32,6 +32,7 @@
 
  "showmore": "Show More",
  "more": "More",
+ "Noـmoreـitems":"No more items",
 
  "new": "New",
  "trending_new": "New",
@@ -103,6 +104,7 @@
  "availableQuantity": "Available Pcs",
  "select_a_filter": "Select A Filter",
  "code": "Code",
+ "load_more":"Load More ...",
  "profile": {
   "orders": "Orders",
   "item_list": "Item Lists",

@@ -44,6 +44,7 @@ import classes from './New.module.css';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import Product from '../components/new/Product';
 import { scrollToTarget } from '../utils/helperFunctions';
+import { Button } from '@mui/material';
 const New = ({ windowSize }) => {
  const {
   data: shapesData,
@@ -73,6 +74,7 @@ const New = ({ windowSize }) => {
  const [filteresProducts, setfilteresProducts] = useState(null);
  const [isIntersecting, setIsIntersecting] = useState(false);
  const [euro_price, setEuro_price] = useState(0);
+ const [isLastPage, setIsLastPage] = useState(false);
 
  const formRef = useRef();
  const sizeRef = useRef();
@@ -196,6 +198,7 @@ const New = ({ windowSize }) => {
  useEffect(() => {
   setProductDetails([]);
   handleGetNewProducts(shapeFormEntries, selectedIds, [], 1, ItemsPerPage);
+  setPage(2);
   const getSizes = async () => {
    const serverRes = await getNewFilteredSizesByColor(selectedIds);
    if (serverRes.response.ok) {
@@ -234,8 +237,14 @@ const New = ({ windowSize }) => {
    if (serverRes.response.ok) {
     if (pagee === 1) {
      setProductDetails(serverRes.result.data);
+     serverRes.result?.data?.length < 24
+      ? setIsLastPage(true)
+      : setIsLastPage(false);
     } else {
      setProductDetails(prev => [...prev, ...serverRes.result.data]);
+     serverRes.result?.data?.length < 24
+      ? setIsLastPage(true)
+      : setIsLastPage(false);
     }
    }
   } catch (error) {
@@ -246,10 +255,6 @@ const New = ({ windowSize }) => {
    setIsFilteredProductsLoading(false);
   }
  };
- useEffect(() => {}, [productDetails]);
-
- const prevDimensionEntriesRef = useRef(dimensionEntries);
- const prevSelectedIdsRef = useRef(selectedIds);
 
  // useEffect(() => {
  //   // abortControllerRef.current.abort();
@@ -328,12 +333,12 @@ const New = ({ windowSize }) => {
   };
  }, [lineRef]);
 
- useEffect(() => {
-  if (isIntersecting && !isFilteredProductsLoading) {
-   handleGetNewProducts(shapeFormEntries, selectedIds, [], +page, ItemsPerPage);
-   setPage(prev => prev + 1);
-  }
- }, [isIntersecting]);
+ //  useEffect(() => {
+ //   if (isIntersecting && !isFilteredProductsLoading) {
+ //    handleGetNewProducts(shapeFormEntries, selectedIds, [], +page, ItemsPerPage);
+ //    setPage(prev => prev + 1);
+ //   }
+ //  }, [isIntersecting]);
 
  const getInfo = async () => {
   const serverRes = await basicInformation(lng);
@@ -535,12 +540,39 @@ const New = ({ windowSize }) => {
      </>
     </Body>
    }
-   {
-    <div style={{ opacity: isFilteredProductsLoading ? 1 : 0 }}>
-     <LoadingSpinner />
+
+   {!isLastPage && (
+    <>
+     {!isFilteredProductsLoading ? (
+      <center style={{ opacity: isFilteredProductsLoading ? 0 : 1 }}>
+       <Button
+        className={classes.load_more_button}
+        onClick={() => {
+         handleGetNewProducts(
+          shapeFormEntries,
+          selectedIds,
+          [],
+          +page,
+          ItemsPerPage,
+         );
+         setPage(prev => prev + 1);
+        }}>
+        {t('load_more')}
+       </Button>
+      </center>
+     ) : (
+      <div style={{ opacity: isFilteredProductsLoading ? 1 : 0 }}>
+       <LoadingSpinner />
+      </div>
+     )}
+    </>
+   )}
+
+   <center>
+    <div className={classes.no_more} style={{ opacity: isLastPage ? 1 : 0 }}>
+     {t('Noـmoreـitems')}
     </div>
-   }
-   <div ref={lineRef} className={classes.observer_watch}></div>
+   </center>
    <Footer />
   </div>
  );
