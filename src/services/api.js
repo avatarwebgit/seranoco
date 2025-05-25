@@ -44,6 +44,7 @@ export const basicInformation = async lng => {
   },
  });
  const result = await response.json();
+ console.log(result);
  return { response, result };
 };
 
@@ -223,24 +224,28 @@ export const getPaginatedProductsByShape = async (id, page, per_page) => {
 };
 
 export const getProductDetails = async (alias, token) => {
-    const response = await fetch(`${baseUrl}/get/product/${alias}`, {
-        method: 'GET',
-        headers: {
-            Authorization: `bearer ${token}`,
-        },
-    });
-    
-    const result = await response.json();
- return { response, result };
-};
-
-export const getProductDetailsWithId = async (id, token) => {
- const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
+ const response = await fetch(`${baseUrl}/get/product/${alias}`, {
   method: 'GET',
   headers: {
    Authorization: `bearer ${token}`,
   },
  });
+
+ const result = await response.json();
+ return { response, result };
+};
+export const getProductDetailsWithId = async (id, token, signal) => {
+ const response = await fetch(`${baseUrl}/get/variation/product/${id}`, {
+  method: 'GET',
+  headers: {
+   Authorization: `bearer ${token}`,
+  },
+  signal,
+ });
+
+ if (!response.ok) {
+  throw new Error('Failed to fetch variation details');
+ }
 
  const result = await response.json();
  return { response, result };
@@ -798,13 +803,14 @@ export const sendShoppingCart = async (
  return { response, result };
 };
 
-export const getShoppingCart = async token => {
+export const getShoppingCart = async (token, options) => {
  const response = await fetch(`${baseUrl}/cart`, {
   method: 'GET',
   headers: {
    'Content-Type': 'application/json',
    Authorization: `bearer ${token}`,
   },
+  ...options,
  });
  const result = await response.json();
  return { response, result };

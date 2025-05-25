@@ -10,6 +10,8 @@ import Body from '../components/filters_page/Body';
 import Card from '../components/filters_page/Card';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 
+import karafarinLogo from '../assets/images/KarafarinBank.png';
+
 import { Autocomplete, Button, TextField, Input } from '@mui/material';
 import Calendar from 'react-calendar/dist/cjs/Calendar.js';
 import 'react-calendar/dist/Calendar.css';
@@ -136,7 +138,7 @@ const PayByCart = ({ widnowSize }) => {
  };
 
  useEffect(() => {
-  document.title = t('paybycart');
+  document.title = ' اطلاعات کارت به کارت';
   const today = moment().format('jYYYY/jMM/jDD');
   setSelectedDate(today);
   setDate(today);
@@ -163,7 +165,8 @@ const PayByCart = ({ widnowSize }) => {
 
  return (
   <div className={classes.main}>
-   <BannerCarousel />
+         <BannerCarousel />
+         {console.log(widnowSize)}
    <Header windowSize={widnowSize} />
    <Body>
     <Card className={classes.card}>
@@ -173,6 +176,16 @@ const PayByCart = ({ widnowSize }) => {
        { pathname: t('payment'), url: 'shopbyshape' },
       ]}
      />
+     <div className={classes.payment_dest_wrapper}>
+      <ul>
+       <li>شماره کارت مقصد : 6274 8812 0101 8834</li>
+       <li> نام گیرنده وجه : امیر مسعود سراج زاده </li>
+       <li> نام بانک : بانک کار آفرین </li>
+      </ul>{' '}
+      <div className={classes.logo_wrapper}>
+       <img src={karafarinLogo} alt='' />
+      </div>
+     </div>
      <form onSubmit={handleSubmit} className={classes.form}>
       <div className={classes.ep}>
        <Autocomplete

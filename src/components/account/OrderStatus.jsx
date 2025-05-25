@@ -33,7 +33,8 @@ const OrderStatus = () => {
 
  const handleFetchOrders = async () => {
   const serverRes = await getOrders(token);
-     setOrders(serverRes.result.orders);
+  setOrders(serverRes.result.orders);
+  console.log(serverRes);
  };
 
  const handleFetchOrdersStatus = async () => {
@@ -56,7 +57,6 @@ const OrderStatus = () => {
   setSelectedOption(selectedValue);
   handleFetchOrdersByStatus(selectedValue);
  };
-
 
  return (
   <section className={classes.main}>
@@ -95,23 +95,29 @@ const OrderStatus = () => {
        </form>
       </div>
 
-      <table className={classes.table}>
-       <thead>
-        <tr className={classes.tr}>
-         <th className={classes.th}>{t('orders.no')}</th>
-         <th className={classes.th}>{t('orders.orderno')}</th>
-         <th className={classes.th}>{t('orders.status')}</th>
-         <th className={classes.th}>{t('ticket.show')}</th>
-         <th className={classes.th}>{t('orders.price')}</th>
-         <th className={classes.th}>{t('orders.date')}</th>
-        </tr>
-       </thead>
-       <tbody>
-        {orders.map((order, i) => {
-         return <OrderHistory dataProp={order} key={order.id} number={i} />;
-        })}
-       </tbody>
-      </table>
+      <div className={classes.table_wrapper}>
+       <table className={classes.table}>
+        <thead>
+         <tr className={classes.tr}>
+          <th className={classes.th}>{t('orders.no')}</th>
+          <th className={classes.th}>{t('orders.orderno')}</th>
+          <th className={classes.th}>{t('orders.status')}</th>
+          <th className={classes.th}>{t('ticket.show')}</th>
+          <th className={classes.th}>{t('orders.price')}</th>
+          <th className={classes.th}>{t('orders.date')}</th>
+          <th className={classes.th}>{t('continue')}</th>
+         </tr>
+        </thead>
+        <tbody>
+         {orders
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .map((order, i) => {
+           console.log(order);
+           return <OrderHistory dataProp={order} key={order.id} number={i} />;
+          })}
+        </tbody>
+       </table>
+      </div>
      </Wrapper>
     </Card>
    </Body>

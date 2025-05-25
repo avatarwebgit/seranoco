@@ -87,7 +87,7 @@ function App() {
 
  useEffect(() => {
   if (basicData) {
-   //    dispatch(cartActions?.setEuro(basicData?.data[0].price_euro));
+      dispatch(cartActions?.setEuro(basicData?.data[0].price_euro));
   }
  }, [basicData]);
     
@@ -165,7 +165,7 @@ function App() {
      path={`/:lng/order/pay/:id`}
      element={
       <RequireAuth>
-       <PayByCart windowSize={windowSize} />
+       <PayByCart widnowSize={windowSize} />
       </RequireAuth>
      }
     />

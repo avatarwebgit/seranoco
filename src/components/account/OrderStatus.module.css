@@ -4,7 +4,7 @@
 }
 
 .table {
- table-layout: fixed;
+ table-layout: auto;
  width: 100%;
 }
 
@@ -14,14 +14,41 @@
 
 .th {
  padding-bottom: 1rem;
+ white-space: nowrap;
 }
 
 .td {
  text-align: center;
 }
 
-.form_wrapper{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.form_wrapper {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+.table_wrapper {
+ width: 100%;
+ overflow-x: scroll;
+}
+
+@media only screen and (max-width: 480px) {
+ .table_wrapper {
+  max-width: 90vw;
+ }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+ .table_wrapper {
+  max-width: 90vw;
+ }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+
+@media only screen and (min-width: 1201px) {
 }

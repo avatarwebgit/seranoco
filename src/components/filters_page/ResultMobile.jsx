@@ -43,7 +43,8 @@ const ResultMobile = ({ dataProps }) => {
 
  return (
   <div className={classes.main}>
-   {data &&
+
+     {data &&
     data.map(el => {
      return (
       <div className={classes.wrapper}>
@@ -91,7 +92,7 @@ const ResultMobile = ({ dataProps }) => {
            ) : (
             <>
              <>
-              {formatNumber(el.sale_price * euro)}&nbsp;
+              {formatNumber(+el.sale_price * euro)}&nbsp;
               {t('m_unit')}
              </>
              <br />

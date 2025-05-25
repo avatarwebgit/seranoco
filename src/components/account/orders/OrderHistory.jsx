@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IconButton, Modal } from '@mui/material';
+import { IconButton, Modal, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { ReceiptOutlined, Send } from '@mui/icons-material';
+import { OpenInNew, ReceiptOutlined, Send } from '@mui/icons-material';
 
 import show from '../../../assets/svg/show.svg';
 
 import { formatNumber, notify } from '../../../utils/helperFunctions';
+import { ReactComponent as Close } from '../../../assets/svg/close.svg';
 
 import classes from './OrderHistory.module.css';
 import { getOrderStatusDetail } from '../../../services/api';
@@ -51,8 +52,7 @@ const OrderHistory = ({ dataProp, number }) => {
 
  useEffect(() => {
   if (detailsData) {
-
-    const weights = detailsData.products
+   const weights = detailsData.products
     .map(item => item.product?.variation?.weight)
     .filter(weight => weight !== undefined && weight !== null);
    const numericWeights = weights.map(el => {
@@ -77,6 +77,12 @@ const OrderHistory = ({ dataProp, number }) => {
       onClose={handleCloseModal}
       className={classes.modal}>
       <div className={classes.sheet}>
+       <IconButton
+        className={classes.close_btn}
+        disableRipple={true}
+        onClick={handleCloseModal}>
+        <Close width={30} height={30} />
+       </IconButton>
        {detailsData && (
         <>
          <div
@@ -141,7 +147,9 @@ const OrderHistory = ({ dataProp, number }) => {
              value={
               lng !== 'fa'
                ? `${detailsData.order.total_amount}  ${t('m_unit')}`
-               : `${formatNumber(detailsData.order.total_amount_fa)} ${t('m_unit')}`
+               : `${formatNumber(detailsData.order.total_amount_fa)} ${t(
+                  'm_unit',
+                 )}`
              }
             />
             <label>{t('orders.total_payment')}</label>
@@ -151,7 +159,9 @@ const OrderHistory = ({ dataProp, number }) => {
              value={
               lng !== 'fa'
                ? `${detailsData.order.paying_amount}  ${t('m_unit')}`
-               : `${formatNumber(detailsData.order.paying_amount_fa)} ${t('m_unit')}`
+               : `${formatNumber(detailsData.order.paying_amount_fa)} ${t(
+                  'm_unit',
+                 )}`
              }
              dir={lng === 'fa' ? 'rtl' : 'ltr'}
             />
@@ -243,6 +253,18 @@ const OrderHistory = ({ dataProp, number }) => {
         day: 'numeric',
         month: 'long',
        })}
+      </td>
+      <td className={classes.td}>
+       <Tooltip title={t('continue')} arrow placement='top'>
+        <Link
+         to={`/fa/order/pay/${data.id}`}
+         target='_blank'
+         className={classes.link}>
+         <IconButton className={classes.btn} size='large'>
+          <OpenInNew fontSize='13' sx={{ color: 'black' }} />
+         </IconButton>
+        </Link>
+       </Tooltip>
       </td>
      </tr>
     </>

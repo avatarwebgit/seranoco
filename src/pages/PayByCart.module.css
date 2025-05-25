@@ -62,14 +62,50 @@
  width: 100%;
 }
 
+.logo_wrapper {
+ height: 100px;
+}
+
+.logo_wrapper img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+}
+
+.payment_dest_wrapper {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ border-radius: 10px;
+ background-color: rgb(236, 236, 236);
+ border: 1px solid rgb(0, 153, 130);
+ width: 100%;
+ padding: 15px;
+}
+
+.payment_dest_wrapper ul {
+ list-style-type: none;
+}
+
+.payment_dest_wrapper ul li {
+ font-size: small;
+ font-family: 'IRANYekan';
+}
+
 @media only screen and (max-width: 480px) {
  .card {
   width: 100%;
+ }
+ .logo_wrapper {
+  height: 40px;
  }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
  .card {
   width: 100%;
+ }
+ .logo_wrapper {
+  height: 40px;
  }
 }

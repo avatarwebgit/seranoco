@@ -32,13 +32,13 @@
 
  "showmore": "Show More",
  "more": "More",
- "Noـmoreـitems":"No more items",
+ "Noـmoreـitems": "No more items",
 
  "new": "New",
  "trending_new": "New",
  "noItem": "There is no Item.",
  "enter_mobile_number": "Please enter your mobile phone number to continue.",
- "by_order_notice":"This gemstone is currently unavailable. Please place an order if needed.",
+ "by_order_notice": "This gemstone is currently unavailable. Please place an order if needed.",
 
  "shape": "Shapes",
  "type": "Stone Type",
@@ -104,7 +104,7 @@
  "availableQuantity": "Available Pcs",
  "select_a_filter": "Select A Filter",
  "code": "Code",
- "load_more":"Load More ...",
+ "load_more": "Load More ...",
  "profile": {
   "orders": "Orders",
   "item_list": "Item Lists",
@@ -304,5 +304,7 @@
   "shipping": "Shipping",
   "type": "Stone Type",
   "pcs": "PCS"
- }
+ },
+
+ "continue": "Continue"
 }

@@ -40,7 +40,6 @@ const CartProduct = data => {
  useEffect(() => {
   if (data) {
    setProductData(data.data);
-
    getVariationDetails(data.data);
   }
 
@@ -49,17 +48,6 @@ const CartProduct = data => {
    abortControllerRef.current = new AbortController();
   };
  }, [data]);
-
- //  useEffect(() => {
- //   if (quantity && productData) {
- //    dispatch(
- //     cartActions.setQuantity({
- //      id: +variation.product.variation_id,
- //      quantity: quantity,
- //     }),
- //    );
- //   }
- //  }, [quantity]);
 
  const handleSendShoppingCart = async quantity => {
   try {
@@ -71,11 +59,11 @@ const CartProduct = data => {
     data.data.id,
     +variation.product.variation_id,
     +quantity,
-    abortControllerRef.current.signal, // Pass the signal to the API
+    abortControllerRef.current.signal,
    );
-
    notify(t('orders.ok'));
    dispatch(drawerActions.open());
+   dispatch(cartActions.setTotalPrice(serverRes.result.total_price));
   } catch (err) {
    if (err.name !== 'AbortError') {
     console.error(err);

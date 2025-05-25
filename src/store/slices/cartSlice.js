@@ -56,6 +56,7 @@ const cartSlice = createSlice({
    const product = state.products.find(
     el => +el.variation_id === +action.payload.id,
    );
+
    if (product) {
     product.selected_quantity = action.payload.quantity;
    }
@@ -100,7 +101,8 @@ const cartSlice = createSlice({
    state.paymentMethod = action.payload;
   },
   setTotalPrice(state, action) {
-   state.totalPrice = action.payload;
+    state.totalPrice = action.payload;
+    console.log(state.totalPrice, action.payload);
   },
  },
 });

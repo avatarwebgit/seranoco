@@ -135,9 +135,20 @@ thead .tr {
  transform: scale(0.7) !important;
 }
 
+.close_btn {
+ top: 10px !important;
+ right: 10px !important;
+ position: absolute !important;
+ z-index: 10000;
+}
+
+.td {
+ text-align: center;
+}
+
 @media only screen and (max-width: 480px) {
  .modal_content {
-  width: 100vw;
+  width: 100%;
  }
  .auto {
   width: 100%;
@@ -160,14 +171,21 @@ thead .tr {
  .img_wrapper {
   height: 35px;
  }
- .content{
-    flex-direction: column;
+ .content {
+  flex-direction: column;
+ }
+ .sheet {
+  width: 100%;
+ }
+
+ .content div {
+  width: 100%;
  }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
  .modal_content {
-  width: 100vw;
+  width: 100%;
  }
  .auto {
   width: 100%;
@@ -190,8 +208,15 @@ thead .tr {
  .img_wrapper {
   height: 35px;
  }
- .content{
-    flex-direction: column;
+ .content {
+  flex-direction: column;
+ }
+ .sheet {
+  width: 100%;
+ }
+
+ .content div {
+  width: 100%;
  }
 }
 

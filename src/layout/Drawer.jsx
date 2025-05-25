@@ -51,13 +51,10 @@ const Drawer = ({ children, size }) => {
  }, [drawerState, token]);
 
  useEffect(() => {
-  if (drawerState) {
-   dispatch(cartActions.calculateTotalPrice());
-  }
   if (cart.products || drawerState) {
    setProductData(cart.products);
   }
- }, [cart, drawerState]);
+ }, [cart, drawerState, cart.totalPrice]);
 
  return (
   <motion.div
