@@ -43,8 +43,7 @@ const ResultMobile = ({ dataProps }) => {
 
  return (
   <div className={classes.main}>
-
-     {data &&
+   {data &&
     data.map(el => {
      return (
       <div className={classes.wrapper}>
@@ -62,9 +61,6 @@ const ResultMobile = ({ dataProps }) => {
         <span className={classes.details}>
          <span className={classes.text_wrapper}>
           <p className={classes.detail_text}>{t('type')}</p>
-          {/* <p className={classes.detail_text}>
-           {t('brand')} / {t('mine')}
-          </p> */}
           <p className={classes.detail_text}>{t('size')}</p>
           <p className={classes.detail_text}>{t('color')}</p>
           <p className={classes.detail_text}>{t('details')}</p>
@@ -75,7 +71,6 @@ const ResultMobile = ({ dataProps }) => {
          </span>
          <span className={classes.value_wrapper}>
           <p className={classes.detail_text}>{el.details || 'none'}</p>
-          {/* <p className={classes.detail_text}>{el.quality || 'none'}</p> */}
           <p className={classes.detail_text}>{el.size || 'none'}</p>
           <p className={classes.detail_text}>{el.color || 'none'}</p>
           <p className={classes.detail_text}>

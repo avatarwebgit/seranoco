@@ -165,8 +165,7 @@ const PayByCart = ({ widnowSize }) => {
 
  return (
   <div className={classes.main}>
-         <BannerCarousel />
-         {console.log(widnowSize)}
+   <BannerCarousel />
    <Header windowSize={widnowSize} />
    <Body>
     <Card className={classes.card}>
@@ -178,7 +177,9 @@ const PayByCart = ({ widnowSize }) => {
      />
      <div className={classes.payment_dest_wrapper}>
       <ul>
-       <li>شماره کارت مقصد : 6274 8812 0101 8834</li>
+       <li>
+        شماره کارت مقصد : <span dir='ltr'>6274 8812 0101 8834</span>
+       </li>
        <li> نام گیرنده وجه : امیر مسعود سراج زاده </li>
        <li> نام بانک : بانک کار آفرین </li>
       </ul>{' '}

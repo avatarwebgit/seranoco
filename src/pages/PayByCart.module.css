@@ -87,7 +87,7 @@
  list-style-type: none;
 }
 
-.payment_dest_wrapper ul li {
+.payment_dest_wrapper ul li,.payment_dest_wrapper ul li span {
  font-size: small;
  font-family: 'IRANYekan';
 }
