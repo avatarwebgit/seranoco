@@ -105,7 +105,6 @@ const cartSlice = createSlice({
   },
   setTotalPrice(state, action) {
    state.totalPrice = action.payload;
-   state.totalPrice, action.payload;
   },
  },
 });

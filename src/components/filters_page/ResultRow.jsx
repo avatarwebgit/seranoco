@@ -67,15 +67,13 @@ const ResultRow = ({ dataProp }) => {
  };
 
  const handleSendShoppingCart = async (el, variation, quantity) => {
-  el.id, +variation, quantity;
-
   try {
    const serverRes = await sendShoppingCart(token, el.id, +variation, quantity);
    if (serverRes.response.ok) {
     dispatch(drawerActions.open());
    }
   } catch (err) {
-   //  (err);
+   //  console.log(err);
   } finally {
    notify(t('orders.ok'));
   }
