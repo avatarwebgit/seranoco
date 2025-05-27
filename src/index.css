@@ -139,8 +139,12 @@ a:visited {
  gap: 5px !important;
  min-width: 40px !important;
 }
+.css-13lvt8g-MuiButtonBase-root-MuiRadio-root {
+ padding-left: 0 !important ;
+ padding-right: 0 !important;
+}
 html {
-  scrollbar-gutter: stable;
+ scrollbar-gutter: stable;
 }
 @media only screen and (max-width: 480px) {
  .MuiBadge-badge {

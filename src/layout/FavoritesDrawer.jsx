@@ -40,7 +40,7 @@ const FavoritesDrawer = ({ children, size }) => {
  };
 
  useEffect(() => {
-  if ((token, drawerState)) {
+  if (token && drawerState) {
    getFavoriteItems();
   }
  }, [token, drawerState]);
@@ -56,8 +56,6 @@ const FavoritesDrawer = ({ children, size }) => {
    document.body.style.overflow = '';
   };
  }, [drawerState]);
-
-
 
  return (
   <motion.div

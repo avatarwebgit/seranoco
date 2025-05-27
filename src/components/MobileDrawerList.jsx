@@ -132,6 +132,8 @@ const MobileDrawerList = () => {
 
  const dispatch = useDispatch();
 
+ const token = useSelector(state => state.userStore.token);
+
  const { t } = useTranslation();
 
  const handleLogOut = () => {
@@ -172,15 +174,17 @@ const MobileDrawerList = () => {
    });
   }
 
-  updatedItems.push({
-   key: 'logout',
-   id: 'logout',
-   label: <div onClick={handleLogOut}>{t('logout')}</div>,
-   icon: <Logout />,
-  });
+  if (token) {
+   updatedItems.push({
+    key: 'logout',
+    id: 'logout',
+    label: <div onClick={handleLogOut}>{t('logout')}</div>,
+    icon: <Logout />,
+   });
+  }
 
   setItems(updatedItems);
- }, [data]);
+ }, [data, token]);
 
  const onClick = e => {
   setCurrent(e.key);

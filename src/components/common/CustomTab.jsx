@@ -66,7 +66,7 @@ export default function BasicTabs({ dataProp }) {
      }}>
      {data && (
       <>
-       {data.product.attribute
+       {data?.product?.attribute
         .sort((a, b) => a.priority - b.priority)
         .map(el => {
          return (

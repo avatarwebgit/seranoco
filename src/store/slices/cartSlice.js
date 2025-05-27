@@ -17,6 +17,9 @@ const cartSlice = createSlice({
  reducers: {
   set(state, action) {
    state.products = action.payload;
+   state.totalPrice = state.products.reduce((total, product) => {
+    return total + product.selected_quantity * product.sale_price;
+   }, 0);
   },
   add(state, action) {
    if (
@@ -101,8 +104,8 @@ const cartSlice = createSlice({
    state.paymentMethod = action.payload;
   },
   setTotalPrice(state, action) {
-    state.totalPrice = action.payload;
-    console.log(state.totalPrice, action.payload);
+   state.totalPrice = action.payload;
+   state.totalPrice, action.payload;
   },
  },
 });

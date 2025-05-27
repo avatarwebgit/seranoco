@@ -439,14 +439,14 @@ const Products = ({ windowSize }) => {
         />
        )}
        {isByOrder && (
-        <Typography
-         className={classes.product_order_notification}
-         color='inherit'
-         variant='p'>
-         <p>
-          {t('by_order_notice')}
-         </p>
-        </Typography>
+        <strong>
+         <Typography
+          className={classes.product_order_notification}
+          color='inherit'
+          variant='p'>
+          <p>{t('by_order_notice')}</p>
+         </Typography>
+        </strong>
        )}
 
        {detailsData ? (
@@ -556,7 +556,8 @@ const Products = ({ windowSize }) => {
               className={`${classes.product_serial} ${classes.border}`}
               color='inherit'
               href={`/${lng}/shopbyshape`}
-              variant='h3' sx={{borderRight:'1px solid'}}>
+              variant='h3'
+              sx={{ borderRight: '1px solid' }}>
               {t('quantity')}&nbsp;
              </Typography>
              <div className={classes.divider} />

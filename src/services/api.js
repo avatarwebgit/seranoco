@@ -44,7 +44,6 @@ export const basicInformation = async lng => {
   },
  });
  const result = await response.json();
- console.log(result);
  return { response, result };
 };
 
@@ -623,8 +622,10 @@ export const useUser = token => {
    });
 
    const result = await response.json();
+   console.log(result);
    return result;
   },
+  enabled: !!token,
   staleTime: 1000 * 60 * 5,
   cacheTime: 1000 * 60 * 1000,
   refetchOnWindowFocus: false,
@@ -686,13 +687,14 @@ export const cartMehtodPayment = async () => {
  return { response, result };
 };
 
-export const updateUser = async token => {
+export const updateUser = async (token, data) => {
  const response = await fetch(`${baseUrl}/update/user`, {
   method: 'POST',
   headers: {
    'Content-Type': 'application/json',
    Authorization: `bearer ${token}`,
   },
+  body: JSON.stringify(data),
  });
  const result = await response.json();
  return { response, result };
@@ -954,6 +956,18 @@ export const getOrderStatusDetail = async (token, id) => {
  });
  const result = await response.json();
  return { response, result };
+};
+
+export const removeOrder = async (token, id) => {
+ console.log(id);
+ //  const response = await fetch(`${baseUrl}/order/${id}`, {
+ //   method: 'Delete',
+ //   headers: {
+ //    Authorization: `bearer ${token}`,
+ //   },
+ //  });
+ //  const result = await response.json();
+ //  return { response, result };
 };
 
 export const verifyOTP = async (otp, cellphone) => {

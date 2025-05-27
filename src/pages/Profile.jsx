@@ -27,10 +27,12 @@ import { useUser, getOrders, getOrdersStatus } from '../services/api';
 import classes from './Profile.module.css';
 import Favorites from '../components/account/Favorites';
 import MobileProfile from './MobileProfile';
+import { useLocation } from 'react-router-dom';
 const Profile = ({ windowSize }) => {
  const [selectedButtonId, setSelectedButtonId] = useState(null);
  const [selectedContent, setSelectedContent] = useState(null);
  const [userData, setuserData] = useState(null);
+ const [expandedAccordion, setExpandedAccordion] = useState(null);
 
  const token = useSelector(state => state.userStore.token);
  const lng = useSelector(state => state.localeStore.lng);
@@ -39,6 +41,8 @@ const Profile = ({ windowSize }) => {
  const { data, isLoading, isError } = useUser(token);
 
  const dispatch = useDispatch();
+
+ const location = useLocation();
 
  useEffect(() => {
   if (data) {
@@ -51,7 +55,7 @@ const Profile = ({ windowSize }) => {
   {
    id: 'accordion1',
    title: t('my_acc'),
-   expanded: true,
+   expanded: false,
    buttons: [
     {
      id: 'btn1',
@@ -68,6 +72,8 @@ const Profile = ({ windowSize }) => {
   {
    id: 'accordion2',
    title: t('profile.orders'),
+   expanded: true,
+
    buttons: [
     {
      id: 'btn45',
@@ -79,6 +85,8 @@ const Profile = ({ windowSize }) => {
   {
    id: 'accordion3',
    title: t('profile.support'),
+   expanded: false,
+
    buttons: [
     {
      id: 'btn7',
@@ -90,21 +98,25 @@ const Profile = ({ windowSize }) => {
  ];
 
  useEffect(() => {
-  setSelectedButtonId(accordionsData.at(0).buttons.at(0).id);
-  setSelectedContent(accordionsData.at(0).buttons.at(0).content);
- }, []);
+  if (location) {
+   const { activeAccordion, activeButton } = location.state || {};
+   const selected = accordionsData?.[activeAccordion]?.buttons?.[activeButton];
+
+   if (selected) {
+    setSelectedButtonId(selected.id);
+    setSelectedContent(selected.content);
+    setExpandedAccordion(accordionsData[activeAccordion].id);
+   }
+  }
+ }, [location]);
 
  const handleButtonClick = (id, content) => {
   setSelectedButtonId(id);
   setSelectedContent(content);
  };
-
- const handleAccordionChange = accordionId => {
-  return accordionsData.some(accordion =>
-   accordion.buttons.some(button => button.id === selectedButtonId),
-  );
+ const handleAccordionChange = accordionId => (event, isExpanded) => {
+  setExpandedAccordion(accordionId);
  };
-
 
  return (
   <div className={classes.main}>
@@ -124,8 +136,8 @@ const Profile = ({ windowSize }) => {
         {accordionsData.map(accordion => (
          <Accordion
           key={accordion.id}
-          // expanded={handleAccordionChange(accordion.id)}
-         >
+          expanded={expandedAccordion === accordion.id}
+          onChange={handleAccordionChange(accordion.id)}>
           <AccordionSummary
            expandIcon={<Add fontSize='10px' />}
            aria-controls={`${accordion.id}-content`}

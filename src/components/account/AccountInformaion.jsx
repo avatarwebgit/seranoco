@@ -15,24 +15,39 @@ import {
  AccordionDetails,
  AccordionSummary,
  Typography,
+ Button,
 } from '@mui/material';
 
 import AddressTable from './accountInformation/AddressTable';
-import { getAllAddresses, removeAddress } from '../../services/api';
+import {
+ getAllAddresses,
+ removeAddress,
+ updateUser,
+ useUser,
+} from '../../services/api';
 
 import classes from './AccountInformation.module.css';
 import { Add, Delete } from '@mui/icons-material';
 import { notify } from '../../utils/helperFunctions';
-import { cartActions } from '../../store/store';
+import { cartActions, favoriteActions, userActions } from '../../store/store';
 const AccountInformaion = () => {
  const { t } = useTranslation();
  const userData = useSelector(state => state.userStore.user);
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
+ const [updateAble, setUpdateAble] = useState(false);
 
  const abortControllerRef = useRef(new AbortController());
 
  const dispatch = useDispatch();
+
+ const { data, error, isLoading, refetch } = useUser(token);
+
+ useEffect(() => {
+  if (data) {
+   dispatch(userActions.setUser(data.user));
+  }
+ }, [data]);
 
  const [addressData, setAddressData] = useState([]);
  const [user, setUser] = useState(null);
@@ -113,11 +128,27 @@ const AccountInformaion = () => {
   setEdits(prev => ({ ...prev, [field]: !prev[field] }));
  };
 
+ useEffect(() => {
+  console.log(edits);
+ }, [edits]);
+
  const handleChange = (e, field) => {
   setFields(prev =>
    prev.map(el => (el.sec === field ? { ...el, value: e.target.value } : el)),
   );
  };
+
+ useEffect(() => {
+  if (fields) {
+   const hasUserChanges = fields.some(field => {
+    if (!field.updateAble || !field.sec) return false;
+
+    const originalValue = userData?.[field.sec];
+    return field.value !== originalValue;
+   });
+   setUpdateAble(hasUserChanges);
+  }
+ }, [fields]);
 
  const hnadleDeleteAddress = async (e, token, id) => {
   e.preventDefault();
@@ -128,6 +159,27 @@ const AccountInformaion = () => {
    allAddresses();
   } else {
    notify(t('profile.err_rem_add'));
+  }
+ };
+
+ const handleUpdateProfile = async () => {
+  const payload = {
+   first_name: fields.find(field => field.sec === 'username')?.value,
+   last_name: fields.find(field => field.sec === 'lastname')?.value,
+   email: fields.find(field => field.sec === 'email')?.value,
+  };
+  const serverRes = await updateUser(token, payload);
+  setEdits({
+   username: false,
+   lastname: false,
+   email: false,
+  });
+  if (serverRes.response.ok) {
+   notify(t('profile.update_ok'));
+   setUpdateAble(false);
+   refetch();
+  } else {
+   notify(t('profile.update_err'));
   }
  };
 
@@ -148,6 +200,7 @@ const AccountInformaion = () => {
        </h3>
        <Wrapper>
         <h4 className={classes.title}>{t('profile.acc_info')}</h4>
+
         <form onSubmit={handleSubmit}>
          <div
           className={classes.wrapper}
@@ -188,6 +241,12 @@ const AccountInformaion = () => {
           </div>
          </div>
         </form>
+        <Button
+         onClick={handleUpdateProfile}
+         disabled={!updateAble}
+         className={classes.button}>
+         {t('profile.update')}
+        </Button>
        </Wrapper>
        <Wrapper>
         <h4 className={classes.title}>{t('profile.add_add')}</h4>

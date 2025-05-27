@@ -34,6 +34,7 @@ const Guid = ({ showMore = true, isHomePage = false }) => {
        title={lng === 'fa' ? el.title : el.title_en}
        description={lng === 'fa' ? el.shortDescription : el.shortDescription_en}
        href={`/${lng}/blog/${el.alias}`}
+       key={i}
       />
      );
     })}

@@ -167,7 +167,7 @@ const Header = ({ windowSize }) => {
  const getHeaderLinks = async () => {
   setHeaderData(null);
   const serverRes = await getHeaderMenus(lng);
-  // console.log(serverRes);
+
   if (serverRes.response.ok) {
    setHeaderData(serverRes.result);
   }
@@ -209,8 +209,8 @@ const Header = ({ windowSize }) => {
     }`}>
     <motion.span
      className={classes.card_action_wrapper}
-         transition={{ duration: 0 }}>
-         {}
+     transition={{ duration: 0 }}>
+     {}
      {!isSmall && (
       <>
        {token ? (
@@ -219,10 +219,7 @@ const Header = ({ windowSize }) => {
         </span>
        ) : (
         <>
-         <IconButton
-          className={classes.login_btn}
-          onClick={handleOpenModal}
-          ishomepage={isHomePage}>
+         <IconButton className={classes.login_btn} onClick={handleOpenModal}>
           <Tooltip title={t('login')} placement='top' arrow>
            {isHomePage ? (
             <Signin width={30} height={30} />

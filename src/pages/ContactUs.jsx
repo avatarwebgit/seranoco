@@ -67,13 +67,13 @@ const ContactUs = ({ windowSize }) => {
  };
 
  useEffect(() => {
-  document.title =  t('contactus');
+  document.title = t('contactus');
  }, []);
 
  useEffect(() => {
   if (basicData) {
    setData(basicData.data.at(0));
-   console.log(basicData.data.at(0));
+   basicData.data.at(0);
   }
  }, [basicData]);
 

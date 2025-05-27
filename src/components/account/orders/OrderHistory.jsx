@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { OpenInNew, ReceiptOutlined, Send } from '@mui/icons-material';
+import { Delete, OpenInNew, ReceiptOutlined } from '@mui/icons-material';
 
 import show from '../../../assets/svg/show.svg';
 
@@ -13,7 +13,7 @@ import { ReactComponent as Close } from '../../../assets/svg/close.svg';
 
 import classes from './OrderHistory.module.css';
 import { getOrderStatusDetail } from '../../../services/api';
-const OrderHistory = ({ dataProp, number }) => {
+const OrderHistory = ({ dataProp, number, deleteOrder }) => {
  const [detailsData, setDetailsData] = useState(null);
  const [totalWieght, setTotalWieght] = useState(0);
  const [data, setData] = useState(null);
@@ -261,9 +261,22 @@ const OrderHistory = ({ dataProp, number }) => {
          target='_blank'
          className={classes.link}>
          <IconButton className={classes.btn} size='large'>
-          <OpenInNew fontSize='13' sx={{ color: 'black' }} />
+          <OpenInNew sx={{ color: 'black', fontSize: '25px !important' }} />
          </IconButton>
         </Link>
+       </Tooltip>
+      </td>
+      <td className={classes.td}>
+       <Tooltip
+        title={`${t('cancel')} ${t('number')} ${data.order_number}`}
+        arrow
+        placement='top'>
+        <IconButton
+         className={classes.btn}
+         size='large'
+         onClick={() => deleteOrder(data.id)}>
+         <Delete sx={{ color: 'black', fontSize: '25px !important' }} />
+        </IconButton>
        </Tooltip>
       </td>
      </tr>

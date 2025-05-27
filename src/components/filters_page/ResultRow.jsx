@@ -67,7 +67,7 @@ const ResultRow = ({ dataProp }) => {
  };
 
  const handleSendShoppingCart = async (el, variation, quantity) => {
-  console.log(el.id, +variation, quantity);
+  el.id, +variation, quantity;
 
   try {
    const serverRes = await sendShoppingCart(token, el.id, +variation, quantity);
@@ -75,7 +75,7 @@ const ResultRow = ({ dataProp }) => {
     dispatch(drawerActions.open());
    }
   } catch (err) {
-   //  console.log(err);
+   //  (err);
   } finally {
    notify(t('orders.ok'));
   }
@@ -121,7 +121,6 @@ const ResultRow = ({ dataProp }) => {
          <td className={classes.img_wrapper}>
           <img
            src={el?.primary_image}
-           alt={el.details}
            onLoad={() => setIsLoadingImage(false)}
            loading='lazy'
            style={{ maxHeight: '70px' }}

@@ -15,7 +15,7 @@ import { notify } from '../../utils/helperFunctions';
 
 import { accesModalActions, signupActions } from '../../store/store';
 
-import { getUserTokenGoogle, login, useUser } from '../../services/api';
+import { getUserTokenGoogle, login } from '../../services/api';
 
 import { ReactComponent as Close } from '../../assets/svg/close.svg';
 import logo from '../../assets/images/logo_trasnparent.png';
@@ -39,12 +39,6 @@ const Login = () => {
 
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
-
-//  const googleLogin = useGoogleLogin({
-//   onSuccess: token => console.log(token),
-//   flow: 'auth-code',
-//   login_hint: '',
-//  });
 
  const inputStyles = {
   m: '0.5rem 0',

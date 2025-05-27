@@ -26,8 +26,6 @@ const ResultMobile = ({ dataProps }) => {
  }, [dataProps]);
 
  const handleSendShoppingCart = async (el, variation, quantity) => {
-  console.log(el, variation, quantity);
-  console.log(el.id, +variation, quantity);
 
   try {
    const serverRes = await sendShoppingCart(token, el.id, +variation, quantity);

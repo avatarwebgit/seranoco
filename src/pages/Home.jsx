@@ -16,7 +16,7 @@ import { favoriteActions } from '../store/store';
 const Home = ({ windowSize }) => {
  const dispatch = useDispatch();
  const token = useSelector(state => state.userStore.token);
- const { data, error, isLoading } = useUser(token);
+ const { data, error, isLoading,refetch } = useUser(token);
 
  useEffect(() => {
   if (data) {
