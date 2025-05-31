@@ -5,7 +5,7 @@ import { getOrderStatusDetail, useBasicInformation } from '../services/api';
 import { useParams } from 'react-router-dom';
 import { formatNumber, notify } from '../utils/helperFunctions';
 import classes from './Factor.module.css';
-import html2pdf from 'html2pdf.js'; // Import the html2pdf library
+import html2pdf from 'html2pdf.js';
 
 const Factor = () => {
  const [detailsData, setDetailsData] = useState(null);
@@ -72,41 +72,28 @@ const Factor = () => {
  }
 
  useEffect(() => {
-  if (detailsData) {
-   calculateTotalProductWeight(detailsData);
-   const total = detailsData.products
-    .map(item => item.selected_quantity)
-    .filter(q => q !== undefined && q !== null);
-
-   const numericquantities = total.map(el => {
-    return +el;
-   });
-   const sumOfTotal = numericquantities.reduce(
-    (accumulator, currentValue) => accumulator + currentValue,
-    0,
-   );
-   setTotalQuantity(sumOfTotal);
-  }
-
   if (detailsData && componentRef.current) {
-   const element = componentRef.current;
-   const opt = {
-    margin: 10,
-    filename: `factor-${detailsData.order.order_number}.pdf`,
+   const timeout = setTimeout(() => {
+    const element = componentRef.current;
+    const opt = {
+     margin: 10,
+     filename: `factor-${detailsData.order.order_number}.pdf`,
+     image: { type: 'jpeg', quality: 0.98 },
+     html2canvas: { scale: 2 },
+     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    };
 
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-   };
+    html2pdf()
+     .from(element)
+     .set(opt)
+     .save()
+     .catch(err => {
+      console.error('Error generating PDF:', err);
+      notify('Failed to download PDF. Please try again.');
+     });
+   }, 300); // Delay to ensure rendering
 
-   //   html2pdf()
-   //    .from(element)
-   //    .set(opt)
-   //    .save()
-   //    .catch(err => {
-   //     console.error('Error generating PDF:', err);
-   //     notify('Failed to download PDF. Please try again.');
-   //    });
+   return () => clearTimeout(timeout);
   }
  }, [detailsData]);
 
@@ -307,7 +294,7 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            {prod.detail}
+            {prod.shape}
            </span>
            <span
             style={{
@@ -433,8 +420,8 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
-             fontWeight: 'bold',
-          direction:'ltr'
+          fontWeight: 'bold',
+          direction: 'ltr',
          }}>
          {+totalWeight.toFixed(3)}&nbsp;Ct
         </span>

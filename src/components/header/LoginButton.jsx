@@ -10,7 +10,7 @@ import { AccountCircle, Grading, Logout } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { userActions } from '../../store/store';
+import { cartActions, userActions } from '../../store/store';
 const LoginButton = () => {
  const [anchorEl, setAnchorEl] = useState(null);
  const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,6 +52,8 @@ const LoginButton = () => {
 
  const handleLogout = () => {
   dispatch(userActions.reset());
+  dispatch(cartActions.set([]));
+  dispatch(cartActions.setTotalPrice(0));
  };
  return (
   <div style={{ marginTop: '8px' }}>
@@ -80,7 +82,7 @@ const LoginButton = () => {
      <MenuItem
       sx={{ fontSize: '.6rem', padding: '3px 10px' }}
       onClick={handleLogout}>
-      <Logout sx={{ fontSize: '20px' }} /> Logout
+      <Logout sx={{ fontSize: '20px' }} /> {t('profile.log_out')}
      </MenuItem>
     </Menu>
    </Dropdown>

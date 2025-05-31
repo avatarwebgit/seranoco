@@ -90,6 +90,7 @@ const ContactUs = ({ windowSize }) => {
  };
 
  const handleSubmit = e => {
+  e.preventDefault();
   const isNameValid = name.trim().length > 0;
   const isEmailValid = email.trim().length > 0;
   const isMessageValid = desc.trim().length > 0;
@@ -177,15 +178,15 @@ const ContactUs = ({ windowSize }) => {
         <TextField
          label={t('signup.email')}
          name='email'
-         type='number'
+         type='email'
          onChange={e => setEmail(e.target.value)}
          sx={inputStyles}
          required
         />
         <TextField
          label={t('signup.pnumber')}
-         name='email'
-         type='email'
+         name='nubmer'
+         type='nubmer'
          onChange={e => {
           const value = e.target.value;
           const numericValue = value.replace(/\D/g, '');

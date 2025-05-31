@@ -900,13 +900,13 @@ export const getSingleArticles = async alias => {
  return { response, result };
 };
 
-export const contactUsSend = async (name, email, message, phone) => {
+export const contactUsSend = async (name, email, message, mobile) => {
  const response = await fetch(`${baseUrl}/contact-us/send/request`, {
   method: 'POST',
   headers: {
    'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ name, email, message, phone }),
+  body: JSON.stringify({ name, email, message, mobile }),
  });
  const result = await response.json();
  return { response, result };

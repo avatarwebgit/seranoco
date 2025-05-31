@@ -114,7 +114,7 @@ const ResultRow = ({ dataProp }) => {
      {data &&
       data.map(el => {
        return (
-        <tr className={classes.tr} key={el.id} style={{ height: '80px' }}>
+        <tr className={classes.tr} key={el?.id} style={{ height: '80px' }}>
          {/* Image Column */}
          <td className={classes.img_wrapper}>
           <img
@@ -127,16 +127,16 @@ const ResultRow = ({ dataProp }) => {
          {/* Detail Column */}
          <td className={classes.detail_text}>
           <Link
-           to={`/${lng}/products/${el.alias}/${el.variation_id}`}
+           to={`/${lng}/products/${el?.alias}/${el?.variation_id}`}
            target='_blank'
            className={classes.link}>
-           {el.details}
+           {el?.details}
           </Link>
          </td>
          {/* Size */}
-         <td className={classes.detail_text}>{el.size}</td>
+         <td className={classes.detail_text}>{el?.size}</td>
          {/* Color */}
-         <td className={classes.detail_text}>{el.color}</td>
+         <td className={classes.detail_text}>{el?.color}</td>
          {/* Quality */}
 
          {/* AGTA */}
@@ -146,7 +146,7 @@ const ResultRow = ({ dataProp }) => {
             .name
           }
          </td>
-         <td className={classes.detail_text}>{el.country}</td>
+         <td className={classes.detail_text}>{el?.country}</td>
          {/* Price */}
          <td
           className={classes.detail_text}
@@ -155,17 +155,17 @@ const ResultRow = ({ dataProp }) => {
           }}>
           {lng === 'en' ? (
            <>
-            {+el.sale_price}
+            {+el?.sale_price}
             {t('m_unit')}
            </>
           ) : (
            <>
             <>
-             {formatNumber(el.sale_price * euro)}&nbsp;
+             {formatNumber(el?.sale_price * euro)}&nbsp;
              {t('m_unit')}
             </>
             <br />
-            (€&nbsp; {+el.sale_price?.toFixed(2)})
+            (€&nbsp; {+el?.sale_price?.toFixed(2)})
            </>
           )}
           &nbsp;
@@ -174,19 +174,19 @@ const ResultRow = ({ dataProp }) => {
          <td className={classes.detail_text}>
           <div className={classes.quantity_controls}>
            <p className={classes.totoal_quantity}>
-            {quantities[el.variation_id] || 0}
+            {quantities[el?.variation_id] || 0}
            </p>
            <span className={classes.button_wrapper}>
             <IconButton
              className={classes.action_btn}
              onClick={() => handleAddQuantity(el)}
-             disabled={el.quantity === 0}>
+             disabled={el?.quantity === 0}>
              <Plus width={20} height={20} />
             </IconButton>
             <IconButton
              className={classes.action_btn}
              onClick={() => handleReduceQuantity(el)}
-             disabled={quantities[el.id] === 0}>
+             disabled={quantities[el?.id] === 0}>
              <Minus width={20} height={20} />
             </IconButton>
            </span>
@@ -200,12 +200,12 @@ const ResultRow = ({ dataProp }) => {
           }}>
           &nbsp;
           {lng === 'en'
-           ? quantities[el.variation_id]
-             ? (+quantities[el.variation_id] * +el.price).toFixed(2)
+           ? quantities[el?.variation_id]
+             ? (+quantities[el?.variation_id] * +el?.price).toFixed(2)
              : 0
-           : quantities[el.variation_id]
+           : quantities[el?.variation_id]
            ? formatNumber(
-              Math.round(quantities[el.variation_id] * +el.price * euro),
+              Math.round(quantities[el?.variation_id] * +el?.price * euro),
              )
            : 0}
           &nbsp;
@@ -220,8 +220,8 @@ const ResultRow = ({ dataProp }) => {
              onClick={() => {
               handleSendShoppingCart(
                el,
-               el.variation_id,
-               quantities[el.variation_id] || 1,
+               el?.variation_id,
+               quantities[el?.variation_id] || 1,
               );
              }}>
              {el?.variation?.quantity === 0

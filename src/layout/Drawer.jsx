@@ -113,7 +113,7 @@ const Drawer = ({ children, size }) => {
       <span>
        {cart.totalPrice && lng !== 'fa'
         ? cart?.totalPrice?.toFixed(2)
-        : formatNumber(cart.totalPrice * cart.euro)}
+        : formatNumber(Math.round(cart.totalPrice * cart.euro))}
        &nbsp;
        {t('m_unit')}
       </span>

@@ -170,20 +170,6 @@ const SpecialStones = ({ windowSize }) => {
     setSizeData(serverRes.result.sizes);
     setShapesData(serverRes.result.shapes);
     setProductDetails(serverRes.result.data);
-    // if (shapeFormEntries) {
-    //  setProductDetails((prevData = []) => {
-    //   const newItems = Array.isArray(serverRes.result.data)
-    //    ? serverRes.result.data
-    //    : [];
-    //   const updatedData = prevData.filter(prevItem =>
-    //    newItems.some(newItem => newItem.id === prevItem.id),
-    //   );
-    //   const filteredNewItems = newItems.filter(
-    //    newItem => !prevData.some(prevItem => prevItem.id === newItem.id),
-    //   );
-    //   return [...updatedData, ...filteredNewItems];
-    //  });
-    // }
    }
   } catch (error) {
    if (error.name !== 'AbortError') {
@@ -223,7 +209,7 @@ const SpecialStones = ({ windowSize }) => {
     setShapesData(serverRes.result.shapes);
     setGroupColors(serverRes.result.group_colors);
     setSizeData(serverRes.result.sizes);
-    setProductDetails(serverRes.result.data);
+    // setProductDetails(serverRes.result.data);
    }
   } catch (error) {
    setIsLoadingShapes(false);
@@ -304,33 +290,6 @@ const SpecialStones = ({ windowSize }) => {
   setIsFilteredProductsLoading(true);
   setIsLoading(true);
  };
-
- //  useEffect(() => {
- //   const getSizes = async () => {
- //    try {
- //     const serverRes = await getFilteredSizes(
- //      selectedIds,
- //      shapeFormEntries || 46,
- //      {},
- //     );
- //     if (serverRes.response.ok) {
- //      setSizeData(serverRes.result.data.sizes);
- //     }
- //    } catch (error) {
- //     if (error.name !== 'AbortError') {
- //      // console.error('Fetch error:', error);
- //     }
- //    } finally {
- //     setIsFilteredProductsLoading(false);
- //     setIsLoading(false);
- //    }
- //   };
- //   if (selectedIds.length > 0) {
- //    setChunkedData([]);
- //    setTableData([]);
- //    getSizes();
- //   }
- //  }, [selectedIds, shapeFormEntries]);
 
  const prevDimensionEntriesRef = useRef(dimensionEntries);
  const prevSelectedIdsRef = useRef(selectedIds);
