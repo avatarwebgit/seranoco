@@ -203,7 +203,7 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('factor.type')}
+         {t('shape')}
         </span>
         <span
          style={{
@@ -294,7 +294,7 @@ const Factor = () => {
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
-            {prod.shape}
+            {lng === 'fa' ? prod.shape_fa : prod.shape}
            </span>
            <span
             style={{
@@ -369,6 +369,7 @@ const Factor = () => {
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
             <strong>
+             {console.log(euro)}
              {lng === 'fa'
               ? `${formatNumber(
                  +prod.sale_price * euro * product.selected_quantity,

@@ -77,12 +77,14 @@ const OrderStatus = () => {
 
  const handleDeleteOrder = async orderId => {
   const serverRes = await removeOrder(token, orderId);
-  notify(t('orders.successfull'));
-  // if (serverRes.response.ok) {
-  //  notify(t('orders.successfull'));
-  // } else {
-  //  notify(t('orders.error'));
-  // }
+  if (serverRes.response.ok) {
+   notify(t('orders.successfull'));
+   const newOrders = orders.filter(order => order.id !== orderId);
+   setOrders(newOrders);
+   setDeleteModalOpen(false);
+  } else {
+   notify(t('orders.error'));
+  }
  };
 
  const handleColoseDeleteModal = () => setDeleteModalOpen(false);

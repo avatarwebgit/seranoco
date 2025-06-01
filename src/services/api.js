@@ -958,16 +958,20 @@ export const getOrderStatusDetail = async (token, id) => {
  return { response, result };
 };
 
-export const removeOrder = async (token, id) => {
- console.log(id);
- //  const response = await fetch(`${baseUrl}/order/${id}`, {
- //   method: 'Delete',
- //   headers: {
- //    Authorization: `bearer ${token}`,
- //   },
- //  });
- //  const result = await response.json();
- //  return { response, result };
+export const removeOrder = async (token, order_id) => {
+ const response = await fetch(`${baseUrl}/orders/remove`, {
+  method: 'POST',
+  headers: {
+   Authorization: `bearer ${token}`,
+   'Content-Type': 'application/json',
+   Accept: 'application/json',
+  },
+  body: JSON.stringify({
+   order_id,
+  }),
+ });
+ const result = await response.json();
+ return { response, result };
 };
 
 export const verifyOTP = async (otp, cellphone) => {
