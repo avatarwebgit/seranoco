@@ -369,12 +369,14 @@ const Factor = () => {
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
             <strong>
-             {console.log(euro)}
              {lng === 'fa'
               ? `${formatNumber(
                  +prod.sale_price * euro * product.selected_quantity,
                 )} ${t('m_unit')}`
-              : `${prod.sale_price * product.selected_quantity} ${t('m_unit')}`}
+              : `${
+                 Math.round(prod.sale_price * product.selected_quantity * 10) /
+                 10
+                } ${t('m_unit')}`}
             </strong>
            </span>
           </span>
@@ -468,7 +470,7 @@ const Factor = () => {
             </>
            ) : (
             <>
-             {detailsData.order.paying_amount}
+             {Math.round(detailsData.order.paying_amount * 10) / 10}
              {t('m_unit')}
             </>
            )}
@@ -651,6 +653,7 @@ const Factor = () => {
           justifyContent: 'center',
           fontWeight: 'bold',
          }}>
+         {console.log(detailsData)}
          {lng === 'fa' ? (
           <>
            {formatNumber(+detailsData?.order.paying_amount_fa)}
