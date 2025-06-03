@@ -52,7 +52,7 @@ const Factor = () => {
 
  function calculateTotalProductWeight(data) {
   let totalWeight = 0;
-
+  let totalQuantity = 0;
   data.products.forEach(item => {
    if (
     item.product &&
@@ -60,38 +60,42 @@ const Factor = () => {
     item.product.variation.weight
    ) {
     const weightString = item.product.variation.weight.trim();
+    console.log(weightString);
     const numericWeight = parseFloat(weightString.split(' ')[0]);
 
     if (!isNaN(numericWeight)) {
-     totalWeight += numericWeight;
+     totalWeight += numericWeight * item.selected_quantity;
+     totalQuantity += item.selected_quantity;
     }
    }
   });
 
   setTotalWeight(totalWeight);
+  setTotalQuantity(totalQuantity);
  }
 
  useEffect(() => {
   if (detailsData && componentRef.current) {
+   calculateTotalProductWeight(detailsData);
+   console.log(detailsData);
    const timeout = setTimeout(() => {
-    const element = componentRef.current;
-    const opt = {
-     margin: 10,
-     filename: `factor-${detailsData.order.order_number}.pdf`,
-     image: { type: 'jpeg', quality: 0.98 },
-     html2canvas: { scale: 2 },
-     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    };
-
-    html2pdf()
-     .from(element)
-     .set(opt)
-     .save()
-     .catch(err => {
-      console.error('Error generating PDF:', err);
-      notify('Failed to download PDF. Please try again.');
-     });
-   }, 300); // Delay to ensure rendering
+    //     const element = componentRef.current;
+    //     const opt = {
+    //      margin: 10,
+    //      filename: `factor-${detailsData.order.order_number}.pdf`,
+    //      image: { type: 'jpeg', quality: 0.98 },
+    //      html2canvas: { scale: 2 },
+    //      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    //     };
+    //     html2pdf()
+    //      .from(element)
+    //      .set(opt)
+    //      .save()
+    //      .catch(err => {
+    //       console.error('Error generating PDF:', err);
+    //       notify('Failed to download PDF. Please try again.');
+    //      });
+   }, 300);
 
    return () => clearTimeout(timeout);
   }
@@ -196,14 +200,14 @@ const Factor = () => {
      </tr>
      <tr className={classes.productInfoWrapper}>
       <td>
-       <span className={classes.productInfoHeader}>
+       <span className={classes.productInfoDetails}>
         <span style={{ border: 'none' }}>{t('factor.Item')}</span>
         <span
          style={{
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('shape')}
+         {t('factor.type')}
         </span>
         <span
          style={{
@@ -266,6 +270,7 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
           color: 'red',
+          width: '5%',
          }}>
          {t('factor.off')}
         </span>
@@ -273,6 +278,7 @@ const Factor = () => {
          style={{
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
+          width: '12%',
          }}>
          {t('factor.Total_Amount')}
         </span>
@@ -330,7 +336,7 @@ const Factor = () => {
              borderLeft: lng !== 'fa' && '1px solid black',
             }}>
             {+(product.selected_quantity * weight).toFixed(3)}
-           </span>{' '}
+           </span>
            <span
             style={{
              borderRight: lng === 'fa' && '1px solid black',
@@ -360,6 +366,7 @@ const Factor = () => {
             style={{
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
+             width: '5%',
             }}>
             ---
            </span>
@@ -367,6 +374,7 @@ const Factor = () => {
             style={{
              borderRight: lng === 'fa' && '1px solid black',
              borderLeft: lng !== 'fa' && '1px solid black',
+             width: '12%',
             }}>
             <strong>
              {lng === 'fa'
@@ -451,6 +459,7 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
+          width: '5%',
          }}></span>
         {detailsData && (
          <span
@@ -458,6 +467,7 @@ const Factor = () => {
           style={{
            borderRight: lng === 'fa' && '1px solid black',
            borderLeft: lng !== 'fa' && '1px solid black',
+           width: '12.1%',
           }}>
           <strong>
            {lng === 'fa' ? (
@@ -530,21 +540,27 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
-         }}></span>
+          color: 'red',
+          whiteSpace: 'nowrap',
+          display: 'flex',
+          alignItems: 'center',
+         }}>
+         {t('factor.club')}
+        </span>
         <span
          className={classes.totalInfo}
          style={{
           border: 'none',
-          color: 'red',
-         }}>
-         {t('factor.club')}
-        </span>
+
+          width: '5%',
+         }}></span>
         {detailsData && (
          <span
           className={classes.totalInfo}
           style={{
            borderRight: lng === 'fa' && '1px solid black',
            borderLeft: lng !== 'fa' && '1px solid black',
+           width: '12.1%',
            display: 'flex',
            alignItems: 'center',
            justifyContent: 'center',
@@ -605,14 +621,18 @@ const Factor = () => {
          className={classes.totalInfo}
          style={{
           border: 'none',
-         }}></span>
+          width: '5%',
+          whiteSpace: 'nowrap',
+          display: 'flex',
+          alignItems: 'center',
+         }}>
+         {t('factor.shipping')}
+        </span>
         <span
          className={classes.totalInfo}
          style={{
           border: 'none',
-         }}>
-         {t('factor.shipping')}
-        </span>
+         }}></span>
         {detailsData && (
          <span
           className={classes.totalInfo}
@@ -622,6 +642,7 @@ const Factor = () => {
            display: 'flex',
            alignItems: 'center',
            justifyContent: 'center',
+           width: '12.1%',
           }}>
           {shippingCost}
          </span>
@@ -637,12 +658,19 @@ const Factor = () => {
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
         <span
          className={classes.totalInfo}
-         style={{ border: 'none', fontWeight: 'bold' }}>
+         style={{
+          border: 'none',
+          whiteSpace: 'nowrap',
+          display: 'flex',
+          alignItems: 'center',
+         }}>
          {t('orders.total_payment')}
         </span>
+        <span
+         className={classes.totalInfo}
+         style={{ border: 'none', fontWeight: 'bold', width: '5%' }}></span>
         <span
          className={classes.totalInfo}
          style={{
@@ -652,19 +680,23 @@ const Factor = () => {
           alignItems: 'center',
           justifyContent: 'center',
           fontWeight: 'bold',
+          width: '12.1%',
          }}>
-         {console.log(detailsData)}
          {lng === 'fa' ? (
           <>
            {formatNumber(+detailsData?.order.paying_amount_fa)}
            <br />
            {t('m_unit')}
            <br />
-           (€&nbsp;{detailsData?.order.paying_amount})
+           (€&nbsp;
+           {(Math.round(+detailsData.order.paying_amount * 10) / 10).toFixed(
+            2,
+           )}{' '}
+           ${t('m_unit')})
           </>
          ) : (
           <>
-           {detailsData?.order.paying_amount}
+           {(Math.round(+detailsData.order.paying_amount * 10) / 10).toFixed(2)}
            {t('m_unit')}
           </>
          )}

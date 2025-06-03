@@ -68,28 +68,28 @@ const ResultMobile = ({ dataProps }) => {
           </p>
          </span>
          <span className={classes.value_wrapper}>
-          <p className={classes.detail_text}>{el.details || 'none'}</p>
-          <p className={classes.detail_text}>{el.size || 'none'}</p>
-          <p className={classes.detail_text}>{el.color || 'none'}</p>
+          <p className={classes.detail_text}>{el?.details || 'none'}</p>
+          <p className={classes.detail_text}>{el?.size || 'none'}</p>
+          <p className={classes.detail_text}>{el?.color || 'none'}</p>
           <p className={classes.detail_text}>
            {el?.attribute?.find(attr => attr.attribute.name === 'Details').value
             .name || 'none'}
           </p>
-          <p className={classes.detail_text}>{el.country || 'none'}</p>
+          <p className={classes.detail_text}>{el?.country || 'none'}</p>
           <p className={classes.detail_text}>
            {lng === 'en' ? (
             <>
-             {+el.sale_price?.toFixed(2)}
+             {+el?.sale_price?.toFixed(2)}
              {t('m_unit')}
             </>
            ) : (
             <>
              <>
-              {formatNumber(+el.sale_price * euro)}&nbsp;
+              {formatNumber(+el?.sale_price * euro)}&nbsp;
               {t('m_unit')}
              </>
              <br />
-             (€&nbsp; {+el.sale_price?.toFixed(2)})
+             (€&nbsp; {+el?.sale_price?.toFixed(2)})
             </>
            )}
           </p>
@@ -97,7 +97,7 @@ const ResultMobile = ({ dataProps }) => {
         </span>
         <button
          className={classes.shop_btn}
-         onClick={e => handleSendShoppingCart(el, el.variation_id, 1)}>
+         onClick={e => handleSendShoppingCart(el, el?.variation_id, 1)}>
          {t('add_to_card')}
         </button>
        </div>

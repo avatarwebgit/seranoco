@@ -85,6 +85,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        </IconButton>
        {detailsData && (
         <>
+         {console.log(detailsData)}
          <div
           className={classes.modal_content}
           dir={lng === 'fa' ? 'rtl' : 'ltr'}>
@@ -146,7 +147,9 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
              readOnly
              value={
               lng !== 'fa'
-               ? `${detailsData.order.total_amount}  ${t('m_unit')}`
+               ? `${(
+                  Math.round(+detailsData.order.total_amount * 10) / 10
+                 ).toFixed(2)}  ${t('m_unit')}`
                : `${formatNumber(detailsData.order.total_amount_fa)} ${t(
                   'm_unit',
                  )}`
@@ -158,7 +161,9 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
              readOnly
              value={
               lng !== 'fa'
-               ? `${detailsData.order.paying_amount}  ${t('m_unit')}`
+               ? `${(
+                  Math.round(+detailsData.order.paying_amount * 10) / 10
+                 ).toFixed(2)}  ${t('m_unit')}`
                : `${formatNumber(detailsData.order.paying_amount_fa)} ${t(
                   'm_unit',
                  )}`

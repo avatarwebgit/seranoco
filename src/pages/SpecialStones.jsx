@@ -363,6 +363,8 @@ const SpecialStones = ({ windowSize }) => {
  }, [windowSize]);
 
  const handlePaginationChange = (e, value) => {
+  setProductDetails([]);
+
   handleGetFilterProducts(
    shapeFormEntries,
    Object.keys(dimensionEntries),
