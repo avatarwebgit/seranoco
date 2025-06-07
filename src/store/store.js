@@ -11,7 +11,6 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-
 import localeSlice from './slices/localeSlice';
 import productSlice from './slices/productSlice';
 import productDetailSlice from './slices/productDetail';
@@ -22,6 +21,7 @@ import cartSlice from './slices/cartSlice';
 import userSlice from './slices/userSlice';
 import favoriteSlice from './slices/favorites';
 import categorySlice from './slices/categorySlice';
+import walletSlice from './slices/walletSlice';
 
 // Persistence Configuration
 const persistConfig = {
@@ -41,6 +41,7 @@ const rootReducer = {
  userStore: userSlice.reducer,
  favoriteStore: favoriteSlice.reducer,
  categoryStore: categorySlice.reducer,
+ walletStore: walletSlice.reducer,
 };
 
 const persistedReducer = persistReducer(
@@ -58,9 +59,6 @@ const store = configureStore({
   }),
 });
 
-// Create Persistor
-const persistor = persistStore(store);
-
 export const localeActions = localeSlice.actions;
 export const productActions = productSlice.actions;
 export const productDetailActions = productDetailSlice.actions;
@@ -71,5 +69,8 @@ export const cartActions = cartSlice.actions;
 export const userActions = userSlice.actions;
 export const favoriteActions = favoriteSlice.actions;
 export const categoryActions = categorySlice.actions;
+export const walletActions = walletSlice.actions;
+
+const persistor = persistStore(store);
 
 export { store, persistor };

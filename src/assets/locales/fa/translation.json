@@ -316,5 +316,12 @@
 
  "continue": "ادامه خرید",
  "cancel": "لغو سفارش",
- "number": "شماره"
+ "number": "شماره",
+ "transaction": "تراکنش ها",
+ "wallet": "کیف پول",
+ "balance": "موجودی کیف پول ",
+ "changes": "تغییرات ",
+ "transaction_type": "نوع",
+ "date": "تاریخ",
+ "pay_by_wallet": "استفاده از موجودی کیف پول"
 }

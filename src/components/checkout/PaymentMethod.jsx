@@ -11,6 +11,7 @@ const PaymentMethod = ({ dataProps }) => {
  const lng = useSelector(state => state.localeStore.lng);
  const cart = useSelector(state => state.cartStore);
  const token = useSelector(state => state.userStore.token);
+ const walletStatus = useSelector(state => state.walletStore.useWallet);
 
  const dispatch = useDispatch();
  const navigate = useNavigate();
@@ -31,17 +32,28 @@ const PaymentMethod = ({ dataProps }) => {
     cart.selectedAddress,
     id,
     cart.finalPayment * cart.euro,
+    walletStatus,
    );
   } catch {
   } finally {
   }
  };
 
- const sendData = async (token, address, method, amount) => {
-  const serverRes = await sendCartPrice(token, address, method, amount);
+ useEffect(() => {
+  console.log(walletStatus);
+ }, [walletStatus]);
 
-   if (serverRes.response.ok) {
-    navigate(`/fa/order/pay/${serverRes.result.order.id}`);
+ const sendData = async (token, address, method, amount, use_wallet) => {
+  const serverRes = await sendCartPrice(
+   token,
+   address,
+   method,
+   amount,
+   use_wallet,
+  );
+
+  if (serverRes.response.ok) {
+   navigate(`/fa/order/pay/${serverRes.result.order.id}`);
   } else {
    notify(' خطایی رخ داد لطفا دوباره تلاش کنید');
   }
@@ -51,8 +63,7 @@ const PaymentMethod = ({ dataProps }) => {
   <div className={classes.wrapper}>
    {data &&
     data.map(el => {
-
-      return (
+     return (
       <>
        {el.id !== 10 ? (
         <>
@@ -85,7 +96,7 @@ const PaymentMethod = ({ dataProps }) => {
             loading='lazy'
            />
           </div>
-          { el.title}
+          {el.title}
          </button>
         </>
        )}

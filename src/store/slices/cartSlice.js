@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
  products: [],
  totalPrice: 0,
+ totalPriceBeforeDiscount: 0,
  finalCart: [],
  finalPayment: 0,
  euro: 0,
@@ -83,6 +84,12 @@ const cartSlice = createSlice({
 
   calculateTotalPrice(state) {
    state.totalPrice = state.products.reduce((total, product) => {
+    return total + product.selected_quantity * product.sale_price;
+   }, 0);
+  },
+
+  calculateTotalPriceBeforeDiscout(state) {
+   state.totalPriceBeforeDiscount = state.products.reduce((total, product) => {
     return total + product.selected_quantity * product.sale_price;
    }, 0);
   },

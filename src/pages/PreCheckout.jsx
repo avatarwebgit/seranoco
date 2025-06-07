@@ -93,11 +93,7 @@ const PreCheckout = ({ windowSize }) => {
    const products = card.products.filter(el => el.selected_quantity !== 0);
    dispatch(cartActions.setFinalCart(products));
    setStep(step < 2 ? step + 1 : 2);
-   //  if (products) {
-   //   products.map(product => {
-   //    handleSendShoppingCart(token, product);
-   //   });
-   //  }
+
   }
   if (step === 1 && isDataValid) {
    setStep(step < 2 ? step + 1 : 2);

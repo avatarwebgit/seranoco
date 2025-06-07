@@ -87,10 +87,10 @@ function App() {
 
  useEffect(() => {
   if (basicData) {
-      dispatch(cartActions?.setEuro(basicData?.data[0].price_euro));
+   dispatch(cartActions?.setEuro(basicData?.data[0].price_euro));
   }
  }, [basicData]);
-    
+
  useEffect(() => {
   const updateMetaTag = () => {
    const lang = i18next.language;
@@ -110,7 +110,7 @@ function App() {
    }
   };
 
-  updateMetaTag(); // Initial check
+  updateMetaTag();
 
   const handleLangChanged = () => {
    updateMetaTag();
@@ -122,6 +122,12 @@ function App() {
    i18next.off('languageChanged', handleLangChanged);
   };
  }, [lng]);
+
+ useEffect(() => {
+  if (!token) {
+   dispatch(cartActions.set([]));
+  }
+ }, [token]);
 
  return (
   <Suspense fallback={<Loading />}>

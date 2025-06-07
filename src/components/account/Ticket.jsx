@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { Button, TextField } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { Button, TextareaAutosize, TextField } from '@mui/material';
 
-import Wrapper from './Wrapper';
 import Body from '../filters_page/Body';
 import Card from '../filters_page/Card';
-import loadingSpinner from '../../components/common/LoadingSpinner';
 import TicketHistory from './ticket/TicketHistory';
+import Wrapper from './Wrapper';
 
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 

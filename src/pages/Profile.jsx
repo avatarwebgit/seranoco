@@ -28,6 +28,7 @@ import classes from './Profile.module.css';
 import Favorites from '../components/account/Favorites';
 import MobileProfile from './MobileProfile';
 import { useLocation } from 'react-router-dom';
+import Transactions from '../components/account/Transactions';
 const Profile = ({ windowSize }) => {
  const [selectedButtonId, setSelectedButtonId] = useState(null);
  const [selectedContent, setSelectedContent] = useState(null);
@@ -79,6 +80,18 @@ const Profile = ({ windowSize }) => {
      id: 'btn45',
      title: t('profile.order_status'),
      content: <OrderStatus />,
+    },
+   ],
+  },
+  {
+   id: 'transaction',
+   title: t('transaction'),
+   expanded: false,
+   buttons: [
+    {
+     id: 'btn7',
+     title: t('transaction'),
+     content: <Transactions />,
     },
    ],
   },

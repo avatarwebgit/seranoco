@@ -666,6 +666,7 @@ export const sendCartPrice = async (
  address_id,
  payment_method,
  amount,
+ use_wallet,
 ) => {
  const response = await fetch(`${baseUrl}/payment`, {
   method: 'POST',
@@ -673,7 +674,7 @@ export const sendCartPrice = async (
    'Content-Type': 'application/json',
    Authorization: `Bearer ${token}`,
   },
-  body: JSON.stringify({ address_id, payment_method, amount }),
+  body: JSON.stringify({ address_id, payment_method, amount, use_wallet }),
  });
  const result = await response.json();
  return { response, result };

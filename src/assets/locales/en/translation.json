@@ -316,5 +316,12 @@
 
  "continue": "Continue",
  "cancel": "Cancel order",
- "number": "Number"
+ "number": "Number",
+ "transaction": "Transactions",
+ "wallet": "Wallet",
+ "balance": "Wallet Balance ",
+ "changes": "Changes",
+ "transaction_type": "Type",
+ "date": "Date",
+ "pay_by_wallet": " Use Wallet Balance "
 }
