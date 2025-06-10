@@ -69,6 +69,7 @@ const Footer = () => {
              );
             }
            })}
+          <a href={`/${lng}/contact-us`}>{t('contactus')}</a>
          </span>
          <span style={{ textAlign: `${lng === 'fa' ? 'right' : 'left'}` }}>
           <p className={classes.title}>
