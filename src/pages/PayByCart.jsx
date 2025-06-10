@@ -20,7 +20,7 @@ import { formatNumber, notify } from '../utils/helperFunctions';
 
 import classes from './PayByCart.module.css';
 import { sendcardPaymentData } from '../services/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 const PayByCart = ({ widnowSize }) => {
  const [billNo, setBillNo] = useState('554');
  const [DocType, setDocType] = useState(null);
@@ -48,6 +48,8 @@ const PayByCart = ({ widnowSize }) => {
 
  const calendarRef = useRef();
  const inputRef = useRef();
+
+ const navigate = useNavigate();
 
  const { id } = useParams();
 
@@ -89,7 +91,7 @@ const PayByCart = ({ widnowSize }) => {
    amount?.trim(),
    selectedMiladiDate.trim(),
    recNo.trim(),
-   BankName?.label?.trim(),
+   BankName?.trim(),
    lastFour?.trim(),
    destCardNo?.trim(),
   ];
@@ -116,8 +118,15 @@ const PayByCart = ({ widnowSize }) => {
    );
    if (res.response.ok) {
     notify('اطلاعات با موقثیت ارسال شد .');
+    // handleNavToAcc(1, 0);
    }
   }
+ };
+
+ const handleNavToAcc = (activeAccordion, activeButton) => {
+  navigate(`/${lng}/myaccount`, {
+   state: { activeAccordion, activeButton },
+  });
  };
 
  const convertShamsiToMiladi = shamsiDate => {
@@ -270,26 +279,16 @@ const PayByCart = ({ widnowSize }) => {
         error={isError && !recNo}
         value={recNo}
        />
-       <Autocomplete
-        id='bank'
+       <TextField
+        id='bankName'
+        name='bankName'
+        label={'بانک مبدا'}
         disablePortal
         size='small'
         sx={inputStyles}
         value={BankName}
-        options={bankNames || []}
-        renderInput={params => (
-         <TextField
-          {...params}
-          label={'نام بانک'}
-          error={isError && !BankName}
-          name='bankname'
-         />
-        )}
-        onInputChange={(e, value) => {
-         setBankName(value);
-        }}
-        onChange={(e, newValue) => {
-         setBankName(newValue);
+        onChange={e => {
+         setBankName(e.target.value);
         }}
         onFocus={() => setIsError(false)}
        />

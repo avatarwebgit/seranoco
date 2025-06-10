@@ -148,6 +148,12 @@
  justify-content: space-between;
 }
 
+.skeleton {
+ width: 50% !important;
+ height: 30px !important;
+ margin-left: auto !important;
+}
+
 @media only screen and (max-width: 480px) {
  .content {
   width: 100%;

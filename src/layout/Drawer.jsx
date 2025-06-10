@@ -3,6 +3,7 @@ import {
  FormControlLabel,
  FormGroup,
  IconButton,
+ Skeleton,
  styled,
  Switch,
 } from '@mui/material';
@@ -60,7 +61,6 @@ const IOSSwitch = styled(props => (
  },
 }));
 const Drawer = ({ children, size }) => {
- const [payWithWalletChecked, setPayWithWalletChecked] = useState(false);
  const dispatch = useDispatch();
  const drawerState = useSelector(state => state.drawerStore.drawerOpen);
  const cart = useSelector(state => state.cartStore);
@@ -69,7 +69,11 @@ const Drawer = ({ children, size }) => {
  const walletBalance = useSelector(state => state.walletStore.balance);
  const walletStatus = useSelector(state => state.walletStore.useWallet);
 
+ const [isLoadingData, setIsLoadingData] = useState(true);
+
  const [productData, setProductData] = useState([]);
+
+ const [payWithWalletChecked, setPayWithWalletChecked] = useState(walletStatus);
 
  const { t } = useTranslation();
 
@@ -78,10 +82,17 @@ const Drawer = ({ children, size }) => {
  };
 
  const handleGetShoppingCart = async () => {
-  const serverRes = await getShoppingCart(token);
-  if (serverRes.response.ok) {
-   dispatch(cartActions.set(serverRes.result.cart));
-   dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
+  try {
+   setIsLoadingData(true);
+   const serverRes = await getShoppingCart(token);
+   if (serverRes.response.ok) {
+    dispatch(cartActions.set(serverRes.result.cart));
+    dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
+   }
+  } catch (error) {
+   setIsLoadingData(false);
+  } finally {
+   setIsLoadingData(false);
   }
  };
 
@@ -104,16 +115,17 @@ const Drawer = ({ children, size }) => {
   }
  }, [cart, drawerState]);
 
-//  useEffect(() => {
-//   dispatch(walletActions.setWalletUse(payWithWalletChecked));
-//   if (payWithWalletChecked) {
-//    dispatch(
-//     cartActions.setTotalPrice(Math.max(cart?.totalPrice - walletBalance, 0)),
-//    );
-//   } else {
-//    dispatch(cartActions.setTotalPrice(cart?.totalPrice));
-//   }
-//  }, [payWithWalletChecked]);
+ useEffect(() => {
+  if (walletStatus) {
+   dispatch(
+    cartActions.setTotalPriceAfterDiscout(
+     Math.max(cart?.totalPrice - walletBalance, 0),
+    ),
+   );
+  } else {
+   dispatch(cartActions.setTotalPriceAfterDiscout(cart?.totalPrice));
+  }
+ }, [cart.totalPrice, walletBalance, walletStatus]);
 
  return (
   <motion.div
@@ -148,18 +160,22 @@ const Drawer = ({ children, size }) => {
     </div>
 
     <div className={classes.wallet_wrapper}>
-     <div
-      className={classes.total}
-      style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-      <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
-      <div>
-       {cart.totalPriceBeforeDiscount && lng !== 'fa'
-        ? cart?.totalPriceBeforeDiscount?.toFixed(2)
-        : formatNumber(Math.round(cart.totalPriceBeforeDiscount * cart.euro))}
-       &nbsp;
-       {t('m_unit')}
+     {isLoadingData ? (
+      <Skeleton variant='text' className={classes.skeleton} animation='wave' />
+     ) : (
+      <div
+       className={classes.total}
+       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+       <p>{t('shopping_cart.total')}&nbsp;:&nbsp;</p>
+       <div>
+        {cart.totalPrice && lng !== 'fa'
+         ? cart?.totalPrice?.toFixed(2)
+         : formatNumber(Math.round(cart.totalPrice * cart.euro))}
+        &nbsp;
+        {t('m_unit')}
+       </div>
       </div>
-     </div>
+     )}
      <div className={classes.wallet_btn_wrapper}>
       <FormGroup
        sx={{
@@ -172,8 +188,11 @@ const Drawer = ({ children, size }) => {
        <FormControlLabel
         control={
          <IOSSwitch
-          checked={payWithWalletChecked}
-          onChange={e => setPayWithWalletChecked(e.target.checked)}
+          checked={walletStatus}
+          onChange={e => {
+           dispatch(walletActions.setWalletUse(e.target.checked));
+           dispatch(walletActions.setUserIntraction());
+          }}
          />
         }
         label={t('pay_by_wallet')}
@@ -189,22 +208,26 @@ const Drawer = ({ children, size }) => {
         }}
        />
       </FormGroup>
-      <div
-       style={{
-        direction: lng === 'fa' ? 'rtl' : 'ltr',
-        display: 'flex',
-        color: payWithWalletChecked ? '#000000' : '#616161',
-       }}>
-       <p style={{ whiteSpace: 'nowrap' }}>{t('wallet')}&nbsp;:&nbsp;</p>
-       <span dir='ltr'>
-        -
-        {walletBalance && lng !== 'fa'
-         ? walletBalance?.toFixed(2)
-         : formatNumber(Math.round(walletBalance * cart.euro))}
-        &nbsp;
-       </span>
-       {t('m_unit')}
-      </div>
+      {isLoadingData ? (
+       <Skeleton variant='text' className={classes.skeleton} animation='wave' />
+      ) : (
+       <div
+        style={{
+         direction: lng === 'fa' ? 'rtl' : 'ltr',
+         display: 'flex',
+         color: walletStatus ? '#000000' : '#616161',
+        }}>
+        <p style={{ whiteSpace: 'nowrap' }}>{t('wallet')}&nbsp;:&nbsp;</p>
+        <span dir='ltr'>
+         -
+         {walletBalance && lng !== 'fa'
+          ? walletBalance?.toFixed(2)
+          : formatNumber(Math.round(walletBalance * cart.euro))}
+         &nbsp;
+        </span>
+        {t('m_unit')}
+       </div>
+      )}
      </div>
     </div>
     <div className={classes.actions_wrapper}>
@@ -226,34 +249,34 @@ const Drawer = ({ children, size }) => {
       </IconButton>
      )}
 
-     <div
-      className={classes.total}
-      style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-      <p>{t('payment')}&nbsp;:&nbsp;</p>
-      <div>
-       {walletStatus ? (
-        <>
-         {cart.totalPrice && walletBalance && lng !== 'fa'
-          ? Math.max(cart?.totalPrice - walletBalance, 0).toFixed(2)
-          : formatNumber(
-             Math.round(
-              Math.max(cart?.totalPrice - walletBalance, 0) * cart.euro,
-             ),
-            )}
-         &nbsp;
-         {t('m_unit')}
-        </>
-       ) : (
-        <>
-         {cart.totalPrice && walletBalance && lng !== 'fa'
-          ? cart?.totalPrice?.toFixed(2)
-          : formatNumber(Math.round(cart.totalPrice * cart.euro))}
-         &nbsp;
-         {t('m_unit')}
-        </>
-       )}
+     {isLoadingData ? (
+      <Skeleton variant='text' className={classes.skeleton} animation='wave' />
+     ) : (
+      <div
+       className={classes.total}
+       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+       <p>{t('payment')}&nbsp;:&nbsp;</p>
+       <div>
+        {walletStatus ? (
+         <>
+          {cart.totalPrice && walletBalance && lng !== 'fa'
+           ? cart.totalPriceAfterDiscount.toFixed(2)
+           : formatNumber(Math.round(cart.totalPriceAfterDiscount * cart.euro))}
+          &nbsp;
+          {t('m_unit')}
+         </>
+        ) : (
+         <>
+          {cart.totalPrice && walletBalance && lng !== 'fa'
+           ? cart?.totalPrice?.toFixed(2)
+           : formatNumber(Math.round(cart.totalPrice * cart.euro))}
+          &nbsp;
+          {t('m_unit')}
+         </>
+        )}
+       </div>
       </div>
-     </div>
+     )}
     </div>
    </motion.div>
    <motion.div

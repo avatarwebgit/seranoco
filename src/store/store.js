@@ -27,7 +27,7 @@ import walletSlice from './slices/walletSlice';
 const persistConfig = {
  key: 'root',
  storage,
- whitelist: ['userStore', 'cartStore', 'favoriteStore'],
+ whitelist: ['userStore', 'cartStore', 'walletStore'],
 };
 
 const rootReducer = {

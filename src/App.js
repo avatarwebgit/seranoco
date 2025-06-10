@@ -129,6 +129,12 @@ function App() {
   }
  }, [token]);
 
+ window.addEventListener('storage', event => {
+  if (event.key === 'persist:root') {
+   window.location.reload();
+  }
+ });
+
  return (
   <Suspense fallback={<Loading />}>
    <Routes>

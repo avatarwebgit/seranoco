@@ -5,46 +5,32 @@ import Body from '../filters_page/Body';
 import Card from '../filters_page/Card';
 import Wrapper from './Wrapper';
 
-import classes from './Transactions.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { transactions } from '../../services/api';
 import TransactionRow from './transaction/TransactionRow';
+import classes from './Transactions.module.css';
+import { Payment } from '@mui/icons-material';
+import { formatNumber } from '../../utils/helperFunctions';
 const Transactions = () => {
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
 
- const [a, setA] = useState([
-  {
-   balance: 150000,
-   changes: 50000,
-   type: 'Deposit',
-   date: '2025-06-01',
-  },
-  {
-   balance: 100000,
-   changes: -50000,
-   type: 'Withdrawal',
-   date: '2025-06-02',
-  },
-  {
-   balance: 200000,
-   changes: 100000,
-   type: 'Transfer In',
-   date: '2025-06-03',
-  },
-  {
-   balance: 180000,
-   changes: -20000,
-   type: 'Purchase',
-   date: '2025-06-04',
-  },
-  {
-   balance: 180000,
-   changes: 0,
-   type: 'Balance Check',
-   date: '2025-06-05',
-  },
- ]);
+ const [transactionsHistory, setTransactionsHistory] = useState([]);
+ const [wallet, setWallet] = useState([]);
+
+ const getTransaction = async () => {
+  const serverRes = await transactions(token);
+  console.log(serverRes);
+  if (serverRes.response.ok) {
+   setTransactionsHistory(serverRes.result.wallet_history.data);
+   setWallet(serverRes.result.wallet);
+  }
+ };
+
+ useEffect(() => {
+  getTransaction();
+ }, []);
 
  return (
   <Body className={classes.body}>
@@ -54,11 +40,18 @@ const Transactions = () => {
      style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
      {t('wallet')}
     </h3>
-    <Wrapper>wallet</Wrapper>
+    <Wrapper className={classes.wrapper}>
+     <Payment fontSize='large' />
+     <span>
+      {t('current_balance')} :{' '}
+      {lng !== 'fa' ? wallet.amount.toFixed(2) : formatNumber(wallet.amount_fa)}{' '}
+      {t('m_unit')}
+     </span>
+    </Wrapper>
     <h3
      className={classes.title}
      style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-     {t('transactions')}
+     {t('transaction')}
     </h3>
     <Wrapper>
      <div className={classes.table_wrapper}>
@@ -72,7 +65,7 @@ const Transactions = () => {
         </tr>
        </thead>
        <tbody>
-        {a
+        {transactionsHistory
          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
          .map((transaction, i) => {
           return (

@@ -44,6 +44,11 @@ tbody tr:nth-of-type(odd) {
  background-color: var(--color-grey-3);
 }
 
+.wrapper {
+ display: flex;
+ align-items: center;
+}
+
 @media only screen and (max-width: 480px) {
  .auto {
   width: 100%;

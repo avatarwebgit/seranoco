@@ -34,6 +34,7 @@ const Factor = () => {
     setDetailsData(serverRes.result.orders);
     setShippingCost(serverRes.result.orders.shipping || 0);
     setLoyaltyOff(serverRes.result.orders.loyalty || 0);
+    console.log(serverRes);
    } else {
     notify(t('trylater'));
    }
@@ -689,14 +690,16 @@ const Factor = () => {
            {t('m_unit')}
            <br />
            (€&nbsp;
-           {(Math.round(+detailsData.order.paying_amount * 10) / 10).toFixed(
+           {(Math.round(+detailsData?.order.paying_amount * 10) / 10).toFixed(
             2,
            )}{' '}
            ${t('m_unit')})
           </>
          ) : (
           <>
-           {(Math.round(+detailsData.order.paying_amount * 10) / 10).toFixed(2)}
+           {(Math.round(+detailsData?.order.paying_amount * 10) / 10).toFixed(
+            2,
+           )}
            {t('m_unit')}
           </>
          )}
@@ -704,41 +707,6 @@ const Factor = () => {
        </span>
       </td>
      </tr>
-     {/* <tr>
-                        <td className={classes.paymentDetails}>
-                            <span className={classes.paymentTerms}>
-                                <span>{t('factor.Sales_Terms_and_Method')}</span>
-                                <span className={classes.paymentOptions}>
-                                    <label htmlFor='cash'>{t('factor.Cash')}</label>
-                                    <input type='radio' name='payment' id='cash' />
-                                    <span className={classes.customRadio}></span>
-                                </span>
-                                <span className={classes.paymentOptions}>
-                                    <label htmlFor='no-cash'>{t('factor.Non_Cash')}</label>
-                                    <input type='radio' name='payment' id='no-cash' />
-                                    <span className={classes.customRadio}></span>
-                                </span>
-                            </span>
-                            <span className={classes.paymentText}></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style={{ display: 'flex', flexDirection: 'column' }}>
-                            <label
-                                htmlFor=''
-                                className={classes.descriptionLabel}
-                                style={{ fontSize: '13px' }}
-                            >
-                                {t('factor.Description')}
-                            </label>
-                            <textarea
-                                name=''
-                                id=''
-                                className={classes.descriptionTextarea}
-                                style={{ outline: 'none', borderBottom: 'none' }}
-                            ></textarea>
-                        </td>
-                    </tr> */}
      <tr>
       <td className={classes.signatureRow}>
        <span className={classes.signatureColumn}>

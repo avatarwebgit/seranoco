@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { formatNumber } from '../../utils/helperFunctions';
 
 import { getShoppingCart } from '../../services/api';
-import { cartActions } from '../../store/store';
+import { cartActions, walletActions } from '../../store/store';
 
 import classes from './ShoppingCart.module.css';
 const ShoppingCart = () => {
@@ -29,6 +29,7 @@ const ShoppingCart = () => {
     const serverRes = await getShoppingCart(token, controller.signal);
     if (serverRes.response.ok) {
      dispatch(cartActions.set(serverRes.result.cart));
+     dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
     }
    } catch (error) {
     if (error.name === 'AbortError') {
@@ -44,7 +45,7 @@ const ShoppingCart = () => {
   return () => {
    controller.abort();
   };
- }, [token, dispatch, card]);
+ }, [token]);
 
  return (
   <table className={classes.table}>

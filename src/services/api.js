@@ -1107,3 +1107,16 @@ export const sendResetPasswordPassword = async data => {
  const result = await response.json();
  return { response, result };
 };
+
+export const transactions = async token => {
+ const response = await fetch(`${baseUrl}/wallet`, {
+  method: 'GET',
+  headers: {
+   'Content-Type': 'application/json',
+   Accept: 'application/json',
+   Authorization: 'bearer ' + token,
+  },
+ });
+ const result = await response.json();
+ return { response, result };
+};

@@ -323,5 +323,6 @@
  "changes": "Changes",
  "transaction_type": "Type",
  "date": "Date",
- "pay_by_wallet": " Use Wallet Balance "
+ "pay_by_wallet": " Use Wallet Balance ",
+ "current_balance": " Your current wallet Balance"
 }

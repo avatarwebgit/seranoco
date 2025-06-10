@@ -323,5 +323,6 @@
  "changes": "تغییرات ",
  "transaction_type": "نوع",
  "date": "تاریخ",
- "pay_by_wallet": "استفاده از موجودی کیف پول"
+ "pay_by_wallet": "استفاده از موجودی کیف پول",
+ "current_balance": " موجودی کیف پول شما"
 }

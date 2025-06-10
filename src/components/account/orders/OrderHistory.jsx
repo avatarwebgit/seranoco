@@ -32,6 +32,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
    const serverRes = await getOrderStatusDetail(token, data.id);
    if (serverRes.response.ok) {
     setDetailsData(serverRes.result.orders);
+    console.log(serverRes);
    } else {
     notify(t('trylater'));
    }
@@ -260,16 +261,18 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        })}
       </td>
       <td className={classes.td}>
-       <Tooltip title={t('continue')} arrow placement='top'>
-        <Link
-         to={`/fa/order/pay/${data.id}`}
-         target='_blank'
-         className={classes.link}>
-         <IconButton className={classes.btn} size='large'>
-          <OpenInNew sx={{ color: 'black', fontSize: '25px !important' }} />
-         </IconButton>
-        </Link>
-       </Tooltip>
+       {data.delivery_status === '0' && (
+        <Tooltip title={t('continue')} arrow placement='top'>
+         <Link
+          to={`/fa/order/pay/${data.id}`}
+          target='_blank'
+          className={classes.link}>
+          <IconButton className={classes.btn} size='large'>
+           <OpenInNew sx={{ color: 'black', fontSize: '25px !important' }} />
+          </IconButton>
+         </Link>
+        </Tooltip>
+       )}
       </td>
       <td className={classes.td}>
        <Tooltip
