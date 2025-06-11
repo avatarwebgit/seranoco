@@ -73,6 +73,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
   <>
    {data && (
     <>
+     {console.log(data)}
      <Modal
       open={modalOpen}
       onClose={handleCloseModal}
@@ -261,8 +262,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        })}
       </td>
       <td className={classes.td}>
-       {console.log(data)}
-       {data.delivery_status === 0 && (
+       {data.delivery_status === '1' && (
         <Tooltip title={t('continue')} arrow placement='top'>
          <Link
           to={`/fa/order/pay/${data.id}`}
@@ -276,17 +276,19 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        )}
       </td>
       <td className={classes.td}>
-       <Tooltip
-        title={`${t('cancel')} ${t('number')} ${data.order_number}`}
-        arrow
-        placement='top'>
-        <IconButton
-         className={classes.btn}
-         size='large'
-         onClick={() => deleteOrder(data.id)}>
-         <Delete sx={{ color: 'black', fontSize: '25px !important' }} />
-        </IconButton>
-       </Tooltip>
+       {data.delivery_status === '1' && (
+        <Tooltip
+         title={`${t('cancel')} ${t('number')} ${data.order_number}`}
+         arrow
+         placement='top'>
+         <IconButton
+          className={classes.btn}
+          size='large'
+          onClick={() => deleteOrder(data.id)}>
+          <Delete sx={{ color: 'black', fontSize: '25px !important' }} />
+         </IconButton>
+        </Tooltip>
+       )}
       </td>
      </tr>
     </>

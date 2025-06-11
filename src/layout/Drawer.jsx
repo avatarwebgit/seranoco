@@ -117,14 +117,18 @@ const Drawer = ({ children, size }) => {
  }, [cart, drawerState]);
 
  useEffect(() => {
-  if (walletStatus) {
-   dispatch(
-    cartActions.setTotalPriceAfterDiscout(
-     Math.max(cart?.totalPrice - walletBalance, 0),
-    ),
-   );
+  if (walletBalance > 0) {
+   if (walletStatus) {
+    dispatch(
+     cartActions.setTotalPriceAfterDiscout(
+      Math.max(cart?.totalPrice - walletBalance, 0),
+     ),
+    );
+   } else {
+    dispatch(cartActions.setTotalPriceAfterDiscout(cart?.totalPrice));
+   }
   } else {
-   dispatch(cartActions.setTotalPriceAfterDiscout(cart?.totalPrice));
+     dispatch(walletActions.setWalletUse(false))
   }
  }, [cart.totalPrice, walletBalance, walletStatus]);
 
@@ -177,7 +181,7 @@ const Drawer = ({ children, size }) => {
        </div>
       </div>
      )}
-     {walletBalance > 0 && (
+     {
       <div className={classes.wallet_btn_wrapper}>
        <FormGroup
         sx={{
@@ -188,7 +192,7 @@ const Drawer = ({ children, size }) => {
          direction: 'rtl',
         }}>
         <FormControlLabel
-         disabled={!walletBalance > 0}
+         // disabled={!walletBalance >= 0}
          control={
           <IOSSwitch
            checked={walletStatus}
@@ -236,7 +240,7 @@ const Drawer = ({ children, size }) => {
         </div>
        )}
       </div>
-     )}
+     }
     </div>
     <div className={classes.actions_wrapper}>
      {token ? (

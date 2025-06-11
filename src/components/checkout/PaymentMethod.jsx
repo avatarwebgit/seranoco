@@ -31,17 +31,13 @@ const PaymentMethod = ({ dataProps }) => {
     token,
     cart.selectedAddress,
     id,
-    cart.finalPayment * cart.euro,
+    cart.finalPayment,
     walletStatus,
    );
   } catch {
   } finally {
   }
  };
-
- useEffect(() => {
-  console.log(walletStatus);
- }, [walletStatus]);
 
  const sendData = async (token, address, method, amount, use_wallet) => {
   const serverRes = await sendCartPrice(

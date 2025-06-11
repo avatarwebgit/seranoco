@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { formatNumber } from '../../utils/helperFunctions';
-import { sendCartPrice } from '../../services/api';
 
 import classes from './Payment.module.css';
 const Payment = () => {
