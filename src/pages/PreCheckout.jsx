@@ -91,7 +91,7 @@ const PreCheckout = ({ windowSize }) => {
  const handleGetdetails = async orderId => {
   if (orderId) {
    const serverRes = await getOrderStatusDetail(token, orderId);
-   console.log(serverRes);
+
    if (serverRes.response.ok) {
     setDetailsData(serverRes.result.orders);
    } else {
@@ -108,11 +108,11 @@ const PreCheckout = ({ windowSize }) => {
   handleGetdetails();
  }, []);
 
- useEffect(() => {
-  if (card.products.length === 0) {
-   navigate(`/${lng}/`);
-  }
- }, [card]);
+//  useEffect(() => {
+//   if (card.products.length === 0) {
+//    navigate(`/${lng}/`);
+//   }
+//  }, [card]);
 
  const handleGotoNextStep = () => {
   if (step === 0) {
@@ -199,9 +199,7 @@ const PreCheckout = ({ windowSize }) => {
         <span
          className={classes.amont}
          style={{ color: walletBalance && walletStatus ? '#000' : '#c2c2c2' }}>
-         {walletBalance && lng !== 'fa'
-          ? walletBalance?.toFixed(2)
-          : formatNumber(Math.round(walletBalance * cart.euro))}
+         {walletBalance && lng !== 'fa' ? walletBalance : walletBalance}
          &nbsp;{t('m_unit')}
         </span>
        )}

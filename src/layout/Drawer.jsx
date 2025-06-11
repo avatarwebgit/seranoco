@@ -128,7 +128,7 @@ const Drawer = ({ children, size }) => {
     dispatch(cartActions.setTotalPriceAfterDiscout(cart?.totalPrice));
    }
   } else {
-     dispatch(walletActions.setWalletUse(false))
+   dispatch(walletActions.setWalletUse(false));
   }
  }, [cart.totalPrice, walletBalance, walletStatus]);
 
@@ -192,7 +192,7 @@ const Drawer = ({ children, size }) => {
          direction: 'rtl',
         }}>
         <FormControlLabel
-         // disabled={!walletBalance >= 0}
+         disabled={walletBalance <= 0}
          control={
           <IOSSwitch
            checked={walletStatus}
@@ -229,11 +229,10 @@ const Drawer = ({ children, size }) => {
           color: walletStatus ? '#000000' : '#616161',
          }}>
          <p style={{ whiteSpace: 'nowrap' }}>{t('wallet')}&nbsp;:&nbsp;</p>
-         <span dir='ltr'>
-          -
+         <span dir='ltr' style={{ margin: '0 10px' }}>
           {lng !== 'fa'
-           ? walletBalance?.toFixed(2)
-           : formatNumber(Math.round(walletBalance * cart.euro))}
+           ? walletBalance
+           : formatNumber(walletBalance * cart.euro)}
           &nbsp;
          </span>
          {t('m_unit')}
