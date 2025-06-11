@@ -102,25 +102,25 @@ const PayByCart = ({ widnowSize }) => {
   if (!isValid) {
    return setIsError(true);
   } else {
-   //    const res = await sendcardPaymentData(
-   //     token,
-   //     {
-   //      billNo,
-   //      DocType,
-   //      amount,
-   //      selectedMiladiDate,
-   //      recNo,
-   //      BankName,
-   //      lastFour,
-   //      destCardNo,
-   //     },
-   //     recScan,
-   //     id,
-   //    );
-   //    if (res.response.ok) {
+      const res = await sendcardPaymentData(
+       token,
+       {
+        billNo,
+        DocType,
+        amount,
+        selectedMiladiDate,
+        recNo,
+        BankName,
+        lastFour,
+        destCardNo,
+       },
+       recScan,
+       id,
+      );
+      if (res.response.ok) {
    notify('اطلاعات با موقثیت ارسال شد .');
-   // handleNavToAcc(1, 0);
-   //    }
+   handleNavToAcc(1, 0);
+      }
   }
  };
 
