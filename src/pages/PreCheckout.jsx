@@ -173,6 +173,7 @@ const PreCheckout = ({ windowSize }) => {
          direction: 'rtl',
         }}>
         <FormControlLabel
+         disabled={!walletBalance > 0}
          control={
           <IOSSwitch
            checked={walletStatus}
@@ -209,11 +210,11 @@ const PreCheckout = ({ windowSize }) => {
        className={classes.total_wrapper}
        style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
        <span className={classes.title}>{t('pc.dprice')}</span>
-       {step !== 2 && (
+       {step !== 3 && (
         <span className={classes.amont}>
          {walletStatus ? (
           <>
-           {cart.totalPrice && walletBalance && lng !== 'fa'
+           {lng !== 'fa'
             ? cart.totalPriceAfterDiscount.toFixed(2)
             : formatNumber(
                Math.round(cart.totalPriceAfterDiscount * cart.euro),
@@ -223,7 +224,7 @@ const PreCheckout = ({ windowSize }) => {
           </>
          ) : (
           <>
-           {cart.totalPrice && walletBalance && lng !== 'fa'
+           {lng !== 'fa'
             ? cart?.totalPrice?.toFixed(2)
             : formatNumber(Math.round(cart.totalPrice * cart.euro))}
            &nbsp;

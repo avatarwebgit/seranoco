@@ -21,14 +21,15 @@ import { formatNumber, notify } from '../utils/helperFunctions';
 import classes from './PayByCart.module.css';
 import { sendcardPaymentData } from '../services/api';
 import { useNavigate, useParams } from 'react-router-dom';
+import { customAlphabet, nanoid } from 'nanoid';
 const PayByCart = ({ widnowSize }) => {
  const [billNo, setBillNo] = useState('554');
- const [DocType, setDocType] = useState(null);
+ const [DocType, setDocType] = useState('');
  const [amount, setAmount] = useState('');
  const [date, setDate] = useState('');
  const [selectedDate, setSelectedDate] = useState('');
  const [recNo, setRecNo] = useState('');
- const [BankName, setBankName] = useState(null);
+ const [BankName, setBankName] = useState('');
  const [lastFour, setLastFour] = useState('');
  const [destCardNo, setDestCardNo] = useState('');
  const [recScan, setRecScan] = useState([]);
@@ -101,25 +102,25 @@ const PayByCart = ({ widnowSize }) => {
   if (!isValid) {
    return setIsError(true);
   } else {
-   const res = await sendcardPaymentData(
-    token,
-    {
-     billNo,
-     DocType,
-     amount,
-     selectedMiladiDate,
-     recNo,
-     BankName,
-     lastFour,
-     destCardNo,
-    },
-    recScan,
-    id,
-   );
-   if (res.response.ok) {
-    notify('اطلاعات با موقثیت ارسال شد .');
-    // handleNavToAcc(1, 0);
-   }
+   //    const res = await sendcardPaymentData(
+   //     token,
+   //     {
+   //      billNo,
+   //      DocType,
+   //      amount,
+   //      selectedMiladiDate,
+   //      recNo,
+   //      BankName,
+   //      lastFour,
+   //      destCardNo,
+   //     },
+   //     recScan,
+   //     id,
+   //    );
+   //    if (res.response.ok) {
+   notify('اطلاعات با موقثیت ارسال شد .');
+   // handleNavToAcc(1, 0);
+   //    }
   }
  };
 
@@ -148,10 +149,17 @@ const PayByCart = ({ widnowSize }) => {
 
  useEffect(() => {
   document.title = ' اطلاعات کارت به کارت';
+  const generateBillNo = nanoid();
+  setBillNo(generateBillNo);
   const today = moment().format('jYYYY/jMM/jDD');
   setSelectedDate(today);
+  setSelectedMiladiDate(today);
   setDate(today);
  }, []);
+
+ useEffect(() => {
+  console.log(billNo);
+ }, [billNo]);
 
  useEffect(() => {
   const handleClickOutside = event => {

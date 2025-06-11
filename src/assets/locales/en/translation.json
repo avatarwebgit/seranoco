@@ -324,5 +324,6 @@
  "transaction_type": "Type",
  "date": "Date",
  "pay_by_wallet": " Use Wallet Balance ",
- "current_balance": " Your current wallet Balance"
+ "current_balance": " Your current wallet Balance",
+ "no_transations": "There are no recent transactions in your account."
 }

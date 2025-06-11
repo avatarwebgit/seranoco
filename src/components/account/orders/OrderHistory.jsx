@@ -261,7 +261,8 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        })}
       </td>
       <td className={classes.td}>
-       {data.delivery_status === '0' && (
+       {console.log(data)}
+       {data.delivery_status === 0 && (
         <Tooltip title={t('continue')} arrow placement='top'>
          <Link
           to={`/fa/order/pay/${data.id}`}

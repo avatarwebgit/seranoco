@@ -9,22 +9,30 @@ import { useEffect, useState } from 'react';
 import { transactions } from '../../services/api';
 import TransactionRow from './transaction/TransactionRow';
 import classes from './Transactions.module.css';
-import { Payment } from '@mui/icons-material';
+import { Payment, Widgets } from '@mui/icons-material';
 import { formatNumber } from '../../utils/helperFunctions';
+import { Skeleton } from '@mui/material';
 const Transactions = () => {
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
+ const [isLoading, setisLoading] = useState(true);
 
  const [transactionsHistory, setTransactionsHistory] = useState([]);
  const [wallet, setWallet] = useState([]);
 
  const getTransaction = async () => {
-  const serverRes = await transactions(token);
-  console.log(serverRes);
-  if (serverRes.response.ok) {
-   setTransactionsHistory(serverRes.result.wallet_history.data);
-   setWallet(serverRes.result.wallet);
+  try {
+   setisLoading(true);
+   const serverRes = await transactions(token);
+   console.log(serverRes);
+   if (serverRes.response.ok) {
+    setTransactionsHistory(serverRes.result.wallet_history.data);
+    setWallet(serverRes.result.wallet);
+   }
+  } catch (error) {
+  } finally {
+   setisLoading(false);
   }
  };
 
@@ -42,11 +50,23 @@ const Transactions = () => {
     </h3>
     <Wrapper className={classes.wrapper}>
      <Payment fontSize='large' />
-     <span>
-      {t('current_balance')} :{' '}
-      {lng !== 'fa' ? wallet.amount.toFixed(2) : formatNumber(wallet.amount_fa)}{' '}
-      {t('m_unit')}
-     </span>
+     <>
+      {isLoading ? (
+       <Skeleton
+        variant='text'
+        sx={{ width: '30%', margin: '0 10px' }}
+        animation='wave'
+       />
+      ) : (
+       <>
+        <span>
+         {t('current_balance')} :{' '}
+         {lng !== 'fa' ? wallet.amount : wallet.amount_fa}
+         {t('m_unit')}
+        </span>
+       </>
+      )}
+     </>{' '}
     </Wrapper>
     <h3
      className={classes.title}
@@ -54,30 +74,40 @@ const Transactions = () => {
      {t('transaction')}
     </h3>
     <Wrapper>
-     <div className={classes.table_wrapper}>
-      <table className={classes.table}>
-       <thead>
-        <tr className={classes.tr}>
-         <th className={classes.th}>{t('orders.no')}</th>
-         <th className={classes.th}>{t('changes')}</th>
-         <th className={classes.th}>{t('balance')}</th>
-         <th className={classes.th}>{t('date')}</th>
-        </tr>
-       </thead>
-       <tbody>
-        {transactionsHistory
-         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-         .map((transaction, i) => {
-          return (
-           <TransactionRow
-            dataProp={transaction}
-            key={transaction.id}
-            number={i + 1}
-           />
-          );
-         })}
-       </tbody>
-      </table>
+     <div
+      className={classes.table_wrapper}
+      style={{
+       overflowX: transactionsHistory.length > 0 ? 'scroll' : 'hidden',
+      }}>
+      {transactionsHistory.length > 0 ? (
+       <table className={classes.table}>
+        <thead>
+         <tr className={classes.tr}>
+          <th className={classes.th}>{t('orders.no')}</th>
+          <th className={classes.th}>{t('changes')}</th>
+          <th className={classes.th}>{t('balance')}</th>
+          <th className={classes.th}>{t('date')}</th>
+         </tr>
+        </thead>
+        <tbody>
+         <>
+          {transactionsHistory
+           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+           .map((transaction, i) => {
+            return (
+             <TransactionRow
+              dataProp={transaction}
+              key={transaction.id}
+              number={i + 1}
+             />
+            );
+           })}
+         </>
+        </tbody>
+       </table>
+      ) : (
+       <p className={classes.info}>{t('no_transations')}</p>
+      )}
      </div>
     </Wrapper>
    </Card>

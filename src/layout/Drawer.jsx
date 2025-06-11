@@ -85,6 +85,7 @@ const Drawer = ({ children, size }) => {
   try {
    setIsLoadingData(true);
    const serverRes = await getShoppingCart(token);
+
    if (serverRes.response.ok) {
     dispatch(cartActions.set(serverRes.result.cart));
     dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
@@ -176,59 +177,66 @@ const Drawer = ({ children, size }) => {
        </div>
       </div>
      )}
-     <div className={classes.wallet_btn_wrapper}>
-      <FormGroup
-       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignContent: 'center',
-        justifyContent: 'center',
-        direction: 'rtl',
-       }}>
-       <FormControlLabel
-        control={
-         <IOSSwitch
-          checked={walletStatus}
-          onChange={e => {
-           dispatch(walletActions.setWalletUse(e.target.checked));
-           dispatch(walletActions.setUserIntraction());
-          }}
-         />
-        }
-        label={t('pay_by_wallet')}
+     {walletBalance > 0 && (
+      <div className={classes.wallet_btn_wrapper}>
+       <FormGroup
         sx={{
          display: 'flex',
-         flexDirection: 'column-reverse',
-         alignContent: 'flex-start',
-         '& .MuiFormControlLabel-label': {
-          fontSize: '0.5rem',
-          color: '#000000',
-          padding: '0 5px',
-         },
-        }}
-       />
-      </FormGroup>
-      {isLoadingData ? (
-       <Skeleton variant='text' className={classes.skeleton} animation='wave' />
-      ) : (
-       <div
-        style={{
-         direction: lng === 'fa' ? 'rtl' : 'ltr',
-         display: 'flex',
-         color: walletStatus ? '#000000' : '#616161',
+         flexDirection: 'column',
+         alignContent: 'center',
+         justifyContent: 'center',
+         direction: 'rtl',
         }}>
-        <p style={{ whiteSpace: 'nowrap' }}>{t('wallet')}&nbsp;:&nbsp;</p>
-        <span dir='ltr'>
-         -
-         {walletBalance && lng !== 'fa'
-          ? walletBalance?.toFixed(2)
-          : formatNumber(Math.round(walletBalance * cart.euro))}
-         &nbsp;
-        </span>
-        {t('m_unit')}
-       </div>
-      )}
-     </div>
+        <FormControlLabel
+         disabled={!walletBalance > 0}
+         control={
+          <IOSSwitch
+           checked={walletStatus}
+           onChange={e => {
+            dispatch(walletActions.setWalletUse(e.target.checked));
+            dispatch(walletActions.setUserIntraction());
+           }}
+          />
+         }
+         label={t('pay_by_wallet')}
+         sx={{
+          display: 'flex',
+          flexDirection: 'column-reverse',
+          alignContent: 'flex-start',
+          '& .MuiFormControlLabel-label': {
+           fontSize: '0.5rem',
+           color: '#000000',
+           padding: '0 5px',
+          },
+         }}
+        />
+       </FormGroup>
+       {isLoadingData && walletBalance > 0 ? (
+        <Skeleton
+         variant='text'
+         className={classes.skeleton}
+         animation='wave'
+        />
+       ) : (
+        <div
+         style={{
+          direction: lng === 'fa' ? 'rtl' : 'ltr',
+          display: 'flex',
+          color: walletStatus ? '#000000' : '#616161',
+         }}>
+         <p style={{ whiteSpace: 'nowrap' }}>{t('wallet')}&nbsp;:&nbsp;</p>
+         <span dir='ltr'>
+          -
+          {lng !== 'fa'
+           ? walletBalance?.toFixed(2)
+           : formatNumber(Math.round(walletBalance * cart.euro))}
+          &nbsp;
+         </span>
+         {t('m_unit')}
+        </div>
+       )}
+      </div>
+     )}
     </div>
     <div className={classes.actions_wrapper}>
      {token ? (
@@ -259,15 +267,22 @@ const Drawer = ({ children, size }) => {
        <div>
         {walletStatus ? (
          <>
-          {cart.totalPrice && walletBalance && lng !== 'fa'
-           ? cart.totalPriceAfterDiscount.toFixed(2)
-           : formatNumber(Math.round(cart.totalPriceAfterDiscount * cart.euro))}
-          &nbsp;
-          {t('m_unit')}
+          {cart.totalPrice && walletBalance && (
+           <>
+            {console.log(cart)}
+            {lng !== 'fa'
+             ? cart.totalPriceAfterDiscount.toFixed(2)
+             : formatNumber(
+                Math.round(cart.totalPriceAfterDiscount * cart.euro),
+               )}
+            &nbsp;
+            {t('m_unit')}
+           </>
+          )}
          </>
         ) : (
          <>
-          {cart.totalPrice && walletBalance && lng !== 'fa'
+          {lng !== 'fa'
            ? cart?.totalPrice?.toFixed(2)
            : formatNumber(Math.round(cart.totalPrice * cart.euro))}
           &nbsp;

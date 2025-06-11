@@ -324,5 +324,6 @@
  "transaction_type": "نوع",
  "date": "تاریخ",
  "pay_by_wallet": "استفاده از موجودی کیف پول",
- "current_balance": " موجودی کیف پول شما"
+ "current_balance": " موجودی کیف پول شما",
+ "no_transations": "هیچ تراکنش جدیدی در حساب شما وجود ندارد."
 }
