@@ -108,11 +108,11 @@ const PreCheckout = ({ windowSize }) => {
   handleGetdetails();
  }, []);
 
-//  useEffect(() => {
-//   if (card.products.length === 0) {
-//    navigate(`/${lng}/`);
-//   }
-//  }, [card]);
+ //  useEffect(() => {
+ //   if (card.products.length === 0) {
+ //    navigate(`/${lng}/`);
+ //   }
+ //  }, [card]);
 
  const handleGotoNextStep = () => {
   if (step === 0) {
@@ -163,7 +163,7 @@ const PreCheckout = ({ windowSize }) => {
       <div
        className={classes.total_wrapper}
        style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-       <span className={classes.title}>{t('pc.off')}</span>
+       <span className={classes.title}>{t('wallet')}</span>
        <FormGroup
         sx={{
          display: 'flex',

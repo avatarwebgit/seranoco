@@ -63,7 +63,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
     (accumulator, currentValue) => accumulator + currentValue,
     0,
    );
-   setTotalWieght(sumOfWeights);
+   setTotalWieght(sumOfWeights.toFixed(3));
   }
  }, [detailsData]);
 

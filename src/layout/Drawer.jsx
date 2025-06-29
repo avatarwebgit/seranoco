@@ -202,7 +202,7 @@ const Drawer = ({ children, size }) => {
            }}
           />
          }
-         label={t('pay_by_wallet')}
+         label={t('factor.club')}
          sx={{
           display: 'flex',
           flexDirection: 'column-reverse',

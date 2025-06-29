@@ -215,7 +215,7 @@ const Factor = () => {
           borderRight: lng === 'fa' && '1px solid black',
           borderLeft: lng !== 'fa' && '1px solid black',
          }}>
-         {t('cut')}
+         {t('cut_type')}
         </span>
         <span
          style={{

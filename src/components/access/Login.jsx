@@ -13,7 +13,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { notify } from '../../utils/helperFunctions';
 
-import { accesModalActions, signupActions } from '../../store/store';
+import {
+ accesModalActions,
+ drawerActions,
+ signupActions,
+} from '../../store/store';
 
 import { getUserTokenGoogle, login } from '../../services/api';
 
@@ -99,6 +103,7 @@ const Login = () => {
    if (serverRes.result.token) {
     dispatch(userActions.set(serverRes.result.token));
     dispatch(accesModalActions.close());
+    dispatch(drawerActions.open());
     settoken(serverRes.result.token);
 
     dispatch(

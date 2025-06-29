@@ -237,7 +237,7 @@ const Header = ({ windowSize }) => {
       <>
        {token && (
         <span className={classes.icon_pack_wrapper}>
-         <Tooltip title={t('favorites')} placement='top' arrow>
+         <Tooltip title={t('profile.favorites')} placement='top' arrow>
           <IconButton onClick={handleOpenFavoritesDrawer}>
            <Badge
             badgeContent={favorits}
@@ -263,7 +263,7 @@ const Header = ({ windowSize }) => {
          <Badge
           badgeContent={cart?.products.length}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-          <Tooltip title={t('cart')} placement='top' arrow>
+          <Tooltip title={t('profile.cart')} placement='top' arrow>
            {isHomePage ? (
             <Basket_black
              width={isSmall ? '0px' : '30px'}

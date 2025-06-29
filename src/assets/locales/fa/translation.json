@@ -51,6 +51,7 @@
  "weight": "وزن",
  "quality": "کیفیت",
  "cut": "برش ",
+ "cut_type": "نوع برش ",
  "report": "گزارش ",
  "country": "  ساخت",
  "agta": "AGTA",
@@ -124,6 +125,7 @@
 
   "acc_info": "اطلاعات حساب کاربری",
   "favorites": "موارد دلخواه",
+  "cart": "سبد خرید",
 
   "pending": "در انتظار پرداخت",
   "order_status": "وضعیت سفارش",
@@ -318,7 +320,7 @@
  "cancel": "لغو سفارش",
  "number": "شماره",
  "transaction": "تراکنش ها",
- "wallet": "کیف پول",
+ "wallet": " امتیاز",
  "balance": "موجودی کیف پول ",
  "changes": "تغییرات ",
  "transaction_type": "نوع",

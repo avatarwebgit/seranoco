@@ -31,7 +31,6 @@ const PayByCart = ({ widnowSize }) => {
  const [recNo, setRecNo] = useState('');
  const [BankName, setBankName] = useState('');
  const [lastFour, setLastFour] = useState('');
- const [destCardNo, setDestCardNo] = useState('');
  const [recScan, setRecScan] = useState([]);
  const [description, setDescription] = useState('');
  const [isError, setIsError] = useState(false);
@@ -94,7 +93,6 @@ const PayByCart = ({ widnowSize }) => {
    recNo.trim(),
    BankName?.trim(),
    lastFour?.trim(),
-   destCardNo?.trim(),
   ];
 
   const isValid = requiredFields.every(field => field && field.length > 0);
@@ -102,25 +100,24 @@ const PayByCart = ({ widnowSize }) => {
   if (!isValid) {
    return setIsError(true);
   } else {
-      const res = await sendcardPaymentData(
-       token,
-       {
-        billNo,
-        DocType,
-        amount,
-        selectedMiladiDate,
-        recNo,
-        BankName,
-        lastFour,
-        destCardNo,
-       },
-       recScan,
-       id,
-      );
-      if (res.response.ok) {
-   notify('اطلاعات با موقثیت ارسال شد .');
-   handleNavToAcc(1, 0);
-      }
+   const res = await sendcardPaymentData(
+    token,
+    {
+     billNo,
+     DocType,
+     amount,
+     selectedMiladiDate,
+     recNo,
+     BankName,
+     lastFour,
+    },
+    recScan,
+    id,
+   );
+   if (res.response.ok) {
+    notify('اطلاعات با موقثیت ارسال شد .');
+    handleNavToAcc(1, 0);
+   }
   }
  };
 
@@ -218,7 +215,8 @@ const PayByCart = ({ widnowSize }) => {
           {...params}
           label={'نوع سند'}
           error={isError && !DocType}
-          name='doc-type'
+                name='doc-type'
+                required
          />
         )}
         onInputChange={(e, value) => {
@@ -235,7 +233,8 @@ const PayByCart = ({ widnowSize }) => {
         label={'مبلغ'}
         type='text'
         size='small'
-        sx={inputStyles}
+                             sx={inputStyles}
+                             required
         onChange={e => {
          const value = e.target.value;
          const numericValue = value.replace(/[^0-9]/g, '');
@@ -259,7 +258,8 @@ const PayByCart = ({ widnowSize }) => {
        <TextField
         id='date'
         name='date'
-        label={'تاریخ'}
+                             label={'تاریخ'}
+                             required
         type='text'
         size='small'
         sx={inputStyles}
@@ -276,7 +276,8 @@ const PayByCart = ({ widnowSize }) => {
        <TextField
         id='recNo'
         name='recNo'
-        label={'شماره فیش'}
+                             label={'شماره فیش'}
+                             required
         type='text'
         size='small'
         sx={inputStyles}
@@ -290,7 +291,8 @@ const PayByCart = ({ widnowSize }) => {
        <TextField
         id='bankName'
         name='bankName'
-        label={'بانک مبدا'}
+                             label={'بانک مبدا'}
+                             required
         disablePortal
         size='small'
         sx={inputStyles}
@@ -303,7 +305,8 @@ const PayByCart = ({ widnowSize }) => {
        <TextField
         id='last-four'
         name='last-four'
-        label={'چهار رقم آخر شماره کارت'}
+                             label={'چهار رقم آخر شماره کارت'}
+                             required
         type={'text'}
         size='small'
         sx={inputStyles}
@@ -317,23 +320,7 @@ const PayByCart = ({ widnowSize }) => {
         error={isError && !lastFour}
         inputProps={{ maxLength: 4 }}
        />
-       <TextField
-        id='dest-no'
-        name='dest-no'
-        label={`شماره کارت مقصد`}
-        type='number'
-        size='small'
-        sx={inputStyles}
-        onChange={e => {
-         const value = e.target.value;
-         const numericValue = value.replace(/[^0-9]/g, '');
-         setDestCardNo(numericValue);
-        }}
-        value={destCardNo}
-        onFocus={() => setIsError(false)}
-        error={isError && !destCardNo}
-        inputProps={{ maxLength: 16 }}
-       />
+    
        <Input
         id='file'
         type='file'

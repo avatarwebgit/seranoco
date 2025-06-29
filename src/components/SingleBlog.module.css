@@ -51,7 +51,6 @@
 
 .more_button {
  justify-self: flex-end !important;
- position: absolute !important;
  bottom: 15px !important;
  color: #000000 !important;
 }
