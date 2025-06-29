@@ -202,7 +202,7 @@ const Drawer = ({ children, size }) => {
            }}
           />
          }
-         label={t('factor.club')}
+         label={t('use_wallet')}
          sx={{
           display: 'flex',
           flexDirection: 'column-reverse',

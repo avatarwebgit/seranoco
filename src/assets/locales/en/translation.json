@@ -122,6 +122,7 @@
   "acc_info": "Account Information",
   "favorites": "Favorites",
   "cart": "Cart",
+  "basket": "Basket",
 
   "pending": "Pending Payment",
   "order_status": "Order Status",
@@ -321,6 +322,7 @@
  "number": "Number",
  "transaction": "Transactions",
  "wallet": "Points",
+ "use_wallet": "Insert Club Points",
  "balance": "Wallet Balance ",
  "changes": "Changes",
  "transaction_type": "Type",

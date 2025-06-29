@@ -263,7 +263,7 @@ const Header = ({ windowSize }) => {
          <Badge
           badgeContent={cart?.products.length}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-          <Tooltip title={t('profile.cart')} placement='top' arrow>
+          <Tooltip title={t('profile.basket')} placement='top' arrow>
            {isHomePage ? (
             <Basket_black
              width={isSmall ? '0px' : '30px'}
