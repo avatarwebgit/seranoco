@@ -30,6 +30,7 @@ const Factor = () => {
  const handleGetdetails = async orderId => {
   if (orderId) {
    const serverRes = await getOrderStatusDetail(token, orderId);
+   console.log(serverRes);
    if (serverRes.response.ok) {
     setDetailsData(serverRes.result.orders);
     setShippingCost(serverRes.result.orders.shipping || 0);
@@ -566,7 +567,8 @@ const Factor = () => {
            alignItems: 'center',
            justifyContent: 'center',
           }}>
-          {loyaltyOff}&nbsp;%
+          {lng === 'fa' ? detailsData.wallet_fa : detailsData.wallet_en}&nbsp;{' '}
+          {t('m_unit')}
          </span>
         )}
        </span>

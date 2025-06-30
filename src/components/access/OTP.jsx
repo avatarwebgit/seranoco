@@ -6,6 +6,7 @@ import { Button, IconButton } from '@mui/material';
 
 import {
  accesModalActions,
+ drawerActions,
  signupActions,
  userActions,
 } from '../../store/store';
@@ -92,6 +93,7 @@ const OTP = () => {
    dispatch(userActions.setUser(serverRes.result.user));
    dispatch(userActions.set(serverRes.result.token));
    dispatch(accesModalActions.close());
+   dispatch(drawerActions.open());
   } else {
    notify(t('trylater'));
    dispatch(accesModalActions.close());

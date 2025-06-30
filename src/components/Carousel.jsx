@@ -100,14 +100,14 @@ const Carusel = ({ windowSize }) => {
           style={{ width: '100%', height: '100%' }}
          />
          {/* {!isSmallSize && ( */}
-          <span className={classes.about_product}>
-           <p className={classes.title}>{slide.title}</p>
-           <p className={classes.caption}>{slide.text}</p>
+         <span className={classes.about_product}>
+          <p className={classes.title}>{slide.title}</p>
+          <p className={classes.caption}>{slide.text}</p>
 
-           <CustomAnimatedBtn to={slide.button_link}>
-            {t('shop_now')}
-           </CustomAnimatedBtn>
-          </span>
+          <CustomAnimatedBtn to={slide.button_link}>
+           {t('shop_now')}
+          </CustomAnimatedBtn>
+         </span>
          {/* )} */}
         </div>
        </SwiperSlide>

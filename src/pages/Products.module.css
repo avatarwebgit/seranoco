@@ -358,7 +358,7 @@
  align-items: center;
  justify-content: center;
  border: 1px solid rgb(103, 103, 103);
- height: 30px;
+ height: 40px;
  overflow: hidden;
  
 }
@@ -389,7 +389,7 @@
  text-align: center;
  border-radius: 5px;
  padding: 5px;
- margin: 5px 0;
+ margin: auto;
  border-right: none;
 }
 

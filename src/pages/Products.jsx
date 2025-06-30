@@ -557,13 +557,22 @@ const Products = ({ windowSize }) => {
               color='inherit'
               href={`/${lng}/shopbyshape`}
               variant='h3'
-              sx={{ borderRight: '1px solid' }}>
+              sx={{
+               borderRight: '1px solid',
+               display: 'flex',
+               alignItems: 'center',
+               justifyContent: 'center',
+               height: '100%',
+              }}>
               {t('quantity')}&nbsp;
              </Typography>
              <div className={classes.divider} />
              {variationDetail && (
               <div className={classes.input_wrapper}>
-               <p style={{ textAlign: lng === 'fa' ? 'right' : 'left' }}>
+               <p
+                style={{
+                 textAlign: lng === 'fa' ? 'right' : 'left',
+                }}>
                 {t('quantity')}:
                </p>
                <input

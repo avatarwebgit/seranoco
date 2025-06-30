@@ -1,17 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
-import { useTranslation } from 'react-i18next';
-import {
- AdUnits,
- Google,
- Visibility,
- VisibilityOff,
-} from '@mui/icons-material';
-import { Button } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { AdUnits, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
+import { GoogleLogin } from '@react-oauth/google';
+import { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { notify } from '../../utils/helperFunctions';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
  accesModalActions,
@@ -21,8 +14,8 @@ import {
 
 import { getUserTokenGoogle, login } from '../../services/api';
 
-import { ReactComponent as Close } from '../../assets/svg/close.svg';
 import logo from '../../assets/images/logo_trasnparent.png';
+import { ReactComponent as Close } from '../../assets/svg/close.svg';
 
 import { userActions } from '../../store/store';
 
@@ -103,8 +96,8 @@ const Login = () => {
    if (serverRes.result.token) {
     dispatch(userActions.set(serverRes.result.token));
     dispatch(accesModalActions.close());
-    dispatch(drawerActions.open());
     settoken(serverRes.result.token);
+    dispatch(drawerActions.open());
 
     dispatch(
      signupActions.set({

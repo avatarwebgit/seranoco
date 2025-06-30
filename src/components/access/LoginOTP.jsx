@@ -1,15 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { InputOTP } from 'antd-input-otp';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
+import { InputOTP } from 'antd-input-otp';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {
- accesModalActions,
- signupActions,
- userActions,
-} from '../../store/store';
 import logo from '../../assets/images/logo_trasnparent.png';
+import {
+    accesModalActions,
+    drawerActions,
+    signupActions,
+    userActions,
+} from '../../store/store';
 
 import { verifyOTP2 } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
@@ -93,6 +94,7 @@ const OTP = () => {
    dispatch(userActions.setUser(serverRes.result.user));
    dispatch(userActions.set(serverRes.result.token));
    dispatch(accesModalActions.close());
+   dispatch(drawerActions.open());
   } else {
    notify(t('trylater'));
    dispatch(accesModalActions.close());
