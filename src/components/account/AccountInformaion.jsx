@@ -1,35 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Wrapper from './Wrapper';
 import Body from '../filters_page/Body';
 import Card from '../filters_page/Card';
+import Wrapper from './Wrapper';
 
 import { ReactComponent as Edit } from '../../assets/svg/edit-black.svg';
 
 import {
- IconButton,
- Input,
  Accordion,
  AccordionDetails,
  AccordionSummary,
- Typography,
  Button,
+ IconButton,
+ Input,
+ Typography,
 } from '@mui/material';
 
-import AddressTable from './accountInformation/AddressTable';
 import {
  getAllAddresses,
  removeAddress,
  updateUser,
  useUser,
 } from '../../services/api';
+import AddressTable from './accountInformation/AddressTable';
 
-import classes from './AccountInformation.module.css';
 import { Add, Delete } from '@mui/icons-material';
+import { userActions } from '../../store/store';
 import { notify } from '../../utils/helperFunctions';
-import { cartActions, favoriteActions, userActions } from '../../store/store';
+import classes from './AccountInformation.module.css';
 const AccountInformaion = () => {
  const { t } = useTranslation();
  const userData = useSelector(state => state.userStore.user);
