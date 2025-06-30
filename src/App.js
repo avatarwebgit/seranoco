@@ -4,14 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 import Loading from './layout/Loading';
-import { cartActions } from './store/store';
+import { cartActions, favoriteActions, walletActions } from './store/store';
 
 import FixedNavigation from './layout/FixedNavigation';
 import Drawer from './layout/Drawer';
 
 import './App.css';
 
-import { useBasicInformation } from './services/api';
+import { getShoppingCart, useBasicInformation } from './services/api';
 import FavoritesDrawer from './layout/FavoritesDrawer';
 import i18next from 'i18next';
 function App() {
@@ -123,10 +123,23 @@ function App() {
   };
  }, [lng]);
 
+ const handleGetShoppingCart = async token => {
+  try {
+   const serverRes = await getShoppingCart(token);
+
+   if (serverRes.response.ok) {
+    dispatch(cartActions.set(serverRes.result.cart));
+    dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
+   }
+  } catch (error) {}
+ };
+
  useEffect(() => {
   if (!token) {
    dispatch(cartActions.set([]));
+   dispatch(favoriteActions.setFetchedProducts([]));
   }
+  if (token) handleGetShoppingCart(token);
  }, [token]);
 
  window.addEventListener('storage', event => {

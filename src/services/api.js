@@ -837,7 +837,6 @@ export const removeShoppingCart = async (token, product_id, variation_id) => {
 };
 
 export const sendcardPaymentData = async (token, data, file, order_id) => {
- console.log(token);
  const formData = new FormData();
 
  if (typeof data === 'object' && data !== null) {
@@ -856,7 +855,7 @@ export const sendcardPaymentData = async (token, data, file, order_id) => {
   method: 'POST',
   headers: {
    Authorization: `bearer ${token}`,
-  },
+   },
   body: formData,
  });
 
