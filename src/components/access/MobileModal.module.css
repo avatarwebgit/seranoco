@@ -115,6 +115,7 @@
  font-size: 10px !important;
  font-weight: 900 !important;
  margin: 1rem 0 !important;
+ cursor: pointer !important;
 }
 
 .error_text,

@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from 'react';
 import {
  Autocomplete,
  Button,
@@ -6,15 +5,16 @@ import {
  InputAdornment,
  TextField,
 } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
-import { formatNumber, notify } from '../../../utils/helperFunctions';
+import { notify } from '../../../utils/helperFunctions';
 
-import classes from './AddressTable.module.css';
-import { addAddress, getCitiesByCountry } from '../../../services/api';
 import Flag from 'react-world-flags';
+import { addAddress, getCitiesByCountry } from '../../../services/api';
+import classes from './AddressTable.module.css';
 const AddressTable = ({ formData, refetch }) => {
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
@@ -56,13 +56,12 @@ const AddressTable = ({ formData, refetch }) => {
  const [Address, setAddress] = useState('');
  const [city, setCity] = useState('');
  const [isError, setIsError] = useState(false);
- const [parsedData, setParsedData] = useState([]);
+ const [parsedData, setParsedData] = useState(null);
  const [postalCode, setPostalCode] = useState('');
 
  const formRef = useRef();
 
  const { t } = useTranslation();
- const data = localStorage.getItem('sis');
 
  const getCities = async param => {
   const serverRes = await getCitiesByCountry(param);
@@ -70,6 +69,12 @@ const AddressTable = ({ formData, refetch }) => {
    setCityData(serverRes.result.data);
   }
  };
+
+ useEffect(() => {
+  if (localStorage.getItem('sis')) {
+   setParsedData(JSON.parse(localStorage.getItem('sis')));
+  }
+ }, [localStorage.getItem('sis')]);
 
  useEffect(() => {
   if (formData) {
@@ -85,13 +90,13 @@ const AddressTable = ({ formData, refetch }) => {
  }, [formData]);
 
  useEffect(() => {
-  if (data) {
-   getCities(data.city_id);
+  if (parsedData) {
+   getCities(parsedData.Country.id);
    setphoneCode(98);
   }
 
   return () => {};
- }, [data]);
+ }, [parsedData]);
 
  const handleSubmit = e => {
   e.preventDefault();
@@ -194,7 +199,10 @@ const AddressTable = ({ formData, refetch }) => {
          startAdornment: (
           <InputAdornment position='start'>
            {parsedData && parsedData.length !== 0 && (
-            <Flag code={'IR'} style={{ width: '20px', height: 'auto' }} />
+            <Flag
+             code={parsedData.Country.iso2}
+             style={{ width: '20px', height: 'auto' }}
+            />
            )}
           </InputAdornment>
          ),

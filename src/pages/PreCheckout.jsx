@@ -17,11 +17,11 @@ import Header from '../layout/Header';
 import { getOrderStatusDetail, getPayments } from '../services/api';
 
 import {
- Button,
- FormControlLabel,
- FormGroup,
- styled,
- Switch,
+   Button,
+   FormControlLabel,
+   FormGroup,
+   styled,
+   Switch,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import PaymentMethod from '../components/checkout/PaymentMethod';
@@ -79,7 +79,6 @@ const PreCheckout = ({ windowSize }) => {
  const walletStatus = useSelector(state => state.walletStore.useWallet);
 
  const dispatch = useDispatch();
- const navigate = useNavigate();
 
  const p = async () => {
   const serverRes = await getPayments();
@@ -107,12 +106,6 @@ const PreCheckout = ({ windowSize }) => {
   p();
   handleGetdetails();
  }, []);
-
- //  useEffect(() => {
- //   if (card.products.length === 0) {
- //    navigate(`/${lng}/`);
- //   }
- //  }, [card]);
 
  const handleGotoNextStep = () => {
   if (step === 0) {

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { IconButton, Modal, Tooltip } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,11 +8,12 @@ import { Delete, OpenInNew, ReceiptOutlined } from '@mui/icons-material';
 
 import show from '../../../assets/svg/show.svg';
 
-import { formatNumber, notify } from '../../../utils/helperFunctions';
 import { ReactComponent as Close } from '../../../assets/svg/close.svg';
+import { formatNumber, notify } from '../../../utils/helperFunctions';
+
+import { getOrderStatusDetail } from '../../../services/api';
 
 import classes from './OrderHistory.module.css';
-import { getOrderStatusDetail } from '../../../services/api';
 const OrderHistory = ({ dataProp, number, deleteOrder }) => {
  const [detailsData, setDetailsData] = useState(null);
  const [totalWieght, setTotalWieght] = useState(0);
@@ -25,14 +26,11 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
 
  const { t } = useTranslation();
 
- const messagesRef = useRef(null);
-
  const handleGetdetails = async () => {
   if (data) {
    const serverRes = await getOrderStatusDetail(token, data.id);
    if (serverRes.response.ok) {
     setDetailsData(serverRes.result.orders);
-    console.log(serverRes);
    } else {
     notify(t('trylater'));
    }
@@ -73,7 +71,6 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
   <>
    {data && (
     <>
-     {console.log(data)}
      <Modal
       open={modalOpen}
       onClose={handleCloseModal}
@@ -87,7 +84,6 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        </IconButton>
        {detailsData && (
         <>
-         {console.log(detailsData)}
          <div
           className={classes.modal_content}
           dir={lng === 'fa' ? 'rtl' : 'ltr'}>
@@ -222,15 +218,17 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
             })}
            </tbody>
           </table>
-          <IconButton className={classes.factor_button} disableRipple>
-           <ReceiptOutlined />
-           <Link
-            to={`/${lng}/factor/${data.id}`}
-            className={classes.factor_link}
-            target='_blank'>
-            {t('orders.get_invoice')}
-           </Link>
-          </IconButton>
+          {detailsData && (
+           <IconButton className={classes.factor_button} disableRipple>
+            <ReceiptOutlined />
+            <Link
+             to={`/${lng}/factor/${data.id}`}
+             className={classes.factor_link}
+             target='_blank'>
+             {t('orders.get_invoice')}
+            </Link>
+           </IconButton>
+          )}
          </div>
         </>
        )}
