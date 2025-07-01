@@ -1,21 +1,21 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { InputOTP } from 'antd-input-otp';
-import { useTranslation } from 'react-i18next';
 import { Button, IconButton } from '@mui/material';
+import { InputOTP } from 'antd-input-otp';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
+import logo from '../../assets/images/logo_trasnparent.png';
+import { ReactComponent as Close } from '../../assets/svg/close.svg';
 import {
  accesModalActions,
  drawerActions,
  signupActions,
  userActions,
 } from '../../store/store';
-import logo from '../../assets/images/logo_trasnparent.png';
-import { ReactComponent as Close } from '../../assets/svg/close.svg';
 
-import classes from './OTP.module.css';
 import { verifyOTP } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
+import classes from './OTP.module.css';
 const OTP = () => {
  const [signupValues, setSignupValues] = useState(null);
  const [otpValue, setOtpValue] = useState([]);
