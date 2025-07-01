@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { useSelector, useDispatch } from 'react-redux';
-import {
- accesModalActions,
- cartActions,
- drawerActions,
- favoriteActions,
-} from '../store/store';
-import { ReactComponent as Close } from '../assets/svg/close.svg';
 import { IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KeyboardArrowRight, Lock } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReactComponent as Close } from '../assets/svg/close.svg';
+import { drawerActions, favoriteActions } from '../store/store';
 
-import CartProduct from '../components/card/CartProduct';
-
-import classes from './Drawer.module.css';
-import { getAllFavorites, getShoppingCart } from '../services/api';
 import FavoriteCart from '../components/card/FavoriteCart';
+import { getAllFavorites } from '../services/api';
+import classes from './Drawer.module.css';
 const FavoritesDrawer = ({ children, size }) => {
  const dispatch = useDispatch();
  const drawerState = useSelector(state => state.drawerStore.favoritesDrawer);
@@ -36,6 +27,7 @@ const FavoritesDrawer = ({ children, size }) => {
   const serverRes = await getAllFavorites(token);
   if (serverRes.response.ok) {
    dispatch(favoriteActions.setFetchedProducts(serverRes.result.wishlist));
+   dispatch(favoriteActions.setCount(serverRes.result.wishlist.length));
   }
  };
 

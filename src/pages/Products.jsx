@@ -1,44 +1,43 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { Typography, IconButton, Button } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, IconButton, Skeleton, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Skeleton } from '@mui/material';
-import { SwiperSlide, Swiper } from 'swiper/react';
-import { Navigation, Thumbs, Pagination } from 'swiper/modules';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import {
- accesModalActions,
- cartActions,
- drawerActions,
- favoriteActions,
-} from '../store/store';
 import BannerCarousel from '../components/BannerCarousel';
-import Body from '../components/filters_page/Body';
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
-import Card from '../components/filters_page/Card';
-import CustomeTab from '../components/common/CustomTab';
 import Breadcrumbs from '../components/common/Breadcrumbs';
+import CustomeTab from '../components/common/CustomTab';
+import Body from '../components/filters_page/Body';
+import Card from '../components/filters_page/Card';
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
+import {
+  accesModalActions,
+  cartActions,
+  drawerActions,
+  favoriteActions,
+} from '../store/store';
 import { formatNumber, notify } from '../utils/helperFunctions';
 
+import { ReactComponent as Shop } from '../assets/svg/add_basket.svg';
 import { ReactComponent as Heart } from '../assets/svg/heart.svg';
 import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
-import { ReactComponent as Shop } from '../assets/svg/add_basket.svg';
 
 import {
- addToFavorite,
- getProductDetails,
- removeFromFavorite,
- getProductDetailsWithId,
- sendShoppingCart,
+  addToFavorite,
+  getProductDetails,
+  getProductDetailsWithId,
+  removeFromFavorite,
+  sendShoppingCart,
 } from '../services/api';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
+import 'swiper/css/thumbs';
 
 import classes from './Products.module.css';
 const Products = ({ windowSize }) => {
@@ -504,7 +503,7 @@ const Products = ({ windowSize }) => {
              <p className={classes.off_text}>
               {detailsData.product.percent_sale_price}%
              </p>
-             €&nbsp;{detailsData && variationDetail.product.sale_price}
+             €&nbsp;{detailsData && variationDetail.product.price}
             </span>
            )}
            &nbsp;
@@ -531,7 +530,7 @@ const Products = ({ windowSize }) => {
               {detailsData.product.percent_sale_price}%
              </p>
              &nbsp;
-             {detailsData && variationDetail.product?.sale_price * euro}
+             {detailsData && variationDetail.product?.price * euro}
              {t('m_unit')}
             </span>
            )}

@@ -17,7 +17,13 @@ import { nanoid } from '@reduxjs/toolkit';
 
 import close from '../assets/svg/close.svg';
 
-import { accesModalActions, drawerActions } from '../store/store';
+import {
+ accesModalActions,
+ cartActions,
+ drawerActions,
+ favoriteActions,
+ walletActions,
+} from '../store/store';
 
 import CustomSection from './CustomSection';
 import Search from '../components/Search';
@@ -26,7 +32,12 @@ import ChangeLanguage from '../utils/ChangeLanguage';
 import Body from '../components/filters_page/Body';
 import Card from '../components/filters_page/Card';
 
-import { useBasicInformation, getHeaderMenus } from '../services/api';
+import {
+ useBasicInformation,
+ getHeaderMenus,
+ getShoppingCart,
+ getAllFavorites,
+} from '../services/api';
 
 import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
 import { ReactComponent as Basket } from '../assets/svg/basket_white.svg';
@@ -58,9 +69,9 @@ const Header = ({ windowSize }) => {
  const cart = useSelector(state => state.cartStore);
  const token = useSelector(state => state.userStore.token);
  const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
- const favorits = useSelector(state => state.favoriteStore.count);
+ const favoritsCount = useSelector(state => state.favoriteStore.count);
 
- const { t, i18n } = useTranslation();
+ const { t } = useTranslation();
  const location = useLocation();
  const navigate = useNavigate();
  const dispatch = useDispatch();
@@ -163,6 +174,36 @@ const Header = ({ windowSize }) => {
   }
  }, [basicInformation, isHomePage]);
 
+ const handleGetShoppingCart = async token => {
+  try {
+   const serverRes = await getShoppingCart(token);
+
+   if (serverRes.response.ok) {
+    dispatch(cartActions.set(serverRes.result.cart));
+    dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
+   }
+  } catch (error) {}
+ };
+
+ const getFavoriteItems = async token => {
+  const serverRes = await getAllFavorites(token);
+  if (serverRes.response.ok) {
+   dispatch(favoriteActions.setFetchedProducts(serverRes.result.wishlist));
+   dispatch(favoriteActions.setCount(serverRes.result.wishlist.length));
+  }
+ };
+
+ useEffect(() => {
+  if (!token) {
+   dispatch(cartActions.set([]));
+   dispatch(favoriteActions.setFetchedProducts([]));
+  }
+  if (token) {
+   handleGetShoppingCart(token);
+   getFavoriteItems(token);
+  }
+ }, [token]);
+
  // API calls
  const getHeaderLinks = async () => {
   setHeaderData(null);
@@ -240,7 +281,7 @@ const Header = ({ windowSize }) => {
          <Tooltip title={t('profile.favorites')} placement='top' arrow>
           <IconButton onClick={handleOpenFavoritesDrawer}>
            <Badge
-            badgeContent={favorits}
+            badgeContent={favoritsCount}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
             {isHomePage ? (
              <Heart_black

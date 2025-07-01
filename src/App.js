@@ -1,19 +1,19 @@
 import React, { Suspense, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 import Loading from './layout/Loading';
-import { cartActions, favoriteActions, walletActions } from './store/store';
+import { cartActions } from './store/store';
 
-import FixedNavigation from './layout/FixedNavigation';
 import Drawer from './layout/Drawer';
+import FixedNavigation from './layout/FixedNavigation';
 
 import './App.css';
 
-import { getShoppingCart, useBasicInformation } from './services/api';
-import FavoritesDrawer from './layout/FavoritesDrawer';
 import i18next from 'i18next';
+import FavoritesDrawer from './layout/FavoritesDrawer';
+import { useBasicInformation } from './services/api';
 function App() {
  const [windowSize, setWindowSize] = useState(() => {
   const width = window.innerWidth;
@@ -122,25 +122,6 @@ function App() {
    i18next.off('languageChanged', handleLangChanged);
   };
  }, [lng]);
-
- const handleGetShoppingCart = async token => {
-  try {
-   const serverRes = await getShoppingCart(token);
-
-   if (serverRes.response.ok) {
-    dispatch(cartActions.set(serverRes.result.cart));
-    dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
-   }
-  } catch (error) {}
- };
-
- useEffect(() => {
-  if (!token) {
-   dispatch(cartActions.set([]));
-   dispatch(favoriteActions.setFetchedProducts([]));
-  }
-  if (token) handleGetShoppingCart(token);
- }, [token]);
 
  window.addEventListener('storage', event => {
   if (event.key === 'persist:root') {
