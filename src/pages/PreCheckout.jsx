@@ -17,11 +17,11 @@ import Header from '../layout/Header';
 import { getOrderStatusDetail, getPayments } from '../services/api';
 
 import {
-   Button,
-   FormControlLabel,
-   FormGroup,
-   styled,
-   Switch,
+ Button,
+ FormControlLabel,
+ FormGroup,
+ styled,
+ Switch,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import PaymentMethod from '../components/checkout/PaymentMethod';
@@ -81,7 +81,7 @@ const PreCheckout = ({ windowSize }) => {
  const dispatch = useDispatch();
 
  const p = async () => {
-  const serverRes = await getPayments();
+  const serverRes = await getPayments(token);
   if (serverRes.response.ok) {
    setPaymentMethods(serverRes.result.data);
   }

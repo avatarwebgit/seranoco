@@ -200,8 +200,8 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
                 className={classes.td}
                 style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
                 {lng !== 'fa'
-                 ? el.price
-                 : formatNumber(el.product.price * euro)}
+                 ? el.sale_price
+                 : formatNumber(el.product.sale_price * euro)}
                 &nbsp;{t('m_unit')}
                </td>
                <td className={classes.td}>{el.selected_quantity}</td>
@@ -247,9 +247,10 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        />
       </td>
       <td className={classes.td}>
+       {console.log(data)}
        {lng === 'fa'
-        ? formatNumber(data.paying_amount)
-        : (data.paying_amount / euro).toFixed(2)}
+        ? formatNumber(data.paying_amount * euro)
+        : data.paying_amount.toFixed(2)}
        &nbsp;{t('m_unit')}
       </td>
       <td className={classes.td}>

@@ -165,11 +165,9 @@ const ResultRow = ({ dataProp }) => {
              {t('m_unit')}
             </>
             <br />
-            (€&nbsp;{' '}
-            {el?.sale_price &&
-             typeof el?.sale_price === Number &&
-             +el?.sale_price?.toFixed(2)}
-            )
+            {console.log(el)}
+            (€&nbsp;
+            {el?.sale_price && +el?.sale_price?.toFixed(2)})
            </>
           )}
           &nbsp;

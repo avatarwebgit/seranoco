@@ -164,7 +164,7 @@ const FilterByShape = ({ windowSize }) => {
  };
 
  useEffect(() => {
-  document.title =  t('shop_by_shape');
+  document.title = t('shop_by_shape');
   dispatch(productDetailActions.reset());
  }, []);
 
@@ -208,8 +208,8 @@ const FilterByShape = ({ windowSize }) => {
  }, [shapesData]);
 
  const handleShapeClick = async (e, id) => {
-  setProductDetails([]);
   setSelectedSizesObject([]);
+  setSelectedIds([]);
   setChunkedData([]);
   setTableData([]);
   setIsLoading(true);

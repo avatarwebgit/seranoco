@@ -622,7 +622,6 @@ export const useUser = token => {
    });
 
    const result = await response.json();
-   console.log(result);
    return result;
   },
   enabled: !!token,
@@ -653,9 +652,12 @@ export const getAllNewProducts = async (
  return { response, result };
 };
 
-export const getPayments = async () => {
+export const getPayments = async token => {
  const response = await fetch(`${baseUrl}/get/payments`, {
   method: 'GET',
+  headers: {
+   Authorization: `bearer ${token}`,
+  },
  });
  const result = await response.json();
  return { response, result };
@@ -668,7 +670,6 @@ export const sendCartPrice = async (
  amount,
  use_wallet,
 ) => {
- console.log({ token, address_id, payment_method, amount, use_wallet });
  const response = await fetch(`${baseUrl}/payment`, {
   method: 'POST',
   headers: {
@@ -855,7 +856,7 @@ export const sendcardPaymentData = async (token, data, file, order_id) => {
   method: 'POST',
   headers: {
    Authorization: `bearer ${token}`,
-   },
+  },
   body: formData,
  });
 

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { cartActions } from '../../store/store';
 
-import classes from './PaymentMethod.module.css';
+import { useTranslation } from 'react-i18next';
 import { sendCartPrice } from '../../services/api';
 import { notify } from '../../utils/helperFunctions';
+
+import classes from './PaymentMethod.module.css';
 const PaymentMethod = ({ dataProps }) => {
  const lng = useSelector(state => state.localeStore.lng);
  const cart = useSelector(state => state.cartStore);
@@ -15,6 +17,8 @@ const PaymentMethod = ({ dataProps }) => {
 
  const dispatch = useDispatch();
  const navigate = useNavigate();
+
+ const { t } = useTranslation();
 
  const [data, setData] = useState(null);
 
@@ -48,10 +52,18 @@ const PaymentMethod = ({ dataProps }) => {
    use_wallet,
   );
 
-  if (serverRes.response.ok) {
+  const handleNavToAcc = (activeAccordion, activeButton) => {
+   navigate(`/${lng}/myaccount`, { state: { activeAccordion, activeButton } });
+  };
+console.log(method)
+  if (serverRes.response.ok && method === 10) {
    navigate(`/fa/order/pay/${serverRes.result.order.id}`);
+   notify(t('order_ok'));
+  } else if (serverRes.response.ok && method !== 10) {
+   handleNavToAcc(1, 0);
+   notify(t('order_ok'));
   } else {
-   notify(' خطایی رخ داد لطفا دوباره تلاش کنید');
+   notify(t('order_err'));
   }
  };
 
