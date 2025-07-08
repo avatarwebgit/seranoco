@@ -175,18 +175,19 @@ const OrderStatus = () => {
          </tr>
         </thead>
         <tbody>
-         {orders
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .map((order, i) => {
-           return (
-            <OrderHistory
-             deleteOrder={handleOpenDeleteOrderModal}
-             dataProp={order}
-             key={order.id}
-             number={i}
-            />
-           );
-          })}
+         {orders.length > 0 &&
+          orders
+           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+           .map((order, i) => {
+            return (
+             <OrderHistory
+              deleteOrder={handleOpenDeleteOrderModal}
+              dataProp={order}
+              key={order.id}
+              number={i}
+             />
+            );
+           })}
         </tbody>
        </table>
       </div>

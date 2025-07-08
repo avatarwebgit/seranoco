@@ -46,6 +46,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
  useEffect(() => {
   if (dataProp) {
    setData(dataProp);
+   console.log(dataProp);
   }
  }, [dataProp]);
 
@@ -147,7 +148,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
               lng !== 'fa'
                ? `${(
                   Math.round(+detailsData.order.total_amount * 10) / 10
-                 ).toFixed(2)}  ${t('m_unit')}`
+                 ).toFixed(2)} ${t('m_unit')}`
                : `${formatNumber(detailsData.order.total_amount_fa)} ${t(
                   'm_unit',
                  )}`
@@ -161,7 +162,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
               lng !== 'fa'
                ? `${(
                   Math.round(+detailsData.order.paying_amount * 10) / 10
-                 ).toFixed(2)}  ${t('m_unit')}`
+                 ).toFixed(2)} ${t('m_unit')}`
                : `${formatNumber(detailsData.order.paying_amount_fa)} ${t(
                   'm_unit',
                  )}`
@@ -199,8 +200,9 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
                <td
                 className={classes.td}
                 style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
+                {console.log(el)}
                 {lng !== 'fa'
-                 ? el.sale_price
+                 ? el.product.sale_price
                  : formatNumber(el.product.sale_price * euro)}
                 &nbsp;{t('m_unit')}
                </td>
@@ -247,10 +249,9 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
        />
       </td>
       <td className={classes.td}>
-       {console.log(data)}
        {lng === 'fa'
         ? formatNumber(data.paying_amount * euro)
-        : data.paying_amount.toFixed(2)}
+        : data.paying_amount}
        &nbsp;{t('m_unit')}
       </td>
       <td className={classes.td}>
