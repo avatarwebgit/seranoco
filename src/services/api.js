@@ -876,12 +876,11 @@ export const getAllProductFromCategory = async id => {
 };
 
 export const getUserTokenGoogle = async code => {
- const response = await fetch(`${baseUrl}/get-token-google`, {
-  method: 'POST',
+ const response = await fetch(`${baseUrl}/user-info-google/${code}`, {
+  method: 'GET',
   headers: {
    'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ token: code }),
  });
  const result = await response.json();
  return { response, result };
