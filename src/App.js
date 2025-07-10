@@ -36,7 +36,6 @@ function App() {
  const Categories = React.lazy(() => import('./pages/Categories'));
  const NotFound = React.lazy(() => import('./pages/NotFound'));
  const ContactUs = React.lazy(() => import('./pages/ContactUs'));
- const Ticket = React.lazy(() => import('./pages/Ticket'));
  const Blog = React.lazy(() => import('./pages/Blog'));
  const SingleBlog = React.lazy(() => import('./pages/SingleBlog'));
  const Page = React.lazy(() => import('./pages/AdminPanlePage'));
@@ -186,10 +185,6 @@ function App() {
     <Route
      path={`/:lng/special/:id`}
      element={<Special windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/support`}
-     element={<Ticket windowSize={windowSize} />}
     />
     <Route path={`/:lng/Blog`} element={<Blog windowSize={windowSize} />} />
     <Route
