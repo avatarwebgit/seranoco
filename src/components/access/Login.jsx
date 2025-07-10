@@ -117,6 +117,16 @@ const Login = () => {
   }
  };
 
+ const handleGoogleLogin = async e => {
+  const serverRes = await getUserTokenGoogle(e.credential);
+  if (!serverRes.response.ok) {
+   return;
+  }
+  dispatch(userActions.setUser(serverRes.result.user));
+  dispatch(userActions.set(serverRes.result.token));
+  dispatch(accesModalActions.close());
+ };
+
  return (
   <div className={classes.content_wrapper}>
    <div className={classes.sheet}>
@@ -210,16 +220,7 @@ const Login = () => {
 
       <div className={classes.oneclick_login_wrapper}>
        <div className={classes.google_login_wrapper}>
-        <GoogleLogin
-         onSuccess={e => getUserTokenGoogle(e.credential)}></GoogleLogin>
-        {/* <IconButton
-                  className={classes.mobile_login}
-                  disableRipple
-                  onClick={() => googleLogin()}
-                >
-                  <Google sx={{ fontSize: '20px !important' }} />
-                  <p>{t('access.swg')}</p>
-                </IconButton> */}
+        <GoogleLogin onSuccess={handleGoogleLogin}></GoogleLogin>
        </div>
        <div
         className={classes.google_login_wrapper}

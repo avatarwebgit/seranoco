@@ -57,7 +57,7 @@ import classes from './FilterByShape.module.css';
 const FilterByShape = ({ windowSize }) => {
  const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
  const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
- const [colorData, setColorData] = useState(null);
+ const [colorData, setColorData] = useState([]);
  const [sizeData, setSizeData] = useState([]);
  const [groupColors, setGroupColors] = useState([]);
  const [shapeFormEntries, setShapeFormEntries] = useState(46);
@@ -75,6 +75,7 @@ const FilterByShape = ({ windowSize }) => {
   useState(false);
  const [ItemsPerPage, setItemsPerPage] = useState(10);
  const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(1);
+ const [rawTableData, setRawTableData] = useState([]);
  const [tableData, setTableData] = useState([]);
  const [selectedSizesObject, setSelectedSizesObject] = useState([]);
  const [chunkedData, setChunkedData] = useState([]);
@@ -138,9 +139,11 @@ const FilterByShape = ({ windowSize }) => {
   const firstMatchingSlideIndex = colorData.findIndex(
    slide => slide.group_id === groupId,
   );
-
   if (sliderRef.current && firstMatchingSlideIndex !== -1) {
    sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
+   gridSliderRef.current.swiper.slideTo(
+    Math.round(firstMatchingSlideIndex / 8),
+   );
   }
  };
 
@@ -176,6 +179,7 @@ const FilterByShape = ({ windowSize }) => {
     (a, b) => a.priority - b.priority,
    );
    setSortedGroupColors(sortedGroupColorsP);
+   handleThumbClick(sortedGroupColors.at(0).id);
    setSortedColors(
     colorData.sort((a, b) => {
      const groupA = sortedGroupColorsP.find(group => group.id === a.group_id);
@@ -209,7 +213,7 @@ const FilterByShape = ({ windowSize }) => {
 
  const handleShapeClick = async (e, id) => {
   setSelectedSizesObject([]);
-  //  setSelectedIds([])
+  setSelectedIds([]);
   setChunkedData([]);
   setTableData([]);
   setIsLoading(true);
@@ -410,7 +414,7 @@ const FilterByShape = ({ windowSize }) => {
    );
 
    if (serverRes.response.ok) {
-    setTableData(serverRes.result.data);
+    setRawTableData(serverRes.result.data);
    }
   } catch (error) {
    // console.error('Error fetching products: ', error);
@@ -418,6 +422,27 @@ const FilterByShape = ({ windowSize }) => {
    setIsTableDataLoading(false);
   }
  };
+
+ useEffect(() => {
+  if (colorData.length > 0 && rawTableData.length > 0) {
+   const priorityMap = {};
+   colorData.forEach(item => {
+    priorityMap[item.description] = item.priority;
+   });
+
+   const sortedData = [...rawTableData].sort((a, b) => {
+    const colorA = Object.keys(a)[0];
+    const colorB = Object.keys(b)[0];
+
+    const priorityA = priorityMap[colorA] ?? Infinity;
+    const priorityB = priorityMap[colorB] ?? Infinity;
+    return priorityA - priorityB;
+   });
+
+   console.log('Sorted Data:', sortedData);
+   setTableData(sortedData);
+  }
+ }, [colorData, rawTableData]);
 
  const chunkData = (data, size) => {
   const result = [];
@@ -495,7 +520,7 @@ const FilterByShape = ({ windowSize }) => {
        <Swiper
         modules={[Navigation, Thumbs, Pagination]}
         className={classes.swiper}
-        spaceBetween={isSmallPage ? 5 : 9}
+        spaceBetween={isSmallPage ? 5 : 8}
         slidesPerView={slidesPerView}
         onSlideChange={swiper => {
          setActiveIndex(swiper.activeIndex);

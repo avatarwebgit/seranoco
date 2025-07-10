@@ -136,6 +136,9 @@ const FilterByShape = ({ windowSize }) => {
 
   if (sliderRef.current && firstMatchingSlideIndex !== -1) {
    sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
+   gridSliderRef.current.swiper.slideTo(
+    Math.round(firstMatchingSlideIndex / 8),
+   );
   }
  };
 
@@ -160,7 +163,7 @@ const FilterByShape = ({ windowSize }) => {
  };
 
  useEffect(() => {
-  document.title =  t('shop_by_color');
+  document.title = t('shop_by_color');
 
   handleShapeClick('', 46);
   if (itemIds.length > 0) {
