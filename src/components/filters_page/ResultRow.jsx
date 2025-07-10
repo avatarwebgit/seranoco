@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { Lock } from '@mui/icons-material';
 
@@ -103,6 +103,54 @@ const ResultRow = ({ dataProp }) => {
     <br />
     (€&nbsp;{price?.toFixed(2)})
    </>
+  );
+ };
+
+ const renderPriceWithOff = item => {
+  return (
+   <div className={classes.price_wrapper}>
+    {lng !== 'fa' ? (
+     <>
+      {+item.percent_sale_price !== 0 && (
+       <span className={classes.prev_price}>
+        <p className={classes.off_text}>{item.percent_sale_price}%</p>
+        <p
+         style={{
+          textDecoration: 'line-through',
+          fontSize: '.5rem',
+         }}>
+         {item.price}
+        {t('m_unit')}
+        </p>
+       </span>
+      )}
+
+      <p className={classes.current_price}>{item.sale_price}&nbsp;€</p>
+     </>
+    ) : (
+     <>
+      {item.percent_sale_price !== 0 && (
+       <span className={classes.prev_price}>
+        <p className={classes.off_text}>{item.percent_sale_price}%</p>
+
+        <p
+         style={{
+          textDecoration: 'line-through',
+          fontSize: '.5rem',
+         }}>
+         {item?.price * euro} {t('m_unit')}
+        </p>
+       </span>
+      )}
+
+      <p className={classes.current_price}>
+       {formatNumber(item.sale_price * euro)}
+       تومان (&nbsp;€&nbsp;
+       {item.sale_price} )
+      </p>
+     </>
+    )}
+   </div>
   );
  };
 
@@ -229,7 +277,10 @@ const ResultRow = ({ dataProp }) => {
       <td
        className={classes.detail_text}
        style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-       {renderPrice(item.sale_price)}
+       {console.log(item)}
+       {item.price === item.sale_price
+        ? renderPrice(item.sale_price)
+        : renderPriceWithOff(item)}
       </td>
 
       {/* Quantity Controls */}

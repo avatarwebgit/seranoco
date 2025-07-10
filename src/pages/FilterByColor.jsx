@@ -134,7 +134,11 @@ const FilterByShape = ({ windowSize }) => {
    slide => slide.group_id === groupId,
   );
 
-  if (sliderRef.current && firstMatchingSlideIndex !== -1) {
+  if (
+   sliderRef.current &&
+   gridSliderRef.current &&
+   firstMatchingSlideIndex !== -1
+  ) {
    sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
    gridSliderRef.current.swiper.slideTo(
     Math.round(firstMatchingSlideIndex / 8),
@@ -202,6 +206,13 @@ const FilterByShape = ({ windowSize }) => {
    );
   }
  }, [groupColors, colorData]);
+  
+  useEffect(() => {
+   if (sortedGroupColors.length > 0) {
+    handleThumbClick(sortedGroupColors.at(0).id);
+   }
+  }, [sortedGroupColors]);
+  
 
  const memoizedItemIds = useMemo(() => {
   return itemIds;
