@@ -41,6 +41,7 @@ function App() {
  const Page = React.lazy(() => import('./pages/AdminPanlePage'));
  const Factor = React.lazy(() => import('./pages/Factor'));
  const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
+ const ProductsFilter = React.lazy(() => import('./pages/ProductsFilter'));
 
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
@@ -198,6 +199,7 @@ function App() {
     <Route path={`/:lng/factor/:id`} element={<Factor />} />
 
     <Route path={`/:lng/reset-password`} element={<ResetPassword />} />
+    <Route path={`/:lng/products/filter`} element={<ProductsFilter />} />
 
     <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
    </Routes>

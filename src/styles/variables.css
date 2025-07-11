@@ -14,7 +14,18 @@
   --color-grey-2-shadow: rgb(237, 237, 237);
   --color-grey-3: rgb(240, 240, 240);
 
+  --font-color-1: #3f4064;
+
+  --color-red: #0b2f9f;
+
+
+
   --color-blue-1: rgba(133, 188, 227 , 1);
+  --icon-size-sm: 25px;
+
+  --title-font: 18px;
+  --caption-font: 14px;
+  --normal-font: 13px;
 }
 
 @media only screen and (max-width: 480px) {
