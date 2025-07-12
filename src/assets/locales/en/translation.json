@@ -332,5 +332,6 @@
  "no_transations": "There are no recent transactions in your account.",
  "order_ok": "Your order submited successfully .",
  "order_err": "There was an error submiting the order please try again later",
- "signle_shape":"Shape"
+ "signle_shape":"Shape",
+ "shop_by_type":"Shop by Type"
 }

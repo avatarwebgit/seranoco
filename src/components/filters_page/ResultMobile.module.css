@@ -64,3 +64,32 @@
 .value_wrapper {
   flex: 1 1 auto;
 }
+
+.price_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+ }
+ 
+ .product_price {
+  font-size: 0.7rem !important;
+ }
+ 
+ .prev_price {
+  font-size: 0.5rem !important;
+  color: var(--color-grey-1) !important;
+  position: relative;
+ }
+ 
+ .off_text {
+  text-decoration: none;
+  font-size: 0.5rem;
+  color: #ff0000;
+  white-space: nowrap;
+ }
+ 
+ .current_price {
+  font-size: 0.5rem !important;
+  /* color: var(--color-grey-1) !important; */
+ }

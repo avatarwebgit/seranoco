@@ -34,6 +34,7 @@ function App() {
  const New = React.lazy(() => import('./pages/New'));
  const Special = React.lazy(() => import('./pages/SpecialStones'));
  const Categories = React.lazy(() => import('./pages/Categories'));
+ const SubCategory = React.lazy(() => import('./pages/SubCategory'));
  const NotFound = React.lazy(() => import('./pages/NotFound'));
  const ContactUs = React.lazy(() => import('./pages/ContactUs'));
  const Blog = React.lazy(() => import('./pages/Blog'));
@@ -146,6 +147,10 @@ function App() {
     <Route
      path={`/:lng/categories`}
      element={<Categories windowSize={windowSize} />}
+    />
+    <Route
+     path={`/:lng/categories/:id`}
+     element={<SubCategory windowSize={windowSize} />}
     />
     <Route
      path={`/:lng/products/:id/:variation`}

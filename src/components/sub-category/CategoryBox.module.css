@@ -1,0 +1,61 @@
+.main {
+ border: 1px solid rgb(214, 214, 214);
+ width: 100%;
+ height: 100%;
+ cursor: pointer;
+ position: relative;
+ overflow: hidden;
+ max-height: 250px;
+ transition: all 0.15s ease-in-out;
+ background-color: #fff;
+ border-radius: 5px;
+}
+
+.main:hover {
+ border-color: #000000;
+}
+
+.title {
+ color: #000000;
+ z-index: 10;
+ white-space: nowrap;
+ padding: 0.7rem;
+ font-size: 0.6rem;
+}
+
+.img_container {
+ width: 100%;
+ height: 80%;
+ position: absolute;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ z-index: -1;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ overflow: hidden;
+}
+
+.img {
+ width: 100%;
+ height: 70%;
+ object-fit: cover;
+ margin: auto;
+ overflow: hidden;
+}
+
+@media only screen and (max-width: 480px) {
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+
+@media only screen and (min-width: 1201px) {
+}

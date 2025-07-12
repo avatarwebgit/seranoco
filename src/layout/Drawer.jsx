@@ -7,12 +7,14 @@ import {
  styled,
  Switch,
 } from '@mui/material';
+
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Close } from '../assets/svg/close.svg';
+
 import {
  accesModalActions,
  cartActions,
@@ -72,8 +74,6 @@ const Drawer = ({ children, size }) => {
  const [isLoadingData, setIsLoadingData] = useState(true);
 
  const [productData, setProductData] = useState([]);
-
- const [payWithWalletChecked, setPayWithWalletChecked] = useState(walletStatus);
 
  const { t } = useTranslation();
 

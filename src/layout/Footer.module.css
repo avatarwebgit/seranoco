@@ -95,6 +95,7 @@
  margin: 0 5px;
  opacity: 0.5;
  transition: all 0.25s;
+ cursor: pointer;
 }
 
 .social_media_links a:hover {

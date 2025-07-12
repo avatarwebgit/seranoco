@@ -140,15 +140,15 @@ const ContactUs = ({ windowSize }) => {
         <div className={classes.social_wrapper}>
          <div className={classes.content} style={{ margin: 0 }}>
           <img src={instagram} alt='' width={35} />
-          <p>{lng === 'fa' ? data.tel : data.tel2}</p>
+          <p>{data.instagram}</p>
          </div>
          <div className={classes.content}>
           <img src={whatsapp} alt='' width={35} />
-          <p>{lng === 'fa' ? data.tel : data.tel2}</p>
+          <p>{data.whatsapp}</p>
          </div>
          <div className={classes.content}>
           <img src={telegram} alt='' width={35} />
-          <p>{lng === 'fa' ? data.tel : data.tel2}</p>
+          <p>{data.telegram}</p>
          </div>
          <div className={classes.content}>
           <img src={clock} alt='' width={35} />

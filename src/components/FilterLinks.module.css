@@ -1,48 +1,49 @@
 @import url(../styles/variables.css);
 .main {
-  height: fit-content;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-auto-rows: 40vh;
-  gap: 1rem;
-  margin: 2rem 0;
-  padding: 2rem;
+ height: fit-content;
+ display: grid;
+ grid-template-columns: 1fr 1fr 1fr;
+ grid-auto-rows: 40vh;
+ gap: 1rem;
+ margin: 2rem auto;
+ padding: 2rem;
 }
 
 .new {
-  background-color: var(--primary);
-  height: 70%;
-  top: 25%;
-  padding: 0.5rem;
-  width: 90%;
-  margin: 0 auto;
-  border-radius: 10px;
+ background-color: var(--primary);
+ height: 70%;
+ top: 25%;
+ padding: 0.5rem;
+ width: 90%;
+ margin: 0 auto;
+ border-radius: 10px;
 }
 .helper {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: EuclidCircular !important;
-  font-weight: 900;
-  color: #ffffff;
-  font-size: large;
+ position: absolute;
+ top: 60%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ font-family: EuclidCircular !important;
+ font-weight: 900;
+ color: #ffffff;
+ font-size: large;
+ z-index: 1;
 }
 @media only screen and (max-width: 480px) {
-  .main {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1rem;
-    margin: 1rem 0;
-  }
+ .main {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+ }
 }
 @media only screen and (min-width: 481px) and (max-width: 768px) {
-  .main {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1rem;
-    margin: 1rem 0;
-  }
+ .main {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+ }
 }
 @media only screen and (min-width: 769px) and (max-width: 1024px) {
 }

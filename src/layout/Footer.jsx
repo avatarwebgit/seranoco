@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { basicInformation, usePages } from '../services/api';
 
@@ -7,10 +7,10 @@ import Card from '../components/filters_page/Card';
 
 import logo from '../assets/images/footer-logo.png';
 
-import classes from './Footer.module.css';
-import { Facebook, Instagram } from '@mui/icons-material';
+import { Instagram, Telegram, WhatsApp } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import classes from './Footer.module.css';
 const Footer = () => {
  const [footerData, setFooterData] = useState(null);
  const { data: pageData } = usePages();
@@ -134,13 +134,20 @@ const Footer = () => {
        <div className={classes.divider}></div>
        <div className={classes.social_media_links}>
         <Tooltip title={'Instagram'} arrow placement='top'>
-         <a href={footerData.instagram}>
+         <a
+          href={`https://www.instagram.com/${footerData.Instagram}/`}
+          target='_blank'>
           <Instagram sx={{ color: 'grey' }} fontSize='10' />
          </a>
         </Tooltip>
-        <Tooltip title={'Facebook'} arrow placement='top'>
-         <a href={footerData.facebook}>
-          <Facebook sx={{ color: 'grey' }} fontSize='10' />
+        <Tooltip title={'telegram'} arrow placement='top'>
+         <a href={`https://t.me/${footerData.telegram}`} target='_blank'>
+          <Telegram sx={{ color: 'grey' }} fontSize='10' />
+         </a>
+        </Tooltip>
+        <Tooltip title={'whatsapp'} arrow placement='top'>
+         <a href={`https://wa.me/${footerData.whatsapp}`} target='_blank'>
+          <WhatsApp sx={{ color: 'grey' }} fontSize='10' />
          </a>
         </Tooltip>
        </div>

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { cartActions, drawerActions } from '../../store/store';
 import { formatNumber, notify } from '../../utils/helperFunctions';
 import { sendShoppingCart } from '../../services/api';
+import { Typography } from '@mui/material';
 const ResultMobile = ({ dataProps }) => {
  const [data, setData] = useState(null);
 
@@ -26,7 +27,6 @@ const ResultMobile = ({ dataProps }) => {
  }, [dataProps]);
 
  const handleSendShoppingCart = async (el, variation, quantity) => {
-
   try {
    const serverRes = await sendShoppingCart(token, el.id, +variation, quantity);
    if (serverRes.response.ok) {
@@ -43,6 +43,8 @@ const ResultMobile = ({ dataProps }) => {
   <div className={classes.main}>
    {data &&
     data.map(el => {
+     console.log(el);
+
      return (
       <div className={classes.wrapper}>
        <div className={classes.right_side}>
@@ -77,21 +79,48 @@ const ResultMobile = ({ dataProps }) => {
           </p>
           <p className={classes.detail_text}>{el?.country || 'none'}</p>
           <p className={classes.detail_text}>
-           {lng === 'en' ? (
-            <>
-             {+el?.sale_price?.toFixed(2)}
-             {t('m_unit')}
-            </>
-           ) : (
-            <>
+           <div className={classes.price_wrapper}>
+            {lng !== 'fa' ? (
              <>
-              {formatNumber(+el?.sale_price * euro)}&nbsp;
-              {t('m_unit')}
+              {+el.percent_sale_price !== 0 && (
+               <span className={classes.prev_price}>
+                <p
+                 style={{
+                  textDecoration: 'line-through',
+                  fontSize: '.5rem',
+                 }}>
+                 {el.price}
+                 {t('m_unit')}
+                </p>{' '}
+                <p className={classes.off_text}>{el.percent_sale_price}%</p>
+               </span>
+              )}
+
+              <p className={classes.current_price}>{el.sale_price}&nbsp;€</p>
              </>
-             <br />
-             (€&nbsp; {+el?.sale_price?.toFixed(2)})
-            </>
-           )}
+            ) : (
+             <>
+              {el.percent_sale_price !== 0 && (
+               <span className={classes.prev_price}>
+                <p
+                 style={{
+                  textDecoration: 'line-through',
+                  fontSize: '.5rem',
+                 }}>
+                 {el?.price * euro} {t('m_unit')}
+                </p>{' '}
+                <p className={classes.off_text}>{el.percent_sale_price}%</p>
+               </span>
+              )}
+
+              <p className={classes.current_price}>
+               {formatNumber(el.sale_price * euro)}
+               تومان (&nbsp;€&nbsp;
+               {el.sale_price} )
+              </p>
+             </>
+            )}
+           </div>
           </p>
          </span>
         </span>

@@ -17,7 +17,7 @@ const Img = ({ src, alt, className }) => {
     variant='rectangular'
     animation='wave'
     className={`${!isLoading ? classes.hidden : classes.block}`}
-    sx={{ width: '100%', height: '65%' }}
+    sx={{ width: '100%', height: '65%', minHeight: '200px' }}
    />
   </div>
  );
