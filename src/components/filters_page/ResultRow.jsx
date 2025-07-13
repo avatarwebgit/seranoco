@@ -101,7 +101,7 @@ const ResultRow = ({ dataProp }) => {
    <>
     {formatNumber(price * euro)}&nbsp;{t('m_unit')}
     <br />
-    (€&nbsp;{price?.toFixed(2)})
+    (€&nbsp;{price})
    </>
   );
  };
