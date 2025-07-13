@@ -145,9 +145,15 @@ const FilterByShape = ({ windowSize }) => {
    firstMatchingSlideIndex !== -1
   ) {
    sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
-   gridSliderRef.current.swiper.slideTo(
-    Math.round(firstMatchingSlideIndex / 8),
-   );
+   if (!isSmallPage) {
+    gridSliderRef.current.swiper.slideTo(
+     Math.round(firstMatchingSlideIndex / 8),
+    );
+   } else {
+    gridSliderRef.current.swiper.slideTo(
+     Math.round(firstMatchingSlideIndex / 4),
+    );
+   }
   }
  };
 

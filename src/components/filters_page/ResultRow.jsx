@@ -159,7 +159,7 @@ const ResultRow = ({ dataProp }) => {
   const total = quantity * price;
 
   if (lng === 'en') {
-   return `${total.toFixed(2)} ${t('m_unit')}`;
+   return `${total} ${t('m_unit')}`;
   }
   return `${formatNumber(Math.round(total * euro))} ${t('m_unit')}`;
  };

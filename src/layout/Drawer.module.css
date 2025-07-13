@@ -166,6 +166,9 @@
   width: 20px;
   height: 20px;
  }
+ .main {
+  height: 90vh;
+ }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
@@ -179,6 +182,9 @@
  .close_icon {
   width: 20px;
   height: 20px;
+ }
+ .main {
+  height: 90vh;
  }
 }
 
