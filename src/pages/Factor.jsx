@@ -474,15 +474,15 @@ const Factor = () => {
           <strong>
            {lng === 'fa' ? (
             <>
-             {formatNumber(+detailsData.order.paying_amount_fa)}
+             {detailsData.order.total_amount_fa}
              <br />
              {t('m_unit')}
              <br />
-             (€&nbsp;{detailsData.order.paying_amount})
+             (€&nbsp;{detailsData.order.total_amount})
             </>
            ) : (
             <>
-             {Math.round(detailsData.order.paying_amount * 10) / 10}
+             {Math.round(detailsData.order.total_amount * 10) / 10}
              {t('m_unit')}
             </>
            )}

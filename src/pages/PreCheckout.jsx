@@ -23,9 +23,8 @@ import {
  styled,
  Switch,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import PaymentMethod from '../components/checkout/PaymentMethod';
-import { formatNumber, notify } from '../utils/helperFunctions';
+import { notify } from '../utils/helperFunctions';
 
 import classes from './PreCheckout.module.css';
 const IOSSwitch = styled(props => (
@@ -139,14 +138,14 @@ const PreCheckout = ({ windowSize }) => {
           <span className={classes.amont}>
            {lng !== 'fa'
             ? card?.totalPrice?.toFixed(2)
-            : formatNumber(+card?.totalPrice * card.euro)}
+            : (+card?.totalPrice * card.euro).toLocaleString('fa-IR')}
            &nbsp;{t('m_unit')}
           </span>
          ) : (
           <span className={classes.amont}>
            {lng !== 'fa'
             ? card?.finalPayment.toFixed(2)
-            : formatNumber(+card?.finalPayment * card.euro)}
+            : (+card?.finalPayment * card.euro).toLocaleString('fa-IR')}
            &nbsp;{t('m_unit')}
           </span>
          )}
@@ -192,7 +191,9 @@ const PreCheckout = ({ windowSize }) => {
         <span
          className={classes.amont}
          style={{ color: walletBalance && walletStatus ? '#000' : '#c2c2c2' }}>
-         {walletBalance && lng !== 'fa' ? walletBalance : walletBalance}
+         {walletBalance && lng !== 'fa'
+          ? walletBalance
+          : (walletBalance * euro).toLocaleString('fa-IR')}
          &nbsp;{t('m_unit')}
         </span>
        )}
@@ -207,8 +208,8 @@ const PreCheckout = ({ windowSize }) => {
           <>
            {lng !== 'fa'
             ? cart.totalPriceAfterDiscount.toFixed(2)
-            : formatNumber(
-               Math.round(cart.totalPriceAfterDiscount * cart.euro),
+            : (cart.totalPriceAfterDiscount * cart.euro).toLocaleString(
+               'fa-IR',
               )}
            &nbsp;
            {t('m_unit')}
@@ -217,7 +218,7 @@ const PreCheckout = ({ windowSize }) => {
           <>
            {lng !== 'fa'
             ? cart?.totalPrice?.toFixed(2)
-            : formatNumber(Math.round(cart.totalPrice * cart.euro))}
+            : Math.round(cart.totalPrice * cart.euro).toLocaleString('fa-IR')}
            &nbsp;
            {t('m_unit')}
           </>

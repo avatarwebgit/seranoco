@@ -149,9 +149,9 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
                ? `${(
                   Math.round(+detailsData.order.total_amount * 10) / 10
                  ).toFixed(2)} ${t('m_unit')}`
-               : `${formatNumber(detailsData.order.total_amount_fa)} ${t(
-                  'm_unit',
-                 )}`
+               : `${detailsData.order.total_amount_fa.toLocaleString(
+                  'fa-IR',
+                 )} ${t('m_unit')}`
              }
             />
             <label>{t('orders.total_payment')}</label>
@@ -163,9 +163,9 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
                ? `${(
                   Math.round(+detailsData.order.paying_amount * 10) / 10
                  ).toFixed(2)} ${t('m_unit')}`
-               : `${formatNumber(detailsData.order.paying_amount_fa)} ${t(
-                  'm_unit',
-                 )}`
+               : `${detailsData.order.paying_amount_fa.toLocaleString(
+                  'fa-IR',
+                 )} ${t('m_unit')}`
              }
              dir={lng === 'fa' ? 'rtl' : 'ltr'}
             />
@@ -202,7 +202,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
                 style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
                 {lng !== 'fa'
                  ? el.product.sale_price
-                 : formatNumber(el.product.sale_price * euro)}
+                 : (el.product.sale_price * euro).toLocaleString('fa-IR')}
                 &nbsp;{t('m_unit')}
                </td>
                <td className={classes.td}>{el.selected_quantity}</td>
@@ -210,7 +210,7 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
                 className={classes.td}
                 style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
                 {lng === 'fa'
-                 ? formatNumber(el.total_price * euro)
+                 ? (el.total_price * euro).toLocaleString('fa-IR')
                  : +el.total_price.toFixed(2)}
                 &nbsp;{t('m_unit')}
                </td>
@@ -251,16 +251,26 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
       </td>
       <td className={classes.td}>
        {lng === 'fa'
-        ? formatNumber(data.paying_amount * euro)
+        ? (data.paying_amount * euro).toLocaleString('fa-IR')
         : data.paying_amount}
        &nbsp;{t('m_unit')}
       </td>
       <td className={classes.td}>
-       {new Date(data.created_at).toLocaleDateString('en-US', {
-        year: 'numeric',
-        day: 'numeric',
-        month: 'long',
-       })}
+       {lng !== 'fa' ? (
+        new Date(data.created_at).toLocaleDateString('en-US', {
+         year: 'numeric',
+         day: 'numeric',
+         month: 'long',
+        })
+       ) : (
+        <>
+         {new Date(data.created_at).toLocaleDateString('fa-IR', {
+          year: 'numeric',
+          day: 'numeric',
+          month: 'long',
+         })}
+        </>
+       )}
       </td>
       <td className={classes.td}>
        {data.delivery_status === '1' && (

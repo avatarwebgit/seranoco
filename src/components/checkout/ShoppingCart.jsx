@@ -82,7 +82,7 @@ const ShoppingCart = () => {
        <td
         className={classes.td}
         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-        {lng !== 'fa' ? el.price : formatNumber(el.price * euro)}
+        {lng !== 'fa' ? el.price : (el.price * euro).toLocaleString('fa-IR')}
         &nbsp;{t('m_unit')}
        </td>
        <td className={classes.td}>{el.selected_quantity}</td>
@@ -90,26 +90,30 @@ const ShoppingCart = () => {
         {isByOrder && lng !== 'fa' && (totalPrice * advancedPayment).toFixed(2)}
         {isByOrder &&
          lng === 'fa' &&
-         formatNumber(totalPrice * advancedPayment * euro)}
+         (totalPrice * advancedPayment * euro).toLocaleString('fa-IR')}
         &nbsp;{isByOrder ? t('m_unit') : '_'}
        </td>
        <td
         className={classes.td}
         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
         {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
-        {!isByOrder && lng === 'fa' && formatNumber(totalPrice * euro)}
+        {!isByOrder &&
+         lng === 'fa' &&
+         (totalPrice * euro).toLocaleString('fa-IR')}
         &nbsp;{!isByOrder ? t('m_unit') : '_'}
        </td>
        <td
         className={classes.td}
         style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
         {!isByOrder && lng !== 'fa' && totalPrice.toFixed(2)}
-        {!isByOrder && lng === 'fa' && formatNumber(totalPrice * euro)}
+        {!isByOrder &&
+         lng === 'fa' &&
+         (totalPrice * euro).toLocaleString('fa-IR')}
         &nbsp;{!isByOrder && t('m_unit')}
         {isByOrder && lng !== 'fa' && (totalPrice * advancedPayment).toFixed(2)}
         {isByOrder &&
          lng === 'fa' &&
-         formatNumber(totalPrice * advancedPayment * euro)}
+         (totalPrice * advancedPayment * euro).toLocaleString('fa-IR')}
         &nbsp;{isByOrder && t('m_unit')}
        </td>
       </tr>
