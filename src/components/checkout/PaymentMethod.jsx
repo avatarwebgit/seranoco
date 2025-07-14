@@ -87,7 +87,7 @@ console.log(method)
             loading='lazy'
            />
           </div>
-          {lng === 'fa' ? el.title : el.name}
+          {lng === 'fa' ? el.title : el.title_en}
          </button>
         </>
        ) : (
