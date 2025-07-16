@@ -1,48 +1,48 @@
 .main {
-  height: fit-content;
+ height: fit-content;
 }
 
 .fa * {
-  direction: rtl;
+ direction: rtl;
 }
 
 .en * {
-  direction: ltr;
+ direction: ltr;
 }
 
 .main_card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 2rem;
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start;
+ justify-content: center;
+ padding-top: 2rem;
 }
 
 .container {
-  width: 100%;
-  height: fit-content;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+ width: 100%;
+ height: fit-content;
+ display: flex;
+ align-items: flex-start;
+ justify-content: space-between;
 }
 
 .accordion_wrapper {
-  width: 30%;
-  height: fit-content;
+ width: 30%;
+ height: fit-content;
 }
 .info_wrapper {
-  width: 70%;
-  height: fit-content;
+ width: 70%;
+ height: fit-content;
 }
 
-.logout_btn{
-  background-color: rgb(255, 255, 255);
-  border-radius: 5px;
-  margin-top: 10px;
-  font-size: 15px;
-  font-weight: bold;
+.logout_btn {
+ background-color: rgb(255, 255, 255);
+ border-radius: 5px;
+ margin-top: 10px;
+ font-size: 15px;
+ font-weight: bold;
 }
 
-.logout_btn:hover{
-  background-color: red;
+.logout_btn:hover {
+ background-color: red;
 }
