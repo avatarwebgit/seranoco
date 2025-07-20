@@ -472,6 +472,7 @@ const Header = ({ windowSize }) => {
        </IconButton>
        <MuiDrawer
         // anchor={lng === 'fa' ? 'right' : 'left'}
+        // sx={{direction:lng === 'fa' ? 'rtl' : 'ltr'}}
         open={drawerOpen}
         onClose={() => closeDrawer(false)}>
         <Box

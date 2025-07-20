@@ -134,18 +134,16 @@ const Drawer = ({ children, size }) => {
  return (
   <motion.div
    className={classes.main}
+   style={{ justifyContent: isRTL ? 'flex-end' : 'flex-start' }}
    initial={{ display: 'none' }}
    animate={{ display: drawerState ? 'flex' : 'none' }}
    transition={{ duration: 0.3, delay: drawerState ? 0 : 0.3 }}>
    <motion.div
     className={classes.content}
-    initial={{ x: isRTL ? '-100%' : '100%' }}
-    animate={{ x: !drawerState ? '0' : isRTL ? '-100%' : '-100%' }}
+    initial={{ x: isRTL ? '100%' : '-100%' }}
+    animate={{ x: drawerState ? 0 : (isRTL ? '100%' : '-100%') }}
     transition={{ type: 'spring', bounce: false, duration: 0.3 }}
-    style={{
-     right: isRTL ? 'auto' : 0,
-     left: isRTL ? 0 : 'auto',
-    }}>
+   >
     <div
      className={classes.header_wrapper}
      style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}>

@@ -8,11 +8,7 @@ import { cartActions } from './store/store';
 
 import Drawer from './layout/Drawer';
 import FixedNavigation from './layout/FixedNavigation';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { prefixer } from 'stylis';
-import rtlPlugin from '@mui/stylis-plugin-rtl';
-import { createTheme, ThemeProvider } from '@mui/material';
+
 
 import './App.css';
 
@@ -135,18 +131,8 @@ function App() {
   }
  });
 
- const rtlCache = createCache({
-  key: lng === 'fa' ? 'muirtl' : 'muiltr',
-  stylisPlugins: lng === 'fa' ? [prefixer, rtlPlugin] : [prefixer],
- });
-
- const theme = createTheme({
-  direction: lng === 'fa' ? 'rtl' : 'ltr',
- });
-
  return (
-  <CacheProvider value={rtlCache}>
-   <ThemeProvider theme={theme}>
+
     <Suspense fallback={<Loading />}>
      <Routes>
       <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
@@ -248,8 +234,7 @@ function App() {
       pauseOnHover={true}
      />
     </Suspense>
-   </ThemeProvider>
-  </CacheProvider>
+ 
  );
 }
 

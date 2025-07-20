@@ -1,26 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Button, TextField } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, TextareaAutosize, TextField } from '@mui/material';
-import { Textarea } from '@mui/joy';
+import { useSelector } from 'react-redux';
 
 import BannerCarousel from '../components/BannerCarousel';
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
 import Body from '../components/filters_page/Body';
 import Card from '../components/filters_page/Card';
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
 
-import instagram from '../assets/svg/instagram.svg';
-import whatsapp from '../assets/svg/whatsapp.svg';
-import telegram from '../assets/svg/telegram.svg';
 import clock from '../assets/svg/clock.svg';
+import instagram from '../assets/svg/instagram.svg';
+import telegram from '../assets/svg/telegram.svg';
+import whatsapp from '../assets/svg/whatsapp.svg';
 
 import address from '../assets/svg/address.svg';
 
-import classes from './ContactUs.module.css';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { contactUsSend, useBasicInformation } from '../services/api';
 import { notify } from '../utils/helperFunctions';
-import ReCAPTCHA from 'react-google-recaptcha';
+import classes from './ContactUs.module.css';
 const ContactUs = ({ windowSize }) => {
  const [name, setName] = useState('');
  const [email, setEmail] = useState('');

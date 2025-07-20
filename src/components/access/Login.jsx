@@ -131,7 +131,6 @@ const Login = () => {
     dispatch(userActions.set(serverRes.result.token));
     dispatch(accesModalActions.close());
     settoken(serverRes.result.token);
-    dispatch(drawerActions.open());
     dispatch(
      signupActions.set({
       ...serverRes.result.user,
@@ -142,7 +141,9 @@ const Login = () => {
        );
        temporaryCart.map(item => {
       handleSendShoppingCart(item);
-     })
+     })   
+      dispatch(drawerActions.open());
+
    }
   } else {
    setErrors(serverRes.result.errors);
