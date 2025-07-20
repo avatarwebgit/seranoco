@@ -139,10 +139,22 @@ const Login = () => {
       createdAt: new Date().toISOString(),
      }),
        );
-       temporaryCart.map(item => {
-      handleSendShoppingCart(item);
-     })   
-      dispatch(drawerActions.open());
+
+        if (temporaryCart?.length > 0) {
+        try {
+          await Promise.all(temporaryCart.map(item => 
+            handleSendShoppingCart(item, serverRes.result.token)
+          ));
+          notify(t('orders.allItemsAdded'));
+        } catch (error) {
+          console.error('Error sending some cart items:', error);
+          notify(t('orders.someItemsFailed'));
+        } finally {
+          dispatch(drawerActions.open());
+        }
+      } else {
+        dispatch(drawerActions.open());
+      }
 
    }
   } else {

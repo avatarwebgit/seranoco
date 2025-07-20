@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import logo from '../../assets/images/logo_trasnparent.png';
 import { ReactComponent as Close } from '../../assets/svg/close.svg';
 
-import { verifyOTP2 } from '../../services/api';
+import { sendShoppingCart, verifyOTP2 } from '../../services/api';
 import {
     accesModalActions,
+    cartActions,
     drawerActions,
     signupActions,
     userActions,
@@ -25,6 +26,9 @@ const OTP = () => {
  const dispatch = useDispatch();
  const lng = useSelector(state => state.localeStore.lng);
  const cellphone = useSelector(state => state.accessModalStore.mobileNo);
+  const temporaryCart = useSelector(state => state.cartStore.temporaryCart);
+  const euro = useSelector(state => state.cartStore.euro);
+
 
  const [signupValues, setSignupValues] = useState(null);
  const [otpValue, setOtpValue] = useState([]);
@@ -75,6 +79,32 @@ const OTP = () => {
   handleVerifyOTP(otp, cellphone);
  };
 
+  const handleSendShoppingCart = async (token,el) => {
+   const serverRes = await sendShoppingCart(
+    token,
+    +el.id,
+    +el.variation_id,
+    +el.selected_quantity,
+   );
+   try {
+    notify(t('orders.ok'));
+    if (serverRes.response.ok) {
+     dispatch(
+      cartActions.add({
+       ...el,
+       selected_quantity: +el.selected_quantity,
+       euro_price: euro,
+       variation_id: +el.variation_id,
+       variation: { quantity: +el.selected_quantity },
+      }),
+     );
+    }
+    dispatch(drawerActions.open());
+   } catch (err) {
+    //  console.log(err);
+   }
+  };
+
  const handleVerifyOTP = async (code, cellphone) => {
   setIsLoading(true);
 
@@ -83,11 +113,27 @@ const OTP = () => {
    dispatch(userActions.setUser(serverRes.result.user));
    dispatch(userActions.set(serverRes.result.token));
    dispatch(accesModalActions.close());
+        if (temporaryCart?.length > 0) {
+        try {
+          await Promise.all(temporaryCart.map(item => 
+            handleSendShoppingCart(serverRes.result.token,item )
+          ));
+          notify(t('orders.allItemsAdded'));
+        } catch (error) {
+          console.error('Error sending some cart items:', error);
+          notify(t('orders.someItemsFailed'));
+        } finally {
+          dispatch(drawerActions.open());
+        }
+      } else {
+        dispatch(drawerActions.open());
+      }
    dispatch(drawerActions.open());
   } catch (error) {
    console.error('OTP verification failed:', error);
    notify(t('trylater'));
    dispatch(accesModalActions.close());
+   
   } finally {
    setIsLoading(false);
   }

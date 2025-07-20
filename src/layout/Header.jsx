@@ -71,6 +71,7 @@ const Header = ({ windowSize }) => {
  const modalOpen = useSelector(state => state.accessModalStore.modalOpen);
  const favoritsCount = useSelector(state => state.favoriteStore.count);
 
+
  const { t } = useTranslation();
  const location = useLocation();
  const navigate = useNavigate();
@@ -303,7 +304,7 @@ const Header = ({ windowSize }) => {
        <span className={classes.icon_pack_wrapper}>
         <IconButton onClick={handleOpenCart}>
          <Badge
-          badgeContent={cart?.products.length}
+          badgeContent={token?cart?.products.length:cart?.temporaryCart.length}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
           <Tooltip title={t('profile.basket')} placement='top' arrow>
            {isHomePage ? (

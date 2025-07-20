@@ -71,18 +71,29 @@ const CartProduct = data => {
   }
  };
 
- const handleRemveItem = async () => {
-  const serverRes = await removeShoppingCart(
-   token,
-   productData.id,
-   variation.product.variation_id,
-  );
-  if (serverRes.response.ok) {
-   dispatch(cartActions.remove(productData));
+const handleRemveItem = async () => {
+  if (token) {
+    // User is logged in - remove from server
+    const serverRes = await removeShoppingCart(
+      token,
+      productData.id,
+      variation.product.variation_id,
+    );
+    if (serverRes.response.ok) {
+      dispatch(cartActions.remove(productData));
+      notify(t('orders.successfull'));
+    } else {
+      notify(t('orders.error'));
+    }
   } else {
-   notify(t(''));
+    // Guest user - remove from temporary cart
+    console.log(variation)
+    dispatch(cartActions.removeFromTemporaryCart({
+      variation_id: variation.product.variation_id
+    }));
+    notify(t('orders.successfull'));
   }
- };
+};
 
  return (
   <>

@@ -50,6 +50,16 @@ const cartSlice = createSlice({
    }, 0);
   },
 
+  removeFromTemporaryCart(state, action) {
+  state.temporaryCart = state.temporaryCart.filter(
+    el => +el.variation_id !== +action.payload.variation_id
+  );
+  localStorage.setItem('temporaryCart', JSON.stringify(state.temporaryCart));
+  state.totalPrice = state.temporaryCart.reduce((total, product) => {
+    return total + product.selected_quantity * product.sale_price;
+  }, 0);
+},
+
   remove(state, action) {
    state.products = state.products.filter(
     el => +el.variation_id !== +action.payload.variation_id,

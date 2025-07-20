@@ -279,6 +279,7 @@ const Products = ({ windowSize }) => {
     variation: { quantity: el.quantity },
    }),
   );
+  dispatch(drawerActions.open())
  };
 
  return (
