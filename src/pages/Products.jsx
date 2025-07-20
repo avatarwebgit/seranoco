@@ -14,10 +14,10 @@ import Card from '../components/filters_page/Card';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import {
-  accesModalActions,
-  cartActions,
-  drawerActions,
-  favoriteActions,
+ accesModalActions,
+ cartActions,
+ drawerActions,
+ favoriteActions,
 } from '../store/store';
 import { formatNumber, notify } from '../utils/helperFunctions';
 
@@ -26,11 +26,11 @@ import { ReactComponent as Heart } from '../assets/svg/heart.svg';
 import { ReactComponent as HeartRed } from '../assets/svg/heart_red.svg';
 
 import {
-  addToFavorite,
-  getProductDetails,
-  getProductDetailsWithId,
-  removeFromFavorite,
-  sendShoppingCart,
+ addToFavorite,
+ getProductDetails,
+ getProductDetailsWithId,
+ removeFromFavorite,
+ sendShoppingCart,
 } from '../services/api';
 
 import 'swiper/css';
@@ -267,6 +267,18 @@ const Products = ({ windowSize }) => {
   } catch (err) {
    //  console.log(err);
   }
+ };
+
+ const handleAddToTemporaryCard = el => {
+  dispatch(
+   cartActions.addToTemporaryCart({
+    ...el,
+    selected_quantity: quantity,
+    euro_price: euro,
+    variation_id: variation,
+    variation: { quantity: el.quantity },
+   }),
+  );
  };
 
  return (
@@ -709,9 +721,7 @@ const Products = ({ windowSize }) => {
            variant='contained'
            size='large'
            className={classes.addtocart}
-           onClick={() => {
-            dispatch(accesModalActions.login());
-           }}>
+           onClick={() => handleAddToTemporaryCard(detailsData.product)}>
            <Shop style={{ width: '25px', height: '25px', margin: '0 5px' }} />
            {isByOrder ? t('addtoorder') : t('addtocart')}
           </Button>

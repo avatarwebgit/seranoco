@@ -1,70 +1,85 @@
 .main {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  justify-self: center !important;
-  position: relative;
-  width: 50px !important;
-  height: 50px !important;
+ display: flex !important;
+ align-items: center !important;
+ justify-content: center !important;
+ justify-self: center !important;
+ position: relative;
+ width: 50px !important;
+ height: 50px !important;
 }
 .current_lng_text {
-  font-size: 0.6rem;
-  font-weight: 900;
+ font-size: 0.6rem;
+ font-weight: 900;
 }
 .dropdown_wrapper {
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  color: black;
-  position: absolute;
-  top: 100%;
-  left: 80%;
-  transform: translate(0%, -40%);
-  width: 30px;
-  border-radius: 2px;
-  overflow: hidden;
-  transition: all 0.2s;
-  transform-origin: top;
-  box-shadow: 5px 5px 5px rgba(196, 196, 196, 0.418);
+ width: 100%;
+ display: flex;
+ flex-direction: column;
+ background-color: white;
+ color: black;
+ position: absolute;
+ top: 100%;
+ left: 80%;
+ transform: translate(0%, -40%);
+ width: 30px;
+ border-radius: 2px;
+ overflow: hidden;
+ transition: all 0.2s;
+ transform-origin: top;
+ box-shadow: 5px 5px 5px rgba(196, 196, 196, 0.418);
 }
 .lng_item {
-  font-size: 0.5rem;
-  font-weight: 500;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+ font-size: 0.5rem;
+ font-weight: 500;
+ padding: 5px;
+ display: flex;
+ align-items: center;
+ justify-content: space-evenly;
 }
 .lng_item:hover {
-  background-color: rgb(202, 202, 202);
+ background-color: rgb(202, 202, 202);
 }
 .text {
-  width: 40px;
-  font-size: 0.5rem;
+ width: 40px;
+ font-size: 0.5rem;
 }
 .svg {
-  width: 28px;
-  height: 28px;
+ width: 28px;
+ height: 28px;
 }
 @media only screen and (max-width: 480px) {
-  .main {
-    border-width: 1px !important;
-    width: 35px !important;
-    height: 35px !important;
-  }
-  .dropdown_wrapper {
-    left: -100%;
-  }
+ .main {
+  border-width: 1px !important;
+  width: 35px !important;
+  height: 35px !important;
+ }
+ .lng_item {
+  height: 50px;
+ }
+ .dropdown_wrapper {
+  width: 50px;
+  left: -120%;
+  top: 50px;
+ }
+ .text {
+  font-size: 0.7rem;
+ }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
-  .main {
-    border-width: 1px !important;
-    width: 35px !important;
-    height: 35px !important;
-  }
-  .dropdown_wrapper {
-    left: -100%;
-  }
+ .main {
+  border-width: 1px !important;
+  width: 35px !important;
+  height: 35px !important;
+ }
+ .lng_item {
+  padding: 10px;
+ }
+ .dropdown_wrapper {
+  left: -100%;
+  width: 40px;
+ }
+ .text {
+  font-size: 0.7rem;
+ }
 }

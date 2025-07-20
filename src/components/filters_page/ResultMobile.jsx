@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import classes from './ResultMobile.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { cartActions, drawerActions } from '../../store/store';
-import { formatNumber, notify } from '../../utils/helperFunctions';
 import { sendShoppingCart } from '../../services/api';
-import { Typography } from '@mui/material';
+import {
+ accesModalActions,
+ cartActions,
+ drawerActions,
+} from '../../store/store';
+
+import { formatNumber, notify } from '../../utils/helperFunctions';
+
+import classes from './ResultMobile.module.css';
 const ResultMobile = ({ dataProps }) => {
  const [data, setData] = useState(null);
 
@@ -39,12 +44,20 @@ const ResultMobile = ({ dataProps }) => {
   }
  };
 
+ const handleAddToTemporaryCard = (el, variation, quantity) => {
+  cartActions.addToTemporaryCart(el.id, +variation, quantity);
+ };
+
  return (
-  <div className={classes.main}>
+  <div className={classes.main} dir={lng === 'fa' ? 'rtl' : 'ltr'}>
    {data &&
     data.map(el => {
-     console.log(el);
-
+     const colorAttr = el?.attribute.find(
+      attr => attr.attribute.name === 'Color',
+     ).value;
+     const detailAttr = el?.attribute?.find(
+      attr => attr.attribute.name === 'Details',
+     ).value;
      return (
       <div className={classes.wrapper}>
        <div className={classes.right_side}>
@@ -56,7 +69,7 @@ const ResultMobile = ({ dataProps }) => {
        </div>
        <div className={classes.left_side}>
         <span className={classes.name_wrapper}>
-         <p className={classes.name}>{el.name}</p>
+         <p className={classes.name}>{!lng === 'fa' ? el.name : el.name_fa}</p>
         </span>
         <span className={classes.details}>
          <span className={classes.text_wrapper}>
@@ -72,10 +85,11 @@ const ResultMobile = ({ dataProps }) => {
          <span className={classes.value_wrapper}>
           <p className={classes.detail_text}>{el?.details || 'none'}</p>
           <p className={classes.detail_text}>{el?.size || 'none'}</p>
-          <p className={classes.detail_text}>{el?.color || 'none'}</p>
           <p className={classes.detail_text}>
-           {el?.attribute?.find(attr => attr.attribute.name === 'Details').value
-            .name || 'none'}
+           {lng === 'fa' ? colorAttr.name_fa : colorAttr.name || 'none'}
+          </p>
+          <p className={classes.detail_text}>
+           {lng === 'fa' ? detailAttr.name_fa : detailAttr.name || 'none'}
           </p>
           <p className={classes.detail_text}>{el?.country || 'none'}</p>
           <p className={classes.detail_text}>
@@ -124,11 +138,19 @@ const ResultMobile = ({ dataProps }) => {
           </p>
          </span>
         </span>
-        <button
-         className={classes.shop_btn}
-         onClick={e => handleSendShoppingCart(el, el?.variation_id, 1)}>
-         {t('add_to_card')}
-        </button>
+        {token ? (
+         <button
+          className={classes.shop_btn}
+          onClick={e => handleSendShoppingCart(el, el?.variation_id, 1)}>
+          {t('add_to_card')}
+         </button>
+        ) : (
+         <button
+          className={classes.shop_btn}
+          onClick={e => handleAddToTemporaryCard(el, el.variation_id, 1)}>
+          {t('add_to_card')}
+         </button>
+        )}
        </div>
       </div>
      );

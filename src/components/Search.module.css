@@ -20,6 +20,18 @@
  left: 0;
 }
 
+.close_btn {
+ width: 1.5rem;
+ height: 1.5rem;
+ border-radius: 50%;
+ background-color: transparent;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: absolute !important;
+ right: 0 !important;
+}
+
 .search_logo {
  width: 50%;
  height: 50%;
@@ -36,14 +48,12 @@
  width: 100%;
  font-size: 0.5rem;
  transition: all 0.25s;
- padding-left: 2rem;
-
+ padding: 0 2rem;
 }
 
 .search_input::placeholder {
  font-size: 0.7rem;
 }
-
 
 .backdrop {
  position: fixed;
@@ -71,8 +81,8 @@
  overflow-y: scroll;
 }
 
-.sheet{
-  height: fit-content;
+.sheet {
+ height: fit-content;
 }
 
 .search_btn {

@@ -111,6 +111,7 @@ const OTP = () => {
     disableRipple={true}
     onClick={handleCloseModal}>
     <Close width={30} height={30} />
+    
    </IconButton>
    <div className={classes.sheet}>
     <div className={classes.logo_wrapper}>

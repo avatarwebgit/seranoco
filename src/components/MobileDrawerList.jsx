@@ -198,7 +198,7 @@ const MobileDrawerList = () => {
      selectedKeys={[current]}
      mode='inline'
      items={items}
-     className={classes.main}
+     className={`${classes.main} ${lng === 'fa' ? classes.rtl : classes.ltr}`}
     />
    )}
   </>

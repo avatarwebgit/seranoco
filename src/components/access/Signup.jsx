@@ -25,37 +25,37 @@ import LoadingSpinner from '../common/LoadingSpinner';
 
 import classes from './Signup.module.css';
 
-const inputStyles = {
- mb: '0.5rem',
- '& .MuiInputBase-root': {
-  '& fieldset': {
-   borderColor: 'black',
-  },
- },
- '& .MuiInputBase-input': {
-  color: 'rgb(0, 0, 0)',
-  fontSize: '16px',
- },
- '& .MuiInputLabel-root': {
-  color: 'gray',
-  fontSize: '14px',
- },
- '& .Mui-focused .MuiInputLabel-root': {
-  color: 'black',
-  transform: 'translate(0, -5px) scale(0.75)',
- },
- '& .Mui-focused .MuiInputBase-root': {
-  '& fieldset': {
-   borderColor: 'black',
-  },
- },
-};
-
 const Signup = () => {
  const { t } = useTranslation();
  const dispatch = useDispatch();
  const lng = useSelector(state => state.localeStore.lng);
  const { data: countryData, isLoading: isLoadingCountries } = useAllCountries();
+ const inputStyles = {
+  direction: lng === 'fa' ? 'rtl' : 'ltr',
+  mb: '0.5rem',
+  '& .MuiInputBase-root': {
+   '& fieldset': {
+    borderColor: 'black',
+   },
+  },
+  '& .MuiInputBase-input': {
+   color: 'rgb(0, 0, 0)',
+   fontSize: '16px',
+  },
+  '& .MuiInputLabel-root': {
+   color: 'gray',
+   fontSize: '14px',
+  },
+  '& .Mui-focused .MuiInputLabel-root': {
+   color: 'black',
+   transform: 'translate(0, -5px) scale(0.75)',
+  },
+  '& .Mui-focused .MuiInputBase-root': {
+   '& fieldset': {
+    borderColor: 'black',
+   },
+  },
+ };
 
  // Form state
  const [formValues, setFormValues] = useState({
@@ -76,7 +76,7 @@ const Signup = () => {
  const [recaptchaToken, setRecaptchaToken] = useState('');
 
  const abortControllerRef = useRef(new AbortController());
- const isRTL = lng === 'fa';
+ const isRTL = lng === 'fa' ? true : false;
 
  // Load saved data from localStorage
  useEffect(() => {
@@ -287,7 +287,7 @@ const Signup = () => {
  };
 
  return (
-  <div className={classes.content_wrapper}>
+  <div className={classes.content_wrapper} dir={isRTL ? 'rtl' : 'ltr'}>
    <div className={classes.sheet}>
     <div className={classes.logo_wrapper}>
      <img className={classes.logo} src={logo} alt='' loading='lazy' />
@@ -352,15 +352,37 @@ const Signup = () => {
           endAdornment: (
            <InputAdornment position='end'>
             <IconButton
-             aria-label='toggle password visibility'
+             aria-label='show'
+             style={{
+              width: '20px',
+              height: 'auto',
+              display: lng !== 'fa' ? 'flex' : 'none',
+             }}
              onClick={() => setShowPassword(!showPassword)}
-             edge='end'
-             size='small'
-             disabled={isLoading}>
+             disableRipple>
              {showPassword ? (
-              <Visibility fontSize='small' />
+              <Visibility fontSize='5' />
              ) : (
-              <VisibilityOff fontSize='small' />
+              <VisibilityOff fontSize='5' />
+             )}
+            </IconButton>
+           </InputAdornment>
+          ),
+          startAdornment: (
+           <InputAdornment position='start'>
+            <IconButton
+             aria-label='show'
+             style={{
+              width: '20px',
+              height: 'auto',
+              display: lng === 'fa' ? 'flex' : 'none',
+             }}
+             onClick={() => setShowPassword(!showPassword)}
+             disableRipple>
+             {showPassword ? (
+              <Visibility fontSize='5' />
+             ) : (
+              <VisibilityOff fontSize='5' />
              )}
             </IconButton>
            </InputAdornment>

@@ -8,17 +8,23 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
  accesModalActions,
+ cartActions,
  drawerActions,
  signupActions,
 } from '../../store/store';
 
-import { getUserTokenGoogle, login } from '../../services/api';
+import {
+ getUserTokenGoogle,
+ login,
+ sendShoppingCart,
+} from '../../services/api';
 
 import logo from '../../assets/images/logo_trasnparent.png';
 import { ReactComponent as Close } from '../../assets/svg/close.svg';
 
 import { userActions } from '../../store/store';
 
+import { notify } from '../../utils/helperFunctions';
 import classes from './Login.module.css';
 const Login = () => {
  const [email, setEmail] = useState('');
@@ -36,6 +42,8 @@ const Login = () => {
 
  const { t } = useTranslation();
  const lng = useSelector(state => state.localeStore.lng);
+ const temporaryCart = useSelector(state => state.cartStore.temporaryCart);
+ const euro = useSelector(state => state.cartStore.euro);
 
  const inputStyles = {
   m: '0.5rem 0',
@@ -90,6 +98,32 @@ const Login = () => {
   dispatch(accesModalActions.mobile());
  };
 
+ const handleSendShoppingCart = async el => {
+  const serverRes = await sendShoppingCart(
+   token,
+   +el.id,
+   +el.variation_id,
+   +el.selected_quantity,
+  );
+  try {
+   notify(t('orders.ok'));
+   if (serverRes.response.ok) {
+    dispatch(
+     cartActions.add({
+      ...el,
+      selected_quantity: +el.selected_quantity,
+      euro_price: euro,
+      variation_id: +el.variation_id,
+      variation: { quantity: +el.selected_quantity },
+     }),
+    );
+   }
+   dispatch(drawerActions.open());
+  } catch (err) {
+   //  console.log(err);
+  }
+ };
+
  const handleLogin = async () => {
   const serverRes = await login(email, password, recaptchaToekn);
   if (serverRes.response.ok) {
@@ -98,7 +132,6 @@ const Login = () => {
     dispatch(accesModalActions.close());
     settoken(serverRes.result.token);
     dispatch(drawerActions.open());
-
     dispatch(
      signupActions.set({
       ...serverRes.result.user,
@@ -106,7 +139,10 @@ const Login = () => {
       selectedCountry: serverRes.result.user.Country,
       createdAt: new Date().toISOString(),
      }),
-    );
+       );
+       temporaryCart.map(item => {
+      handleSendShoppingCart(item);
+     })
    }
   } else {
    setErrors(serverRes.result.errors);
@@ -161,7 +197,30 @@ const Login = () => {
           <InputAdornment position='end'>
            <IconButton
             aria-label='show'
-            style={{ width: '20px', height: 'auto' }}
+            style={{
+             width: '20px',
+             height: 'auto',
+             display: lng !== 'fa' ? 'flex' : 'none',
+            }}
+            onClick={() => setShowPassword(!showPassword)}
+            disableRipple>
+            {showPassword ? (
+             <Visibility fontSize='5' />
+            ) : (
+             <VisibilityOff fontSize='5' />
+            )}
+           </IconButton>
+          </InputAdornment>
+         ),
+         startAdornment: (
+          <InputAdornment position='start'>
+           <IconButton
+            aria-label='show'
+            style={{
+             width: '20px',
+             height: 'auto',
+             display: lng === 'fa' ? 'flex' : 'none',
+            }}
             onClick={() => setShowPassword(!showPassword)}
             disableRipple>
             {showPassword ? (

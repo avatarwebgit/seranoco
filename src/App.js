@@ -8,6 +8,11 @@ import { cartActions } from './store/store';
 
 import Drawer from './layout/Drawer';
 import FixedNavigation from './layout/FixedNavigation';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { prefixer } from 'stylis';
+import rtlPlugin from '@mui/stylis-plugin-rtl';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import './App.css';
 
@@ -130,99 +135,121 @@ function App() {
   }
  });
 
+ const rtlCache = createCache({
+  key: lng === 'fa' ? 'muirtl' : 'muiltr',
+  stylisPlugins: lng === 'fa' ? [prefixer, rtlPlugin] : [prefixer],
+ });
+
+ const theme = createTheme({
+  direction: lng === 'fa' ? 'rtl' : 'ltr',
+ });
+
  return (
-  <Suspense fallback={<Loading />}>
-   <Routes>
-    <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
-    <Route path={'/'} element={<Navigate to={`/${lng}`} replace />} />
-    <Route path={` `} element={<Navigate to={`/${lng}`} replace />} />
-    <Route
-     path={`/:lng/shopByColor`}
-     element={<FilterByColor windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/shopByShape`}
-     element={<FilterByShape windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/categories`}
-     element={<Categories windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/categories/:id`}
-     element={<SubCategory windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/products/:id/:variation`}
-     element={<Products windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/myaccount`}
-     element={
-      <RequireAuth>
-       <Profile windowSize={windowSize} />
-      </RequireAuth>
-     }
-    />
-    <Route
-     path={`/:lng/precheckout`}
-     element={
-      <RequireAuth>
-       <PreCheckout windowSize={windowSize} />
-      </RequireAuth>
-     }
-    />
-    <Route
-     path={`/:lng/order/pay/:id`}
-     element={
-      <RequireAuth>
-       <PayByCart widnowSize={windowSize} />
-      </RequireAuth>
-     }
-    />
-    <Route
-     path={`/:lng/new-products`}
-     element={<New windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/contact-us`}
-     element={<ContactUs windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/special/:id`}
-     element={<Special windowSize={windowSize} />}
-    />
-    <Route path={`/:lng/Blog`} element={<Blog windowSize={windowSize} />} />
-    <Route
-     path={`/:lng/Blog/:alias`}
-     element={<SingleBlog windowSize={windowSize} />}
-    />
-    <Route
-     path={`/:lng/page/:alias`}
-     element={<Page windowSize={windowSize} />}
-    />
-    <Route path={`/:lng/factor/:id`} element={<Factor />} />
+  <CacheProvider value={rtlCache}>
+   <ThemeProvider theme={theme}>
+    <Suspense fallback={<Loading />}>
+     <Routes>
+      <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
+      <Route path={'/'} element={<Navigate to={`/${lng}`} replace />} />
+      <Route path={` `} element={<Navigate to={`/${lng}`} replace />} />
+      <Route
+       path={`/:lng/shopByColor`}
+       element={<FilterByColor windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/shopByShape`}
+       element={<FilterByShape windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/categories`}
+       element={<Categories windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/categories/:id`}
+       element={<SubCategory windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/products/:id/:variation`}
+       element={<Products windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/myaccount`}
+       element={
+        <RequireAuth>
+         <Profile windowSize={windowSize} />
+        </RequireAuth>
+       }
+      />
+      <Route
+       path={`/:lng/precheckout`}
+       element={
+        <RequireAuth>
+         <PreCheckout windowSize={windowSize} />
+        </RequireAuth>
+       }
+      />
+      <Route
+       path={`/:lng/order/pay/:id`}
+       element={
+        <RequireAuth>
+         <PayByCart widnowSize={windowSize} />
+        </RequireAuth>
+       }
+      />
+      <Route
+       path={`/:lng/new-products`}
+       element={<New windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/contact-us`}
+       element={<ContactUs windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/special/:id`}
+       element={<Special windowSize={windowSize} />}
+      />
+      <Route path={`/:lng/Blog`} element={<Blog windowSize={windowSize} />} />
+      <Route
+       path={`/:lng/Blog/:alias`}
+       element={<SingleBlog windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/page/:alias`}
+       element={<Page windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/factor/:id`}
+       element={<Factor windowSize={windowSize} />}
+      />
 
-    <Route path={`/:lng/reset-password`} element={<ResetPassword />} />
-    <Route path={`/:lng/products/filter`} element={<ProductsFilter />} />
+      <Route
+       path={`/:lng/reset-password`}
+       element={<ResetPassword windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/products/filter`}
+       element={<ProductsFilter windowSize={windowSize} />}
+      />
 
-    <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
-   </Routes>
-   {windowSize === 'xs' && <FixedNavigation />}
-   {windowSize === 's' && <FixedNavigation />}
-   <Drawer size={windowSize} />
-   <FavoritesDrawer size={windowSize} />
-   <ToastContainer
-    theme='dark'
-    className={'toast'}
-    autoClose={5000}
-    newestOnTop={true}
-    closeButton={false}
-    rtl={lng === 'fa' ? true : false}
-    pauseOnFocusLoss={false}
-    pauseOnHover={true}
-   />
-  </Suspense>
+      <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
+     </Routes>
+     {windowSize === 'xs' && <FixedNavigation />}
+     {windowSize === 's' && <FixedNavigation />}
+     <Drawer size={windowSize} />
+     <FavoritesDrawer size={windowSize} />
+     <ToastContainer
+      theme='dark'
+      className={'toast'}
+      autoClose={5000}
+      newestOnTop={true}
+      closeButton={false}
+      rtl={lng === 'fa' ? true : false}
+      pauseOnFocusLoss={false}
+      pauseOnHover={true}
+     />
+    </Suspense>
+   </ThemeProvider>
+  </CacheProvider>
  );
 }
 

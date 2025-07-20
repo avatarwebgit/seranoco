@@ -13,7 +13,7 @@ import FilterLinks from '../components/FilterLinks';
 import classes from './Categories.module.css';
 import BannerCarousel from '../components/BannerCarousel';
 
-const Categories = () => {
+const Categories = ({ windowSize }) => {
  const { t } = useTranslation();
  useEffect(() => {
   document.title = t('categories');
@@ -22,7 +22,7 @@ const Categories = () => {
  return (
   <section className={classes.main}>
    <BannerCarousel />
-   <Header />
+   <Header windowSize={windowSize} />
    <Body className={classes.body} parentClass={classes.body}>
     <Card>
      <Breadcrumbs

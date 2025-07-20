@@ -1,6 +1,6 @@
 @import url(../../styles/variables.css);
 .main {
-  width: 100%;
+  width: 90%;
   height: fit-content;
   display: flex;
   flex-direction: column;

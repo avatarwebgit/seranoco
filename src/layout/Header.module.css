@@ -402,6 +402,9 @@
  .search_container {
   align-items: center;
  }
+ .logo_container {
+  top: 50%;
+ }
 }
 @media only screen and (min-width: 481px) and (max-width: 768px) {
  .content {

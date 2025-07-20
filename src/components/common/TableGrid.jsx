@@ -62,16 +62,16 @@ const TableGrid = ({
 
  const getAvailabilityLabel = (isNotAvailable, quantity) => {
   if (isNotAvailable === 1) {
-   return 'Not Available';
+   return t('newpage.notav');
   } else if (quantity > 0) {
-   return 'Available';
+   return t('available');
   } else {
-   return 'By Order';
+   return t('byorder');
   }
  };
 
  return (
-  <div className={classes.main}>
+  <div className={classes.main} dir={lng === 'fa' ? 'rtl' : 'ltr'}>
    {data && data.length > 0 && (
     <table
      className={classes.table}
@@ -127,21 +127,21 @@ const TableGrid = ({
           const item = el[color]?.find(item => item.size === size.description);
           const availabilityLabel = item
            ? getAvailabilityLabel(item.is_not_available, item.quantity)
-           : 'Not Available';
+           : t('newpage.notav');
           const id = `${color}-${size.description}-${item?.alias || 'unknown'}`;
 
           return (
            <td key={id} className={classes.td}>
             {(() => {
              if (
-              availabilityLabel === 'Available' ||
-              availabilityLabel === 'By Order'
+              availabilityLabel === t('available') ||
+              availabilityLabel === t('byorder')
              ) {
               return (
                <span
                 style={{
                  backgroundColor:
-                  availabilityLabel === 'Available' ? '#4bd14b' : '#8181fc',
+                  availabilityLabel === t('available') ? '#4bd14b' : '#8181fc',
                 }}>
                 <input
                  type='checkbox'

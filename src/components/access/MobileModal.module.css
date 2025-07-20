@@ -21,6 +21,7 @@
  border-radius: 5px;
  display: flex;
  flex-direction: column;
+ position: relative;
 }
 
 .sheet {
@@ -175,6 +176,13 @@ input[type='number'] {
  cursor: pointer;
 }
 
+.close_btn {
+ top: 10px !important;
+ right: 10px !important;
+ position: absolute !important;
+ z-index: 10000;
+}
+
 @media only screen and (max-width: 480px) {
  .content_wrapper {
   width: 100vw;
@@ -188,6 +196,9 @@ input[type='number'] {
  }
  .login_wrapper > * {
   width: 90% !important;
+ }
+ .sheet {
+  width: 100%;
  }
 }
 

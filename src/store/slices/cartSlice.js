@@ -10,6 +10,7 @@ const initialState = {
  allAddresses: [],
  selectedAddress: [],
  paymentMethod: '',
+ temporaryCart: JSON.parse(localStorage.getItem('temporaryCart')) || [],
 };
 
 const cartSlice = createSlice({
@@ -31,6 +32,20 @@ const cartSlice = createSlice({
     state.products.push(action.payload);
    }
    state.totalPrice = state.products.reduce((total, product) => {
+    return total + product.selected_quantity * product.sale_price;
+   }, 0);
+  },
+
+  addToTemporaryCart(state, action) {
+   if (
+    !state.temporaryCart.find(
+     el => +el.variation_id === +action.payload.variation_id,
+    )
+   ) {
+    state.temporaryCart.push(action.payload);
+   }
+   localStorage.setItem('temporaryCart', JSON.stringify(state.temporaryCart));
+   state.totalPrice = state.temporaryCart.reduce((total, product) => {
     return total + product.selected_quantity * product.sale_price;
    }, 0);
   },

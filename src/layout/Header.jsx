@@ -232,7 +232,8 @@ const Header = ({ windowSize }) => {
    initial={{ y: 0, height: '5rem' }}
    animate={{
     y: isHomePage && scrollY === 0 ? (isSmall ? '20px' : '50px') : 0,
-    height: scrollY !== 0 ? '5.5rem' : isSmall ? '5.5rem' : '5rem',
+    height:
+     scrollY !== 0 ? (isSmall ? '4rem' : '5.5rem') : isSmall ? '4rem' : '5rem',
     backgroundColor:
      scrollY !== 0 ? 'rgba(255,255,255,0.6)' : 'rgba(0, 0, 0, 0)',
     backdropFilter: scrollY !== 0 ? 'blur(20px)' : 'blur(0px)',
@@ -470,12 +471,12 @@ const Header = ({ windowSize }) => {
         />
        </IconButton>
        <MuiDrawer
-        anchor={'right'}
+        // anchor={lng === 'fa' ? 'right' : 'left'}
         open={drawerOpen}
         onClose={() => closeDrawer(false)}>
         <Box
          sx={{
-          width: '90vw',
+          width: '300px',
           height: '100%',
          }}>
          <div className={classes.drawer_content}>
@@ -484,14 +485,16 @@ const Header = ({ windowSize }) => {
            onClick={() => closeDrawer(false)}>
            <img className={classes.drawer_close_img} src={close} alt='' />
           </button>
-          <Input
+          {/* <Input
            className={classes.menu_input}
-           endAdornment={
+           startAdornment={
             <>
-             <MUISearch sx={{ color: 'white' }} />
+             <MUISearch sx={{ color: '#000' }} />
             </>
            }
-          />
+          /> */}
+          <Search isHomePage={true} isMobile={true} />
+          <br />
           <MobileDrawerList />
          </div>
         </Box>

@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
- login: true,
+ login: false,
  signup: false,
- otp: false,
+ otp: true,
  mobile: false,
  modalOpen: false,
  loginOTP: false,

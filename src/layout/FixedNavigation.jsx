@@ -11,6 +11,7 @@ import classes from './FixedNavigation.module.css';
 import { Avatar, Badge, IconButton } from '@mui/material';
 import AccessAccount from './AccessAccount';
 import { useNavigate } from 'react-router-dom';
+import { AccountCircle } from '@mui/icons-material';
 const FixedNavigation = () => {
  const [ModalOpen, setModalOpen] = useState(false);
 
@@ -50,7 +51,12 @@ const FixedNavigation = () => {
    <>
     {token ? (
      <IconButton onClick={handleNavToAcc}>
-      <Avatar className={classes.avatar} />
+      <AccountCircle
+       width={'20px'}
+       height={'20px'}
+       className={classes.avatar}
+       sx={{ color: '#fff' }}
+      />
      </IconButton>
     ) : (
      <IconButton onClick={handleOpenLogin}>
@@ -59,13 +65,16 @@ const FixedNavigation = () => {
     )}
    </>
 
-   <IconButton onClick={handleOpenFavoritesDrawer}>
-    <Badge
-     badgeContent={favorits?.length || 0}
-     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-     <Heart width={'23px'} height={'23px'} className={classes.svg} />
-    </Badge>
-   </IconButton>
+   {token && (
+    <IconButton onClick={handleOpenFavoritesDrawer}>
+     <Badge
+      badgeContent={favorits?.length || 0}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+      <Heart width={'23px'} height={'23px'} className={classes.svg} />
+     </Badge>
+    </IconButton>
+   )}
+
    <IconButton onClick={handleOpenCart}>
     <Badge
      badgeContent={cart?.products.length || 0}
@@ -73,6 +82,7 @@ const FixedNavigation = () => {
      <Basket width={'23px'} height={'23px'} className={classes.svg} />
     </Badge>
    </IconButton>
+
    <AccessAccount open={accessModal.modalOpen} onClose={handleCloseModal} />
   </div>
  );

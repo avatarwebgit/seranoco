@@ -1,16 +1,18 @@
-import { Button, InputAdornment, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Flag from 'react-world-flags';
 
 import logo from '../../assets/images/logo_trasnparent.png';
-import { accesModalActions, signupActions } from '../../store/store';
+import { ReactComponent as Close } from '../../assets/svg/close.svg';
 import { sendOTP } from '../../services/api';
+import { accesModalActions, signupActions } from '../../store/store';
 import { notify } from '../../utils/helperFunctions';
 
-import classes from './MobileModal.module.css';
+
 import LoadingSpinner from '../common/LoadingSpinner';
+import classes from './MobileModal.module.css';
 
 const OTP_TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
 
@@ -18,6 +20,7 @@ const MobileModal = () => {
  const { t } = useTranslation();
  const dispatch = useDispatch();
  const formRef = useRef();
+ const inputRef = useRef();
  const lng = useSelector(state => state.localeStore.lng);
 
  const [signupValues, setSignupValues] = useState(null);
@@ -25,8 +28,8 @@ const MobileModal = () => {
  const [timeRemaining, setTimeRemaining] = useState(0);
  const [isLoading, setIsLoading] = useState(false);
 
- // Load signup values from localStorage on component mount
  useEffect(() => {
+  inputRef.current.focus();
   const data = localStorage.getItem('sis');
   if (data) {
    try {
@@ -37,7 +40,6 @@ const MobileModal = () => {
   }
  }, []);
 
- // Initialize countdown timer when signupValues are available
  useEffect(() => {
   if (signupValues?.createdAt) {
    const targetDate = new Date(signupValues.createdAt);
@@ -48,7 +50,6 @@ const MobileModal = () => {
   }
  }, [signupValues?.createdAt]);
 
- // Countdown timer effect
  useEffect(() => {
   if (timeRemaining <= 0) return;
 
@@ -84,6 +85,10 @@ const MobileModal = () => {
   } finally {
    setIsLoading(false);
   }
+ };
+
+ const handleCloseModal = () => {
+  dispatch(accesModalActions.close());
  };
 
  const handleResendOTP = () => {
@@ -126,6 +131,7 @@ const MobileModal = () => {
         onChange={e => setOtpValue(e.target.value)}
         type='tel'
         inputMode='numeric'
+        ref={inputRef}
         InputProps={{
          startAdornment: (
           <InputAdornment position='start'>
@@ -154,6 +160,12 @@ const MobileModal = () => {
      <button onClick={handleGoToLogin}>{t('login')}</button>&nbsp;
     </div>
    </div>
+   <IconButton
+    className={classes.close_btn}
+    disableRipple={true}
+    onClick={handleCloseModal}>
+    <Close width={30} height={30} />
+   </IconButton>
   </div>
  );
 };

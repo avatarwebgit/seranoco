@@ -1,16 +1,18 @@
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { InputOTP } from 'antd-input-otp';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import logo from '../../assets/images/logo_trasnparent.png';
+import { ReactComponent as Close } from '../../assets/svg/close.svg';
+
 import { verifyOTP2 } from '../../services/api';
 import {
- accesModalActions,
- drawerActions,
- signupActions,
- userActions,
+    accesModalActions,
+    drawerActions,
+    signupActions,
+    userActions,
 } from '../../store/store';
 import { notify } from '../../utils/helperFunctions';
 
@@ -111,6 +113,10 @@ const OTP = () => {
 
  const isRTL = lng === 'fa';
 
+ const handleCloseModal = () => {
+  dispatch(accesModalActions.close());
+ };
+
  return (
   <div className={classes.content_wrapper}>
    <div className={classes.sheet}>
@@ -164,6 +170,12 @@ const OTP = () => {
      &nbsp;
     </div>
    </div>
+   <IconButton
+    className={classes.close_btn}
+    disableRipple={true}
+    onClick={handleCloseModal}>
+    <Close width={30} height={30} />
+   </IconButton>
   </div>
  );
 };
