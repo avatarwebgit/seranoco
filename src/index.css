@@ -152,6 +152,9 @@ html {
  margin-left: 0 !important;
  margin-right: 0 !important;
 }
+.muirtl-m6j4lo-MuiModal-root-MuiDrawer-root .MuiDrawer-paper{
+  left: unset !important;
+}
 
 @media only screen and (max-width: 480px) {
  .MuiBadge-badge {

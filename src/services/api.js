@@ -864,12 +864,24 @@ export const sendcardPaymentData = async (token, data, file, order_id) => {
  return { response, result };
 };
 
-export const getAllProductFromCategory = async id => {
+export const getAllInitialProductFromCategory = async id => {
  const response = await fetch(`${baseUrl}/product_categories/${id}`, {
   method: 'GET',
   headers: {
    'Content-Type': 'application/json',
   },
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
+export const getAllProductFromCategory = async (category_id,color_ids, shape_id, size_ids) => {
+ const response = await fetch(`${baseUrl}/product/category/filter?page=1&per_page=20`, {
+  method: 'POST',
+  headers: {
+   'Content-Type': 'application/json',
+  },
+  body:JSON.stringify({category_id,color_ids, shape_id, size_ids})
  });
  const result = await response.json();
  return { response, result };

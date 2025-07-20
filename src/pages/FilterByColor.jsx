@@ -1,52 +1,50 @@
-import React, {
- useCallback,
- useEffect,
- useMemo,
- useRef,
- useState,
-} from 'react';
-import BannerCarousel from '../components/BannerCarousel';
-import { SwiperSlide, Swiper } from 'swiper/react';
-import { useTranslation } from 'react-i18next';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { Pagination as PaginationComponent } from '@mui/material';
 import { nanoid } from '@reduxjs/toolkit';
-import { Navigation, Thumbs, Pagination } from 'swiper/modules';
-import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigation, Pagination, Thumbs } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
-import Body from '../components/filters_page/Body';
-import CustomSelect from '../components/filters_page/CustomSelect';
-import Card from '../components/filters_page/Card';
+import BannerCarousel from '../components/BannerCarousel';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import SizeBox from '../components/filters_page/SizeBox';
+import Body from '../components/filters_page/Body';
+import Card from '../components/filters_page/Card';
+import CustomSelect from '../components/filters_page/CustomSelect';
 import Divider from '../components/filters_page/Divider';
+import SizeBox from '../components/filters_page/SizeBox';
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
 
 import { productDetailActions } from '../store/store';
 
-import {
- getAllAtrributes,
- getProduct,
- useColors,
- getProductsByColor,
- getProductDetailsWithId,
- useFilteredShapes,
- getProductsByShape,
- getFilteredSizes,
-} from '../services/api';
-import ResultRow from '../components/filters_page/ResultRow';
-import ResultMobile from '../components/filters_page/ResultMobile';
 import Breadcrumbs from '../components/common/Breadcrumbs';
+import ResultMobile from '../components/filters_page/ResultMobile';
+import ResultRow from '../components/filters_page/ResultRow';
+import {
+  getFilteredSizes,
+  getProduct,
+  getProductDetailsWithId,
+  getProductsByShape,
+  useColors,
+  useFilteredShapes
+} from '../services/api';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar';
+import 'swiper/css/thumbs';
+import TableGrid from '../components/common/TableGrid';
 import '../styles/carousel.css';
 import { scrollToTarget } from '../utils/helperFunctions';
-import TableGrid from '../components/common/TableGrid';
 import classes from './FilterByColor.module.css';
 const FilterByShape = ({ windowSize }) => {
  const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();

@@ -40,10 +40,12 @@ function App() {
  const ContactUs = React.lazy(() => import('./pages/ContactUs'));
  const Blog = React.lazy(() => import('./pages/Blog'));
  const SingleBlog = React.lazy(() => import('./pages/SingleBlog'));
- const Page = React.lazy(() => import('./pages/AdminPanlePage'));
+ const Page = React.lazy(() => import('./pages/AdminPanelPage'));
  const Factor = React.lazy(() => import('./pages/Factor'));
  const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
  const ProductsFilter = React.lazy(() => import('./pages/ProductsFilter'));
+ const DynamicFilterByColor = React.lazy(() => import('./pages/dynamicFilterPages/FilterByColor'));
+ const DynamicFilterByShape = React.lazy(() => import('./pages/dynamicFilterPages/FilterByShape'));
 
  const lng = useSelector(state => state.localeStore.lng);
  const token = useSelector(state => state.userStore.token);
@@ -216,6 +218,14 @@ function App() {
        path={`/:lng/products/filter`}
        element={<ProductsFilter windowSize={windowSize} />}
       />
+      {/* <Route
+       path={`/:lng/filters/color/:id`}
+       element={<DynamicFilterByColor windowSize={windowSize} />}
+      />
+      <Route
+       path={`/:lng/filters/shape/:id`}
+       element={<DynamicFilterByShape windowSize={windowSize} />}
+      /> */}
 
       <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
      </Routes>

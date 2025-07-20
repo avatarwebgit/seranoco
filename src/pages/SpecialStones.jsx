@@ -395,7 +395,7 @@ const SpecialStones = ({ windowSize }) => {
    <BannerCarousel />
    <Header windowSize={windowSize} />
 
-   {colorData && (
+   { (
     <Body>
      {
       <Card className={`${classes.size_wrapper} ${classes.colors_wrapper}`}>

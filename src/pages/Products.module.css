@@ -431,6 +431,9 @@
  .desktop {
   display: none;
  }
+ .grid_wrapper{
+    margin: 0 auto;
+ }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {

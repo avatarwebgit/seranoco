@@ -472,35 +472,45 @@ const Header = ({ windowSize }) => {
         />
        </IconButton>
        <MuiDrawer
-        // anchor={lng === 'fa' ? 'right' : 'left'}
-        // sx={{direction:lng === 'fa' ? 'rtl' : 'ltr'}}
-        open={drawerOpen}
-        onClose={() => closeDrawer(false)}>
-        <Box
-         sx={{
-          width: '300px',
-          height: '100%',
-         }}>
-         <div className={classes.drawer_content}>
-          <button
-           className={classes.drawer_close}
-           onClick={() => closeDrawer(false)}>
-           <img className={classes.drawer_close_img} src={close} alt='' />
-          </button>
-          {/* <Input
-           className={classes.menu_input}
-           startAdornment={
-            <>
-             <MUISearch sx={{ color: '#000' }} />
-            </>
-           }
-          /> */}
-          <Search isHomePage={true} isMobile={true} />
-          <br />
-          <MobileDrawerList />
-         </div>
-        </Box>
-       </MuiDrawer>
+  anchor={lng === 'fa' ? 'right' : 'left'} 
+  dir={lng === 'fa' ? 'rtl' : 'ltr'} 
+  open={drawerOpen}
+  onClose={() => closeDrawer(false)}
+  sx={{
+    '& .MuiDrawer-paper': {
+      ...(lng === 'fa' && {
+        right:0
+      }),
+      ...(lng !== 'fa' && {
+        left: 0,
+        transform: drawerOpen ? 'translateX(0)' : 'translateX(-100%)',
+      }),
+      width: '300px',
+      height: '100%',
+      transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+    }
+  }}
+>
+  <Box sx={{
+    width: '100%',
+    height: '100%',
+  }}>
+    <div className={classes.drawer_content}>
+      <button
+        className={classes.drawer_close}
+        onClick={() => closeDrawer(false)}
+        style={{
+          [lng === 'fa' ? 'left' : 'right']: '10px',
+        }}
+      >
+        <img className={classes.drawer_close_img} src={close} alt='' />
+      </button>
+      <Search isHomePage={true} isMobile={true} />
+      <br />
+      <MobileDrawerList />
+    </div>
+  </Box>
+</MuiDrawer>
       </div>
      ) : (
       <Search isHomePage={isHomePage} />
