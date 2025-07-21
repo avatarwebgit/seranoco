@@ -218,14 +218,14 @@ function App() {
        path={`/:lng/products/filter`}
        element={<ProductsFilter windowSize={windowSize} />}
       />
-      <Route
+      {/* <Route
        path={`/:lng/filters/color/:id`}
        element={<DynamicFilterByColor windowSize={windowSize} />}
       />
       <Route
        path={`/:lng/filters/shape/:id`}
        element={<DynamicFilterByShape windowSize={windowSize} />}
-      />
+      /> */}
 
       <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
      </Routes>

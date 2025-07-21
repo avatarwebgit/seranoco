@@ -11,7 +11,7 @@
 
 .content {
   width: 30%;
-  height: 100vh;
+  height: 100dvh;
   position: relative;
   background-color: #ffffff;
   z-index: 1500;
@@ -23,7 +23,7 @@
 
 .backdrop {
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   position: fixed;
   top: 0;
   left: 0;

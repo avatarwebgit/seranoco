@@ -110,6 +110,16 @@ export const homePageCategories = async lng => {
  return { response, result };
 };
 
+export const getSubCategories = async (id) => {
+ const response = await fetch(`${baseUrl}/categories-children/${id}`, {
+  method: 'GET',
+  headers: {
+  },
+ });
+ const result = await response.json();
+ return { response, result };
+};
+
 export const getShapes = async () => {
  const response = await fetch(`${baseUrl}/attribute/get/shape`, {
   method: 'GET',

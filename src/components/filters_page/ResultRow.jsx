@@ -1,15 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { IconButton, Typography } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
 import { Lock } from '@mui/icons-material';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { accesModalActions, drawerActions } from '../../store/store';
-import { ReactComponent as Plus } from '../../assets/svg/plus.svg';
-import { ReactComponent as Minus } from '../../assets/svg/minus.svg';
-import { formatNumber, notify } from '../../utils/helperFunctions';
 import { sendShoppingCart } from '../../services/api';
+import { accesModalActions, drawerActions } from '../../store/store';
+import { formatNumber, notify } from '../../utils/helperFunctions';
 import classes from './ResultRow.module.css';
 
 const ResultRow = ({ dataProp }) => {
@@ -129,10 +126,9 @@ const ResultRow = ({ dataProp }) => {
      </>
     ) : (
      <>
-      {item.percent_sale_price !== 0 && (
+      {+item.percent_sale_price !== 0 && (
        <span className={classes.prev_price}>
         <p className={classes.off_text}>{item.percent_sale_price}%</p>
-
         <p
          style={{
           textDecoration: 'line-through',
