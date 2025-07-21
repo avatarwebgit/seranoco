@@ -253,6 +253,7 @@ const Drawer = ({ children, size }) => {
                     style={{
                       direction: isRTL ? "rtl" : "ltr",
                       display: "flex",
+                      flexWrap: "wrap",
                       color: walletStatus ? "#000000" : "#616161",
                     }}
                   >
