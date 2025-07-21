@@ -61,7 +61,8 @@ const FavoritesDrawer = ({ children, size }) => {
 
   return (
     <motion.div
-      className={`${classes.main}`}
+      className={classes.main}
+      style={{ justifyContent: isRTL ? "flex-end" : "flex-start" }}
       initial={{ display: "none" }}
       animate={{ display: drawerState ? "flex" : "none" }}
       transition={{ duration: 0.3, delay: drawerState ? 0 : 0.3 }}

@@ -4,7 +4,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Navigation, Pagination, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -36,7 +36,11 @@ import "../../styles/carousel.css";
 import classes from "./FilterByColor.module.css";
 
 const FilterCategory = ({ windowSize }) => {
-  const { id: categoryId } = useParams();
+  const location = useLocation();
+  const categoryId = useMemo(
+    () => new URLSearchParams(location.search).get("categoryId"),
+    [location.search]
+  );
   const [colorData, setColorData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [shapesData, setShapesData] = useState([]);

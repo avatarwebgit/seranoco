@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: space-evenly;
   background-color: transparent;
-  outline: none;
+  border: 1px solid #000;
 }
 
 .img_wrpper {
