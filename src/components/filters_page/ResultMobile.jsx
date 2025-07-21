@@ -114,7 +114,7 @@ const ResultMobile = ({ dataProps }) => {
              </>
             ) : (
              <>
-              {el.percent_sale_price !== 0 && (
+              {+el.percent_sale_price !== 0 && (
                <span className={classes.prev_price}>
                 <p
                  style={{
