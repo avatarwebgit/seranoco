@@ -57,7 +57,7 @@
   position: relative;
 }
 .thumbnail:hover::after {
-  content: '';
+  content: "";
   width: calc(100% + 2px);
   height: calc(100% + 2px);
   border: 2px solid transparent;
@@ -69,7 +69,7 @@
   transition: all 0.5s;
 }
 .thumbnail::after {
-  content: '';
+  content: "";
   width: calc(100% + 2px);
   height: calc(100% + 2px);
   border: 2px solid transparent;
