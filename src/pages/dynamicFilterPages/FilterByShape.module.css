@@ -59,7 +59,7 @@
   position: relative;
 }
 .thumbnail::after {
-  content: '';
+  content: "";
   width: calc(100% + 2px);
   height: calc(100% + 2px);
   border: 2px solid transparent;
@@ -191,6 +191,12 @@
   background-color: var(--color-grey-2);
 }
 
+.total_color {
+  width: 100%;
+  font-size: 0.5rem;
+  padding: 1rem 2.5rem;
+}
+
 @media only screen and (max-width: 480px) {
   .next_btn,
   .prev_btn {
@@ -207,8 +213,8 @@
     align-self: center !important;
   }
   .table_wrapper {
-  width: 100%;
-}
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
@@ -227,8 +233,8 @@
     align-self: center !important;
   }
   .table_wrapper {
-  width: 100%;
-}
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 769px) and (max-width: 1024px) {

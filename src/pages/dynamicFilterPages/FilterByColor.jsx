@@ -4,13 +4,14 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Navigation, Pagination, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import BannerCarousel from "../../components/BannerCarousel";
 import Breadcrumbs from "../../components/common/Breadcrumbs";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
+import TableGrid from "../../components/common/TableGrid";
 import Body from "../../components/filters_page/Body";
 import Card from "../../components/filters_page/Card";
 import CustomSelect from "../../components/filters_page/CustomSelect";
@@ -23,6 +24,7 @@ import Header from "../../layout/Header";
 import {
   getAllInitialProductFromCategory,
   getAllProductFromCategory,
+  getProductsByShape,
 } from "../../services/api";
 import { productDetailActions } from "../../store/store";
 import { scrollToTarget } from "../../utils/helperFunctions";
@@ -36,11 +38,7 @@ import "../../styles/carousel.css";
 import classes from "./FilterByColor.module.css";
 
 const FilterCategory = ({ windowSize }) => {
-  const location = useLocation();
-  const categoryId = useMemo(
-    () => new URLSearchParams(location.search).get("categoryId"),
-    [location.search]
-  );
+  const { id: categoryId } = useParams();
   const [colorData, setColorData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [shapesData, setShapesData] = useState([]);
@@ -67,9 +65,14 @@ const FilterCategory = ({ windowSize }) => {
   const [isSmallPage, setIsSmallPage] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(5);
 
+  const [tableData, setTableData] = useState([]);
+  const [chunkedData, setChunkedData] = useState([]);
+  const [selectedSizesObject, setSelectedSizesObject] = useState([]);
+
   const formRef = useRef();
   const sizeRef = useRef();
   const sliderRef = useRef();
+  const gridSliderRef = useRef();
   const productsWrapperRef = useRef();
   const abortControllerRef = useRef(new AbortController());
   const isInitialMount = useRef(true);
@@ -88,11 +91,32 @@ const FilterCategory = ({ windowSize }) => {
     []
   );
 
+  const handlePrevGridSlider = useCallback(() => {
+    if (!gridSliderRef.current) return;
+    gridSliderRef.current.swiper.slidePrev();
+  }, []);
+
+  const handleNextGridSlider = useCallback(() => {
+    if (!gridSliderRef.current) return;
+    gridSliderRef.current.swiper.slideNext();
+  }, []);
+
   const handleSendDimensionsStatus = (e, elem) => {
     const form = sizeRef.current;
     const formData = new FormData(form);
     const formEntries = Object.fromEntries(formData.entries());
     setDimensionEntries(formEntries);
+
+    if (formEntries[elem.id]) {
+      // Checked
+      setSelectedSizesObject((prev) => {
+        if (prev.find((p) => p.id === elem.id)) return prev;
+        return [...prev, elem];
+      });
+    } else {
+      // Unchecked
+      setSelectedSizesObject((prev) => prev.filter((p) => p.id !== elem.id));
+    }
   };
 
   const handleThumbClick = (groupId) => {
@@ -112,6 +136,10 @@ const FilterCategory = ({ windowSize }) => {
     setProductDetails([]);
     dispatch(productDetailActions.reset());
     scrollToTarget(formRef, 1000);
+    // Additions:
+    setSelectedSizesObject([]);
+    setTableData([]);
+    setChunkedData([]);
   };
 
   const handleCheckboxChange = (e, slideId) => {
@@ -150,6 +178,14 @@ const FilterCategory = ({ windowSize }) => {
           setGroupColors(result.group_colors || []);
           setShapesData(result.shapes || []);
           setSizeData(result.sizes || []);
+
+          //get the first shape to load intital table
+          const sortedFirstShape = result.shapes
+            .sort((a, b) => a.priority - b.priority)
+            .at(0).id;
+
+          handleFetchTableData(sortedFirstShape, [], 1, 1000);
+          setShapeFormEntries(sortedFirstShape);
         } else {
           setError(result.message || "Failed to load category data.");
         }
@@ -172,23 +208,29 @@ const FilterCategory = ({ windowSize }) => {
 
   // Sort colors and groups whenever they are updated
   useEffect(() => {
-    if (colorData.length && groupColors.length) {
-      const sortedGroups = [...groupColors].sort(
+    if (colorData && groupColors) {
+      const sortedGroupColorsP = groupColors.sort(
         (a, b) => a.priority - b.priority
       );
-      setSortedGroupColors(sortedGroups);
+      setSortedGroupColors(sortedGroupColorsP);
+      setSortedColors(
+        colorData.sort((a, b) => {
+          const groupA = sortedGroupColorsP.find(
+            (group) => group.id === a.group_id
+          );
+          const groupB = sortedGroupColorsP.find(
+            (group) => group.id === b.group_id
+          );
 
-      const sorted = [...colorData].sort((a, b) => {
-        const groupA = sortedGroups.find((g) => g.id === a.group_id);
-        const groupB = sortedGroups.find((g) => g.id === b.group_id);
-        if (!groupA || !groupB) return 0;
-        return groupA.priority === groupB.priority
-          ? a.priority - b.priority
-          : groupA.priority - b.priority;
-      });
-      setSortedColors(sorted);
+          if (groupA.priority === groupB.priority) {
+            return a.priority - b.priority;
+          }
+
+          return groupA.priority - groupB.priority;
+        })
+      );
     }
-  }, [colorData, groupColors]);
+  }, [groupColors, colorData]);
 
   // Set initial active color group
   useEffect(() => {
@@ -217,24 +259,19 @@ const FilterCategory = ({ windowSize }) => {
 
       setIsFilteredProductsLoading(true);
       try {
-        const params = {
-          category_id: categoryId,
-          color_ids: selectedIds,
-          shape_id: shapeFormEntries,
+        const { result, response } = await getAllProductFromCategory(
+          categoryId,
+          selectedIds,
+          shapeFormEntries,
           size_ids,
-          page: currentPage,
-          per_page: ItemsPerPage,
-        };
-        const { result, response } = await getAllProductFromCategory(params, {
-          signal: controller.signal,
-        });
+          currentPage,
+          ItemsPerPage
+        );
 
         if (response.ok && result.success) {
           setProductDetails(result.data || []);
           setShapesData(result.shapes || []);
-          setColorData(result.colors || []);
           setSizeData(result.sizes || []);
-          setGroupColors(result.group_colors || []);
           setLastPage(result.pagination?.last_page || 1);
           setPage(result.pagination?.current_page || 1);
           setError(null);
@@ -274,6 +311,78 @@ const FilterCategory = ({ windowSize }) => {
     setIsSmallPage(isSmall);
     setSlidesPerView(isSmall ? 5 : 9);
   }, [windowSize]);
+
+  const chunkData = (data, size) => {
+    const result = [];
+    for (let i = 0; i < data.length; i += size) {
+      result.push(data.slice(i, i + size));
+    }
+    return result;
+  };
+
+  const handleFetchTableData = async (shapeId, colorIds, page, per_page) => {
+    if (!shapeId) {
+      try {
+        const { result, response } = await getProductsByShape(
+          shapesData.at(0).id,
+          colorIds,
+          page,
+          per_page,
+          { signal: controller.signal }
+        );
+
+        if (response.ok && result.success) {
+          setTableData(result.data || []);
+        } else {
+          setTableData([]);
+        }
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Failed to fetch table data", error);
+        }
+      }
+      return;
+    }
+    abortControllerRef.current.abort();
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+    try {
+      const { result, response } = await getProductsByShape(
+        shapeId,
+        colorIds,
+        page,
+        per_page,
+        { signal: controller.signal }
+      );
+
+      if (response.ok && result.success) {
+        setTableData(result.data || []);
+      } else {
+        setTableData([]);
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        console.error("Failed to fetch table data", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (shapeFormEntries && selectedIds.length > 0) {
+      handleFetchTableData(shapeFormEntries, selectedIds, 1, 1000);
+    } else {
+      setTableData([]);
+    }
+  }, [shapeFormEntries, selectedIds]);
+
+  useEffect(() => {
+    if (tableData.length > 0) {
+      const chunks = chunkData(tableData, 9);
+      setChunkedData(chunks);
+    } else {
+      setChunkedData([]);
+    }
+  }, [tableData]);
 
   const memoizedProducts = useMemo(() => productDetails, [productDetails]);
 
@@ -325,6 +434,14 @@ const FilterCategory = ({ windowSize }) => {
               { pathname: t("filter_by_category"), url: "/filterbycategory" },
             ]}
           />
+          {colorData.length > 0 && (
+            <div
+              className={classes.total_color}
+              dir={lng === "fa" ? "rtl" : "ltr"}
+            >
+              {t("alvailable_colors", { count: colorData.length })}
+            </div>
+          )}
           {sortedColors?.length > 0 && (
             <>
               <button
@@ -462,6 +579,55 @@ const FilterCategory = ({ windowSize }) => {
           <button className={classes.reset_btn} onClick={handleResetSelections}>
             {t("reset_selections")}
           </button>
+        </Card>
+
+        <Card className={classes.size_wrapper}>
+          {chunkedData.length > 1 && (
+            <>
+              <button
+                className={classes.prev_btn}
+                onClick={handlePrevGridSlider}
+                aria-label="Previous Grid Page"
+              >
+                <ArrowBackIos />
+              </button>
+              <button
+                className={classes.next_btn}
+                onClick={handleNextGridSlider}
+                aria-label="Next Grid Page"
+              >
+                <ArrowForwardIos />
+              </button>
+            </>
+          )}
+          {chunkedData.length > 0 && (
+            <Swiper
+              spaceBetween={isSmallPage ? 5 : 9}
+              slidesPerView={1}
+              modules={[Navigation, Thumbs, Pagination]}
+              ref={gridSliderRef}
+              pagination={{
+                clickable: true,
+                dynamicBullets: true,
+                enabled: isSmallPage,
+              }}
+              style={{ width: "90%" }}
+            >
+              {chunkedData.map((el, i) => {
+                return (
+                  <SwiperSlide key={i}>
+                    <TableGrid
+                      dataProp={el}
+                      sizeProp={sizeData}
+                      selectedSizeProp={selectedSizesObject}
+                      key={i}
+                      isLoadingData={false}
+                    />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          )}
         </Card>
 
         <Card

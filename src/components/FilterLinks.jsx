@@ -31,14 +31,14 @@ const FilterLinks = ({ className }) => {
     getHomeCategories();
   }, []);
 
-  const handleReturnRoute = (filterType, id) => {
+  const handleReturnRoute = (filterType, alias) => {
     switch (filterType) {
       case "color":
-        return `special/${id}`;
+        return `special/${alias}`;
       case "shape":
-        return `filters/color/${id}`;
+        return `filters/color/${alias}`;
       case "size":
-        return `filters/shape/${id}`;
+        return `filters/shape/${alias}`;
       default:
         console.log(filterType);
         return;
@@ -74,8 +74,8 @@ const FilterLinks = ({ className }) => {
                 <Link
                   href={
                     elem.has_children === 1
-                      ? `categories/${elem.id}`
-                      : handleReturnRoute(elem.type_filter, elem.id)
+                      ? `categories/${elem.alias}`
+                      : handleReturnRoute(elem.type_filter, elem.alias)
                   }
                   imgUrl={elem.banner_image}
                   title={lng === "en" ? elem.name : elem.name_fa}

@@ -1,338 +1,339 @@
 {
- "header_button_1": "دکمه 1",
- "header_button_2": "دکمه 2",
- "header_button_3": "دکمه 3",
- "header_button_4": "دکمه 4",
- "header_button_5": "دکمه 5",
- "header_button_6": "دکمه 6",
- "header_button_7": "دکمه 7",
- "header_button_8": "دکمه 8",
- "header_button_9": "دکمه 9",
- "header_button_10": "دکمه 10",
+  "header_button_1": "دکمه 1",
+  "header_button_2": "دکمه 2",
+  "header_button_3": "دکمه 3",
+  "header_button_4": "دکمه 4",
+  "header_button_5": "دکمه 5",
+  "header_button_6": "دکمه 6",
+  "header_button_7": "دکمه 7",
+  "header_button_8": "دکمه 8",
+  "header_button_9": "دکمه 9",
+  "header_button_10": "دکمه 10",
 
- "validation": "نماد ها و اعتبارات",
+  "validation": "نماد ها و اعتبارات",
 
- "seranoco": "سرانوکو",
+  "seranoco": "سرانوکو",
 
- "title": "کاشی",
- "caption": "توضیحات",
- "shop_now": " خرید",
- "login": "ورود ",
- "logout": "خروج",
- "home": "صفحه اصلی",
- "shop_by_color": "دسته بندی بر اساس رنگ",
- "shop_by_shape": "دسته بندی بر اساس شکل",
- "new_product": " جدیدترین محصولات",
- "wholesales": "عمده فروشی",
- "limited_edition": "نسخه محدود",
- "birth_stones": "سنگ های تولد",
+  "title": "کاشی",
+  "caption": "توضیحات",
+  "shop_now": " خرید",
+  "login": "ورود ",
+  "logout": "خروج",
+  "home": "صفحه اصلی",
+  "shop_by_color": "دسته بندی بر اساس رنگ",
+  "shop_by_shape": "دسته بندی بر اساس شکل",
+  "new_product": " جدیدترین محصولات",
+  "wholesales": "عمده فروشی",
+  "limited_edition": "نسخه محدود",
+  "birth_stones": "سنگ های تولد",
 
- "showmore": "بیشتر",
- "more": "مشاهده همه",
- "Noـmoreـitems": "محصولی وجود ندارد",
+  "showmore": "بیشتر",
+  "more": "مشاهده همه",
+  "Noـmoreـitems": "محصولی وجود ندارد",
 
- "more_information": "اطلاعات بیشتر ",
+  "more_information": "اطلاعات بیشتر ",
 
- "new": "جدید",
- "search": "جست و جو",
- "availability": "موجودی",
- "available": "موجود",
+  "new": "جدید",
+  "search": "جست و جو",
+  "availability": "موجودی",
+  "available": "موجود",
 
- "trending_new": "جدید ترین محصولات",
- "noItem": "هیچ موردی وجود ندارد",
- "enter_mobile_number": "لطفاً شماره موبایل خود را برای ادامه وارد کنید.",
- "by_order_notice": "در حال حاضر این سنگ موجود نمیباشد ، لطفا در صورت نیاز ثبت سفارش نمایید.",
+  "trending_new": "جدید ترین محصولات",
+  "noItem": "هیچ موردی وجود ندارد",
+  "enter_mobile_number": "لطفاً شماره موبایل خود را برای ادامه وارد کنید.",
+  "by_order_notice": "در حال حاضر این سنگ موجود نمیباشد ، لطفا در صورت نیاز ثبت سفارش نمایید.",
 
- "shape": "شکل",
- "type": " نوع",
- "details": "جزئیات",
- "color": "رنگ",
- "size": "سایز mm",
- "weight": "وزن",
- "quality": "کیفیت",
- "cut": "برش ",
- "cut_type": "نوع برش ",
- "report": "گزارش ",
- "country": "  ساخت",
- "agta": "AGTA",
- "price": "قیمت",
- "quantity": "مقدار",
- "total_price": "قیمت کل",
- "add_to_card": "اضافه کردن",
- "brand": "برند",
- "mine": "معدن",
- "categories": "دسته بندی ها",
- "blog": "بلاگ",
- "contactus": "تماس با ما",
- "paybycart": "کارت به کارت",
- "precheckout": "پرداخت",
- "notfound": "صفحه مورد نظر پیدا نشد",
-
- "page": "صفحه",
- "select_shape": "لطفا یک برش را انتخاب کنید",
- "select_color": "لطفا یک رنگ را انتخاب کنید",
-
- "zoom_tip": "رنگ روی صفحه نمایش شما ممکن است رنگ واقعی سنگ را به دلیل تفاوت رنگ پیکسل ها در نمایشگرهای رایانه منعکس نکند",
-
- "sold_by": "فروخته شده توسط",
- "specifications": "مشخصات",
-
- "related": "پرفروش های مرتبط",
- "views": "افرادی که این موارد را مشاهده کردند در نهایت خریدند",
- "reset_selections": "حذف همه فیلترها",
-
- "more_info": "جزئیات فنی",
- "description": "اطلاعات بیشتر",
-
- "serial_number": "کد محصول",
- "payment": "مبلغ",
- "total_weight": "وزن کل",
-
- "add_to_favorite": " اضافه کردن به لیست مورد علاقه ها ",
-
- "loading": "در حال بارگذاری ...",
- "items_per_page": "تعداد محصولات در صفحه",
- "1_pcs": "عدد",
- "pcs": "تعداد",
-
- "m_unit": "تومان",
-
- "my_acc": "حساب کاربری",
- "byorder": "سفارشی",
- "ordered": "سفارش ثبت شد",
-
- "add": "افزودن",
- "trylater": "عملیات با موفقیت انجام نشد لطفا دئباره تلاش کنید.",
- "payment_method": "نوع پرداخت",
- "availableQuantity": "موجودی ",
- "select_a_filter": "تر را انتخاب کنیدیک فیل",
- "code": "کد",
- "load_more": "بارگذاری بیشتر ...",
-
- "profile": {
-  "update": "به روز کردن",
-  "update_ok": "اطلاعات حساب کاربری شما با موفقیت به روز شد.",
-  "update_err": "اطلاعات شما با موفقیت به روز نشد لطفا چند دقیه بعد دوباره امتحان کنید",
-  "orders": "سفارشات",
-  "item_list": "لیست محصولات ",
-  "ticket": "تیکت",
-  "contact": " تماس با ما",
-  "addresses": "آدرس ها",
-  "address": "آدرس",
-
-  "add_add": "اضافه کردن آدرس جدید",
-  "urad": "همه آدرس های ثبت شده شما",
-
-  "acc_info": "اطلاعات حساب کاربری",
-  "favorites": " علاقه مندی ها",
-  "cart": "سبد خرید",
-  "basket": "سبد خرید",
-
-  "pending": "در انتظار پرداخت",
-  "order_status": "وضعیت سفارش",
-
-  "log_out": "خروج",
-
-  "support": "پشتیبانی",
-  "account": "حساب کاربری",
-  "sbsi": "مرتب سازی بر اساس اندازه (افزایشی)",
-  "sbsd": "مرتب سازی بر اساس اندازه (کاهشی)",
-  "sbpi": "مرتب سازی بر اساس قیمت (افزایشی)",
-  "sbpd": "مرتب سازی بر اساس قیمت (کاهشی)",
-
-  "sort": "مرتب سازی",
-
-  "err_add_add": "خطایی در اضافه کردن این آدرس رخ داد ، لطفاً بعداً دوباره امتحان کنید",
-  "suc_add_add": "آدرس با موفقیت اضافه شد.",
-  "err_rem_add": "خطایی در حذف این آدرس رخ داد ، لطفاً بعداً دوباره امتحان کنید",
-  "suc_rem_add": "آدرس با موفقیت حذف شد"
- },
-
- "shopping_cart": {
-  "cart": "سبد خرید",
-  "pay": "پرداخت",
-  "total": "جمع کل"
- },
-
- "access": {
-  "error": ".ایمیل یا رمز عبور اشتباه است لطفا دوباره تلاش کنید",
-  "error_empty": "لطفا مقادیر ایمیل و رمز عبور را وارد نمایدد.",
-  "create_acc": "حساب کاربری ندارید؟",
-  "pass": "رمز عبور خود را فراموش کردید؟",
-  "recover": "بازیابی ",
-  "have_acc": "اکانت دارید؟",
-  "sign_up": "ساختن حساب کاربری",
-  "swg": "ورود با حساب گوگل",
-  "swotp": "ورود با رمز یک بار مصرف"
- },
-
- "signup": {
-  "sign_up": "ثبت نام ",
-  "fname": "نام",
-  "lname": "نام خانوادگی",
-  "uname": "نام کاربری",
-  "password": "رمز عبور",
-  "repeat": "تکرار ",
-  "pnumber": "شماره تلفن",
-  "country": "کشور",
-  "city": "شهر",
-  "email": "ایمیل",
-  "adress": "آدرس",
-  "err_8char": "لطفا برای رمز عبور ۸ کاراکتر وارد کنید.",
-  "err_notm": "رمز عبور مطابقت ندارند.",
-
-  "fillout": "لطفا مقادیر بالا را پر کنید"
- },
-
- "otp": {
-  "resend": "فرستادن دوباره"
- },
-
- "pc": {
-  "size": "اندازه",
+  "shape": "شکل",
+  "type": " نوع",
+  "details": "جزئیات",
   "color": "رنگ",
-  "price": "قیمت پایه",
-  "advance": "پیش پرداخت",
-  "cart": "سبد خرید",
-
-  "info": "اطلاعات تکمیلی",
-  "pay_method": "نحوه پرداخت",
-  "payment": "قیمت نهایی",
-  "value": "ارزش",
-  "nstep": "مرحله بعد",
-  "pstep": "بازگشت",
-  "receiver": "تحویل گیرنده",
-  "postalcode": "کد پستی",
-  "submit": "تایید",
-  "off": "تخفیف",
-  "dprice": "قیمت با احتساب تخفیف",
-  "image": "تصویر",
-  "pmethod": " پرداخت"
- },
-
- "welcome": "خوش آمدید",
- "addtocart": "اضافه کردن سبد خرید",
- "addtoorder": "اضافه کردن به سفارشات",
-
- "newpage": {
-  "av": "موجود",
-  "notav": "ناموجود"
- },
-
- "product": {
-  "added": "محصول با موفقیت اضافه شد",
-  "removed": "محصول با موفقیت از لیست مورد علاقه ها حذف شد",
-  "err": " محصول به لیست موردعلاقه ها اضافه نشد لطفا دوباره تلاش کنید.",
-  "remove": "حذف از لیست مورد علاقه ها",
-  "remove_ow": "حذف",
-  "total_height": "ارتفاع کل"
- },
-
- "cu": {
-  "contact_us": "تماس با ما"
- },
-
- "ticket": {
-  "no": "ردیف",
-  "title": "عنوان",
-  "status": "وضعیت",
-  "show": "مشاهده",
-  "ticket_no": "شماره تیکت",
-  "data": "تاریخ",
-  "upload": "بازگذاری تصویر",
-  "send": "ارسال",
-  "ok": "تیکت با موفقیت ارسال شد",
-  "error": "تیکت ارسال نشد لطفا دوباره تلاش کنید"
- },
-
- "contact": {
-  "successfull": "پیام شما با موفقیت ارسال شد.",
-  "error": "پیام شما با موفقیت ارسال نشد دوباره تلاش کنید."
- },
-
- "orders": {
-  "no": "ردیف",
-  "orderno": "شماره سفارش",
-  "status": "وضعیت",
+  "size": "سایز mm",
+  "weight": "وزن",
+  "quality": "کیفیت",
+  "cut": "برش ",
+  "cut_type": "نوع برش ",
+  "report": "گزارش ",
+  "country": "  ساخت",
+  "agta": "AGTA",
   "price": "قیمت",
+  "quantity": "مقدار",
+  "total_price": "قیمت کل",
+  "add_to_card": "اضافه کردن",
+  "brand": "برند",
+  "mine": "معدن",
+  "categories": "دسته بندی ها",
+  "blog": "بلاگ",
+  "contactus": "تماس با ما",
+  "paybycart": "کارت به کارت",
+  "precheckout": "پرداخت",
+  "notfound": "صفحه مورد نظر پیدا نشد",
+
+  "page": "صفحه",
+  "select_shape": "لطفا یک برش را انتخاب کنید",
+  "select_color": "لطفا یک رنگ را انتخاب کنید",
+
+  "zoom_tip": "رنگ روی صفحه نمایش شما ممکن است رنگ واقعی سنگ را به دلیل تفاوت رنگ پیکسل ها در نمایشگرهای رایانه منعکس نکند",
+
+  "sold_by": "فروخته شده توسط",
+  "specifications": "مشخصات",
+
+  "related": "پرفروش های مرتبط",
+  "views": "افرادی که این موارد را مشاهده کردند در نهایت خریدند",
+  "reset_selections": "حذف همه فیلترها",
+
+  "more_info": "جزئیات فنی",
+  "description": "اطلاعات بیشتر",
+
+  "serial_number": "کد محصول",
+  "payment": "مبلغ",
+  "total_weight": "وزن کل",
+
+  "add_to_favorite": " اضافه کردن به لیست مورد علاقه ها ",
+
+  "loading": "در حال بارگذاری ...",
+  "items_per_page": "تعداد محصولات در صفحه",
+  "1_pcs": "عدد",
+  "pcs": "تعداد",
+
+  "m_unit": "تومان",
+
+  "my_acc": "حساب کاربری",
+  "byorder": "سفارشی",
+  "ordered": "سفارش ثبت شد",
+
+  "add": "افزودن",
+  "trylater": "عملیات با موفقیت انجام نشد لطفا دئباره تلاش کنید.",
+  "payment_method": "نوع پرداخت",
+  "availableQuantity": "موجودی ",
+  "select_a_filter": "تر را انتخاب کنیدیک فیل",
+  "code": "کد",
+  "load_more": "بارگذاری بیشتر ...",
+
+  "profile": {
+    "update": "به روز کردن",
+    "update_ok": "اطلاعات حساب کاربری شما با موفقیت به روز شد.",
+    "update_err": "اطلاعات شما با موفقیت به روز نشد لطفا چند دقیه بعد دوباره امتحان کنید",
+    "orders": "سفارشات",
+    "item_list": "لیست محصولات ",
+    "ticket": "تیکت",
+    "contact": " تماس با ما",
+    "addresses": "آدرس ها",
+    "address": "آدرس",
+
+    "add_add": "اضافه کردن آدرس جدید",
+    "urad": "همه آدرس های ثبت شده شما",
+
+    "acc_info": "اطلاعات حساب کاربری",
+    "favorites": " علاقه مندی ها",
+    "cart": "سبد خرید",
+    "basket": "سبد خرید",
+
+    "pending": "در انتظار پرداخت",
+    "order_status": "وضعیت سفارش",
+
+    "log_out": "خروج",
+
+    "support": "پشتیبانی",
+    "account": "حساب کاربری",
+    "sbsi": "مرتب سازی بر اساس اندازه (افزایشی)",
+    "sbsd": "مرتب سازی بر اساس اندازه (کاهشی)",
+    "sbpi": "مرتب سازی بر اساس قیمت (افزایشی)",
+    "sbpd": "مرتب سازی بر اساس قیمت (کاهشی)",
+
+    "sort": "مرتب سازی",
+
+    "err_add_add": "خطایی در اضافه کردن این آدرس رخ داد ، لطفاً بعداً دوباره امتحان کنید",
+    "suc_add_add": "آدرس با موفقیت اضافه شد.",
+    "err_rem_add": "خطایی در حذف این آدرس رخ داد ، لطفاً بعداً دوباره امتحان کنید",
+    "suc_rem_add": "آدرس با موفقیت حذف شد"
+  },
+
+  "shopping_cart": {
+    "cart": "سبد خرید",
+    "pay": "پرداخت",
+    "total": "جمع کل"
+  },
+
+  "access": {
+    "error": ".ایمیل یا رمز عبور اشتباه است لطفا دوباره تلاش کنید",
+    "error_empty": "لطفا مقادیر ایمیل و رمز عبور را وارد نمایدد.",
+    "create_acc": "حساب کاربری ندارید؟",
+    "pass": "رمز عبور خود را فراموش کردید؟",
+    "recover": "بازیابی ",
+    "have_acc": "اکانت دارید؟",
+    "sign_up": "ساختن حساب کاربری",
+    "swg": "ورود با حساب گوگل",
+    "swotp": "ورود با رمز یک بار مصرف"
+  },
+
+  "signup": {
+    "sign_up": "ثبت نام ",
+    "fname": "نام",
+    "lname": "نام خانوادگی",
+    "uname": "نام کاربری",
+    "password": "رمز عبور",
+    "repeat": "تکرار ",
+    "pnumber": "شماره تلفن",
+    "country": "کشور",
+    "city": "شهر",
+    "email": "ایمیل",
+    "adress": "آدرس",
+    "err_8char": "لطفا برای رمز عبور ۸ کاراکتر وارد کنید.",
+    "err_notm": "رمز عبور مطابقت ندارند.",
+
+    "fillout": "لطفا مقادیر بالا را پر کنید"
+  },
+
+  "otp": {
+    "resend": "فرستادن دوباره"
+  },
+
+  "pc": {
+    "size": "اندازه",
+    "color": "رنگ",
+    "price": "قیمت پایه",
+    "advance": "پیش پرداخت",
+    "cart": "سبد خرید",
+
+    "info": "اطلاعات تکمیلی",
+    "pay_method": "نحوه پرداخت",
+    "payment": "قیمت نهایی",
+    "value": "ارزش",
+    "nstep": "مرحله بعد",
+    "pstep": "بازگشت",
+    "receiver": "تحویل گیرنده",
+    "postalcode": "کد پستی",
+    "submit": "تایید",
+    "off": "تخفیف",
+    "dprice": "قیمت با احتساب تخفیف",
+    "image": "تصویر",
+    "pmethod": " پرداخت"
+  },
+
+  "welcome": "خوش آمدید",
+  "addtocart": "اضافه کردن سبد خرید",
+  "addtoorder": "اضافه کردن به سفارشات",
+
+  "newpage": {
+    "av": "موجود",
+    "notav": "ناموجود"
+  },
+
+  "product": {
+    "added": "محصول با موفقیت اضافه شد",
+    "removed": "محصول با موفقیت از لیست مورد علاقه ها حذف شد",
+    "err": " محصول به لیست موردعلاقه ها اضافه نشد لطفا دوباره تلاش کنید.",
+    "remove": "حذف از لیست مورد علاقه ها",
+    "remove_ow": "حذف",
+    "total_height": "ارتفاع کل"
+  },
+
+  "cu": {
+    "contact_us": "تماس با ما"
+  },
+
+  "ticket": {
+    "no": "ردیف",
+    "title": "عنوان",
+    "status": "وضعیت",
+    "show": "مشاهده",
+    "ticket_no": "شماره تیکت",
+    "data": "تاریخ",
+    "upload": "بازگذاری تصویر",
+    "send": "ارسال",
+    "ok": "تیکت با موفقیت ارسال شد",
+    "error": "تیکت ارسال نشد لطفا دوباره تلاش کنید"
+  },
+
+  "contact": {
+    "successfull": "پیام شما با موفقیت ارسال شد.",
+    "error": "پیام شما با موفقیت ارسال نشد دوباره تلاش کنید."
+  },
+
+  "orders": {
+    "no": "ردیف",
+    "orderno": "شماره سفارش",
+    "status": "وضعیت",
+    "price": "قیمت",
+    "date": "تاریخ",
+    "ok": "سفارش با موفقیت ثبت شد",
+    "doctype": "نوع سند",
+    "payment_code": "رمز پرداخت",
+    "bank_name": "نام بانکی",
+    "mobile_nu": "شماره موبایل",
+    "delivery_price": "قیمت تحویل",
+    "paying_amout": "مبلغ پرداخت",
+    "payment_status": "وضعیت پرداخت",
+    "factor_number": "شماره فاکتور",
+    "total_payment": "مبلغ پرداخت شده",
+    "total_amount": " مبلغ کل فاکتور",
+    "payment_type": " نوع پرداخت",
+    "get_invoice": "دریافت فاکتور",
+    "delete_info": "آیا از حذف سفارش اطمینان دارید؟",
+    "cancel": "لغو",
+    "delete": "حذف سفارش"
+  },
+
+  "factor": {
+    "Serial_Number": "شماره سریال:",
+    "Date": "تاریخ:",
+    "Expiry_Date": "تاریخ اعتبار:",
+    "Service_Sales_Invoice": "فاکتور فروش خدمات",
+    "Buyer_Information": "مشخصات خریدار",
+    "Name_Individual_Legal_Entity": "نام شخص حقیقی/حقوقی:",
+    "Economic_Code": "شماره اقتصادی:",
+    "Registration_Number_National_ID": "شماره ثبت/ شماره ملی:",
+    "National_ID": "شناسه ملی:",
+    "Postal_Code": "کد پستی:",
+    "Phone_Number": "شماره تلفن:",
+    "Fax_Number": "شماره فکس:",
+    "Address": "نشانی:",
+    "Seller_Information": "مشخصات فروشنده",
+    "Full_Province_Address": "نشانی کامل استان:",
+    "City": "شهر:",
+    "Details_of_Goods_or_Services_Transacted": "مشخصات کالا یا خدمات مورد معامله",
+    "Item": "ردیف",
+    "Invoice_Number_ID": "شماره/شناسه فاکتور",
+    "Description_of_Goods_Service": "شرح کالا/خدمت",
+    "Quantity_Amount": "تعداد/مقدار",
+    "Unit_Price": "مبلغ واحد ",
+    "Unit_Weight": "وزن واحد ",
+    "Total_Amount": "مبلغ کل",
+    "Discount_Amount": "مبلغ تخفیف",
+    "Total_Amount_After_Discount_and_Additions": "مبلغ کل پس از تخفیف و اضافات",
+    "Total_Tax_and_Duties": "جمع مالیات و عوارض",
+    "Net_Invoice_Amount": "خالص فاکتور",
+    "Grand_Total": "جمع کل",
+    "Total_Weight": "وزن کل",
+    "Sales_Terms_and_Method": "شرایط و نحوه فروش",
+    "Cash": "نقدی",
+    "Non_Cash": "غیر نقدی",
+    "Description": "توضیحات",
+    "Buyers_Stamp_and_Signature": "مهر و امضای خریدار",
+    "Shops_Stamp_and_Signature": "مهر و امضای فروشگاه",
+    "off": "تخفیف %    ",
+    "club": "باشگاه مشتریان",
+    "shipping": "هزینه حمل و نقل",
+    "type": "توضیحات",
+    "pcs": "عدد"
+  },
+
+  "continue": "ادامه خرید",
+  "cancel": "لغو سفارش",
+  "number": "شماره",
+  "transaction": "تراکنش ها",
+  "wallet": " امتیازات",
+  "use_wallet": " اعمال امتیازات باشگاه",
+  "balance": "موجودی کیف پول ",
+  "changes": "تغییرات ",
+  "transaction_type": "نوع",
   "date": "تاریخ",
-  "ok": "سفارش با موفقیت ثبت شد",
-  "doctype": "نوع سند",
-  "payment_code": "رمز پرداخت",
-  "bank_name": "نام بانکی",
-  "mobile_nu": "شماره موبایل",
-  "delivery_price": "قیمت تحویل",
-  "paying_amout": "مبلغ پرداخت",
-  "payment_status": "وضعیت پرداخت",
-  "factor_number": "شماره فاکتور",
-  "total_payment": "مبلغ پرداخت شده",
-  "total_amount": " مبلغ کل فاکتور",
-  "payment_type": " نوع پرداخت",
-  "get_invoice": "دریافت فاکتور",
-  "delete_info": "آیا از حذف سفارش اطمینان دارید؟",
-  "cancel": "لغو",
-  "delete": "حذف سفارش"
- },
-
- "factor": {
-  "Serial_Number": "شماره سریال:",
-  "Date": "تاریخ:",
-  "Expiry_Date": "تاریخ اعتبار:",
-  "Service_Sales_Invoice": "فاکتور فروش خدمات",
-  "Buyer_Information": "مشخصات خریدار",
-  "Name_Individual_Legal_Entity": "نام شخص حقیقی/حقوقی:",
-  "Economic_Code": "شماره اقتصادی:",
-  "Registration_Number_National_ID": "شماره ثبت/ شماره ملی:",
-  "National_ID": "شناسه ملی:",
-  "Postal_Code": "کد پستی:",
-  "Phone_Number": "شماره تلفن:",
-  "Fax_Number": "شماره فکس:",
-  "Address": "نشانی:",
-  "Seller_Information": "مشخصات فروشنده",
-  "Full_Province_Address": "نشانی کامل استان:",
-  "City": "شهر:",
-  "Details_of_Goods_or_Services_Transacted": "مشخصات کالا یا خدمات مورد معامله",
-  "Item": "ردیف",
-  "Invoice_Number_ID": "شماره/شناسه فاکتور",
-  "Description_of_Goods_Service": "شرح کالا/خدمت",
-  "Quantity_Amount": "تعداد/مقدار",
-  "Unit_Price": "مبلغ واحد ",
-  "Unit_Weight": "وزن واحد ",
-  "Total_Amount": "مبلغ کل",
-  "Discount_Amount": "مبلغ تخفیف",
-  "Total_Amount_After_Discount_and_Additions": "مبلغ کل پس از تخفیف و اضافات",
-  "Total_Tax_and_Duties": "جمع مالیات و عوارض",
-  "Net_Invoice_Amount": "خالص فاکتور",
-  "Grand_Total": "جمع کل",
-  "Total_Weight": "وزن کل",
-  "Sales_Terms_and_Method": "شرایط و نحوه فروش",
-  "Cash": "نقدی",
-  "Non_Cash": "غیر نقدی",
-  "Description": "توضیحات",
-  "Buyers_Stamp_and_Signature": "مهر و امضای خریدار",
-  "Shops_Stamp_and_Signature": "مهر و امضای فروشگاه",
-  "off": "تخفیف %    ",
-  "club": "باشگاه مشتریان",
-  "shipping": "هزینه حمل و نقل",
-  "type": "توضیحات",
-  "pcs": "عدد"
- },
-
- "continue": "ادامه خرید",
- "cancel": "لغو سفارش",
- "number": "شماره",
- "transaction": "تراکنش ها",
- "wallet": " امتیازات",
- "use_wallet": " اعمال امتیازات باشگاه",
- "balance": "موجودی کیف پول ",
- "changes": "تغییرات ",
- "transaction_type": "نوع",
- "date": "تاریخ",
- "pay_by_wallet": "استفاده از موجودی کیف پول",
- "current_balance": " موجودی کیف پول شما",
- "no_transations": "هیچ تراکنش جدیدی در حساب شما وجود ندارد.",
- "order_ok": "سفارش شما با موفقیت ثبت شد .",
- "order_err": "ثبت سفارش با خطا مواجه شد .",
- "signle_shape": "برش",
- "shop_by_type": "خرید بر اساس نوع"
+  "pay_by_wallet": "استفاده از موجودی کیف پول",
+  "current_balance": " موجودی کیف پول شما",
+  "no_transations": "هیچ تراکنش جدیدی در حساب شما وجود ندارد.",
+  "order_ok": "سفارش شما با موفقیت ثبت شد .",
+  "order_err": "ثبت سفارش با خطا مواجه شد .",
+  "signle_shape": "برش",
+  "shop_by_type": "خرید بر اساس نوع",
+  "alvailable_colors": "{{count}} رنگ موجود است"
 }

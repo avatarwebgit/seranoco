@@ -71,7 +71,7 @@ const TableGrid = ({
  };
 
  return (
-  <div className={classes.main} dir={lng === 'fa' ? 'rtl' : 'ltr'}>
+  <div className={classes.main}>
    {data && data.length > 0 && (
     <table
      className={classes.table}

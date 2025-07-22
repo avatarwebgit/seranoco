@@ -157,56 +157,60 @@ const PreCheckout = ({ windowSize }) => {
                 </>
               )}
             </div>
-            <div
-              className={classes.total_wrapper}
-              style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
-            >
-              <span className={classes.title}>{t("wallet")}</span>
-              <FormGroup
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignContent: "center",
-                  justifyContent: "center",
-                  direction: "rtl",
-                }}
+            {+walletBalance > 0 && (
+              <div
+                className={classes.total_wrapper}
+                style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
               >
-                <FormControlLabel
-                  disabled={!walletBalance > 0}
-                  control={
-                    <IOSSwitch
-                      checked={walletStatus}
-                      onChange={(e) => {
-                        dispatch(walletActions.setWalletUse(e.target.checked));
-                        dispatch(walletActions.setUserIntraction());
-                      }}
-                    />
-                  }
+                <span className={classes.title}>{t("wallet")}</span>
+                <FormGroup
                   sx={{
                     display: "flex",
-                    flexDirection: "column-reverse",
-                    alignContent: "flex-start",
-                    "& .MuiFormControlLabel-label": {
-                      fontSize: "0.5rem",
-                      color: "#000000",
-                      padding: "0 5px",
-                    },
+                    flexDirection: "column",
+                    alignContent: "center",
+                    justifyContent: "center",
+                    direction: "rtl",
                   }}
-                />
-              </FormGroup>
+                >
+                  <FormControlLabel
+                    disabled={!walletBalance > 0}
+                    control={
+                      <IOSSwitch
+                        checked={walletStatus}
+                        onChange={(e) => {
+                          dispatch(
+                            walletActions.setWalletUse(e.target.checked)
+                          );
+                          dispatch(walletActions.setUserIntraction());
+                        }}
+                      />
+                    }
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column-reverse",
+                      alignContent: "flex-start",
+                      "& .MuiFormControlLabel-label": {
+                        fontSize: "0.5rem",
+                        color: "#000000",
+                        padding: "0 5px",
+                      },
+                    }}
+                  />
+                </FormGroup>
 
-              <span
-                className={classes.amont}
-                style={{
-                  color: walletBalance && walletStatus ? "#000" : "#c2c2c2",
-                }}
-              >
-                {walletBalance && lng !== "fa"
-                  ? walletBalance
-                  : (walletBalance * euro).toLocaleString("fa-IR")}
-                &nbsp;{t("m_unit")}
-              </span>
-            </div>
+                <span
+                  className={classes.amont}
+                  style={{
+                    color: walletBalance && walletStatus ? "#000" : "#c2c2c2",
+                  }}
+                >
+                  {walletBalance && lng !== "fa"
+                    ? walletBalance
+                    : (walletBalance * euro).toLocaleString("fa-IR")}
+                  &nbsp;{t("m_unit")}
+                </span>
+              </div>
+            )}
             <div
               className={classes.total_wrapper}
               style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
@@ -218,9 +222,9 @@ const PreCheckout = ({ windowSize }) => {
                     <>
                       {lng !== "fa"
                         ? cart.totalPriceAfterDiscount.toFixed(2)
-                        : (
-                            cart.totalPriceAfterDiscount * cart.euro
-                          ).toLocaleString("fa-IR")}
+                        : (cart.totalPriceAfterDiscount * euro).toLocaleString(
+                            "fa-IR"
+                          )}
                       &nbsp;
                       {t("m_unit")}
                     </>

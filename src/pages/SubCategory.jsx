@@ -17,7 +17,7 @@ import { getSubCategories } from "../services/api";
 import classes from "./SubCategory.module.css";
 
 const SubCategory = ({ windowSize }) => {
-  const { id: subCategoryId } = useParams();
+  const { id: subCategorySlug } = useParams();
   const [subCategories, setSubCategories] = useState(null);
   const { t } = useTranslation();
 
@@ -31,9 +31,23 @@ const SubCategory = ({ windowSize }) => {
   };
 
   useEffect(() => {
-    document.title = t("categories");
-    handleGetSubcategories(subCategoryId);
-  }, [subCategoryId]);
+    document.title = subCategorySlug;
+    handleGetSubcategories(subCategorySlug);
+  }, [subCategorySlug]);
+
+  const handleReturnRoute = (filterType, alias) => {
+    switch (filterType) {
+      case "color":
+        return `special/${alias}`;
+      case "shape":
+        return `filters/color/${alias}`;
+      case "size":
+        return `filters/shape/${alias}`;
+      default:
+        console.log(filterType);
+        return;
+    }
+  };
 
   return (
     <section className={classes.main}>
@@ -46,6 +60,7 @@ const SubCategory = ({ windowSize }) => {
               linkDataProp={[
                 { pathname: t("home"), url: " " },
                 { pathname: t("categories"), url: "categories" },
+                { pathname: subCategorySlug },
               ]}
             />
           </Card>
@@ -57,7 +72,19 @@ const SubCategory = ({ windowSize }) => {
               {subCategories
                 ? subCategories.map((category, i) => {
                     return (
-                      <Link imgUrl={category.image} title={category.name} />
+                      <Link
+                        imgUrl={category.image}
+                        title={category.name}
+                        href={
+                          category.has_children === 1
+                            ? `categories/${category.alias}`
+                            : handleReturnRoute(
+                                category.type_filter,
+                                category.alias
+                              )
+                        }
+                        type="subCategory"
+                      />
                     );
                   })
                 : Array.from({ length: 4 }, (_, i) => {
