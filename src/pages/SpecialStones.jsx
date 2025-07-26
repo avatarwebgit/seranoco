@@ -330,6 +330,8 @@ const SpecialStones = ({ windowSize }) => {
               {t("alvailable_colors", { count: colorData.length })}
             </div>
           )}
+          <Divider className={classes.color_divider} text={t("colors")} />
+
           {sortedColors?.length > 0 && (
             <>
               <button

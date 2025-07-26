@@ -207,6 +207,12 @@
   width: 100%;
   font-size: 0.5rem;
   padding: 1rem 2.5rem;
+  text-decoration: underline;
+}
+
+.color_divider {
+  margin-top: 0;
+  width: 90%;
 }
 
 @media only screen and (max-width: 480px) {

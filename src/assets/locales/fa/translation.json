@@ -335,5 +335,6 @@
   "order_err": "ثبت سفارش با خطا مواجه شد .",
   "signle_shape": "برش",
   "shop_by_type": "خرید بر اساس نوع",
-  "alvailable_colors": "{{count}} رنگ موجود است"
+  "alvailable_colors": "{{count}} رنگ",
+  "colors": "رنگ ها"
 }

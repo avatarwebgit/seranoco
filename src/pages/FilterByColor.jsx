@@ -441,6 +441,7 @@ const FilterByShape = ({ windowSize }) => {
                   {t("alvailable_colors", { count: colorData.length })}
                 </div>
               )}
+              <Divider className={classes.color_divider} text={t("colors")} />
               {colorData?.length > 0 && (
                 <>
                   <button className={classes.prev_btn} onClick={handlePrev}>

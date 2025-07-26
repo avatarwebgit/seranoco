@@ -480,6 +480,8 @@ const FilterByShape = ({ windowSize }) => {
                   {t("alvailable_colors", { count: colorData.length })}
                 </div>
               )}
+              <Divider className={classes.color_divider} text={t("colors")} />
+
               <Swiper
                 modules={[Navigation, Thumbs, Pagination]}
                 className={classes.swiper}

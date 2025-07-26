@@ -529,7 +529,7 @@ const FilterByShape = ({ windowSize }) => {
               </form>
             </Card>
           }
-          {shapeFormEntries && <Divider text={"Colors"} />}
+          {shapeFormEntries && <Divider text={t("colors")} />}
           {
             <Card
               className={`${classes.size_wrapper} ${classes.colors_wrapper}`}

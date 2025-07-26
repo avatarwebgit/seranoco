@@ -334,5 +334,6 @@
   "order_err": "There was an error submiting the order please try again later",
   "signle_shape": "Shape",
   "shop_by_type": "Shop by Type",
-  "alvailable_colors": "{{count}} Colors Available"
+  "alvailable_colors": "{{count}} Colors",
+  "colors":"Colors"
 }
