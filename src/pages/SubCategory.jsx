@@ -25,6 +25,7 @@ const SubCategory = ({ windowSize }) => {
     try {
       const response = await getSubCategories(id);
       setSubCategories(response.result.data);
+      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -37,11 +38,11 @@ const SubCategory = ({ windowSize }) => {
 
   const handleReturnRoute = (filterType, alias) => {
     switch (filterType) {
-      case "color":
-        return `special/${alias}`;
-      case "shape":
-        return `filters/color/${alias}`;
       case "size":
+        return `special/${alias}`;
+      case "color":
+        return `filters/color/${alias}`;
+      case "shape":
         return `filters/shape/${alias}`;
       default:
         return;
