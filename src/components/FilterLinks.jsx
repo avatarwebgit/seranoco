@@ -40,7 +40,6 @@ const FilterLinks = ({ className }) => {
       case "size":
         return `filters/shape/${alias}`;
       default:
-        console.log(filterType);
         return;
     }
   };
@@ -69,7 +68,6 @@ const FilterLinks = ({ className }) => {
               href={"new-products"}
             />
             {linkData.map((elem) => {
-              console.log(elem);
               return (
                 <Link
                   href={

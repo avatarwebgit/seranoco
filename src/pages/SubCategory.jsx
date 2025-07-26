@@ -44,7 +44,6 @@ const SubCategory = ({ windowSize }) => {
       case "size":
         return `filters/shape/${alias}`;
       default:
-        console.log(filterType);
         return;
     }
   };
@@ -92,7 +91,11 @@ const SubCategory = ({ windowSize }) => {
                       <Skeleton
                         variant="rectangular"
                         animation="wave"
-                        sx={{ aspectRatio: 1, width: "100%", height: "100%" }}
+                        sx={{
+                          aspectRatio: 1.5 / 1,
+                          width: "100%",
+                          height: "100%",
+                        }}
                       />
                     );
                   })}

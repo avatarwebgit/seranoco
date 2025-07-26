@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { useAllPromotions } from "../services/api";

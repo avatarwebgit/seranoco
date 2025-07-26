@@ -1,7 +1,7 @@
 @import url(../styles/variables.css);
 .main {
  height: fit-content;
- display: grid;
+ display: grid !important;
  grid-template-columns: 1fr 1fr 1fr;
  gap: 1rem;
  margin: 2rem auto;
@@ -17,6 +17,7 @@
  margin: 0 auto;
  border-radius: 10px;
 }
+
 .helper {
  position: absolute;
  top: 60%;

@@ -392,7 +392,9 @@ const FilterCategory = ({ windowSize }) => {
         <BannerCarousel />
         <Header windowSize={windowSize} />
         <Body>
-          <LoadingSpinner />
+          <div className={classes.loading_body}>
+            <LoadingSpinner />
+          </div>
         </Body>
         <Footer />
       </div>
