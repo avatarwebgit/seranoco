@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { drawerActions, accesModalActions } from '../store/store';
+import { accesModalActions, drawerActions } from '../store/store';
 
-import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
 import { ReactComponent as Basket } from '../assets/svg/basket_white.svg';
-import { ReactComponent as Login } from '../assets/svg/signin_white.svg';
+import { ReactComponent as Heart } from '../assets/svg/heart_white.svg';
 
-import classes from './FixedNavigation.module.css';
-import { Avatar, Badge, IconButton } from '@mui/material';
-import AccessAccount from './AccessAccount';
+import { AccountCircle, Login } from '@mui/icons-material';
+import { Badge, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { AccountCircle } from '@mui/icons-material';
+import AccessAccount from './AccessAccount';
+import classes from './FixedNavigation.module.css';
 const FixedNavigation = () => {
  const [ModalOpen, setModalOpen] = useState(false);
 
