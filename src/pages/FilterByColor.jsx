@@ -181,6 +181,7 @@ const FilterByShape = ({ windowSize }) => {
       setColorData(fetchedColorData?.data.colors);
       setGroupColors(fetchedColorData?.data.group_colors);
     }
+
   }, [fetchedColorData]);
 
   useEffect(() => {
@@ -197,7 +198,7 @@ const FilterByShape = ({ windowSize }) => {
           const groupB = sortedGroupColorsP.find(
             (group) => group.id === b.group_id
           );
-
+          console.log(groupA, groupB)
           if (groupA.priority === groupB.priority) {
             return a.priority - b.priority;
           }

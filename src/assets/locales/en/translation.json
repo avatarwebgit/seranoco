@@ -279,7 +279,7 @@
     "Expiry_Date": "Expiry Date:",
     "Service_Sales_Invoice": "Service Sales Invoice",
     "Buyer_Information": "Buyer Information",
-    "Name_Individual_Legal_Entity": "Name (Individual/Legal Entity):",
+    "Name_Individual_Legal_Entity": "Name :",
     "Economic_Code": "Economic Code:",
     "Registration_Number_National_ID": "Registration Number/National ID:",
     "National_ID": "National ID:",
@@ -334,6 +334,10 @@
   "order_err": "There was an error submiting the order please try again later",
   "signle_shape": "Shape",
   "shop_by_type": "Shop by Type",
-  "alvailable_colors": "{{count}} Colors",
-  "colors":"Colors"
+  "alvailable_colors_one": "{{count}} Color",
+  "alvailable_colors_other": "{{count}} Colors",
+  "colors": "Colors",
+  "I have a coupon": "I have a coupon",
+  "Enter coupon code": "Enter coupon code",
+  "apply": "Apply"
 }

@@ -336,5 +336,8 @@
   "signle_shape": "برش",
   "shop_by_type": "خرید بر اساس نوع",
   "alvailable_colors": "{{count}} رنگ",
-  "colors": "رنگ ها"
+  "colors": "رنگ ها",
+  "I have a coupon": "کوپن تخفیف دارم ",
+  "Enter coupon code": " کد تخفیف خود را وارد کنید",
+  "apply": "اعمال"
 }

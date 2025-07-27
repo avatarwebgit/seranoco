@@ -1132,3 +1132,17 @@ export const transactions = async (token) => {
   const result = await response.json();
   return { response, result };
 };
+
+export const sendCouponStatus = async (token, coupon) => {
+  const response = await fetch(`${baseUrl}/coupon`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "bearer " + token,
+    },
+    body: JSON.stringify({ code: coupon }),
+  });
+  const result = await response.json();
+  return { response, result };
+};

@@ -104,624 +104,740 @@ const Factor = () => {
  }, [detailsData]);
 
  return (
-  <div ref={componentRef}>
-   <table className={classes.factorTable} dir={lng === 'fa' ? 'rtl' : 'ltr'}>
-    <thead>
-     {detailsData && (
-      <tr>
-       <td className={classes.head}>
-        <span className={classes.dateWrapper}>
-         <span>{t('factor.Serial_Number')}</span>
-         <span className={`${classes.center} ${classes.border}`}>
-          {detailsData.order.order_number}
-         </span>
-         <span>{t('factor.Date')}</span>
-         <span className={`${classes.center} ${classes.border}`}>
-          {detailsData?.order?.created_at
-           ? (() => {
-              const date = new Date(detailsData.order.created_at);
-              const year = date.getFullYear();
-              const month = String(date.getMonth() + 1).padStart(2, '0');
-              const day = String(date.getDate()).padStart(2, '0');
-              return `${year}.${month}.${day}`;
-             })()
-           : ''}
-         </span>
-        </span>
-        <h1 className={classes.title}>{t('factor.Service_Sales_Invoice')}</h1>
-        <span></span>
-       </td>
-      </tr>
-     )}
-    </thead>
-    <tbody>
-     <tr className={classes.sectionTitle}>
-      <td>{t('factor.Buyer_Information')}</td>
-     </tr>
-     <tr>
-      {detailsData && (
-       <td className={classes.companyInfoWrapper}>
-        <span>
-         <p>{t('factor.Name_Individual_Legal_Entity')}</p>
-         <p>{detailsData.address.title}</p>
-         <p></p>
-        </span>
-        <span>
-         <p>{t('factor.Postal_Code')}</p>
-         <p>{detailsData.address.postal_code}</p>
-         <p></p>
-        </span>
-        <span>
-         <p>{t('factor.Phone_Number')}</p>
-         <p>{detailsData.address.tel}</p>
-         <p></p>
-        </span>
-        <span className={classes.address}>
-         <p>{t('factor.Address')}</p>
-         <p>{detailsData.address.address}</p>
-         <p></p>
-        </span>
-       </td>
-      )}
-     </tr>
-     <tr className={classes.sectionTitle}>
-      <td>{t('factor.Seller_Information')}</td>
-     </tr>
-     <tr>
-      {storeData && (
-       <td className={classes.companyInfoWrapper}>
-        <span>
-         <p>{t('factor.Name_Individual_Legal_Entity')}</p>
-         <p>{lng === 'fa' ? storeData.name : storeData.name_en}</p>
-         <p></p>
-        </span>
-        <span>
-         <p>{t('factor.Postal_Code')}</p>
-         <p>{storeData.postalCode}</p>
-         <p></p>
-        </span>
-        <span>
-         <p>{t('factor.Phone_Number')}</p>
-         <p>{storeData.tel}</p>
-         <p></p>
-        </span>
-        <span>
-         <p></p>
-         <p></p>
-        </span>
-        <span className={classes.address}>
-         <p>{t('factor.Address')}</p>
-         <p>{lng === 'fa' ? storeData.address : storeData.address_en}</p>
-         <p></p>
-        </span>
-       </td>
-      )}
-     </tr>
-     <tr className={classes.sectionTitle}>
-      <td>{t('factor.Details_of_Goods_or_Services_Transacted')}</td>
-     </tr>
-     <tr className={classes.productInfoWrapper}>
-      <td>
-       <span className={classes.productInfoDetails}>
-        <span style={{ border: 'none' }}>{t('factor.Item')}</span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('factor.type')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('cut_type')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('size')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('color')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('factor.Unit_Weight')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('factor.Total_Weight')}
-        </span>{' '}
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('factor.Quantity_Amount')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('factor.Unit_Price')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-         }}>
-         {t('availability')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-          color: 'red',
-          width: '5%',
-         }}>
-         {t('factor.off')}
-        </span>
-        <span
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-          width: '12%',
-         }}>
-         {t('factor.Total_Amount')}
-        </span>
-       </span>
-       {detailsData &&
-        detailsData.products.map((product, i) => {
-         const prod = product.product;
-         const weight = product.product.variation.weight.split(' ').at(0);
-         return (
-          <span key={product.id} className={classes.productInfoDetails}>
-           <span
-            style={{
-             border: 'none',
-            }}>
-            {i + 1}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {lng === 'fa' ? prod.shape_fa : prod.shape}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {lng === 'fa' ? prod.cut_fa : prod.cut}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {prod.size}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {lng === 'fa' ? prod.color_fa : prod.color}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {weight}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {+(product.selected_quantity * weight).toFixed(3)}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {product.selected_quantity}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {lng === 'fa'
-             ? `${formatNumber(+prod.sale_price * euro)} ${t('m_unit')}`
-             : `${prod.sale_price} ${t('m_unit')}`}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-            }}>
-            {!prod.variation.is_not_available
-             ? t('available')
-             : t('newpage.newpage')}
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-             width: '5%',
-            }}>
-            ---
-           </span>
-           <span
-            style={{
-             borderRight: lng === 'fa' && '1px solid black',
-             borderLeft: lng !== 'fa' && '1px solid black',
-             width: '12%',
-            }}>
-            <strong>
-             {lng === 'fa'
-              ? `${formatNumber(
-                 +prod.sale_price * euro * product.selected_quantity,
-                )} ${t('m_unit')}`
-              : `${
-                 Math.round(prod.sale_price * product.selected_quantity * 10) /
-                 10
-                } ${t('m_unit')}`}
-            </strong>
-           </span>
-          </span>
-         );
-        })}
-       <span
-        className={classes.productInfoTotalWrapper}
-        style={{ borderBottom: '1px solid black' }}>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-          fontWeight: 'bold',
-         }}>
-         {' '}
-         {t('shopping_cart.total')}:
-        </span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-          fontWeight: 'bold',
-          direction: 'ltr',
-         }}>
-         {+totalWeight.toFixed(3)}&nbsp;Ct
-        </span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-          fontWeight: 'bold',
-         }}>
-         {totalQuantity}
-         &nbsp;{t('factor.pcs')}&nbsp;
-        </span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-          width: '5%',
-         }}></span>
-        {detailsData && (
-         <span
-          className={classes.totalInfo}
-          style={{
-           borderRight: lng === 'fa' && '1px solid black',
-           borderLeft: lng !== 'fa' && '1px solid black',
-           width: '12.1%',
-          }}>
-          <strong>
-           {lng === 'fa' ? (
-            <>
-             {detailsData.order.total_amount_fa}
-             <br />
-             {t('m_unit')}
-             <br />
-             (€&nbsp;{detailsData.order.total_amount})
-            </>
-           ) : (
-            <>
-             {Math.round(detailsData.order.total_amount * 10) / 10}
-             {t('m_unit')}
-            </>
-           )}
-          </strong>
-         </span>
-        )}
-       </span>
-       <span
-        className={classes.productInfoTotalWrapper}
-        style={{ borderBottom: '1px solid black' }}>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-          color: 'red',
-          whiteSpace: 'nowrap',
-          display: 'flex',
-          alignItems: 'center',
-         }}>
-         {t('factor.club')}
-        </span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-
-          width: '5%',
-         }}></span>
-        {detailsData && (
-         <span
-          className={classes.totalInfo}
-          style={{
-           borderRight: lng === 'fa' && '1px solid black',
-           borderLeft: lng !== 'fa' && '1px solid black',
-           width: '12.1%',
-           display: 'flex',
-           alignItems: 'center',
-           justifyContent: 'center',
-          }}>
-          {lng === 'fa' ? detailsData.wallet_fa : detailsData.wallet_en}&nbsp;{' '}
-          {t('m_unit')}
-         </span>
-        )}
-       </span>
-       <span
-        className={classes.productInfoTotalWrapper}
-        style={{ borderBottom: '1px solid black' }}>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-          width: '5%',
-          whiteSpace: 'nowrap',
-          display: 'flex',
-          alignItems: 'center',
-         }}>
-         {t('factor.shipping')}
-        </span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-         }}></span>
-        {detailsData && (
-         <span
-          className={classes.totalInfo}
-          style={{
-           borderRight: lng === 'fa' && '1px solid black',
-           borderLeft: lng !== 'fa' && '1px solid black',
-           display: 'flex',
-           alignItems: 'center',
-           justifyContent: 'center',
-           width: '12.1%',
-          }}>
-          {shippingCost}
-         </span>
-        )}
-       </span>
-       <span className={classes.productInfoTotalWrapper}>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span className={classes.totalInfo} style={{ border: 'none' }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          border: 'none',
-          whiteSpace: 'nowrap',
-          display: 'flex',
-          alignItems: 'center',
-         }}>
-         {t('orders.total_payment')}
-        </span>
-        <span
-         className={classes.totalInfo}
-         style={{ border: 'none', fontWeight: 'bold', width: '5%' }}></span>
-        <span
-         className={classes.totalInfo}
-         style={{
-          borderRight: lng === 'fa' && '1px solid black',
-          borderLeft: lng !== 'fa' && '1px solid black',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontWeight: 'bold',
-          width: '12.1%',
-         }}>
-         {lng === 'fa' ? (
-          <>
-           {formatNumber(+detailsData?.order.paying_amount_fa)}
-           <br />
-           {t('m_unit')}
-           <br />
-           (€&nbsp;
-           {(Math.round(+detailsData?.order.paying_amount * 10) / 10).toFixed(
-            2,
-           )}{' '}
-           ${t('m_unit')})
-          </>
-         ) : (
-          <>
-           {(Math.round(+detailsData?.order.paying_amount * 10) / 10).toFixed(
-            2,
-           )}
-           {t('m_unit')}
-          </>
+   <div ref={componentRef}>
+     <table className={classes.factorTable} dir={lng === "fa" ? "rtl" : "ltr"}>
+       <thead>
+         {detailsData && (
+           <tr>
+             <td className={classes.head}>
+               <span className={classes.dateWrapper}>
+                 <span>{t("factor.Serial_Number")}</span>
+                 <span className={`${classes.center} ${classes.border}`}>
+                   {detailsData.order.order_number}
+                 </span>
+                 <span>{t("factor.Date")}</span>
+                 <span className={`${classes.center} ${classes.border}`}>
+                   {detailsData?.order?.created_at
+                     ? (() => {
+                         const date = new Date(detailsData.order.created_at);
+                         const year = date.getFullYear();
+                         const month = String(date.getMonth() + 1).padStart(
+                           2,
+                           "0"
+                         );
+                         const day = String(date.getDate()).padStart(2, "0");
+                         return `${year}.${month}.${day}`;
+                       })()
+                     : ""}
+                 </span>
+               </span>
+               <h1 className={classes.title}>
+                 {t("factor.Service_Sales_Invoice")}
+               </h1>
+               <span></span>
+             </td>
+           </tr>
          )}
-        </span>
-       </span>
-      </td>
-     </tr>
-     <tr>
-      <td className={classes.signatureRow}>
-       <span className={classes.signatureColumn}>
-        {t('factor.Buyers_Stamp_and_Signature')}
-       </span>
-       <span className={classes.signatureColumn}>
-        {t('factor.Shops_Stamp_and_Signature')}
-       </span>
-      </td>
-     </tr>
-    </tbody>
-   </table>
-  </div>
+       </thead>
+       <tbody>
+         <tr className={classes.sectionTitle}>
+           <td>{t("factor.Buyer_Information")}</td>
+         </tr>
+         <tr>
+           {detailsData && (
+             <td className={classes.companyInfoWrapper}>
+               <span>
+                 <p>{t("factor.Name_Individual_Legal_Entity")}</p>
+                 <p>
+                   {detailsData.user.first_name}
+                   {detailsData.user.last_name}
+                 </p>
+                 <p></p>
+               </span>
+               <span>
+                 <p>{t("factor.Postal_Code")}</p>
+                 <p>{detailsData.address.postal_code}</p>
+                 <p></p>
+               </span>
+               <span>
+                 <p>{t("factor.Phone_Number")}</p>
+                 <p>{detailsData.address.tel}</p>
+                 <p></p>
+               </span>
+               <span className={classes.address}>
+                 <p>{t("factor.Address")}</p>
+                 <p>{detailsData.address.address}</p>
+                 <p></p>
+               </span>
+             </td>
+           )}
+         </tr>
+         <tr className={classes.sectionTitle}>
+           <td>{t("factor.Seller_Information")}</td>
+         </tr>
+         <tr>
+           {storeData && (
+             <td className={classes.companyInfoWrapper}>
+               <span>
+                 <p>{t("factor.Name_Individual_Legal_Entity")}</p>
+                 <p>{lng === "fa" ? storeData.name : storeData.name_en}</p>
+                 <p></p>
+               </span>
+               <span>
+                 <p>{t("factor.Postal_Code")}</p>
+                 <p>{storeData.postalCode}</p>
+                 <p></p>
+               </span>
+               <span>
+                 <p>{t("factor.Phone_Number")}</p>
+                 <p>{storeData.tel}</p>
+                 <p></p>
+               </span>
+               <span>
+                 <p></p>
+                 <p></p>
+               </span>
+               <span className={classes.address}>
+                 <p>{t("factor.Address")}</p>
+                 <p>
+                   {lng === "fa" ? storeData.address : storeData.address_en}
+                 </p>
+                 <p></p>
+               </span>
+             </td>
+           )}
+         </tr>
+         <tr className={classes.sectionTitle}>
+           <td>{t("factor.Details_of_Goods_or_Services_Transacted")}</td>
+         </tr>
+         <tr className={classes.productInfoWrapper}>
+           <td>
+             <span className={classes.productInfoDetails}>
+               <span style={{ border: "none" }}>{t("factor.Item")}</span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("factor.type")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("cut_type")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("size")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("color")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("factor.Unit_Weight")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("factor.Total_Weight")}
+               </span>{" "}
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("factor.Quantity_Amount")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("factor.Unit_Price")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                 }}
+               >
+                 {t("availability")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                   color: "red",
+                   width: "5%",
+                 }}
+               >
+                 {t("factor.off")}
+               </span>
+               <span
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                   width: "12%",
+                 }}
+               >
+                 {t("factor.Total_Amount")}
+               </span>
+             </span>
+             {detailsData &&
+               detailsData.products.map((product, i) => {
+                 const prod = product.product;
+                 const weight = product.product.variation.weight
+                   .split(" ")
+                   .at(0);
+                 return (
+                   <span
+                     key={product.id}
+                     className={classes.productInfoDetails}
+                   >
+                     <span
+                       style={{
+                         border: "none",
+                       }}
+                     >
+                       {i + 1}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {lng === "fa" ? prod.shape_fa : prod.shape}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {lng === "fa" ? prod.cut_fa : prod.cut}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {prod.size}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {lng === "fa" ? prod.color_fa : prod.color}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {weight}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {+(product.selected_quantity * weight).toFixed(3)}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {product.selected_quantity}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {lng === "fa"
+                         ? `${formatNumber(+prod.sale_price * euro)} ${t(
+                             "m_unit"
+                           )}`
+                         : `${prod.sale_price} ${t("m_unit")}`}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                       }}
+                     >
+                       {!prod.variation.is_not_available
+                         ? t("available")
+                         : t("newpage.newpage")}
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                         width: "5%",
+                       }}
+                     >
+                       ---
+                     </span>
+                     <span
+                       style={{
+                         borderRight: lng === "fa" && "1px solid black",
+                         borderLeft: lng !== "fa" && "1px solid black",
+                         width: "12%",
+                       }}
+                     >
+                       <strong>
+                         {lng === "fa"
+                           ? `${formatNumber(
+                               +prod.sale_price *
+                                 euro *
+                                 product.selected_quantity
+                             )} ${t("m_unit")}`
+                           : `${
+                               Math.round(
+                                 prod.sale_price *
+                                   product.selected_quantity *
+                                   10
+                               ) / 10
+                             } ${t("m_unit")}`}
+                       </strong>
+                     </span>
+                   </span>
+                 );
+               })}
+             <span
+               className={classes.productInfoTotalWrapper}
+               style={{ borderBottom: "1px solid black" }}
+             >
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                   fontWeight: "bold",
+                 }}
+               >
+                 {" "}
+                 {t("shopping_cart.total")}:
+               </span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                   fontWeight: "bold",
+                   direction: "ltr",
+                 }}
+               >
+                 {+totalWeight.toFixed(3)}&nbsp;Ct
+               </span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                   fontWeight: "bold",
+                 }}
+               >
+                 {totalQuantity}
+                 &nbsp;{t("factor.pcs")}&nbsp;
+               </span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                   width: "5%",
+                 }}
+               ></span>
+               {detailsData && (
+                 <span
+                   className={classes.totalInfo}
+                   style={{
+                     borderRight: lng === "fa" && "1px solid black",
+                     borderLeft: lng !== "fa" && "1px solid black",
+                     width: "12.1%",
+                   }}
+                 >
+                   <strong>
+                     {lng === "fa" ? (
+                       <>
+                         {detailsData.order.total_amount_fa}
+                         <br />
+                         {t("m_unit")}
+                         <br />
+                         (€&nbsp;{detailsData.order.total_amount})
+                       </>
+                     ) : (
+                       <>
+                         {Math.round(detailsData.order.total_amount * 10) / 10}
+                         {t("m_unit")}
+                       </>
+                     )}
+                   </strong>
+                 </span>
+               )}
+             </span>
+             <span
+               className={classes.productInfoTotalWrapper}
+               style={{ borderBottom: "1px solid black" }}
+             >
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                   color: "red",
+                   whiteSpace: "nowrap",
+                   display: "flex",
+                   alignItems: "center",
+                 }}
+               >
+                 {t("factor.club")}
+               </span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+
+                   width: "5%",
+                 }}
+               ></span>
+               {detailsData && (
+                 <span
+                   className={classes.totalInfo}
+                   style={{
+                     borderRight: lng === "fa" && "1px solid black",
+                     borderLeft: lng !== "fa" && "1px solid black",
+                     width: "12.1%",
+                     display: "flex",
+                     alignItems: "center",
+                     justifyContent: "center",
+                   }}
+                 >
+                   {lng === "fa"
+                     ? detailsData.wallet_fa
+                     : detailsData.wallet_en}
+                   &nbsp; {t("m_unit")}
+                 </span>
+               )}
+             </span>
+             <span
+               className={classes.productInfoTotalWrapper}
+               style={{ borderBottom: "1px solid black" }}
+             >
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                   width: "5%",
+                   whiteSpace: "nowrap",
+                   display: "flex",
+                   alignItems: "center",
+                 }}
+               >
+                 {t("factor.shipping")}
+               </span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                 }}
+               ></span>
+               {detailsData && (
+                 <span
+                   className={classes.totalInfo}
+                   style={{
+                     borderRight: lng === "fa" && "1px solid black",
+                     borderLeft: lng !== "fa" && "1px solid black",
+                     display: "flex",
+                     alignItems: "center",
+                     justifyContent: "center",
+                     width: "12.1%",
+                   }}
+                 >
+                   {shippingCost}
+                 </span>
+               )}
+             </span>
+             <span className={classes.productInfoTotalWrapper}>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   border: "none",
+                   whiteSpace: "nowrap",
+                   display: "flex",
+                   alignItems: "center",
+                 }}
+               >
+                 {t("orders.total_payment")}
+               </span>
+               <span
+                 className={classes.totalInfo}
+                 style={{ border: "none", fontWeight: "bold", width: "5%" }}
+               ></span>
+               <span
+                 className={classes.totalInfo}
+                 style={{
+                   borderRight: lng === "fa" && "1px solid black",
+                   borderLeft: lng !== "fa" && "1px solid black",
+                   display: "flex",
+                   alignItems: "center",
+                   justifyContent: "center",
+                   fontWeight: "bold",
+                   width: "12.1%",
+                 }}
+               >
+                 {lng === "fa" ? (
+                   <>
+                     {formatNumber(+detailsData?.order.paying_amount_fa)}
+                     <br />
+                     {t("m_unit")}
+                     <br />
+                     (€&nbsp;
+                     {(
+                       Math.round(+detailsData?.order.paying_amount * 10) / 10
+                     ).toFixed(2)}{" "}
+                     ${t("m_unit")})
+                   </>
+                 ) : (
+                   <>
+                     {(
+                       Math.round(+detailsData?.order.paying_amount * 10) / 10
+                     ).toFixed(2)}
+                     {t("m_unit")}
+                   </>
+                 )}
+               </span>
+             </span>
+           </td>
+         </tr>
+         <tr>
+           <td className={classes.signatureRow}>
+             <span className={classes.signatureColumn}>
+               {t("factor.Buyers_Stamp_and_Signature")}
+             </span>
+             <span className={classes.signatureColumn}>
+               {t("factor.Shops_Stamp_and_Signature")}
+             </span>
+           </td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
  );
 };
 

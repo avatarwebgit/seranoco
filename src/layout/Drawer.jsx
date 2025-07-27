@@ -1,5 +1,6 @@
 import { KeyboardArrowRight, Lock } from "@mui/icons-material";
 import {
+  Checkbox,
   FormControlLabel,
   FormGroup,
   IconButton,
@@ -7,22 +8,23 @@ import {
   styled,
   Switch,
 } from "@mui/material";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReactComponent as Close } from "../assets/svg/close.svg";
+import CartProduct from "../components/card/CartProduct";
+
+import { getShoppingCart, sendCouponStatus } from "../services/api";
 import {
   accesModalActions,
   cartActions,
   drawerActions,
   walletActions,
 } from "../store/store";
-import CartProduct from "../components/card/CartProduct";
-import { getShoppingCart } from "../services/api";
-import { formatNumber } from "../utils/helperFunctions";
-import classes from "./Drawer.module.css";
+import { formatNumber, notify } from "../utils/helperFunctions";
+import styles from "./Drawer.module.css";
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -39,7 +41,7 @@ const IOSSwitch = styled((props) => (
       transform: "translateX(16px)",
       color: "#fff",
       "& + .MuiSwitch-track": {
-        backgroundColor: "#000",
+        backgroundColor: "#4f46e5",
         opacity: 1,
         border: 0,
       },
@@ -59,7 +61,7 @@ const IOSSwitch = styled((props) => (
   },
 }));
 
-const Drawer = ({ children, size }) => {
+const Drawer = () => {
   const dispatch = useDispatch();
   const drawerState = useSelector((state) => state.drawerStore.drawerOpen);
   const cart = useSelector((state) => state.cartStore);
@@ -70,6 +72,9 @@ const Drawer = ({ children, size }) => {
 
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [productData, setProductData] = useState([]);
+  const [showCouponInput, setShowCouponInput] = useState(false);
+  const [coupon, setCoupon] = useState("");
+
   const { t } = useTranslation();
   const isRTL = lng === "fa";
 
@@ -81,7 +86,6 @@ const Drawer = ({ children, size }) => {
     try {
       setIsLoadingData(true);
       const serverRes = await getShoppingCart(token);
-
       if (serverRes.response.ok) {
         dispatch(cartActions.set(serverRes.result.cart));
         dispatch(walletActions.setBalance(serverRes.result.wallet_balance));
@@ -93,14 +97,41 @@ const Drawer = ({ children, size }) => {
     }
   };
 
+  const handleApplyCoupon = async () => {
+    try {
+      setIsLoadingData(true);
+      const { result } = await sendCouponStatus(token, coupon);
+      notify(lng === "fa" ? result.message_fa : result.message_en);
+      dispatch(cartActions.setTotalPrice(result.total));
+    } catch (error) {
+      setIsLoadingData(false);
+      setShowCouponInput(false);
+      setCoupon("");
+      const err_fa = error?.response?.message_fa;
+      const err_en = error?.response?.message_en;
+      notify(lng === "fa" ? err_fa : err_en);
+    } finally {
+      setIsLoadingData(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showCouponInput) {
+      handleApplyCoupon();
+    } else {
+      handleGetShoppingCart();
+    }
+  }, [showCouponInput]);
+
   useEffect(() => {
     if (drawerState && token) {
       handleGetShoppingCart();
+    }
+    if (drawerState) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
-
     return () => {
       document.body.style.overflow = "";
     };
@@ -131,182 +162,205 @@ const Drawer = ({ children, size }) => {
     }
   }, [cart.totalPrice, walletBalance, walletStatus]);
 
-  useEffect(() => {
-    if (drawerState) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "auto";
-    }
-  }, [drawerState]);
-
   return (
-    <motion.div
-      className={classes.main}
-      style={{ justifyContent: isRTL ? "flex-end" : "flex-start" }}
-      initial={{ display: "none" }}
-      animate={{ display: drawerState ? "flex" : "none" }}
-      transition={{ duration: 0.3, delay: drawerState ? 0 : 0.3 }}
+    <div
+      className={`${styles.main} ${!isRTL ? styles.main_rtl : styles.main_ltr}`}
+      aria-hidden={!drawerState}
+      style={{ pointerEvents: drawerState ? "auto" : "none" }}
     >
+      {/* Backdrop */}
       <motion.div
-        className={classes.content}
+        className={styles.backdrop}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: drawerState ? 1 : 0 }}
+        onClick={toggleDrawer}
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* Drawer Content */}
+      <motion.div
+        className={styles.content}
         initial={{ x: isRTL ? "100%" : "-100%" }}
         animate={{ x: drawerState ? 0 : isRTL ? "100%" : "-100%" }}
         transition={{ type: "spring", bounce: false, duration: 0.3 }}
       >
-        <div
-          className={classes.header_wrapper}
-          style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
-        >
-          <span className={classes.header_text}>
-            <h2>{t("shopping_cart.cart")}</h2>
-          </span>
-          <IconButton
-            className={classes.close_btn}
-            onClick={toggleDrawer}
-            disableRipple={true}
-            style={{
-              marginLeft: isRTL ? 0 : "auto",
-              marginRight: isRTL ? "auto" : 0,
-            }}
-          >
-            <Close className={classes.close_icon} />
+        {/* Header */}
+        <header className={styles.header_wrapper}>
+          <h2 className={styles.header_title}>{t("shopping_cart.cart")}</h2>
+          <IconButton onClick={toggleDrawer}>
+            <Close className={styles.close_icon} />
           </IconButton>
-        </div>
+        </header>
 
-        <div className={classes.items_wrapper}>
-          <div className={classes.items_sheet}>
+        {/* Cart Items */}
+        <div className={styles.items_wrapper}>
+          <div className={styles.items_sheet}>
             {productData.map((el) => (
               <CartProduct key={el.id} data={el} />
             ))}
           </div>
         </div>
 
+        {/* Wallet Section */}
         {token && (
-          <>
-            <div className={classes.wallet_wrapper}>
-              {isLoadingData ? (
-                <Skeleton
-                  variant="text"
-                  className={classes.skeleton}
-                  animation="wave"
-                />
-              ) : (
-                <div
-                  className={classes.total}
-                  style={{ direction: isRTL ? "rtl" : "ltr" }}
-                >
-                  <p>{t("shopping_cart.total")}&nbsp;:&nbsp;</p>
-                  <div>
-                    {cart.totalPrice && !isRTL
-                      ? cart?.totalPrice?.toFixed(2)
-                      : formatNumber(Math.round(cart.totalPrice * cart.euro))}
-                    &nbsp;
-                    {t("m_unit")}
-                  </div>
-                </div>
-              )}
-
-              <div className={classes.wallet_btn_wrapper}>
-                <FormGroup
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignContent: "center",
-                    justifyContent: "center",
-                    direction: isRTL ? "rtl" : "ltr",
-                  }}
-                >
-                  <FormControlLabel
-                    disabled={walletBalance <= 0}
-                    control={
-                      <IOSSwitch
-                        checked={walletStatus}
-                        onChange={(e) => {
-                          dispatch(
-                            walletActions.setWalletUse(e.target.checked)
-                          );
-                          dispatch(walletActions.setUserIntraction());
-                        }}
-                      />
-                    }
-                    label={t("use_wallet")}
-                    sx={{
-                      display: "flex",
-                      flexDirection: isRTL ? "row-reverse" : "row",
-                      alignContent: "flex-start",
-                      "& .MuiFormControlLabel-label": {
-                        fontSize: "0.5rem",
-                        color: "#000000",
-                        padding: "0 5px",
-                      },
-                    }}
-                  />
-                </FormGroup>
+          <div className={styles.wallet_wrapper}>
+            {isLoadingData ? (
+              <Skeleton
+                variant="text"
+                width="100%"
+                height={35}
+                animation="wave"
+              />
+            ) : (
+              <div
+                className={styles.info_row}
+                style={{ direction: !isRTL ? "ltr" : "rtl" }}
+              >
+                <p>{t("shopping_cart.total")}:</p>
+                <span>
+                  {cart.totalFeeBeforeDiscounts && !isRTL
+                    ? cart?.totalFeeBeforeDiscounts?.toFixed(2)
+                    : formatNumber(
+                        Math.round(cart.totalFeeBeforeDiscounts * cart.euro)
+                      )}
+                  &nbsp;
+                  {t("m_unit")}
+                </span>
+              </div>
+            )}
+            <div
+              className={styles.info_row}
+              style={{ direction: !isRTL ? "ltr" : "rtl" }}
+            >
+              <div dir={isRTL ? "rtl" : "ltr"} className={styles.row_wrapper}>
                 {isLoadingData && walletBalance > 0 ? (
                   <Skeleton
                     variant="text"
-                    className={classes.skeleton}
+                    width={"100%"}
+                    height={35}
                     animation="wave"
                   />
                 ) : (
-                  <div
-                    style={{
-                      direction: isRTL ? "rtl" : "ltr",
-                      display: "flex",
-                      flexWrap: "wrap",
-                      color: walletStatus ? "#000000" : "#616161",
-                    }}
-                  >
-                    <p style={{ whiteSpace: "nowrap" }}>
-                      {t("wallet")}&nbsp;:&nbsp;
-                    </p>
-                    <span dir="ltr" style={{ margin: "0 10px" }}>
-                      {!isRTL
-                        ? walletBalance
-                        : formatNumber(walletBalance * cart.euro)}
+                  <>
+                    <span
+                      className={!walletStatus ? styles.text_muted : ""}
+                      style={{ display: "flex" }}
+                    >
+                      {t("wallet")}:&nbsp;
+                      <span dir="ltr">
+                        {!isRTL
+                          ? walletBalance
+                          : formatNumber(walletBalance * cart.euro)}
+                      </span>
                       &nbsp;
+                      {t("m_unit")}
                     </span>
-                    {t("m_unit")}
-                  </div>
+                    <FormGroup>
+                      <FormControlLabel
+                        disabled={walletBalance <= 0}
+                        control={
+                          <IOSSwitch
+                            checked={walletStatus}
+                            onChange={(e) => {
+                              dispatch(
+                                walletActions.setWalletUse(e.target.checked)
+                              );
+                              dispatch(walletActions.setUserIntraction());
+                            }}
+                          />
+                        }
+                        label={
+                          <span className={styles.wallet_label}>
+                            {t("use_wallet")}
+                          </span>
+                        }
+                        labelPlacement={isRTL ? "start" : "end"}
+                        sx={{
+                          margin: 0,
+                          "& .MuiFormControlLabel-label": { padding: "0 8px" },
+                        }}
+                      />
+                    </FormGroup>
+                  </>
                 )}
               </div>
             </div>
-          </>
+          </div>
         )}
 
-        <div className={classes.actions_wrapper}>
-          {token ? (
-            <Link to={`/${lng}/precheckout`} target="_blank">
-              <IconButton className={classes.pay_btn} disableRipple={true}>
-                <KeyboardArrowRight fontSize="10" />
-                &nbsp;&nbsp; {t("shopping_cart.pay")}&nbsp;&nbsp;
-              </IconButton>
-            </Link>
-          ) : (
-            <IconButton
-              className={classes.pay_btn}
-              onClick={() => {
-                dispatch(accesModalActions.login());
-              }}
-            >
-              <Lock fontSize="17px !important" />
-              &nbsp;&nbsp; {t("login")}&nbsp;&nbsp;
-            </IconButton>
-          )}
+        {/* Coupon Section */}
+        {token && (
+          <div className={styles.coupon_section}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={showCouponInput}
+                    onChange={(e) => setShowCouponInput(e.target.checked)}
+                    sx={{
+                      color: "#000",
+                      "&.Mui-checked": { color: "#000" },
+                    }}
+                  />
+                }
+                label={
+                  <span className={styles.coupon_label}>
+                    {t("I have a coupon")}
+                  </span>
+                }
+                className={isRTL ? styles.rtl_form_control : ""}
+              />
+            </FormGroup>
 
-          {isLoadingData ? (
-            <Skeleton
-              variant="text"
-              className={classes.skeleton}
-              animation="wave"
-            />
-          ) : (
-            <div
-              className={classes.total}
-              style={{ direction: isRTL ? "rtl" : "ltr" }}
-            >
-              <p>{t("payment")}&nbsp;:&nbsp;</p>
-              <div>
+            <AnimatePresence>
+              {showCouponInput && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                  animate={{ opacity: 1, height: "auto", marginTop: "0.5rem" }}
+                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className={`${styles.coupon_form} ${
+                    isRTL && styles.rtl_form_control
+                  }`}
+                >
+                  <input
+                    type="text"
+                    value={coupon}
+                    onChange={(e) => setCoupon(e.target.value)}
+                    placeholder={t("Enter coupon code")}
+                    className={styles.coupon_input}
+                    dir={isRTL ? "rtl" : "ltr"}
+                    disabled={isLoadingData}
+                  />
+                  <button
+                    onClick={handleApplyCoupon}
+                    className={styles.coupon_button}
+                    disabled={isLoadingData}
+                  >
+                    {t("apply")}
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+
+        {/* Footer Actions */}
+        <footer className={styles.actions_wrapper}>
+          <div
+            className={`${styles.info_row} ${styles.payment_total_row}`}
+            style={{ direction: !isRTL ? "ltr" : "rtl" }}
+          >
+            {isLoadingData ? (
+              <Skeleton
+                variant="text"
+                width={"100%"}
+                height={35}
+                animation="wave"
+              />
+            ) : (
+              <div className={styles.payment_amount}>
+                <h3 className={styles.payment_title}>{t("payment")}:</h3>
                 {walletStatus ? (
                   <>
                     {cart.totalPrice && walletBalance && (
@@ -318,8 +372,6 @@ const Drawer = ({ children, size }) => {
                                 cart.totalPriceAfterDiscount * cart.euro
                               )
                             )}
-                        &nbsp;
-                        {t("m_unit")}
                       </>
                     )}
                   </>
@@ -328,27 +380,38 @@ const Drawer = ({ children, size }) => {
                     {!isRTL
                       ? cart?.totalPrice?.toFixed(2)
                       : formatNumber(Math.round(cart.totalPrice * cart.euro))}
-                    &nbsp;
-                    {t("m_unit")}
                   </>
                 )}
+                &nbsp;{t("m_unit")}
               </div>
-            </div>
+            )}
+          </div>
+          {token ? (
+            <Link
+              to={`/${lng}/precheckout`}
+              target="_blank"
+              className={`${styles.action_button} ${styles.pay_btn}`}
+            >
+              {t("shopping_cart.pay")}
+              <KeyboardArrowRight
+                fontSize="small"
+                className={
+                  isRTL ? styles.pay_btn_arrow_rtl : styles.pay_btn_arrow
+                }
+              />
+            </Link>
+          ) : (
+            <button
+              onClick={() => dispatch(accesModalActions.login())}
+              className={`${styles.action_button} ${styles.login_btn}`}
+            >
+              <Lock fontSize="small" />
+              {t("login")}
+            </button>
           )}
-        </div>
+        </footer>
       </motion.div>
-
-      <motion.div
-        className={classes.backdrop}
-        initial={{ display: "none", opacity: 0 }}
-        animate={{
-          display: drawerState ? "flex" : "none",
-          opacity: drawerState ? 1 : 0,
-        }}
-        onClick={toggleDrawer}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.div>
+    </div>
   );
 };
 
