@@ -81,22 +81,22 @@ const Factor = () => {
    calculateTotalProductWeight(detailsData);
    console.log(detailsData);
    const timeout = setTimeout(() => {
-    //     const element = componentRef.current;
-    //     const opt = {
-    //      margin: 10,
-    //      filename: `factor-${detailsData.order.order_number}.pdf`,
-    //      image: { type: 'jpeg', quality: 0.98 },
-    //      html2canvas: { scale: 2 },
-    //      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    //     };
-    //     html2pdf()
-    //      .from(element)
-    //      .set(opt)
-    //      .save()
-    //      .catch(err => {
-    //       console.error('Error generating PDF:', err);
-    //       notify('Failed to download PDF. Please try again.');
-    //      });
+        const element = componentRef.current;
+        const opt = {
+         margin: 10,
+         filename: `factor-${detailsData.order.order_number}.pdf`,
+         image: { type: 'jpeg', quality: 0.98 },
+         html2canvas: { scale: 2 },
+         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        };
+        html2pdf()
+         .from(element)
+         .set(opt)
+         .save()
+         .catch(err => {
+          console.error('Error generating PDF:', err);
+          notify('Failed to download PDF. Please try again.');
+         });
    }, 300);
 
    return () => clearTimeout(timeout);
