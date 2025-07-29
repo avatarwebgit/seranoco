@@ -69,6 +69,7 @@
   padding: 5px;
   text-align: center;
   vertical-align: middle;
+  white-space: nowrap;
 }
 
 .factorTable thead td,
@@ -213,29 +214,43 @@
     size: A4;
     margin: 15mm 10mm 25mm 10mm;
   }
-  
+
   table {
     width: 100%;
     page-break-inside: auto;
   }
-  
+
   tr {
     page-break-inside: avoid;
     page-break-after: auto;
   }
-  
+
   thead {
     display: table-header-group;
   }
-  
+
   tfoot {
     display: table-footer-group;
     position: fixed;
     bottom: 10mm;
     width: 100%;
   }
-  
+
   .page-break {
     page-break-before: always;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .factorTable {
+    width: unset;
+    min-width: 100%;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .factorTable {
+    width: unset;
+    min-width: 100%;
   }
 }

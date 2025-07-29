@@ -347,106 +347,106 @@ const Factor = () => {
     );
   }, [detailsData]);
 
- const renderPaginatedPDF = () => {
-   const sourceEl = componentRef.current;
-   if (!sourceEl || !detailsData) return;
+  const renderPaginatedPDF = () => {
+    const sourceEl = componentRef.current;
+    if (!sourceEl || !detailsData) return;
 
-   setIsGeneratingPdf(true);
+    setIsGeneratingPdf(true);
 
-   const originalTable = sourceEl.querySelector("table");
-   const container = document.createElement("div");
-   container.style.width = "210mm";
-   container.style.margin = "0 auto";
+    const originalTable = sourceEl.querySelector("table");
+    const container = document.createElement("div");
+    container.style.width = "210mm";
+    container.style.margin = "0 auto";
 
-   const header = originalTable.querySelector("thead").cloneNode(true);
-   const body = originalTable.querySelector("tbody").cloneNode(true);
-   const summary = originalTable
-     .querySelector(`.${classes.summarySection}`)
-     ?.cloneNode(true);
-   const footer = originalTable.querySelector("tfoot").cloneNode(true);
+    const header = originalTable.querySelector("thead").cloneNode(true);
+    const body = originalTable.querySelector("tbody").cloneNode(true);
+    const summary = originalTable
+      .querySelector(`.${classes.summarySection}`)
+      ?.cloneNode(true);
+    const footer = originalTable.querySelector("tfoot").cloneNode(true);
 
-   const ROWS_PER_PAGE = 16;
-   const productRows = Array.from(body.querySelectorAll("tr"));
+    const ROWS_PER_PAGE = 15;
+    const productRows = Array.from(body.querySelectorAll("tr"));
 
-   const productChunks = [];
-   for (let i = 0; i < productRows.length; i += ROWS_PER_PAGE) {
-     productChunks.push(productRows.slice(i, i + ROWS_PER_PAGE));
-   }
+    const productChunks = [];
+    for (let i = 0; i < productRows.length; i += ROWS_PER_PAGE) {
+      productChunks.push(productRows.slice(i, i + ROWS_PER_PAGE));
+    }
 
-   // Create pages
-   productChunks.forEach((chunk, pageIndex) => {
-     const page = document.createElement("div");
-     page.style.padding = "10mm";
-     page.style.position = "relative";
+    // Create pages
+    productChunks.forEach((chunk, pageIndex) => {
+      const page = document.createElement("div");
+      page.style.padding = "10mm";
+      page.style.position = "relative";
 
-     const pageTable = document.createElement("table");
-     pageTable.className = classes.factorTable;
-     pageTable.dir = lng === "fa" ? "rtl" : "ltr";
+      const pageTable = document.createElement("table");
+      pageTable.className = classes.factorTable;
+      pageTable.dir = lng === "fa" ? "rtl" : "ltr";
 
-     // Add header
-     pageTable.appendChild(header.cloneNode(true));
+      // Add header
+      pageTable.appendChild(header.cloneNode(true));
 
-     // Add product rows
-     const pageBody = document.createElement("tbody");
-     chunk.forEach((row) => pageBody.appendChild(row.cloneNode(true)));
-     pageTable.appendChild(pageBody);
+      // Add product rows
+      const pageBody = document.createElement("tbody");
+      chunk.forEach((row) => pageBody.appendChild(row.cloneNode(true)));
+      pageTable.appendChild(pageBody);
 
-     // For the last page, add summary before footer
-     if (pageIndex === productChunks.length - 1) {
-       const summaryBody = document.createElement("tbody");
-       summaryBody.className = classes.summarySection;
-       const summaryRows = Array.from(summary.querySelectorAll("tr"));
-       summaryRows.forEach((row) => {
-         const newRow = row.cloneNode(true);
-         Array.from(newRow.querySelectorAll("[colspan]")).forEach((cell) => {
-           cell.setAttribute("colspan", cell.getAttribute("colspan"));
-         });
-         summaryBody.appendChild(newRow);
-       });
-       pageTable.appendChild(summaryBody);
-     }
+      // For the last page, add summary before footer
+      if (pageIndex === productChunks.length - 1) {
+        const summaryBody = document.createElement("tbody");
+        summaryBody.className = classes.summarySection;
+        const summaryRows = Array.from(summary.querySelectorAll("tr"));
+        summaryRows.forEach((row) => {
+          const newRow = row.cloneNode(true);
+          Array.from(newRow.querySelectorAll("[colspan]")).forEach((cell) => {
+            cell.setAttribute("colspan", cell.getAttribute("colspan"));
+          });
+          summaryBody.appendChild(newRow);
+        });
+        pageTable.appendChild(summaryBody);
+      }
 
-     // Add footer to every page
-     const pageFooter = footer.cloneNode(true);
-     pageTable.appendChild(pageFooter);
+      // Add footer to every page
+      const pageFooter = footer.cloneNode(true);
+      pageTable.appendChild(pageFooter);
 
-     page.appendChild(pageTable);
-     container.appendChild(page);
-   });
+      page.appendChild(pageTable);
+      container.appendChild(page);
+    });
 
-   const options = {
-     margin: 10,
-     filename: `invoice-${detailsData.order.order_number}.pdf`,
-     image: { type: "jpeg", quality: 0.98 },
-     html2canvas: {
-       scale: 2,
-       useCORS: true,
-       letterRendering: true,
-       width: 794,
-       windowWidth: 794,
-     },
-     jsPDF: {
-       unit: "mm",
-       format: "a4",
-       orientation: "portrait",
-     },
-   };
+    const options = {
+      margin: [25, 10, 10, 10],
+      filename: `invoice-${detailsData.order.order_number}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        letterRendering: true,
+        width: 794,
+        windowWidth: 794,
+      },
+      jsPDF: {
+        unit: "mm",
+        format: "a4",
+        orientation: "portrait",
+      },
+    };
 
-   document.body.appendChild(container);
+    document.body.appendChild(container);
 
-   html2pdf()
-     .from(container)
-     .set(options)
-     .save()
-     .catch((err) => {
-       console.error("PDF Error:", err);
-       notify("Failed to generate PDF");
-     })
-     .finally(() => {
-       document.body.removeChild(container);
-       setIsGeneratingPdf(false);
-     });
- };
+    html2pdf()
+      .from(container)
+      .set(options)
+      .save()
+      .catch((err) => {
+        console.error("PDF Error:", err);
+        notify("Failed to generate PDF");
+      })
+      .finally(() => {
+        document.body.removeChild(container);
+        setIsGeneratingPdf(false);
+      });
+  };
 
   if (!detailsData) {
     return (
