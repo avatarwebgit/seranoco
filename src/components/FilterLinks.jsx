@@ -8,6 +8,8 @@ import Link from "./Link";
 
 import filterByShape from "../assets/images/Shop_by_Shape.webp";
 import filterByColor from "../assets/images/Shop_by-color_1.webp";
+import newImage from "../assets/images/new.webp";
+
 import { homePageCategories } from "../services/api";
 
 import classes from "./FilterLinks.module.css";
@@ -60,11 +62,8 @@ const FilterLinks = ({ className }) => {
               href={"shopbyshape"}
             />
             <Link
-              imgUrl={null}
+              imgUrl={newImage}
               title={t("new_product")}
-              className={classes.new}
-              helper_className={classes.helper}
-              hepler_text={t("new")}
               href={"new-products"}
             />
             {linkData.map((elem) => {

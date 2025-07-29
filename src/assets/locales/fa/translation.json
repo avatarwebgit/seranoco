@@ -105,7 +105,7 @@
   "trylater": "عملیات با موفقیت انجام نشد لطفا دئباره تلاش کنید.",
   "payment_method": "نوع پرداخت",
   "availableQuantity": "موجودی ",
-  "select_a_filter": "تر را انتخاب کنیدیک فیل",
+  "select_a_filter": "یک فیلتر را انتخاب کنید",
   "code": "کد",
   "load_more": "بارگذاری بیشتر ...",
 
@@ -337,7 +337,7 @@
   "shop_by_type": "خرید بر اساس نوع",
   "alvailable_colors": "{{count}} رنگ",
   "colors": "رنگ ها",
-  "I have a coupon": "کوپن تخفیف دارم ",
+  "I have a coupon": "کد تخفیف دارم ",
   "Enter coupon code": " کد تخفیف خود را وارد کنید",
   "apply": "اعمال"
 }

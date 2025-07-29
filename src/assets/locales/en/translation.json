@@ -337,7 +337,7 @@
   "alvailable_colors_one": "{{count}} Color",
   "alvailable_colors_other": "{{count}} Colors",
   "colors": "Colors",
-  "I have a coupon": "I have a coupon",
-  "Enter coupon code": "Enter coupon code",
+  "I have a coupon": "I have a Promotional code ",
+  "Enter coupon code": "Enter code",
   "apply": "Apply"
 }
