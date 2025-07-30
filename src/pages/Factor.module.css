@@ -1,3 +1,7 @@
+header, footer,.fixedNavigation{
+  display: none;
+}
+
 .invoiceContainer {
   width: 100%;
   padding: 20px;

@@ -1,6 +1,6 @@
 @import url(../styles/variables.css);
 
-.main {
+.fixedNavigation {
  width: 100%;
  position: fixed;
  bottom: 0;

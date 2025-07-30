@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
-import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
-import classes from './CustomButton.module.css';
+import classes from "./CustomButton.module.css";
 export const CustomButton = ({ children, onClick, isActive, className }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [active, setActive] = useState(false);
 
-  const lng = useSelector(state => state.localeStore.lng);
+  const lng = useSelector((state) => state.localeStore.lng);
 
   useEffect(() => {
     if (isActive) {
@@ -20,7 +20,7 @@ export const CustomButton = ({ children, onClick, isActive, className }) => {
   }, [isActive]);
 
   return (
-    <button
+    <div
       className={`${classes.main} ${isActive && classes.active} ${className}`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -28,16 +28,16 @@ export const CustomButton = ({ children, onClick, isActive, className }) => {
     >
       <motion.i
         className={classes.icon}
-        initial={{ x: lng === 'fa' ? 15 : -15 }}
-        animate={{ x: isHovering || isActive ? 0 : lng === 'fa' ? 15 : -15 }}
+        initial={{ x: lng === "fa" ? 15 : -15 }}
+        animate={{ x: isHovering || isActive ? 0 : lng === "fa" ? 15 : -15 }}
       >
-        {lng === 'fa' ? (
-          <ArrowBackIos sx={{ width: '10px', height: '10px' }} />
+        {lng === "fa" ? (
+          <ArrowBackIos sx={{ width: "10px", height: "10px" }} />
         ) : (
-          <ArrowForwardIos sx={{ width: '10px', height: '10px' }} />
+          <ArrowForwardIos sx={{ width: "10px", height: "10px" }} />
         )}
       </motion.i>
       {children}
-    </button>
+    </div>
   );
 };

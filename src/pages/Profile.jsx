@@ -132,68 +132,82 @@ const Profile = ({ windowSize }) => {
  };
 
  return (
-  <div className={classes.main}>
-   <Header windowSize={windowSize} />
+   <div className={classes.main}>
+     <Header windowSize={windowSize} />
 
-   <Body className={`${lng === 'fa' ? classes.fa : classes.en}`}>
-    {windowSize !== 'xs' && windowSize !== 's' ? (
-     <Card className={classes.main_card}>
-      <Breadcrumbs
-       linkDataProp={[
-        { pathname: t('home'), url: ' ' },
-        { pathname: t('my_acc'), url: 'myaccount' },
-       ]}
-      />
-      <section className={classes.container}>
-       <div className={classes.accordion_wrapper}>
-        {accordionsData.map(accordion => (
-         <Accordion
-          key={accordion.id}
-          expanded={expandedAccordion === accordion.id}
-          onChange={handleAccordionChange(accordion.id)}>
-          <AccordionSummary
-           expandIcon={<Add fontSize='10px' />}
-           aria-controls={`${accordion.id}-content`}
-           id={`${accordion.id}-header`}>
-           <Typography
-            component='span'
-            style={{ fontSize: '.7rem', fontWeight: 'bold' }}
-            variant='h1'>
-            {accordion.title}
-           </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-           {accordion.buttons.map(button => (
-            <CustomButton
-             key={button.id}
-             onClick={() => handleButtonClick(button.id, button.content)}
-             isActive={button.id === selectedButtonId}>
-             {button.title}
-            </CustomButton>
-           ))}
-          </AccordionDetails>
-         </Accordion>
-        ))}
-        <CustomButton
-         onClick={() => handleButtonClick(dispatch(userActions.reset()))}
-         className={classes.logout_btn}>
-         {t('logout')}
-        </CustomButton>
-       </div>
+     <Body className={`${lng === "fa" ? classes.fa : classes.en}`}>
+       {windowSize !== "xs" && windowSize !== "s" ? (
+         <Card className={classes.main_card}>
+           <Breadcrumbs
+             linkDataProp={[
+               { pathname: t("home"), url: " " },
+               { pathname: t("my_acc"), url: "myaccount" },
+             ]}
+           />
+           <section className={classes.container}>
+             <div className={classes.accordion_wrapper}>
+               {accordionsData.map((accordion) => (
+                 <Accordion
+                   key={accordion.id}
+                   expanded={expandedAccordion === accordion.id}
+                   onChange={handleAccordionChange(accordion.id)}
+                 >
+                   <AccordionSummary
+                     expandIcon={<Add fontSize="10px" />}
+                     aria-controls={`${accordion.id}-content`}
+                     id={`${accordion.id}-header`}
+                   >
+                     <Typography
+                       component="span"
+                       style={{ fontSize: ".7rem", fontWeight: "bold" }}
+                       variant="h1"
+                     >
+                       {accordion.title}
+                     </Typography>
+                   </AccordionSummary>
+                   <AccordionDetails
+                     sx={{
+                       padding: "0",
+                   
+                     }}
+                   >
+                     {accordion.buttons.map((button) => (
+                       <CustomButton
+                         key={button.id}
+                         onClick={() =>
+                           handleButtonClick(button.id, button.content)
+                         }
+                         isActive={button.id === selectedButtonId}
+                       >
+                         {button.title}
+                       </CustomButton>
+                     ))}
+                   </AccordionDetails>
+                 </Accordion>
+               ))}
+               <CustomButton
+                 onClick={() =>
+                   handleButtonClick(dispatch(userActions.reset()))
+                 }
+                 className={classes.logout_btn}
+               >
+                 {t("logout")}
+               </CustomButton>
+             </div>
 
-       <div className={classes.info_wrapper}>
-        {selectedButtonId && (
-         <div className={classes.info_container}>{selectedContent}</div>
-        )}
-       </div>
-      </section>
-     </Card>
-    ) : (
-     <MobileProfile />
-    )}
-   </Body>
-   <Footer />
-  </div>
+             <div className={classes.info_wrapper}>
+               {selectedButtonId && (
+                 <div className={classes.info_container}>{selectedContent}</div>
+               )}
+             </div>
+           </section>
+         </Card>
+       ) : (
+         <MobileProfile />
+       )}
+     </Body>
+     <Footer />
+   </div>
  );
 };
 

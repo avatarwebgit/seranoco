@@ -130,18 +130,11 @@ function App() {
     };
   }, [lng]);
 
-  const location = useLocation();
-  const currentPath = location.pathname;
-console.log(currentPath)
   window.addEventListener("storage", (event) => {
     if (event.key === "persist:root") {
       window.location.reload();
     }
   });
-
-  const hideHeadersOnDesktop = ["/factor"];
-
-  const shouldHideLayout = !currentPath.includes(hideHeadersOnDesktop);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -239,8 +232,8 @@ console.log(currentPath)
         <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
       </Routes>
 
-      {windowSize === "xs" && shouldHideLayout && <FixedNavigation />}
-      {windowSize === "s" && shouldHideLayout && <FixedNavigation />}
+      {windowSize === "xs" &&  <FixedNavigation />}
+      {windowSize === "s" &&  <FixedNavigation />}
       <Drawer size={windowSize} />
       <FavoritesDrawer size={windowSize} />
       <ToastContainer
