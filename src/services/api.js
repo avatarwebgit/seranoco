@@ -266,7 +266,6 @@ export const getProductsByShape = async (
   per_page,
   options = {}
 ) => {
-  console.log(shape_id, color_ids, page, per_page, (options = {}));
   const response = await fetch(
     `${baseUrl}/get/ProductsByColor?page=${page}&per_page=${per_page}`,
     {

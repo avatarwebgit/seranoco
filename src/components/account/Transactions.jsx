@@ -25,7 +25,6 @@ const Transactions = () => {
   try {
    setisLoading(true);
    const serverRes = await transactions(token);
-   console.log(serverRes);
    if (serverRes.response.ok) {
     setTransactionsHistory(serverRes.result.wallet_history.data);
     setWallet(serverRes.result.wallet);

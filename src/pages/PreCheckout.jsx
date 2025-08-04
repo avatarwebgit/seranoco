@@ -14,7 +14,11 @@ import Card from "../components/filters_page/Card";
 import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 
-import { getOrderStatusDetail, getPayments } from "../services/api";
+import {
+  getOrderStatusDetail,
+  getPayments,
+  sendCouponStatus,
+} from "../services/api";
 
 import {
   Button,
@@ -76,6 +80,8 @@ const PreCheckout = ({ windowSize }) => {
   const walletBalance = useSelector((state) => state.walletStore.balance);
   const cart = useSelector((state) => state.cartStore);
   const walletStatus = useSelector((state) => state.walletStore.useWallet);
+  const couponStatus = useSelector((state) => state.walletStore.useCoupon);
+  const couponValue = useSelector((state) => state.walletStore.couponCode);
 
   const dispatch = useDispatch();
 
@@ -116,6 +122,26 @@ const PreCheckout = ({ windowSize }) => {
       setStep(step < 2 ? step + 1 : 2);
     }
   };
+
+  const handleApplyCoupon = async () => {
+    try {
+      const { result } = await sendCouponStatus(token, couponValue);
+      notify(lng === "fa" ? result.message_fa : result.message_en);
+      dispatch(cartActions.setTotalPrice(result.total));
+    } catch (error) {
+      dispatch(walletActions.setCouponState(false));
+      const err_fa = error?.response?.message_fa;
+      const err_en = error?.response?.message_en;
+      notify(lng === "fa" ? err_fa : err_en);
+    }
+  };
+
+  useEffect(() => {
+    console.log(couponStatus)
+    if (couponStatus) {
+      handleApplyCoupon();
+    }
+  }, [couponStatus]);
 
   return (
     <div className={classes.main}>

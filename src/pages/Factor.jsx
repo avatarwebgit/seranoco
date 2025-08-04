@@ -23,7 +23,7 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
     <thead className={classes.invoiceHeaderContainer}>
       {detailsData && (
         <tr>
-          <td colSpan="12">
+          <td colSpan="10">
             <div className={classes.head}>
               <span className={classes.dateWrapper}>
                 <span>{t("factor.Serial_Number")}</span>
@@ -44,7 +44,7 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
         </tr>
       )}
       <tr>
-        <td colSpan="12" className={classes.sectionTitle}>
+        <td colSpan="11" className={classes.sectionTitle}>
           {t("factor.Buyer_Information")}
         </td>
       </tr>
@@ -53,23 +53,23 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
           {t("factor.Name_Individual_Legal_Entity")}
           {detailsData.user.first_name} {detailsData.user.last_name}
         </td>
-        <td colSpan="4">
+        <td colSpan="3">
           {t("factor.Postal_Code")}
           {detailsData.address.postal_code}
         </td>
-        <td colSpan="4">
+        <td colSpan="3">
           {t("factor.Phone_Number")}
           {detailsData.address.tel}
         </td>
       </tr>
       <tr className={classes.header_information}>
-        <td colSpan="12">
+        <td colSpan="11">
           {t("factor.Address")}
           {detailsData.address.address}
         </td>
       </tr>
       <tr>
-        <td colSpan="12" className={classes.sectionTitle}>
+        <td colSpan="11" className={classes.sectionTitle}>
           {t("factor.Seller_Information")}
         </td>
       </tr>
@@ -78,24 +78,24 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
           {t("factor.Name_Individual_Legal_Entity")}
           {lng === "fa" ? storeData.name : storeData.name_en}
         </td>
-        <td colSpan={4}>
+        <td colSpan={3}>
           {t("factor.Postal_Code")}
           {storeData.postalCode}
         </td>
-        <td colSpan={4}>
+        <td colSpan={3}>
           {t("factor.Phone_Number")}
           {storeData.tel}
         </td>
       </tr>
       <tr className={classes.header_information}>
-        <td colSpan={12} className={classes.address}>
+        <td colSpan={11} className={classes.address}>
           {t("factor.Address")}
           {lng === "fa" ? storeData.address : storeData.address_en}
         </td>
       </tr>
 
       <tr>
-        <td colSpan="12" className={classes.sectionTitle}>
+        <td colSpan="11" className={classes.sectionTitle}>
           {t("factor.Details_of_Goods_or_Services_Transacted")}
         </td>
       </tr>
@@ -109,7 +109,7 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
         <th>{t("factor.Total_Weight")}</th>
         <th>{t("factor.Quantity_Amount")}</th>
         <th>{t("factor.Unit_Price")}</th>
-        <th>{t("availability")}</th>
+        {/* <th>{t("availability")}</th> */}
         <th>{t("factor.off")}</th>
         <th>{t("factor.Total_Amount")}</th>
       </tr>
@@ -122,7 +122,7 @@ const ProductItem = React.memo(({ product, index, lng, t, euro }) => {
   const weight = prod.variation.weight.split(" ").at(0);
   return (
     <tr className={classes.productRow}>
-      <td>{index + 1}</td>
+      <td >{index + 1}</td>
       <td>{lng === "fa" ? prod.shape_fa : prod.shape}</td>
       <td>{lng === "fa" ? prod.cut_fa : prod.cut}</td>
       <td>{prod.size}</td>
@@ -135,11 +135,11 @@ const ProductItem = React.memo(({ product, index, lng, t, euro }) => {
           ? `${formatNumber(+prod.sale_price * euro)}`
           : `${prod.sale_price}`}
       </td>
-      <td>
+      {/* <td>
         {!prod.variation.is_not_available
           ? t("available")
           : t("newpage.newpage")}
-      </td>
+      </td> */}
       <td style={{ color: "red" }}>---</td>
       <td>
         <strong>
@@ -180,7 +180,7 @@ const FactorSummory = React.memo(
     return (
       <tbody className={`${classes.summarySection} summarySection`}>
         <tr className={classes.summaryRow}>
-          <td colSpan="5"></td>
+          <td colSpan="4"></td>
           <td colSpan="1" className={classes.summaryLabel}>
             {t("shopping_cart.total")}:
           </td>
@@ -209,7 +209,7 @@ const FactorSummory = React.memo(
           </td>
         </tr>
         <tr className={classes.summaryRow}>
-          <td colSpan="5"></td>
+          <td colSpan="4"></td>
 
           <td colSpan="1" className={classes.summaryLabel}>
             {t("factor.club")}
@@ -221,7 +221,7 @@ const FactorSummory = React.memo(
           </td>
         </tr>
         <tr className={classes.summaryRow}>
-          <td colSpan="5"></td>
+          <td colSpan="4"></td>
 
           <td colSpan="1" className={classes.summaryLabel}>
             {t("factor.shipping")}
@@ -230,7 +230,7 @@ const FactorSummory = React.memo(
           <td className={classes.summaryValue}>{shippingCost}</td>
         </tr>
         <tr className={classes.summaryRow}>
-          <td colSpan="5"></td>
+          <td colSpan="4"></td>
 
           <td
             colSpan="1"
@@ -277,7 +277,7 @@ const FactorFooter = React.memo(({ t }) => {
         <td colSpan="6" className={classes.signatureColumn}>
           {t("factor.Buyers_Stamp_and_Signature")}
         </td>
-        <td colSpan="6" className={classes.signatureColumn}>
+        <td colSpan="5" className={classes.signatureColumn}>
           {t("factor.Shops_Stamp_and_Signature")}
         </td>
       </tr>
@@ -365,7 +365,7 @@ const Factor = () => {
       ?.cloneNode(true);
     const footer = originalTable.querySelector("tfoot").cloneNode(true);
 
-    const ROWS_PER_PAGE = 15;
+    const ROWS_PER_PAGE = 18;
     const productRows = Array.from(body.querySelectorAll("tr"));
 
     const productChunks = [];
@@ -415,7 +415,7 @@ const Factor = () => {
     });
 
     const options = {
-      margin: [25, 10, 10, 10],
+      margin: 5,
       filename: `invoice-${detailsData.order.order_number}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -429,6 +429,7 @@ const Factor = () => {
         unit: "mm",
         format: "a4",
         orientation: "portrait",
+        hotfixes: ["px_scaling"],
       },
     };
 

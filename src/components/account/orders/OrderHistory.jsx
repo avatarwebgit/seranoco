@@ -46,7 +46,6 @@ const OrderHistory = ({ dataProp, number, deleteOrder }) => {
   useEffect(() => {
     if (dataProp) {
       setData(dataProp);
-      console.log(dataProp);
     }
   }, [dataProp]);
 

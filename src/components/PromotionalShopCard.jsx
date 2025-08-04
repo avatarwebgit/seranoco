@@ -18,7 +18,6 @@ const PromotionalShopCard = () => {
     if (data) {
       setProData(data.data.at(0));
     }
-    console.log(data);
   }, [data]);
 
   const { t } = useTranslation();

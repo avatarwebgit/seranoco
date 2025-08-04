@@ -33,7 +33,6 @@ const ShoppingCart = () => {
     }
    } catch (error) {
     if (error.name === 'AbortError') {
-     console.log('Shopping cart request was aborted');
     } else {
      console.error('Failed to fetch cart:', error);
     }

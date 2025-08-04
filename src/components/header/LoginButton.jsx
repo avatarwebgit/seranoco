@@ -60,7 +60,7 @@ const LoginButton = () => {
           onClose={handleMenuClose}
           onMouseLeave={handleMenuClose}
         >
-          <MenuItem sx={{ padding: "3px 10px" }} onClick={handleMenuClose}>
+          <MenuItem sx={{ padding: 0, margin: 0 }} onClick={handleMenuClose}>
             <Link
               to={`/${lng}/myaccount`}
               state={{ activeAccordion: 0, activeButton: 0 }}
@@ -70,6 +70,7 @@ const LoginButton = () => {
                 color: "#000",
                 textDecoration: "none",
                 fontSize: ".6rem",
+                padding: "3px 10px",
               }}
             >
               <AccountCircle sx={{ fontSize: "20px", marginRight: "8px" }} />
@@ -77,7 +78,7 @@ const LoginButton = () => {
             </Link>
           </MenuItem>
 
-          <MenuItem sx={{ padding: "3px 10px" }} onClick={handleMenuClose}>
+          <MenuItem sx={{ padding: 0, margin: 0 }} onClick={handleMenuClose}>
             <Link
               to={`/${lng}/myaccount`}
               state={{ activeAccordion: 1, activeButton: 0 }}
@@ -87,6 +88,7 @@ const LoginButton = () => {
                 color: "#000",
                 textDecoration: "none",
                 fontSize: ".6rem",
+                padding: "3px 10px",
               }}
             >
               <Grading sx={{ fontSize: "20px", marginRight: "8px" }} />

@@ -68,7 +68,7 @@ const PaymentMethod = ({ dataProps }) => {
       notify(t("order_err"));
     }
   };
-  console.log(data);
+
   return (
     <div className={classes.wrapper}>
       {data &&

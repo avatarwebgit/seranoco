@@ -155,10 +155,6 @@ const PayByCart = ({ widnowSize }) => {
  }, []);
 
  useEffect(() => {
-  console.log(billNo);
- }, [billNo]);
-
- useEffect(() => {
   const handleClickOutside = event => {
    if (
     calendarRef.current &&

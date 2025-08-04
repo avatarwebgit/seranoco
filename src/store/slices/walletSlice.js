@@ -4,8 +4,8 @@ const initialState = {
   balance: 0,
   useWallet: true,
   userIntraction: false,
-  coupon: 0,
-  useCoupon: false,
+  couponCode: JSON.parse(localStorage.getItem("seranoco-coupon-value")) || 0,
+  useCoupon: JSON.parse(localStorage.getItem("seranoco-coupon-usage")) || false,
 };
 
 const walletSlice = createSlice({
@@ -33,7 +33,10 @@ const walletSlice = createSlice({
       state.coupon = action.payload;
     },
     setCouponState(state, action) {
-      state.useCoupon = action.payload;
+      state.useCoupon = action.payload.useCoupon;
+      localStorage.setItem("seranoco-coupon-usage", action.payload.useCoupon);
+      state.couponCode = action.payload.value;
+      localStorage.setItem("seranoco-coupon-value", action.payload.value);
     },
   },
 });

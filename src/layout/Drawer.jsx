@@ -102,10 +102,14 @@ const Drawer = () => {
       setIsLoadingData(true);
       const { result } = await sendCouponStatus(token, coupon);
       notify(lng === "fa" ? result.message_fa : result.message_en);
+      dispatch(
+        walletActions.setCouponState({ useCoupon: true, value: coupon })
+      );
       dispatch(cartActions.setTotalPrice(result.total));
     } catch (error) {
       setIsLoadingData(false);
       setShowCouponInput(false);
+      dispatch(walletActions.setCouponState(false));
       setCoupon("");
       const err_fa = error?.response?.message_fa;
       const err_en = error?.response?.message_en;
@@ -114,14 +118,6 @@ const Drawer = () => {
       setIsLoadingData(false);
     }
   };
-
-  useEffect(() => {
-    if (showCouponInput) {
-      handleApplyCoupon();
-    } else {
-      handleGetShoppingCart();
-    }
-  }, [showCouponInput]);
 
   useEffect(() => {
     if (drawerState && token) {
@@ -296,7 +292,9 @@ const Drawer = () => {
                 control={
                   <Checkbox
                     checked={showCouponInput}
-                    onChange={(e) => setShowCouponInput(e.target.checked)}
+                    onChange={(e) => {
+                      setShowCouponInput(e.target.checked);
+                    }}
                     sx={{
                       color: "#000",
                       "&.Mui-checked": { color: "#000" },

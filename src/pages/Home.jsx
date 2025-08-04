@@ -17,7 +17,7 @@ import classes from "./Home.module.css";
 const Home = ({ windowSize }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.userStore.token);
-  const { data, error, isLoading, refetch } = useUser(token);
+  const { data } = useUser(token);
 
   useEffect(() => {
     if (data) {

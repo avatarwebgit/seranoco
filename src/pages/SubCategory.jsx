@@ -25,7 +25,6 @@ const SubCategory = ({ windowSize }) => {
     try {
       const response = await getSubCategories(id);
       setSubCategories(response.result.data);
-      console.log(response);
     } catch (err) {
       console.log(err);
     }

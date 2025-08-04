@@ -73,7 +73,7 @@ header, footer,.fixedNavigation{
   padding: 5px;
   text-align: center;
   vertical-align: middle;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .factorTable thead td,

@@ -87,7 +87,6 @@ const CartProduct = (data) => {
       }
     } else {
       // Guest user - remove from temporary cart
-      console.log(variation);
       dispatch(
         cartActions.removeFromTemporaryCart({
           variation_id: variation.product.variation_id,

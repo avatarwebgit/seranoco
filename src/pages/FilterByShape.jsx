@@ -86,6 +86,7 @@ const FilterByShape = ({ windowSize }) => {
   const [isTableDataLoading, setIsTableDataLoading] = useState(false);
   const [chunkSize, setChunkSize] = useState(9);
   const [allSizesData, setAllSizesData] = useState([]);
+  const [isLoadingSizes, setIsLoadingSizes] = useState(true);
 
   const formRef = useRef();
   const sizeRef = useRef();
@@ -142,10 +143,10 @@ const FilterByShape = ({ windowSize }) => {
     const firstMatchingSlideIndex = colorData.findIndex(
       (slide) => slide.group_id === groupId
     );
-    if (sliderRef.current) {
+    if (sliderRef.current && firstMatchingSlideIndex) {
       sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
     }
-    if (gridSliderRef.current) {
+    if (gridSliderRef.current && firstMatchingSlideIndex) {
       if (!isSmallPage) {
         gridSliderRef.current.swiper.slideTo(
           Math.round(firstMatchingSlideIndex / 8)
@@ -236,7 +237,9 @@ const FilterByShape = ({ windowSize }) => {
     setSelectedIds([]);
     setChunkedData([]);
     setTableData([]);
+    setIsTableDataLoading(true);
     setIsLoading(true);
+    setIsLoadingSizes(true);
     try {
       //   const allProductsRes = await getPaginatedProductsByShape(
       //     id,
@@ -316,10 +319,18 @@ const FilterByShape = ({ windowSize }) => {
 
   const getInitialSizes = async (id, options) => {
     const serverRes = await getAllAtrributes(id, options);
-    if (serverRes.response.ok) {
-      setColorData(serverRes?.result.data.colors);
-      setGroupColors(serverRes?.result.data.group_colors);
-      setSizeData(serverRes?.result.data.sizes);
+    try {
+      setIsLoadingSizes(true);
+      setIsTableDataLoading(true);
+      if (serverRes.response.ok) {
+        setColorData(serverRes?.result.data.colors);
+        setGroupColors(serverRes?.result.data.group_colors);
+        setSizeData(serverRes?.result.data.sizes);
+      }
+    } catch (error) {
+    } finally {
+      setIsLoadingSizes(false);
+      setIsTableDataLoading(false);
     }
   };
 
@@ -467,7 +478,6 @@ const FilterByShape = ({ windowSize }) => {
         return priorityA - priorityB;
       });
 
-      console.log("Sorted Data:", sortedData);
       setTableData(sortedData);
     }
   }, [colorData, rawTableData]);
@@ -650,92 +660,105 @@ const FilterByShape = ({ windowSize }) => {
             </Card>
           }
           {sizeData?.length > 0 && sizeData && <Divider text={"Size mm"} />}
-          {isLoading && <LoadingSpinner />}
-          {shapeFormEntries && (
-            <Card className={classes.size_wrapper}>
-              <form ref={sizeRef} className={classes.grid_form}>
-                {sizeData?.length > 0 &&
-                  sizeData.map((elem, i) => {
-                    return (
-                      <SizeBox
-                        value={`${elem.description}`}
-                        key={elem.id}
-                        id={elem.id}
-                        onClick={(e) => {
-                          handleSendDimensionsStatus(e, elem);
-                        }}
-                      />
-                    );
-                  })}
-              </form>
-              {shapeFormEntries !== "" && (
-                <button
-                  className={classes.reset_btn}
-                  onClick={handleResetSelections}
-                >
-                  {t("reset_selections")}
-                </button>
+          {isLoadingSizes ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              {shapeFormEntries && (
+                <Card className={classes.size_wrapper}>
+                  <form ref={sizeRef} className={classes.grid_form}>
+                    {sizeData?.length > 0 &&
+                      sizeData.map((elem, i) => {
+                        return (
+                          <SizeBox
+                            value={`${elem.description}`}
+                            key={elem.id}
+                            id={elem.id}
+                            onClick={(e) => {
+                              handleSendDimensionsStatus(e, elem);
+                            }}
+                          />
+                        );
+                      })}
+                  </form>
+                  {shapeFormEntries !== "" && (
+                    <button
+                      className={classes.reset_btn}
+                      onClick={handleResetSelections}
+                    >
+                      {t("reset_selections")}
+                    </button>
+                  )}
+                </Card>
               )}
-            </Card>
+            </>
           )}
+
           <Card className={`${classes.table_wrapper}`}>
-            {isTableDataLoading && <LoadingSpinner />}
-            {chunkedData?.length > 1 && (
+            {isTableDataLoading ? (
+              <LoadingSpinner />
+            ) : (
               <>
-                <button
-                  className={classes.prev_btn}
-                  onClick={handlePrevGridSlider}
-                >
-                  <ArrowBackIos />
-                </button>
-                <button
-                  className={classes.next_btn}
-                  onClick={handleNextGridSlider}
-                >
-                  <ArrowForwardIos />
-                </button>
+                {chunkedData?.length > 1 && (
+                  <>
+                    <button
+                      className={classes.prev_btn}
+                      onClick={handlePrevGridSlider}
+                    >
+                      <ArrowBackIos />
+                    </button>
+                    <button
+                      className={classes.next_btn}
+                      onClick={handleNextGridSlider}
+                    >
+                      <ArrowForwardIos />
+                    </button>
+                  </>
+                )}
+
+                {tableData.length > 0 && (
+                  <Swiper
+                    spaceBetween={isSmallPage ? 5 : 9}
+                    slidesPerView={1}
+                    modules={[Navigation, Thumbs, Pagination]}
+                    thumbs={{
+                      swiper:
+                        thumbsSwiper && !thumbsSwiper.destroyed
+                          ? thumbsSwiper
+                          : null,
+                    }}
+                    ref={gridSliderRef}
+                    pagination={{
+                      clickable: true,
+                      dynamicBullets: true,
+                      enabled: isSmallPage,
+                    }}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {memoizedChunkedData.map((el, i) => {
+                      return (
+                        <SwiperSlide key={i}>
+                          <TableGrid
+                            dataProp={el}
+                            sizeProp={sizeData}
+                            selectedSizeProp={selectedSizesObject}
+                            isLoadingData={isLoadingSelectedItem}
+                            isSmall={isSmallPage}
+                          />
+                        </SwiperSlide>
+                      );
+                    })}
+                  </Swiper>
+                )}
               </>
             )}
-            {tableData.length > 0 && (
-              <Swiper
-                spaceBetween={isSmallPage ? 5 : 9}
-                slidesPerView={1}
-                modules={[Navigation, Thumbs, Pagination]}
-                thumbs={{
-                  swiper:
-                    thumbsSwiper && !thumbsSwiper.destroyed
-                      ? thumbsSwiper
-                      : null,
-                }}
-                ref={gridSliderRef}
-                pagination={{
-                  clickable: true,
-                  dynamicBullets: true,
-                  enabled: isSmallPage,
-                }}
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {memoizedChunkedData.map((el, i) => {
-                  return (
-                    <SwiperSlide key={i}>
-                      <TableGrid
-                        dataProp={el}
-                        sizeProp={sizeData}
-                        selectedSizeProp={selectedSizesObject}
-                        isLoadingData={isLoadingSelectedItem}
-                        isSmall={isSmallPage}
-                      />
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            )}
           </Card>
+
           {shapeFormEntries && productDetails && (
             <Card
               className={classes.products_result_wrapper}

@@ -147,7 +147,6 @@ const Footer = () => {
               <div className={classes.divider}></div>
               <div className={classes.social_media_links}>
                 <Tooltip title={"Instagram"} arrow placement="top">
-                  {console.log(footerData)}
                   <a
                     href={`https://www.instagram.com/${footerData.instagram}/`}
                     target="_blank"

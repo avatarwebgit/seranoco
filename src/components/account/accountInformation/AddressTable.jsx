@@ -134,7 +134,6 @@ const AddressTable = ({ formData, refetch }) => {
     notify(t('profile.suc_add_add'));
     resetInput();
    } catch (error) {
-    // console.error('Registration failed:', error);
     notify(t('profile.err_add_add'));
    }
   }
