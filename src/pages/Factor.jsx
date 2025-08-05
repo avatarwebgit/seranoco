@@ -385,8 +385,11 @@ const Factor = () => {
     // Create pages
     productChunks.forEach((chunk, pageIndex) => {
       const page = document.createElement("div");
-      page.style.padding = "10mm";
-      page.style.position = "relative";
+      page.className = "page"; 
+      page.style.width = "210mm"; 
+      page.style.minHeight = "297mm";
+      page.style.padding = "5mm";
+      page.style.boxSizing = "border-box";
 
       const pageTable = document.createElement("table");
       pageTable.className = classes.factorTable;
