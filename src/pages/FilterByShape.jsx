@@ -319,9 +319,9 @@ const FilterByShape = ({ windowSize }) => {
 
   const getInitialSizes = async (id, options) => {
     const serverRes = await getAllAtrributes(id, options);
+    setIsTableDataLoading(true);
+    setIsLoadingSizes(true);
     try {
-      setIsLoadingSizes(true);
-      setIsTableDataLoading(true);
       if (serverRes.response.ok) {
         setColorData(serverRes?.result.data.colors);
         setGroupColors(serverRes?.result.data.group_colors);
@@ -330,7 +330,6 @@ const FilterByShape = ({ windowSize }) => {
     } catch (error) {
     } finally {
       setIsLoadingSizes(false);
-      setIsTableDataLoading(false);
     }
   };
 
@@ -693,7 +692,7 @@ const FilterByShape = ({ windowSize }) => {
               )}
             </>
           )}
-
+          {console.log(isTableDataLoading)}
           <Card className={`${classes.table_wrapper}`}>
             {isTableDataLoading ? (
               <LoadingSpinner />
@@ -748,6 +747,7 @@ const FilterByShape = ({ windowSize }) => {
                             sizeProp={sizeData}
                             selectedSizeProp={selectedSizesObject}
                             isLoadingData={isLoadingSelectedItem}
+                            isLoadingTableData={isTableDataLoading}
                             isSmall={isSmallPage}
                           />
                         </SwiperSlide>
