@@ -48,7 +48,6 @@ const BannerCarousel = () => {
           loading='lazy'
           style={{
            width: '100vw',
-           height: '25px',
            objectFit: 'cover',
           }}
          />

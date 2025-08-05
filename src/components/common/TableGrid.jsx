@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { nanoid } from "@reduxjs/toolkit";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,7 +28,6 @@ const TableGrid = ({
   useEffect(() => {
     setIsLoading(isLoadingData);
     if (dataProp) {
-      console.log(dataProp)
       setData(dataProp);
       if (selectedSizeProp.length > 0) {
         setSizeData(
@@ -113,7 +111,7 @@ const TableGrid = ({
           <tbody className={classes.tbody}>
             {isLoading && (
               <tr className={classes.backdrop}>
-                <LoadingSpinner size={"50px"} />
+                <LoadingSpinner size={"40px"} />
               </tr>
             )}
             {sizeData &&

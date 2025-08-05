@@ -99,6 +99,14 @@ const LoginButton = () => {
           <MenuItem
             sx={{ fontSize: ".6rem", padding: "3px 10px" }}
             onClick={handleLogout}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              color: "#000",
+              textDecoration: "none",
+              fontSize: ".6rem",
+              padding: "3px 10px",
+            }}
           >
             <Logout sx={{ fontSize: "20px", marginRight: "8px" }} />
             {t("profile.log_out")}

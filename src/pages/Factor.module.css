@@ -1,4 +1,6 @@
-header, footer,.fixedNavigation{
+header,
+footer,
+.fixedNavigation {
   display: none;
 }
 
@@ -10,7 +12,7 @@ header, footer,.fixedNavigation{
 
 .controlsContainer {
   width: 100%;
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto 20px auto;
   display: flex;
   justify-content: flex-end;
@@ -46,10 +48,10 @@ header, footer,.fixedNavigation{
 
 .factorTable {
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   border-collapse: collapse;
-  table-layout: fixed;
+  /* table-layout: fixed; */
   font-size: 10px !important;
 }
 
@@ -134,12 +136,13 @@ header, footer,.fixedNavigation{
 .header_information td {
   text-align: start;
   border: none;
-  padding: 20px 15px;
+  padding: 8px 15px;
   border: none !important;
 }
 
 .header_information {
-  border: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
 }
 
 .header_information span {

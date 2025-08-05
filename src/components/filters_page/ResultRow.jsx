@@ -141,11 +141,14 @@ const ResultRow = ({ dataProp }) => {
               </span>
             )}
 
-            <p className={classes.current_price}>
-              {formatNumber(item.sale_price * euro)}
-              تومان (&nbsp;€&nbsp;
-              {item.sale_price} )
-            </p>
+            <div className={classes.current_price}>
+              {formatNumber(item.sale_price * euro)}تومان 
+              <br />
+              <span>
+                (&nbsp;€&nbsp;
+                {item.sale_price} )
+              </span>
+            </div>
           </>
         )}
       </div>
