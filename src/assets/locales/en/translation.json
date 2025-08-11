@@ -49,6 +49,7 @@
   "quality": "Quality",
   "cut": "Cut",
   "cut_type": "Cut ",
+  "cut_cut": "Cut",
 
   "report": "Report",
   "country": "Country Of Origin",
@@ -314,6 +315,7 @@
     "club": "Club Points",
     "shipping": "Shipping",
     "type": "Stone Type",
+    "material": "Stone Type",
     "pcs": "PCS"
   },
 

@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { getOrderStatusDetail, useBasicInformation } from "../services/api";
-import { useParams } from "react-router-dom";
-import { formatNumber, notify } from "../utils/helperFunctions";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import classes from "./Factor.module.css";
 import html2pdf from "html2pdf.js";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+import { getOrderStatusDetail, useBasicInformation } from "../services/api";
+import { formatNumber, notify } from "../utils/helperFunctions";
+import classes from "./Factor.module.css";
 
 // Helper function for date formatting
 const formatDate = (dateString) => {
@@ -101,8 +101,8 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
       </tr>
       <tr className={classes.productHeaderRow}>
         <th>#</th>
-        <th>{t("factor.Item")}</th>
-        <th>{t("factor.type")}</th>
+        <th>{t("factor.material")}</th>
+        <th>{t("signle_shape")}</th>
         <th>{t("cut_cut")}</th>
         <th>{t("size")}</th>
         <th>{t("color")}</th>

@@ -38,6 +38,12 @@ const walletSlice = createSlice({
       state.couponCode = action.payload.value;
       localStorage.setItem("seranoco-coupon-value", action.payload.value);
     },
+    resetCoupon(state) {
+      state.useCoupon = null;
+      localStorage.setItem("seranoco-coupon-usage", null);
+      state.couponCode = null;
+      localStorage.setItem("seranoco-coupon-value", null);
+    },
   },
 });
 

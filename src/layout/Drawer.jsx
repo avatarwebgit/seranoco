@@ -69,6 +69,8 @@ const Drawer = () => {
   const token = useSelector((state) => state.userStore.token);
   const walletBalance = useSelector((state) => state.walletStore.balance);
   const walletStatus = useSelector((state) => state.walletStore.useWallet);
+  const couponStatus = useSelector((state) => state.walletStore.useCoupon);
+  const couponValue = useSelector((state) => state.walletStore.couponCode);
 
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [productData, setProductData] = useState([]);
@@ -98,23 +100,28 @@ const Drawer = () => {
   };
 
   const handleApplyCoupon = async () => {
-    try {
-      setIsLoadingData(true);
-      const { result } = await sendCouponStatus(token, coupon);
+    setIsLoadingData(true);
+    const { result, response } = await sendCouponStatus(token, coupon);
+
+    if (response.ok) {
       notify(lng === "fa" ? result.message_fa : result.message_en);
       dispatch(
         walletActions.setCouponState({ useCoupon: true, value: coupon })
       );
-      dispatch(cartActions.setTotalPrice(result.total));
-    } catch (error) {
+      const newPrice = Math.max(
+        cart.totalPrice - result.amount / +cart.euro,
+        0
+      );
+      dispatch(cartActions.setTotalPrice(newPrice));
+      setIsLoadingData(false);
+    } else {
       setIsLoadingData(false);
       setShowCouponInput(false);
-      dispatch(walletActions.setCouponState(false));
+      dispatch(walletActions.resetCoupon());
       setCoupon("");
-      const err_fa = error?.response?.message_fa;
-      const err_en = error?.response?.message_en;
+      const err_fa = result?.error_fa;
+      const err_en = result?.error_en;
       notify(lng === "fa" ? err_fa : err_en);
-    } finally {
       setIsLoadingData(false);
     }
   };
@@ -122,6 +129,11 @@ const Drawer = () => {
   useEffect(() => {
     if (drawerState && token) {
       handleGetShoppingCart();
+      if (couponStatus && couponValue) {
+        setShowCouponInput(true);
+        setCoupon(couponValue);
+        handleApplyCoupon();
+      }
     }
     if (drawerState) {
       document.body.style.overflow = "hidden";

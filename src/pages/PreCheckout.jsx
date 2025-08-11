@@ -24,6 +24,7 @@ import {
   Button,
   FormControlLabel,
   FormGroup,
+  Skeleton,
   styled,
   Switch,
 } from "@mui/material";
@@ -69,7 +70,7 @@ const PreCheckout = ({ windowSize }) => {
   const [step, setStep] = useState(0);
   const [isDataValid, setIsDataValid] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
-  const [detailsData, setDetailsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { t } = useTranslation();
 
@@ -92,24 +93,11 @@ const PreCheckout = ({ windowSize }) => {
     }
   };
 
-  const handleGetdetails = async (orderId) => {
-    if (orderId) {
-      const serverRes = await getOrderStatusDetail(token, orderId);
-
-      if (serverRes.response.ok) {
-        setDetailsData(serverRes.result.orders);
-      } else {
-        notify(t("trylater"));
-      }
-    }
-  };
-
   useEffect(() => {
     document.title = t("precheckout");
     dispatch(drawerActions.close());
     dispatch(cartActions.calculateTotalPrice());
     p();
-    handleGetdetails();
   }, []);
 
   const handleGotoNextStep = () => {
@@ -127,9 +115,14 @@ const PreCheckout = ({ windowSize }) => {
     try {
       const { result } = await sendCouponStatus(token, couponValue);
       notify(lng === "fa" ? result.message_fa : result.message_en);
-      dispatch(cartActions.setTotalPrice(result.total));
+      const newPrice = Math.max(
+        cart.totalPrice - result.amount / +cart.euro,
+        0
+      );
+      dispatch(cartActions.setTotalPrice(newPrice));
+      setIsLoading(false);
     } catch (error) {
-      dispatch(walletActions.setCouponState(false));
+      dispatch(walletActions.resetCoupon());
       const err_fa = error?.response?.message_fa;
       const err_en = error?.response?.message_en;
       notify(lng === "fa" ? err_fa : err_en);
@@ -137,11 +130,10 @@ const PreCheckout = ({ windowSize }) => {
   };
 
   useEffect(() => {
-    console.log(couponStatus)
-    if (couponStatus) {
+    if (cart.products.length > 0 && couponStatus && couponValue) {
       handleApplyCoupon();
     }
-  }, [couponStatus]);
+  }, [cart.products, couponStatus, couponValue]);
 
   return (
     <div className={classes.main}>
@@ -150,7 +142,13 @@ const PreCheckout = ({ windowSize }) => {
       <CustomStepper activeStep={step} className={classes.stepper} />
       <Body>
         <Card className={classes.card}>
-          {step === 0 && <ShoppingCart />}
+          {step === 0 && (
+            <ShoppingCart
+              setIsLoading={() => {
+                !couponStatus && setIsLoading(false);
+              }}
+            />
+          )}
           {step === 1 && <Checkout isDataValid={setIsDataValid} />}
           {step === 2 && <Payment />}
           <div className={classes.action_wrapper}>
@@ -159,7 +157,13 @@ const PreCheckout = ({ windowSize }) => {
               style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
             >
               <span className={classes.title}>{t("pc.payment")}</span>
-              {card && (
+              {!card || isLoading ? (
+                <Skeleton
+                  variant="text"
+                  animation="wave"
+                  sx={{ width: "100px", height: "25px" }}
+                />
+              ) : (
                 <>
                   {step !== 2 ? (
                     <span className={classes.amont}>
@@ -198,30 +202,32 @@ const PreCheckout = ({ windowSize }) => {
                     direction: "rtl",
                   }}
                 >
-                  <FormControlLabel
-                    disabled={!walletBalance > 0}
-                    control={
-                      <IOSSwitch
-                        checked={walletStatus}
-                        onChange={(e) => {
-                          dispatch(
-                            walletActions.setWalletUse(e.target.checked)
-                          );
-                          dispatch(walletActions.setUserIntraction());
-                        }}
-                      />
-                    }
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column-reverse",
-                      alignContent: "flex-start",
-                      "& .MuiFormControlLabel-label": {
-                        fontSize: "0.5rem",
-                        color: "#000000",
-                        padding: "0 5px",
-                      },
-                    }}
-                  />
+                  {!isLoading && (
+                    <FormControlLabel
+                      disabled={!walletBalance > 0}
+                      control={
+                        <IOSSwitch
+                          checked={walletStatus}
+                          onChange={(e) => {
+                            dispatch(
+                              walletActions.setWalletUse(e.target.checked)
+                            );
+                            dispatch(walletActions.setUserIntraction());
+                          }}
+                        />
+                      }
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column-reverse",
+                        alignContent: "flex-start",
+                        "& .MuiFormControlLabel-label": {
+                          fontSize: "0.5rem",
+                          color: "#000000",
+                          padding: "0 5px",
+                        },
+                      }}
+                    />
+                  )}
                 </FormGroup>
 
                 <span
@@ -230,10 +236,20 @@ const PreCheckout = ({ windowSize }) => {
                     color: walletBalance && walletStatus ? "#000" : "#c2c2c2",
                   }}
                 >
-                  {walletBalance && lng !== "fa"
-                    ? walletBalance
-                    : (walletBalance * euro).toLocaleString("fa-IR")}
-                  &nbsp;{t("m_unit")}
+                  {isLoading ? (
+                    <Skeleton
+                      variant="text"
+                      animation="wave"
+                      sx={{ width: "100px", height: "25px" }}
+                    />
+                  ) : (
+                    <>
+                      {walletBalance && lng !== "fa"
+                        ? walletBalance
+                        : (walletBalance * euro).toLocaleString("fa-IR")}
+                      &nbsp;{t("m_unit")}
+                    </>
+                  )}
                 </span>
               </div>
             )}
@@ -244,25 +260,36 @@ const PreCheckout = ({ windowSize }) => {
               <span className={classes.title}>{t("pc.dprice")}</span>
               {step !== 3 && (
                 <span className={classes.amont}>
-                  {walletStatus ? (
-                    <>
-                      {lng !== "fa"
-                        ? cart.totalPriceAfterDiscount.toFixed(2)
-                        : (cart.totalPriceAfterDiscount * euro).toLocaleString(
-                            "fa-IR"
-                          )}
-                      &nbsp;
-                      {t("m_unit")}
-                    </>
+                  {isLoading ? (
+                    <Skeleton
+                      variant="text"
+                      animation="wave"
+                      sx={{ width: "100px", height: "25px" }}
+                    />
                   ) : (
                     <>
-                      {lng !== "fa"
-                        ? cart?.totalPrice?.toFixed(2)
-                        : Math.round(
-                            cart.totalPrice * cart.euro
-                          ).toLocaleString("fa-IR")}
-                      &nbsp;
-                      {t("m_unit")}
+                      {" "}
+                      {walletStatus ? (
+                        <>
+                          {lng !== "fa"
+                            ? cart.totalPriceAfterDiscount.toFixed(2)
+                            : (
+                                cart.totalPriceAfterDiscount * euro
+                              ).toLocaleString("fa-IR")}
+                          &nbsp;
+                          {t("m_unit")}
+                        </>
+                      ) : (
+                        <>
+                          {lng !== "fa"
+                            ? cart?.totalPrice?.toFixed(2)
+                            : Math.round(
+                                cart.totalPrice * cart.euro
+                              ).toLocaleString("fa-IR")}
+                          &nbsp;
+                          {t("m_unit")}
+                        </>
+                      )}
                     </>
                   )}
                 </span>
