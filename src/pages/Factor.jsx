@@ -378,7 +378,7 @@ const Factor = () => {
       ?.cloneNode(true);
     const footer = originalTable.querySelector("tfoot").cloneNode(true);
 
-    const ROWS_PER_PAGE = 15;
+    const ROWS_PER_PAGE = 10;
     const productRows = Array.from(body.querySelectorAll("tr"));
     const totalPages = Math.ceil(productRows.length / ROWS_PER_PAGE);
 
@@ -431,7 +431,7 @@ const Factor = () => {
       // Add page number below the table (outside the table structure)
       const pageNumber = document.createElement("div");
       pageNumber.style.position = "absolute";
-      pageNumber.style.bottom = "40px"; // Position below the footer
+      pageNumber.style.bottom = "50mm"; // Position below the footer
       pageNumber.style.left = "0";
       pageNumber.style.right = "0";
       pageNumber.style.textAlign = "center";
