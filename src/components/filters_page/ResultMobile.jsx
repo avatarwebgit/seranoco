@@ -77,7 +77,7 @@ const ResultMobile = ({ dataProps }) => {
                   key={el.id}
                   to={`/${lng}/products/${el.alias}/${el.variation_id}`}
                 >
-                  more
+                  More
                 </Link>
               </div>
               <div className={classes.left_side}>

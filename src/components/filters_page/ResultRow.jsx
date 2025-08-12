@@ -251,7 +251,7 @@ const ResultRow = ({ dataProp }) => {
                   target="_blank"
                   className={classes.link}
                 >
-                  more
+                  More
                 </Link>
               </center>
             </td>

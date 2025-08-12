@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useMemo, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Search as MUISearch, Menu } from "@mui/icons-material";
 import {
   Badge,
@@ -50,19 +50,39 @@ import AccessAccount from "./AccessAccount";
 import LoginButton from "../components/header/LoginButton";
 
 import classes from "./Header.module.css";
+
+// Memoized logo component: prevents re-rendering on every scroll.
+const LogoImage = React.memo(
+  function LogoImage({ src, isHomePage, isSmall }) {
+    if (!src) return null;
+    return (
+      <motion.img
+        className={classes.logo_img}
+        src={src}
+        alt="Seranoco Logo"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      />
+    );
+  },
+  // Only re-render the logo when the src or important props change.
+  (prev, next) =>
+    prev.src === next.src &&
+    prev.isHomePage === next.isHomePage &&
+    prev.isSmall === next.isSmall
+);
+
 const Header = ({ windowSize }) => {
   const lng = useSelector((state) => state.localeStore.lng);
   const { data: basicInformation } = useBasicInformation(lng);
 
-  const [scrollY, setScrollY] = useState(0);
   const [size, setSize] = useState("");
   const [isSmall, setIsSmall] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(true);
   const [headerData, setHeaderData] = useState(null);
-  const [logo, setLogo] = useState(null);
   const [isHomePage, setIsHomePage] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isTop, setIsTop] = useState(true); // tracks whether we're at top (scrollY === 0)
 
   const test = [1, 2, 3, 4, 5, 6, 7];
 
@@ -76,70 +96,72 @@ const Header = ({ windowSize }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    window.addEventListener("load", () => setScrollY(window.scrollY));
-    window.addEventListener("scroll", () => setScrollY(window.scrollY));
-
-    return () => {
-      window.removeEventListener("load", () => setScrollY(window.scrollY));
-      window.removeEventListener("scroll", () => setScrollY(window.scrollY));
-    };
-  }, []);
+  // framer-motion scroll motionValue (no reactive React state on every pixel)
+  const { scrollY } = useScroll();
 
   useEffect(() => {
     setSize(windowSize);
+    setIsSmall(["xs", "s", "m"].includes(windowSize));
     setIsFixed(location.pathname.split("/").length <= 2 ? true : false);
   }, [windowSize, location.pathname]);
 
-  const initialLogoState = {
-    y: 0,
-    x: 0,
-  };
+  useEffect(() => {
+    setIsHomePage(location.pathname === `/${lng}`);
+  }, [location.pathname, lng]);
 
-  const returnButtonStyles = () => {
-    let style = {};
+  // subscribe to scrollY changes but only update a boolean when crossing the `top` threshold
+  useEffect(() => {
+    // update isTop only when crossing the top/not-top boundary to avoid rerenders on every pixel
+    const unsubscribe = scrollY.onChange((y) => {
+      const top = y <= 0;
+      setIsTop((prev) => (prev === top ? prev : top));
+    });
+    return unsubscribe;
+  }, [scrollY]);
 
-    if (size === "xs" || size === "s" || size === "m") {
-      setIsSmall(true);
-      style = {
-        opacity: scrollY === 0 ? "0" : 1,
-      };
-    } else {
-      setIsSmall(false);
-      style = {
-        alignItems: scrollY === 0 ? "flex-end" : "flex-end",
+  const logo = useMemo(() => {
+    return isHomePage
+      ? basicInformation?.data?.at(0)?.image
+      : basicInformation?.data?.at(0)?.image_white;
+  }, [isHomePage, basicInformation]);
+
+  // motion transforms that update without causing React re-renders
+  const initialY = isHomePage ? (isSmall ? 20 : 50) : 0;
+  const yMotion = useTransform(scrollY, [0, 1], [initialY, 0]);
+
+  const heightMotion = useTransform(
+    scrollY,
+    [0, 1],
+    isSmall ? ["4rem", "4rem"] : ["5rem", "5.5rem"]
+  );
+
+  const bgMotion = useTransform(
+    scrollY,
+    [0, 1],
+    ["rgba(0,0,0,0)", "rgba(255,255,255,0.6)"]
+  );
+
+  const blurMotion = useTransform(scrollY, [0, 1], ["blur(0px)", "blur(20px)"]);
+
+  // These style helpers now depend on `isTop` and `isSmall` (only update when needed)
+  const returnButtonStyles = useMemo(() => {
+    if (isSmall) {
+      return {
+        opacity: isTop ? "0" : 1,
       };
     }
 
-    return style;
-  };
+    return {
+      alignItems: "flex-end",
+    };
+  }, [isSmall, isTop]);
 
-  const returnLogoStyles = () => {
-    if (size === "xs") {
-      setIsSmall(true);
-      return {
-        left: scrollY === 0 ? "50%" : "50%",
-      };
-    } else if (size === "s") {
-      setIsSmall(true);
-      return {
-        left: scrollY === 0 ? "50%" : "50%",
-      };
-    } else if (size === "m") {
-      return {
-        left: scrollY === 0 ? "50%" : "50%",
-      };
-    } else if (size === "l") {
-      return {
-        left: scrollY === 0 ? "50%" : "50%",
-      };
-    } else {
-      setIsSmall(false);
-      return {
-        left: scrollY === 0 ? "50%" : "50%",
-      };
-    }
-  };
+  const returnLogoStyles = useMemo(() => {
+    // kept intentionally simple to avoid unnecessary work; you can add transforms here
+    return {
+      left: "50%",
+    };
+  }, [isSmall]);
 
   const closeDrawer = (v) => {
     setDrawerOpen(v);
@@ -152,27 +174,6 @@ const Header = ({ windowSize }) => {
   const handleOpenModal = () => {
     dispatch(accesModalActions.login());
   };
-
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  useEffect(() => {
-    if (location.pathname === `/${lng}`) {
-      setIsHomePage(true);
-    } else {
-      setIsHomePage(false);
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (isHomePage && basicInformation && basicInformation !== undefined) {
-      setLogo(basicInformation?.data.at(0)?.image);
-    } else {
-      setLogo(basicInformation?.data.at(0)?.image_white);
-    }
-  }, [basicInformation, isHomePage]);
 
   const handleGetShoppingCart = async (token) => {
     try {
@@ -230,26 +231,14 @@ const Header = ({ windowSize }) => {
     <motion.header
       className={classes.main}
       initial={{ y: 0, height: "5rem" }}
-      animate={{
-        y: isHomePage && scrollY === 0 ? (isSmall ? "20px" : "50px") : 0,
-        height:
-          scrollY !== 0
-            ? isSmall
-              ? "4rem"
-              : "5.5rem"
-            : isSmall
-            ? "4rem"
-            : "5rem",
-        backgroundColor:
-          scrollY !== 0 ? "rgba(255,255,255,0.6)" : "rgba(0, 0, 0, 0)",
-        backdropFilter: scrollY !== 0 ? "blur(20px)" : "blur(0px)",
+      style={{
+        y: yMotion,
+        height: heightMotion,
+        backgroundColor: bgMotion,
+        backdropFilter: blurMotion,
+        position: isFixed ? "fixed" : "sticky",
       }}
-      style={{ position: isFixed ? "fixed" : "sticky" }}
-      transition={{
-        type: "spring",
-        duration: 0.3,
-        ease: "linear",
-      }}
+      transition={{ type: "spring", duration: 0.3, ease: "linear" }}
     >
       <CustomSection
         className={classes.content}
@@ -351,23 +340,19 @@ const Header = ({ windowSize }) => {
             </span>
           )}
         </motion.span>
+
         <motion.a
           className={classes.logo_container}
-          initial={initialLogoState}
+          initial={{ y: 0, x: 0 }}
           animate={returnLogoStyles}
           transition={{ duration: 0.1, type: "tween" }}
           href={`/${lng}`}
         >
           {logo && (
-            <motion.img
-              className={classes.logo_img}
-              src={logo}
-              alt="Seranoco Logo"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: logo ? 1 : 1 }}
-            />
+            <LogoImage src={logo} isHomePage={isHomePage} isSmall={isSmall} />
           )}
         </motion.a>
+
         <motion.span
           className={classes.navigation_container}
           initial={{ alignItems: "center" }}
@@ -488,16 +473,15 @@ const Header = ({ windowSize }) => {
                   </div>
                 );
               })
-            : test.map((_, i) => {
-                return (
-                  <Skeleton
-                    className={classes.header_btn_skeleton}
-                    variant="text"
-                    key={nanoid()}
-                  />
-                );
-              })}
+            : test.map((_, i) => (
+                <Skeleton
+                  className={classes.header_btn_skeleton}
+                  variant="text"
+                  key={nanoid()}
+                />
+              ))}
         </motion.span>
+
         <motion.span
           className={`${classes.search_container}`}
           transition={{ type: "spring", damping: 100, stiffness: 1000 }}
@@ -524,9 +508,7 @@ const Header = ({ windowSize }) => {
                 onClose={() => closeDrawer(false)}
                 sx={{
                   "& .MuiDrawer-paper": {
-                    ...(lng === "fa" && {
-                      right: 0,
-                    }),
+                    ...(lng === "fa" && { right: 0 }),
                     ...(lng !== "fa" && {
                       left: 0,
                       transform: drawerOpen
@@ -540,19 +522,12 @@ const Header = ({ windowSize }) => {
                   },
                 }}
               >
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
+                <Box sx={{ width: "100%", height: "100%" }}>
                   <div className={classes.drawer_content}>
                     <button
                       className={classes.drawer_close}
                       onClick={() => closeDrawer(false)}
-                      style={{
-                        [lng === "fa" ? "left" : "right"]: "10px",
-                      }}
+                      style={{ [lng === "fa" ? "left" : "right"]: "10px" }}
                     >
                       <img
                         className={classes.drawer_close_img}

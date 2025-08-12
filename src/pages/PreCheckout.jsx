@@ -268,7 +268,6 @@ const PreCheckout = ({ windowSize }) => {
                     />
                   ) : (
                     <>
-                      {" "}
                       {walletStatus ? (
                         <>
                           {lng !== "fa"
@@ -307,14 +306,14 @@ const PreCheckout = ({ windowSize }) => {
               </Button>
             )}
             {step === 2 && <PaymentMethod dataProps={paymentMethods} />}
-            <Button
+            {step>=1&&<Button
               className={classes.step_btn_back}
               onClick={() => setStep(step > 0 ? step - 1 : 0)}
               variant="text"
               size="large"
             >
               {t("pc.pstep")}
-            </Button>
+            </Button>}
           </div>
         </Card>
       </Body>

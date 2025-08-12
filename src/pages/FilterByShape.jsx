@@ -143,16 +143,17 @@ const FilterByShape = ({ windowSize }) => {
     const firstMatchingSlideIndex = colorData.findIndex(
       (slide) => slide.group_id === groupId
     );
+    console.log(firstMatchingSlideIndex)
     if (sliderRef.current && firstMatchingSlideIndex) {
       sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
     }
-    if (gridSliderRef.current && firstMatchingSlideIndex) {
+    if (gridSliderRef?.current && firstMatchingSlideIndex) {
       if (!isSmallPage) {
-        gridSliderRef.current.swiper.slideTo(
+        gridSliderRef?.current.swiper.slideTo(
           Math.round(firstMatchingSlideIndex / 8)
         );
       } else {
-        gridSliderRef.current.swiper.slideTo(
+        gridSliderRef?.current.swiper.slideTo(
           Math.round(firstMatchingSlideIndex / 4)
         );
       }

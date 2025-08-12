@@ -6,6 +6,9 @@ import { useParams } from "react-router-dom";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { getOrderStatusDetail, useBasicInformation } from "../services/api";
 import { formatNumber, notify } from "../utils/helperFunctions";
+
+import stamp from "../assets/images/stamp.webp";
+
 import classes from "./Factor.module.css";
 
 // Helper function for date formatting
@@ -284,10 +287,11 @@ const FactorFooter = React.memo(({ t }) => {
     <tfoot className={`${classes.invoiceFooterContainer} print-fo`}>
       <tr>
         <td colSpan="7" className={classes.signatureColumn}>
-          {t("factor.Buyers_Stamp_and_Signature")}
+          <p>{t("factor.Buyers_Stamp_and_Signature")}</p>
+          <img src={stamp} alt="" width={100} height={100} />
         </td>
         <td colSpan="6" className={classes.signatureColumn}>
-          {t("factor.Shops_Stamp_and_Signature")}
+          <p>{t("factor.Shops_Stamp_and_Signature")}</p>
         </td>
       </tr>
     </tfoot>
@@ -376,6 +380,7 @@ const Factor = () => {
 
     const ROWS_PER_PAGE = 18;
     const productRows = Array.from(body.querySelectorAll("tr"));
+    const totalPages = Math.ceil(productRows.length / ROWS_PER_PAGE);
 
     const productChunks = [];
     for (let i = 0; i < productRows.length; i += ROWS_PER_PAGE) {
@@ -385,11 +390,13 @@ const Factor = () => {
     // Create pages
     productChunks.forEach((chunk, pageIndex) => {
       const page = document.createElement("div");
-      page.className = "page"; 
-      page.style.width = "210mm"; 
+      page.className = "page";
+      page.style.width = "210mm";
       page.style.minHeight = "297mm";
       page.style.padding = "5mm";
       page.style.boxSizing = "border-box";
+      page.style.position = "relative";
+      page.style.marginBottom = "15mm";
 
       const pageTable = document.createElement("table");
       pageTable.className = classes.factorTable;
@@ -418,11 +425,21 @@ const Factor = () => {
         pageTable.appendChild(summaryBody);
       }
 
-      // Add footer to every page
-      const pageFooter = footer.cloneNode(true);
-      pageTable.appendChild(pageFooter);
+      // Add footer
+      pageTable.appendChild(footer.cloneNode(true));
+
+      // Add page number below the table (outside the table structure)
+      const pageNumber = document.createElement("div");
+      pageNumber.style.position = "absolute";
+      pageNumber.style.bottom = "40px"; // Position below the footer
+      pageNumber.style.left = "0";
+      pageNumber.style.right = "0";
+      pageNumber.style.textAlign = "center";
+      pageNumber.style.fontSize = "10px";
+      pageNumber.textContent = `${pageIndex + 1}/${totalPages}`;
 
       page.appendChild(pageTable);
+      page.appendChild(pageNumber); // Add page number to the page
       container.appendChild(page);
     });
 
@@ -460,7 +477,6 @@ const Factor = () => {
         setIsGeneratingPdf(false);
       });
   };
-
   if (!detailsData) {
     return (
       <div className={classes.loader_wrapper}>

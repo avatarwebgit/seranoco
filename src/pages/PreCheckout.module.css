@@ -37,6 +37,11 @@
   font-size: 0.8rem;
 }
 
+.step_btn,
+.step_btn_back {
+  width: 100% !important;
+}
+
 .step_btn {
   background-color: var(--primary) !important;
   /* color: #000000 !important; */
@@ -70,7 +75,7 @@
   .total_wrapper > * {
     font-size: 7px !important;
   }
-  .total_wrapper{
+  .total_wrapper {
     margin-bottom: 10px;
   }
 }
@@ -91,7 +96,7 @@
   .total_wrapper > * {
     font-size: 7px !important;
   }
-  .total_wrapper{
+  .total_wrapper {
     margin-bottom: 10px;
   }
 }

@@ -206,21 +206,25 @@ footer,
   font-weight: bold;
 }
 
+.invoiceFooterContainer img {
+  margin-top: 20px;
+}
+
 .signatureColumn {
   min-height: 100px;
   padding: 10px !important;
   text-align: right;
-  vertical-align: top;
+  vertical-align: top !important;
 }
 [dir="ltr"] .signatureColumn {
   text-align: left;
 }
 
 .page {
-  page-break-after: always; 
-  width: 100%;             
-  height: 100vh;           
-  overflow: hidden;      
+  page-break-after: always;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 @media print {
