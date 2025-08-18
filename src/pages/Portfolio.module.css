@@ -1,0 +1,230 @@
+.main {
+  background-color: #f9f9f9;
+}
+
+.portfolioContainer {
+  padding: 1rem;
+}
+
+.break {
+  display: unset;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  color: #333;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* --- New Layout --- */
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.mainContent {
+  flex: 1;
+}
+
+.sidebarWrapper {
+  display: none; /* Hidden on mobile */
+}
+
+/* Filter Trigger (Mobile) */
+.mobileFilterTrigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mobileFilterTrigger:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+/* --- Mobile Sidebar --- */
+.mobileSidebarOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobileSidebarOverlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobileSidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  max-width: 85%;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileSidebar.open {
+  transform: translateX(0);
+}
+
+.mobileSidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.mobileSidebarHeader h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.mobileSidebarHeader button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #555;
+  display: flex;
+}
+
+.mobileSidebarBody {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+/* Portfolio Grid */
+.portfolioGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.portfolioCard {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.portfolioCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.cardImage {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.portfolioCard:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.cardOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 1rem 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: #fff;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* --- Desktop Layout --- */
+@media (min-width: 992px) {
+  .pageHeader {
+    justify-content: flex-start;
+  }
+  .pageTitle {
+    text-align: left;
+    margin: 0;
+  }
+
+  .contentWrapper {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .sidebarWrapper {
+    display: block;
+    position: sticky;
+    top: 2rem;
+  }
+
+  /* Hide mobile filter trigger on desktop */
+  .mobileFilterTrigger {
+    display: none;
+  }
+
+  .portfolioGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 2.2rem;
+  }
+  .portfolioGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolioGrid {
+    grid-template-columns: 1fr;
+  }
+}

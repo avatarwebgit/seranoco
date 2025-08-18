@@ -1,0 +1,115 @@
+.sidebar {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  height: fit-content;
+}
+
+.sidebar.plain {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.sidebarTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.menu,
+.subMenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuItem {
+  margin-bottom: 0.25rem;
+}
+
+.menuLinkWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.menuLinkWrapper:hover {
+  background-color: #f0f8ff;
+}
+
+.menuLink {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.7rem;
+  transition: color 0.2s ease;
+  flex-grow: 1;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.menuLink.active {
+  color: #007bff;
+  font-weight: 700;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  /* Adjusted padding to vertically align the icon with the text */
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Ensures icon is perfectly centered */
+  line-height: 0;
+  border-radius: 50%;
+  /* Added margin for better spacing within the hover effect */
+  margin-right: 0.5rem;
+  flex-shrink: 0; /* Prevents the button from shrinking */
+}
+
+.arrowIcon {
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.arrowIconOpen {
+  transform: rotate(90deg);
+}
+
+.subMenu {
+  padding-left: 0.5rem;
+  border-left: 1px solid #eee;
+  margin-left: 0.75rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  margin-top: 0;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out,
+    margin-top 0.4s ease-in-out, visibility 0.4s;
+}
+
+.subMenuOpen {
+  visibility: visible;
+  opacity: 1;
+  max-height: 500px; /* Adjust if you have very long sub-menus */
+  margin-top: 0.5rem;
+}
+
+.subMenuItem .menuLink {
+  font-size: 0.7rem;
+  font-weight: 400;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}

@@ -1,10 +1,11 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Loading from "./layout/Loading";
 import { cartActions } from "./store/store";
+import Titlemanager from "./utils/TitleManager";
 
 import Drawer from "./layout/Drawer";
 import FixedNavigation from "./layout/FixedNavigation";
@@ -43,6 +44,8 @@ function App() {
   const Factor = React.lazy(() => import("./pages/Factor"));
   const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
   const ProductsFilter = React.lazy(() => import("./pages/ProductsFilter"));
+  const Portfolio = React.lazy(() => import("./pages/Portfolio"));
+  const SinglePortfolio = React.lazy(() => import("./pages/SinglePortfolio"));
   const DynamicFilterByColor = React.lazy(() =>
     import("./pages/dynamicFilterPages/FilterByColor")
   );
@@ -136,7 +139,6 @@ function App() {
     }
   });
 
-
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
@@ -218,9 +220,17 @@ function App() {
           element={<ResetPassword windowSize={windowSize} />}
         />
         <Route
+          path={`/:lng/portfolio`}
+          element={<Portfolio windowSize={windowSize} />}
+        />
+        <Route
+          path={`/:lng/portfolio/:id`}
+          element={<SinglePortfolio windowSize={windowSize} />}
+        />
+        {/* <Route
           path={`/:lng/products/filter`}
           element={<ProductsFilter windowSize={windowSize} />}
-        />
+        /> */}
         <Route
           path={`/:lng/filters/color/:id`}
           element={<DynamicFilterByColor windowSize={windowSize} />}
@@ -233,8 +243,9 @@ function App() {
         <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
       </Routes>
 
-      {windowSize === "xs" &&  <FixedNavigation />}
-      {windowSize === "s" &&  <FixedNavigation />}
+      <Titlemanager />
+      {windowSize === "xs" && <FixedNavigation />}
+      {windowSize === "s" && <FixedNavigation />}
       <Drawer size={windowSize} />
       <FavoritesDrawer size={windowSize} />
       <ToastContainer

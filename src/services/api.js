@@ -1145,3 +1145,39 @@ export const sendCouponStatus = async (token, coupon) => {
   const result = await response.json();
   return { response, result };
 };
+
+export const getPorlfolios = async () => {
+  const response = await fetch(`${baseUrl}/portfolios`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getSinglePortfolio = async (id) => {
+  const response = await fetch(`${baseUrl}/portfolio/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getPorlfolioCategories = async () => {
+  const response = await fetch(`${baseUrl}/portfolios/categories`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
