@@ -5219,6 +5219,11 @@ execa@^5.0.0:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
+exenv@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+  integrity sha512-Z+ktTxTwv9ILfgKCk32OX3n/doe+OcLTRtqK9pcL+JsP3J1/VW8Uvl4ZjLlKqeW4rzK4oesDOGMEMRIZqtP4Iw==
+
 exit@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/exit/-/exit-0.1.2.tgz#0632638f8d877cc82107d30a0fff1a17cba1cd0c"
@@ -9006,6 +9011,14 @@ rc-virtual-list@^3.14.2, rc-virtual-list@^3.5.1, rc-virtual-list@^3.5.2:
     rc-resize-observer "^1.0.0"
     rc-util "^5.36.0"
 
+react-18-image-lightbox@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/react-18-image-lightbox/-/react-18-image-lightbox-5.1.4.tgz#714361b10e78919f5bba564b39ca0de63bd299c6"
+  integrity sha512-P9yDkGfpeCIIDCIWv4VHzMju8EgxilKNNonaJlSjcZPEInCSLNsvrtNo1Nij+SocOQ3utLcGN/iOJ8RVQnufGw==
+  dependencies:
+    prop-types "^15.7.2"
+    react-modal "^3.11.1"
+
 react-app-polyfill@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-3.0.0.tgz#95221e0a9bd259e5ca6b177c7bb1cb6768f68fd7"
@@ -9125,6 +9138,21 @@ react-is@^19.1.0:
   version "19.1.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.1.0.tgz#805bce321546b7e14c084989c77022351bbdd11b"
   integrity sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==
+
+react-lifecycles-compat@^3.0.0:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-modal@^3.11.1:
+  version "3.16.3"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.16.3.tgz#c412d41915782e3c261253435d01468e2439b11b"
+  integrity sha512-yCYRJB5YkeQDQlTt17WGAgFJ7jr2QYcWa1SHqZ3PluDmnKJ/7+tVU+E6uKyZ0nODaeEj+xCpK4LcSnKXLMC0Nw==
+  dependencies:
+    exenv "^1.2.0"
+    prop-types "^15.7.2"
+    react-lifecycles-compat "^3.0.0"
+    warning "^4.0.3"
 
 react-redux@^9.2.0:
   version "9.2.0"
@@ -10787,7 +10815,7 @@ walker@^1.0.7:
   dependencies:
     makeerror "1.0.12"
 
-warning@^4.0.0:
+warning@^4.0.0, warning@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
@@ -11339,6 +11367,11 @@ yargs@^16.2.0:
     string-width "^4.2.0"
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
+
+yet-another-react-lightbox@^3.25.0:
+  version "3.25.0"
+  resolved "https://registry.yarnpkg.com/yet-another-react-lightbox/-/yet-another-react-lightbox-3.25.0.tgz#9d3f92b9ac7b58cbbe007311d499c2ed34711bcc"
+  integrity sha512-NaCeEXCpdwoTvoOpxNK9gdW8+oHs79yVH+D2YeVQWRjH5i32e5CoXndAAFP2p8awzVYfSonherrE9JMTpfD3EA==
 
 yocto-queue@^0.1.0:
   version "0.1.0"

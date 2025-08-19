@@ -1,36 +1,36 @@
-import React from 'react';
+import React from "react";
 import {
   Breadcrumbs as MuiBreadcrumbs,
   Typography,
   Link,
   Skeleton,
-} from '@mui/material';
-import { useSelector } from 'react-redux';
+} from "@mui/material";
+import { useSelector } from "react-redux";
 
 // prop structure:
 // [ { pathname:'',url:'' }, {pathname:'',url:'' } ]
 const Breadcrumbs = ({ linkDataProp }) => {
-  const lng = useSelector(state => state.localeStore.lng);
+  const lng = useSelector((state) => state.localeStore.lng);
   return (
     <MuiBreadcrumbs
-      aria-label='breadcrumb'
-      separator='>'
+      aria-label="breadcrumb"
+      separator=">"
       sx={{
-        marginBottom: '1rem',
-        width: '100%',
-        direction: lng === 'fa' ? 'rtl' : 'ltr',
+        marginBottom: "1rem",
+        width: "100%",
       }}
+      dir={lng === "fa" ? "rtl" : "ltr"}
     >
       {linkDataProp.map((el, index) => {
         if (index === linkDataProp.length - 1) return;
         return (
           <Link
-            underline='hover'
-            color='inherit'
+            underline="hover"
+            color="inherit"
             href={`/${lng}/${el.url}`}
             sx={{
-              fontSize: '0.5rem !important',
-              textDecoration: 'underline !important',
+              fontSize: "0.5rem !important",
+              textDecoration: "underline !important",
             }}
             key={index}
           >
@@ -40,9 +40,9 @@ const Breadcrumbs = ({ linkDataProp }) => {
       })}
       (
       <Typography
-        color='black'
+        color="black"
         href={`/${lng}/${linkDataProp[linkDataProp.length - 1].url}`}
-        sx={{ fontSize: '0.5rem' }}
+        sx={{ fontSize: "0.5rem" }}
       >
         {linkDataProp[linkDataProp.length - 1].pathname}
       </Typography>

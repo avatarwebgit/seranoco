@@ -174,6 +174,10 @@ const cartSlice = createSlice({
       );
     },
 
+    setTotalPriceBeforeDiscout(state, action) {
+      state.totalFeeBeforeDiscounts = action.payload;
+    },
+
     setTotalPriceAfterDiscout(state, action) {
       state.totalPriceAfterDiscount = action.payload;
     },

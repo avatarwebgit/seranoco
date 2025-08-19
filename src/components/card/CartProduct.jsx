@@ -64,6 +64,7 @@ const CartProduct = (data) => {
       notify(t("orders.ok"));
       dispatch(drawerActions.open());
       dispatch(cartActions.setTotalPrice(serverRes.result.total_price));
+      dispatch(cartActions.setTotalPriceBeforeDiscout(serverRes.result.total_price));
     } catch (err) {
       if (err.name !== "AbortError") {
         console.error(err);
@@ -73,7 +74,6 @@ const CartProduct = (data) => {
 
   const handleRemveItem = async () => {
     if (token) {
-      // User is logged in - remove from server
       const serverRes = await removeShoppingCart(
         token,
         productData.id,

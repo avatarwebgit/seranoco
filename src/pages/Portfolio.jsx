@@ -1,171 +1,165 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { Skeleton } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
-import Header from "../layout/Header";
-import Footer from "../layout/Footer";
-import Body from "../components/filters_page/Body";
-import Card from "../components/filters_page/Card";
 import BannerCarousel from "../components/BannerCarousel";
 import Breadcrumbs from "../components/common/Breadcrumbs";
+import Body from "../components/filters_page/Body";
+import Card from "../components/filters_page/Card";
 import PortfolioSidebar from "../components/portfolio/PortfolioSidebar";
+import Footer from "../layout/Footer";
+import Header from "../layout/Header";
 
+import {
+  getPorlfolioCategories,
+  getPorlfolios,
+  getPortfoliosByCategory,
+} from "../services/api";
 import classes from "./Portfolio.module.css";
-import { getPorlfolioCategories, getPorlfolios } from "../services/api";
 
-// English Data
-const portfolioItems = [
+const mockCategoriesData = [
   {
     id: 1,
-    slug: "project-alpha",
-    title: "Modern Kitchen Design",
-    images: ["https://picsum.photos/seed/p1/1200/800"],
-    category: "Interior Design",
-  },
-  {
-    id: 2,
-    slug: "project-beta",
-    title: "Corporate Branding",
-    images: ["https://picsum.photos/seed/p2/1200/800"],
-    category: "Branding",
-  },
-  {
-    id: 3,
-    slug: "project-gamma",
-    title: "E-commerce Platform",
-    images: ["https://picsum.photos/seed/p3/1200/800"],
-    category: "Web Development",
-  },
-  {
-    id: 4,
-    slug: "project-delta",
-    title: "Mobile Banking App",
-    images: ["https://picsum.photos/seed/p4/1200/800"],
-    category: "UI/UX Design",
-  },
-  {
-    id: 5,
-    slug: "project-epsilon",
-    title: "Architectural Visualization",
-    images: ["https://picsum.photos/seed/p5/1200/800"],
-    category: "3D Modeling",
-  },
-  {
-    id: 6,
-    slug: "project-zeta",
-    title: "Luxury Villa Exterior",
-    images: ["https://picsum.photos/seed/p6/1200/800"],
-    category: "Architecture",
-  },
-];
-
-// Farsi (Persian) Data
-const portfolioItems_fa = [
-  {
-    id: 1,
-    slug: "project-alpha",
-    title: "طراحی آشپزخانه مدرن",
-    images: ["https://picsum.photos/seed/p1/1200/800"],
-    category: "طراحی داخلی",
-  },
-  {
-    id: 2,
-    slug: "project-beta",
-    title: "برندسازی شرکتی",
-    images: ["https://picsum.photos/seed/p2/1200/800"],
-    category: "برندسازی",
-  },
-  {
-    id: 3,
-    slug: "project-gamma",
-    title: "پلتفرم تجارت الکترونیک",
-    images: ["https://picsum.photos/seed/p3/1200/800"],
-    category: "توسعه وب",
-  },
-  {
-    id: 4,
-    slug: "project-delta",
-    title: "اپلیکیشن بانکداری موبایل",
-    images: ["https://picsum.photos/seed/p4/1200/800"],
-    category: "طراحی UI/UX",
-  },
-  {
-    id: 5,
-    slug: "project-epsilon",
-    title: "تجسم معماری",
-    images: ["https://picsum.photos/seed/p5/1200/800"],
-    category: "مدل‌سازی سه‌بعدی",
-  },
-  {
-    id: 6,
-    slug: "project-zeta",
-    title: "نمای خارجی ویلای لوکس",
-    images: ["https://picsum.photos/seed/p6/1200/800"],
-    category: "معماری",
-  },
-];
-
-// --- New Category Structures ---
-const categories_en = [
-  { name: "All" },
-  {
-    name: "Design",
+    name: "Interior Design",
     subCategories: [
-      { name: "Interior Design" },
-      { name: "Branding" },
-      { name: "UI/UX Design" },
+      {
+        id: 11,
+        name: "Residential",
+        subCategories: [
+          { id: 111, name: "Kitchens" },
+          { id: 112, name: "Living Rooms" },
+        ],
+      },
+      {
+        id: 12,
+        name: "Commercial",
+        subCategories: [
+          { id: 121, name: "Offices" },
+          { id: 122, name: "Retail Spaces" },
+        ],
+      },
     ],
   },
   {
-    name: "Technology",
-    subCategories: [{ name: "Web Development" }, { name: "3D Modeling" }],
-  },
-  { name: "Architecture" },
-];
-
-const categories_fa = [
-  { name: "همه" },
-  {
-    name: "طراحی",
+    id: 2,
+    name: "Architecture",
     subCategories: [
-      { name: "طراحی داخلی" },
-      { name: "برندسازی" },
-      { name: "طراحی UI/UX" },
+      { id: 21, name: "Modern" },
+      { id: 22, name: "Classic" },
     ],
   },
   {
-    name: "تکنولوژی",
-    subCategories: [{ name: "توسعه وب" }, { name: "مدل‌سازی سه‌بعدی" }],
+    id: 3,
+    name: "Branding",
   },
-  { name: "معماری" },
+  {
+    id: 4,
+    name: "Web Development",
+  },
 ];
 
 const Portfolio = ({ windowSize }) => {
+  const [searchParams] = useSearchParams();
+  const categoryId= searchParams.get("category");
+  
   const lng = useSelector((state) => state.localeStore.lng);
 
   const { t, i18n } = useTranslation();
+  const [portfolioItems, setPortfolioItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [portfolioData, setPortfolioData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const { currentPortfolioItems, categories, allCategoryString } =
-    useMemo(() => {
-      const isFa = i18n.language === "fa";
-      return {
-        currentPortfolioItems: isFa ? portfolioItems_fa : portfolioItems,
-        categories: isFa ? categories_fa : categories_en,
-        allCategoryString: isFa ? "همه" : "All",
+  const allCategoryString = useMemo(() => {
+    return i18n.language === "fa" ? "همه" : "All";
+  }, [i18n.language]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const isFa = i18n.language === "fa";
+
+          // First, always fetch categories
+          const categoriesRes = await getPorlfolioCategories();
+          const rawCategories = categoriesRes.result;
+
+          const categoryNameMap = new Map();
+          rawCategories.forEach((cat) => {
+            categoryNameMap.set(cat.id, cat.title);
+          });
+
+          const processedCategories = rawCategories.map((cat) => ({
+            id: cat.id,
+            name: cat.title,
+            ...cat,
+          }));
+
+          const categoryTree = [
+            { name: allCategoryString },
+            ...processedCategories,
+          ];
+          setCategories(categoryTree);
+          setActiveFilter(allCategoryString);
+
+          // Now fetch portfolios based on categoryId
+          let rawPortfolios;
+          if (categoryId) {
+            // Fetch portfolios by specific category
+            const portfolioRes = await getPortfoliosByCategory(categoryId);
+            rawPortfolios = portfolioRes.result;
+
+            // Set active filter to the selected category
+            const selectedCategory = processedCategories.find(
+              (cat) => cat.id === parseInt(categoryId)
+            );
+            if (selectedCategory) {
+              setActiveFilter(selectedCategory.name);
+            }
+          } else {
+            // Fetch all portfolios
+            const portfolioRes = await getPorlfolios();
+            rawPortfolios = portfolioRes.result;
+            setActiveFilter(allCategoryString);
+          }
+
+          // Process the portfolios
+          const processedPortfolios = rawPortfolios.map((item) => ({
+            id: item.id,
+            slug: item.alias,
+            title:
+              isFa && item.title ? item.title : item.title_en || item.title,
+            images: [item.image],
+            category_id: item.category_id,
+            category: categoryNameMap.get(item.category_id) || "Uncategorized",
+          }));
+
+          setPortfolioItems(processedPortfolios);
+        } catch (error) {
+          console.error("Failed to fetch portfolio data:", error);
+        } finally {
+          setLoading(false);
+        }
       };
-    }, [i18n.language]);
+
+      fetchData();
+    }, [i18n.language, allCategoryString, categoryId]);
 
   useEffect(() => {
-    setActiveFilter(allCategoryString);
-  }, [allCategoryString]);
+    const fetchData = async () => {
+      const { response, result } = await getPortfoliosByCategory(categoryId);
+      console.log(response, result);
+    };
+    if (categoryId) {
+      fetchData();
+    }
+  }, [categoryId]);
 
-  // Lock body scroll when mobile sidebar is open
   useEffect(() => {
     if (isMobileSidebarOpen) {
       document.body.style.overflow = "hidden";
@@ -180,44 +174,16 @@ const Portfolio = ({ windowSize }) => {
 
   const filteredItems = useMemo(() => {
     if (activeFilter === allCategoryString) {
-      return currentPortfolioItems;
+      return portfolioItems;
     }
 
-    const parentCategory = categories.find(
-      (cat) => cat.name === activeFilter && cat.subCategories
-    );
-
-    if (parentCategory) {
-      const subCategoryNames = parentCategory.subCategories.map(
-        (sub) => sub.name
-      );
-      return currentPortfolioItems.filter((item) =>
-        subCategoryNames.includes(item.category)
-      );
-    }
-
-    return currentPortfolioItems.filter(
-      (item) => item.category === activeFilter
-    );
-  }, [activeFilter, currentPortfolioItems, allCategoryString, categories]);
+    return portfolioItems.filter((item) => item.category === activeFilter);
+  }, [activeFilter, portfolioItems, allCategoryString]);
 
   const handleFilterChange = (filter) => {
     setActiveFilter(filter);
     setIsMobileSidebarOpen(false);
   };
-
-  const handleGetPortfolios = async () => {
-    try {
-      const { response, result } = await getPorlfolios();
-      setPortfolioData(result.data);
-      console.log(response, result);
-    } catch (error) {
-      console.log(error);
-    }
-    // const {response, result} = await getPorlfolioCategories()
-  };
-
-  handleGetPortfolios();
 
   return (
     <section className={classes.main}>
@@ -227,11 +193,14 @@ const Portfolio = ({ windowSize }) => {
         <Card className={classes.break}>
           <Breadcrumbs
             linkDataProp={[
-              { pathname: t("home"), url: "/" },
+              { pathname: t("home"), url: "" },
               { pathname: t("portfolio") },
             ]}
           />
-          <div className={classes.portfolioContainer}>
+          <div
+            className={classes.portfolioContainer}
+            dir={lng === "fa" ? "rtl" : "ltr"}
+          >
             <div className={classes.contentWrapper}>
               {/* --- Sticky Sidebar for Desktop --- */}
               <div className={classes.sidebarWrapper}>
@@ -239,6 +208,7 @@ const Portfolio = ({ windowSize }) => {
                   categories={categories}
                   activeFilter={activeFilter}
                   onFilterChange={setActiveFilter}
+                  loading={loading}
                 />
               </div>
 
@@ -256,24 +226,37 @@ const Portfolio = ({ windowSize }) => {
                   </button>
                 </div>
 
-                <div className={classes.portfolioGrid}>
-                  {filteredItems.map((item) => (
-                    <Link
-                      to={`/${lng}/portfolio/${item.id}`}
-                      key={item.id}
-                      className={classes.portfolioCard}
-                    >
-                      <img
-                        src={item.images[0]}
-                        alt={item.title}
-                        className={classes.cardImage}
+                {loading ? (
+                  <div className={classes.portfolioGrid}>
+                    {[...Array(6)].map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        variant="rectangular"
+                        className={classes.portfolioCardSkeleton}
                       />
-                      <div className={classes.cardOverlay}>
-                        <h3 className={classes.cardTitle}>{item.title}</h3>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className={classes.portfolioGrid}>
+                    {filteredItems.map((item) => (
+                      <Link
+                        to={`/${lng}/portfolio/${item.slug}`}
+                        key={item.id}
+                        className={classes.portfolioCard}
+                        target="_blank"
+                      >
+                        <img
+                          src={item.images[0]}
+                          alt={item.title}
+                          className={classes.cardImage}
+                        />
+                        <div className={classes.cardOverlay}>
+                          <h3 className={classes.cardTitle}>{item.title}</h3>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </main>
             </div>
           </div>
@@ -297,7 +280,7 @@ const Portfolio = ({ windowSize }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className={classes.mobileSidebarHeader}>
-            <h2>{t("filters", "Filters")}</h2>
+            <h2>{t("filters")}</h2>
             <button
               onClick={() => setIsMobileSidebarOpen(false)}
               aria-label="Close filters"
@@ -311,6 +294,7 @@ const Portfolio = ({ windowSize }) => {
               activeFilter={activeFilter}
               onFilterChange={handleFilterChange}
               isPlain={true}
+              loading={loading}
             />
           </div>
         </div>

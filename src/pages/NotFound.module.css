@@ -1,1 +1,120 @@
-.main{}
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&display=swap");
+
+.main {
+  background-color: #f9f9f9;
+}
+
+.contentCard {
+  padding-bottom: 3rem;
+  display: unset;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  min-height: 50vh;
+}
+
+.errorCodeWrapper {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.errorCode {
+  font-family: "Playfair Display", serif;
+  font-size: 12rem;
+  font-weight: 700;
+  color: #ebebeb;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.gemIcon {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin: 0 -0.05em;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23dddddd"><polygon points="50 0, 100 25, 100 75, 50 100, 0 75, 0 25" /></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: subtleRotate 20s infinite linear;
+}
+
+.title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  margin: -6rem 0 1rem 0;
+  color: #333;
+  z-index: 1;
+  position: relative;
+}
+
+.message {
+  font-size: 0.7rem;
+  max-width: 550px;
+  margin: 0 0 2.5rem 0;
+  color: #555;
+  line-height: 1.7;
+  z-index: 1;
+  position: relative;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 0.8rem 2.5rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  background-color: #333;
+  border: 2px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1;
+  position: relative;
+}
+
+.ctaButton:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+@keyframes subtleRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .errorCode {
+    font-size: 8rem;
+  }
+  .title {
+    font-size: 2rem;
+    margin-top: -4rem;
+  }
+  .message {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .errorCode {
+    font-size: 6rem;
+  }
+  .title {
+    font-size: 1.8rem;
+    margin-top: -3rem;
+  }
+}

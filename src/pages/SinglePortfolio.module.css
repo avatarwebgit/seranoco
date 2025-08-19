@@ -36,9 +36,6 @@
 .mainSwiper :global(.swiper-slide) img,
 .thumbsSwiper :global(.swiper-slide) img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .mainSwiper :global(.swiper-slide),
@@ -52,12 +49,12 @@
 
 .mainImageContainer {
   width: 100%;
-  aspect-ratio: 4 / 3; 
+  aspect-ratio: 4 / 3;
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  order: -1; 
+  order: -1;
 }
 
 .mainSwiper {
@@ -66,8 +63,13 @@
 }
 
 .thumbnailGallery {
-  margin: 0; 
-  width: 100%; 
+  margin: 0;
+  width: 100%;
+}
+
+:global(.swiper-button-next),
+:global(.swiper-button-prev) {
+  color: #000;
 }
 
 .thumbsSwiper :global(.swiper-slide) {
@@ -78,21 +80,18 @@
   overflow: hidden;
   border: 3px solid transparent;
   transform: scale(1);
-  height: 80px; 
-  width: calc((100% - 20px) / 3); 
+  height: 80px;
+  width: calc((100% - 20px) / 3);
 }
 
 .thumbsSwiper :global(.swiper-slide:hover:not(.swiper-slide-thumb-active)) {
   opacity: 1;
-  border-color: #ccc;
   transform: scale(1.05);
 }
 
 .thumbsSwiper :global(.swiper-slide-thumb-active) {
   opacity: 1;
-  border-color: #333;
   transform: scale(1.1);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .metaInfo {
@@ -110,6 +109,7 @@
   color: #555;
   margin: 0;
   text-align: justify;
+  text-align: start;
 }
 
 .metaInfo p,
@@ -117,6 +117,10 @@
 .metaInfo strong,
 .description {
   font-size: 18px !important;
+}
+
+.metaInfo center {
+  margin-bottom: 1rem;
 }
 
 .metaInfo p {
@@ -129,20 +133,45 @@
   color: #333;
 }
 
-/* --- Desktop Layout --- */
+/* --- Skeleton Styles --- */
+.titleSkeletonWrapper {
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+}
+
+.titleSkeletonWrapper > span {
+  /* Targeting the skeleton span */
+  margin: 0 auto;
+}
+
+.thumbnailSkeletonContainer {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.thumbnailSkeletonItem {
+  flex: 1;
+  height: 80px;
+  border-radius: 6px;
+}
+
+.descriptionSkeleton {
+  margin: 0;
+}
+
 @media (min-width: 992px) {
   .pageContainer {
     padding: 0;
   }
 
   .title {
-    text-align: left;
+    text-align: start;
     margin-bottom: 2rem;
   }
 
-  /* --- Gallery Section --- */
   .gallerySection {
-    flex-direction: row; 
+    flex-direction: row;
     gap: 2rem;
     align-items: flex-start;
     margin-bottom: 3rem;
@@ -153,24 +182,21 @@
     max-width: 30%;
     height: 500px;
     margin: 0;
-    order: 0; 
+    order: 0;
   }
 
   .thumbsSwiper:global(.swiper-vertical) :global(.swiper-slide) {
     width: 100%;
-    height: 110px !important; 
-    aspect-ratio: 16 / 9;
   }
 
   .mainImageContainer {
-    flex: 1; 
+    flex: 1;
     margin-bottom: 0;
-    order: 0; 
-    aspect-ratio: auto; 
+    order: 0;
+    aspect-ratio: auto;
     height: 500px;
   }
 
-  /* --- Content Section --- */
   .contentSection {
     display: flex;
     gap: 2.5rem;
@@ -181,7 +207,7 @@
     flex: 0 0 30%;
     max-width: 30%;
     position: sticky;
-    top: 6rem; 
+    top: 6rem;
     border-bottom: none;
     margin: 0;
     padding: 1.5rem;
@@ -191,6 +217,25 @@
   }
 
   .description {
+    flex: 1;
+  }
+
+  .titleSkeletonWrapper {
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+  .titleSkeletonWrapper > span {
+    margin: 0;
+  }
+  .thumbnailSkeletonContainer {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .thumbnailSkeletonItem {
+    width: 100%;
+    height: 110px;
+  }
+  .descriptionSkeleton {
     flex: 1;
   }
 }

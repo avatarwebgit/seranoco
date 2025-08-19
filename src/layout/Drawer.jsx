@@ -226,6 +226,7 @@ const Drawer = () => {
               >
                 <p>{t("shopping_cart.total")}:</p>
                 <span>
+                  {console.log(cart.totalFeeBeforeDiscounts)}
                   {cart.totalFeeBeforeDiscounts && !isRTL
                     ? cart?.totalFeeBeforeDiscounts?.toFixed(2)
                     : formatNumber(

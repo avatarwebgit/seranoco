@@ -1158,8 +1158,20 @@ export const getPorlfolios = async () => {
   return { response, result };
 };
 
+export const getPortfoliosByCategory = async (category) => {
+  const response = await fetch(`${baseUrl}/portfolios/categories/${category}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
 export const getSinglePortfolio = async (id) => {
-  const response = await fetch(`${baseUrl}/portfolio/${id}`, {
+  const response = await fetch(`${baseUrl}/portfolios/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

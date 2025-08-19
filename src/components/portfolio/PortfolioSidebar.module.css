@@ -1,6 +1,6 @@
 .sidebar {
   background-color: #fff;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   height: fit-content;
@@ -67,28 +67,27 @@
   border: none;
   cursor: pointer;
   color: #555;
-  /* Adjusted padding to vertically align the icon with the text */
   padding: 0.25rem;
   display: flex;
   align-items: center;
-  justify-content: center; /* Ensures icon is perfectly centered */
-  line-height: 0;
+  justify-content: center;
   border-radius: 50%;
-  /* Added margin for better spacing within the hover effect */
-  margin-right: 0.5rem;
-  flex-shrink: 0; /* Prevents the button from shrinking */
+  flex-shrink: 0;
 }
 
 .arrowIcon {
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
 }
 
 .arrowIconOpen {
-  transform: rotate(90deg);
+  transform: rotate(90deg) !important;
+}
+
+.arrowIconOpen_fa {
+  transform: rotate(-90deg) !important;
 }
 
 .subMenu {
-  padding-left: 0.5rem;
   border-left: 1px solid #eee;
   margin-left: 0.75rem;
   max-height: 0;
@@ -100,11 +99,15 @@
     margin-top 0.4s ease-in-out, visibility 0.4s;
 }
 
+.sidebar[dir="rtl"] .subMenu {
+  border-right: 1px solid #eee;
+  margin-right: 0.75rem;
+}
+
 .subMenuOpen {
   visibility: visible;
   opacity: 1;
-  max-height: 500px; /* Adjust if you have very long sub-menus */
-  margin-top: 0.5rem;
+  max-height: 500px;
 }
 
 .subMenuItem .menuLink {

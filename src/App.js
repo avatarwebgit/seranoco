@@ -97,7 +97,8 @@ function App() {
 
   useEffect(() => {
     if (basicData) {
-      dispatch(cartActions?.setEuro(basicData?.data[0].price_euro));
+      console.log(basicData)
+      dispatch(cartActions?.setEuro(basicData?.data[0]?.price_euro));
     }
   }, [basicData]);
 
@@ -224,7 +225,7 @@ function App() {
           element={<Portfolio windowSize={windowSize} />}
         />
         <Route
-          path={`/:lng/portfolio/:id`}
+          path={`/:lng/portfolio/:alias`}
           element={<SinglePortfolio windowSize={windowSize} />}
         />
         {/* <Route

@@ -127,14 +127,7 @@ const ProductItem = React.memo(({ product, index, lng, t, euro }) => {
   return (
     <tr className={classes.productRow}>
       <td>{index + 1}</td>
-      <td>
-        {
-          //add attribute to the product in api
-          // product.attribute?.find((attr) => attr.attribute.name === "Details")
-          //     ?.value?.name
-          "Cubiz Zirconia (CZ)"
-        }
-      </td>
+      <td>{lng === "fa" ? prod.detail_fa : prod.detail}</td>
       <td>{lng === "fa" ? prod.shape_fa : prod.shape}</td>
       <td>{lng === "fa" ? prod.cut_fa : prod.cut}</td>
       <td>{prod.size}</td>
@@ -320,6 +313,7 @@ const Factor = () => {
           const serverRes = await getOrderStatusDetail(token, orderId);
           if (serverRes.response.ok) {
             setDetailsData(serverRes.result.orders);
+            console.log(serverRes.result);
           } else {
             notify(t("trylater"));
           }
