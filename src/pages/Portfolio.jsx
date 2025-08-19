@@ -64,8 +64,8 @@ const mockCategoriesData = [
 
 const Portfolio = ({ windowSize }) => {
   const [searchParams] = useSearchParams();
-  const categoryId= searchParams.get("category");
-  
+  const categoryId = searchParams.get("category");
+
   const lng = useSelector((state) => state.localeStore.lng);
 
   const { t, i18n } = useTranslation();
@@ -79,76 +79,75 @@ const Portfolio = ({ windowSize }) => {
     return i18n.language === "fa" ? "همه" : "All";
   }, [i18n.language]);
 
-    useEffect(() => {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const isFa = i18n.language === "fa";
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const isFa = i18n.language === "fa";
 
-          // First, always fetch categories
-          const categoriesRes = await getPorlfolioCategories();
-          const rawCategories = categoriesRes.result;
+        // First, always fetch categories
+        const categoriesRes = await getPorlfolioCategories();
+        const rawCategories = categoriesRes.result;
 
-          const categoryNameMap = new Map();
-          rawCategories.forEach((cat) => {
-            categoryNameMap.set(cat.id, cat.title);
-          });
+        const categoryNameMap = new Map();
+        rawCategories.forEach((cat) => {
+          categoryNameMap.set(cat.id, cat.title);
+        });
 
-          const processedCategories = rawCategories.map((cat) => ({
-            id: cat.id,
-            name: cat.title,
-            ...cat,
-          }));
+        const processedCategories = rawCategories.map((cat) => ({
+          id: cat.id,
+          name: cat.title,
+          ...cat,
+        }));
 
-          const categoryTree = [
-            { name: allCategoryString },
-            ...processedCategories,
-          ];
-          setCategories(categoryTree);
-          setActiveFilter(allCategoryString);
+        const categoryTree = [
+          { name: allCategoryString },
+          ...processedCategories,
+        ];
+        setCategories(categoryTree);
+        setActiveFilter(allCategoryString);
 
-          // Now fetch portfolios based on categoryId
-          let rawPortfolios;
-          if (categoryId) {
-            // Fetch portfolios by specific category
-            const portfolioRes = await getPortfoliosByCategory(categoryId);
-            rawPortfolios = portfolioRes.result;
+        // Now fetch portfolios based on categoryId
+        let rawPortfolios;
+        if (categoryId) {
+          // Fetch portfolios by specific category
+          const portfolioRes = await getPortfoliosByCategory(categoryId);
+          rawPortfolios = portfolioRes.result;
 
-            // Set active filter to the selected category
-            const selectedCategory = processedCategories.find(
-              (cat) => cat.id === parseInt(categoryId)
-            );
-            if (selectedCategory) {
-              setActiveFilter(selectedCategory.name);
-            }
-          } else {
-            // Fetch all portfolios
-            const portfolioRes = await getPorlfolios();
-            rawPortfolios = portfolioRes.result;
-            setActiveFilter(allCategoryString);
+          // Set active filter to the selected category
+          const selectedCategory = processedCategories.find(
+            (cat) => cat.id === parseInt(categoryId)
+          );
+          if (selectedCategory) {
+            setActiveFilter(selectedCategory.name);
           }
-
-          // Process the portfolios
-          const processedPortfolios = rawPortfolios.map((item) => ({
-            id: item.id,
-            slug: item.alias,
-            title:
-              isFa && item.title ? item.title : item.title_en || item.title,
-            images: [item.image],
-            category_id: item.category_id,
-            category: categoryNameMap.get(item.category_id) || "Uncategorized",
-          }));
-
-          setPortfolioItems(processedPortfolios);
-        } catch (error) {
-          console.error("Failed to fetch portfolio data:", error);
-        } finally {
-          setLoading(false);
+        } else {
+          // Fetch all portfolios
+          const portfolioRes = await getPorlfolios();
+          rawPortfolios = portfolioRes.result;
+          setActiveFilter(allCategoryString);
         }
-      };
 
-      fetchData();
-    }, [i18n.language, allCategoryString, categoryId]);
+        // Process the portfolios
+        const processedPortfolios = rawPortfolios.map((item) => ({
+          id: item.id,
+          slug: item.alias,
+          title: isFa && item.title ? item.title : item.title_en || item.title,
+          images: [item.image],
+          category_id: item.category_id,
+          category: categoryNameMap.get(item.category_id) || "Uncategorized",
+        }));
+
+        setPortfolioItems(processedPortfolios);
+      } catch (error) {
+        console.error("Failed to fetch portfolio data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [i18n.language, allCategoryString, categoryId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -226,36 +225,44 @@ const Portfolio = ({ windowSize }) => {
                   </button>
                 </div>
 
-                {loading ? (
-                  <div className={classes.portfolioGrid}>
-                    {[...Array(6)].map((_, index) => (
-                      <Skeleton
-                        key={index}
-                        variant="rectangular"
-                        className={classes.portfolioCardSkeleton}
-                      />
-                    ))}
-                  </div>
+                {portfolioItems.length > 0 ? (
+                  <>
+                    {loading ? (
+                      <div className={classes.portfolioGrid}>
+                        {[...Array(6)].map((_, index) => (
+                          <Skeleton
+                            key={index}
+                            variant="rectangular"
+                            className={classes.portfolioCardSkeleton}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className={classes.portfolioGrid}>
+                        {filteredItems.map((item) => (
+                          <Link
+                            to={`/${lng}/portfolio/${item.slug}`}
+                            key={item.id}
+                            className={classes.portfolioCard}
+                            target="_blank"
+                          >
+                            <img
+                              src={item.images[0]}
+                              alt={item.title}
+                              className={classes.cardImage}
+                            />
+                            <div className={classes.cardOverlay}>
+                              <h3 className={classes.cardTitle}>
+                                {item.title}
+                              </h3>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 ) : (
-                  <div className={classes.portfolioGrid}>
-                    {filteredItems.map((item) => (
-                      <Link
-                        to={`/${lng}/portfolio/${item.slug}`}
-                        key={item.id}
-                        className={classes.portfolioCard}
-                        target="_blank"
-                      >
-                        <img
-                          src={item.images[0]}
-                          alt={item.title}
-                          className={classes.cardImage}
-                        />
-                        <div className={classes.cardOverlay}>
-                          <h3 className={classes.cardTitle}>{item.title}</h3>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                  <p></p>
                 )}
               </main>
             </div>

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import classes from "./PortfolioSidebar.module.css";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
 
 const isAncestorOfActive = (item, activeFilterName) => {
-  if (!item.subCategories || item.subCategories.length === 0) {
+  if (!item.children || item.children.length === 0) {
     return false;
   }
-  return item.subCategories.some(
+  return item.children.some(
     (sub) =>
       sub.title === activeFilterName ||
       isAncestorOfActive(sub, activeFilterName)
@@ -21,8 +21,8 @@ const findPath = (nodes, activeName, path = []) => {
     if (node.title === activeName) {
       return newPath;
     }
-    if (node.subCategories) {
-      const result = findPath(node.subCategories, activeName, newPath);
+    if (node.children) {
+      const result = findPath(node.children, activeName, newPath);
       if (result) {
         return result;
       }
@@ -40,8 +40,38 @@ const PortfolioSidebar = ({
 }) => {
   const [openCategories, setOpenCategories] = useState({});
   const lng = useSelector((state) => state.localeStore.lng);
+
+  const findItemById = useCallback((nodes, id) => {
+    for (const node of nodes) {
+      if (String(node.id) === String(id)) {
+        return node;
+      }
+      if (node.children) {
+        const found = findItemById(node.children, id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }, []);
+
+  // Effect for initial load and when categories change.
+  // It synchronizes the component state with the URL's query parameter.
   useEffect(() => {
-    if (!loading) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get("category");
+
+    if (categoryId && categories.length > 0) {
+      const activeItem = findItemById(categories, categoryId);
+      if (activeItem) {
+        onFilterChange(activeItem.title);
+      }
+    }
+  }, [categories, findItemById, onFilterChange]);
+
+  useEffect(() => {
+    if (!loading && activeFilter) {
       const path = findPath(categories, activeFilter);
       if (path) {
         setOpenCategories((prevOpen) => {
@@ -107,13 +137,6 @@ const PortfolioSidebar = ({
         <div className={classes.menuLinkWrapper}>
           <a
             href={`?category=${item.id}`}
-            onClick={(e) => {
-              onFilterChange(item.title);
-
-              if (hasSubCategories && !isOpen) {
-                handleToggle(item.title);
-              }
-            }}
             className={`${classes.menuLink} ${
               isActive || isParentOfActive ? classes.active : ""
             }`}
