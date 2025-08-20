@@ -112,6 +112,16 @@
   text-align: start;
 }
 
+.description * {
+  font-size: 18px;
+  line-height: 175%;
+}
+
+.short_description *{
+  font-size: 16px;
+  line-height: 175%;
+}
+
 .metaInfo p,
 .metaInfo center,
 .metaInfo strong,

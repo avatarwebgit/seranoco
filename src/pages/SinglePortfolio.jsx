@@ -296,6 +296,7 @@ const SinglePortfolio = ({ windowSize }) => {
                     <strong>{t("information")}</strong>
                   </center>
                   <div
+                  className={classes.short_description}
                     dangerouslySetInnerHTML={{
                       __html:
                         lng === "fa"
@@ -304,7 +305,6 @@ const SinglePortfolio = ({ windowSize }) => {
                     }}
                   />
                 </div>
-                {console.log(portfolioItem)}
                 <p
                   className={classes.description}
                   dangerouslySetInnerHTML={{
