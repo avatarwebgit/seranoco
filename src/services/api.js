@@ -313,8 +313,18 @@ export const getNewFilteredSizesByColor = async (color_ids, options = {}) => {
   return { response, result };
 };
 
-export const getCitiesByCountry = async (country_id, options) => {
-  const response = await fetch(`${baseUrl}/get/cities/${country_id}`, {
+export const getStatesByCountry = async (country_id, options) => {
+  const response = await fetch(`${baseUrl}/get/states/${country_id}`, {
+    method: "GET",
+    headers: {},
+    ...options,
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getCitiesByState = async (state_id, options) => {
+  const response = await fetch(`${baseUrl}/get/cities/${state_id}`, {
     method: "GET",
     headers: {},
     ...options,

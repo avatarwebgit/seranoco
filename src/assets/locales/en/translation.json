@@ -166,6 +166,7 @@
 
   "signup": {
     "sign_up": "Signup",
+    "state":"State",
     "fname": "First Name",
     "lname": "Last Name",
     "uname": "User Name",
