@@ -202,7 +202,6 @@ const Products = ({ windowSize }) => {
 
  useEffect(() => {
   if (detailsData) {
-   document.title = `Seranoco / ${detailsData.product.name}`;
    if (detailsData.product.is_wishlist) {
     setIsFavorite(true);
    } else {

@@ -18,7 +18,7 @@
 }
 
 .pageTitle {
-  font-size: 1.8rem;
+  font-size: .8rem;
   color: #333;
   font-weight: 700;
   margin: 0;
@@ -183,6 +183,19 @@
   width: 100% !important;
   height: 250px !important;
   border-radius: 8px !important;
+}
+
+.notItem {
+  width: 100%;
+  min-height: 200px;
+  border: 1px dashed #b5b5b5;
+  border-radius: 10px;
+  background-color: #e1e1e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-1);
+  font-size: 0.7rem;
 }
 
 /* --- Desktop Layout --- */

@@ -30,6 +30,8 @@ const routeTitles = {
   "/:lng/factor/:id": (params, t) => t("titles.factor", { id: params.id }),
   "/:lng/reset-password": (params, t) => t("titles.resetPassword"),
   "/:lng/portfolio": (params, t) => t("titles.portfolio"),
+  "/:lng/downloads/categories/*": (params, t) => t("titles.download_categories"),
+  "/:lng/downloads/categories/files/:id": (params, t) => t("titles.download_files"),
   "/:lng/portfolio/:id": (params, t) =>
     t("titles.singlePortfolio", { title: params.id }),
   "/:lng/filters/color/:id": (params, t) =>

@@ -320,8 +320,9 @@
     "type": "توضیحات",
     "material": "نوع سنگ",
     "pcs": "عدد",
-    "download_pdf": "pdf دانلود فایل ",
-    "generating_pdf": "درحال تولید فایل"
+    "download_pdf": " دانلود فایل ",
+    "generating_pdf": "درحال تولید فایل",
+    "downloaded": "دانلود شده"
   },
 
   "continue": "ادامه خرید",
@@ -348,6 +349,8 @@
   "apply": "اعمال",
   "portfolio": "نمونه کار  ",
   "our_portfolio": "نمونه کار های ما",
+  "noPortfolioItem": "درحال حاضر هیچ نمونه کاری در این دسته بندی ثبت نشده .",
+
   "artist": "هنرمند",
   "idea": "ایده",
   "nickname": "نام مستعار",
@@ -374,7 +377,10 @@
     "filtersColor": "فیلتر رنگ - {{name}}",
     "filtersShape": "فیلتر شکل - {{name}}",
     "notFound": "صفحه یافت نشد",
-    "information": "اطالاعات"
+    "information": "اطالاعات",
+    "download_categories": "دسته بندی های دانلود فایل",
+    "download_files": "دانلود فایل",
+    "downloaded": "دانلود شده"
   },
   "send": "ارسال",
   "notFoundMessage": "متأسفیم، اما صفحه‌ای که به دنبال آن بودید یافت نشد. ممکن است حذف شده باشد، نام آن تغییر کرده باشد یا موقتاً در دسترس نباشد.",

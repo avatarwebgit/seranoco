@@ -46,6 +46,8 @@ function App() {
   const ProductsFilter = React.lazy(() => import("./pages/ProductsFilter"));
   const Portfolio = React.lazy(() => import("./pages/Portfolio"));
   const SinglePortfolio = React.lazy(() => import("./pages/SinglePortfolio"));
+  const DownloadCategory = React.lazy(() => import("./pages/PdfCategories"));
+  const DownloadFiles = React.lazy(() => import("./pages/PdfDownloads"));
   const DynamicFilterByColor = React.lazy(() =>
     import("./pages/dynamicFilterPages/FilterByColor")
   );
@@ -97,7 +99,7 @@ function App() {
 
   useEffect(() => {
     if (basicData) {
-      console.log(basicData)
+      console.log(basicData);
       dispatch(cartActions?.setEuro(basicData?.data[0]?.price_euro));
     }
   }, [basicData]);
@@ -239,6 +241,14 @@ function App() {
         <Route
           path={`/:lng/filters/shape/:id`}
           element={<DynamicFilterByShape windowSize={windowSize} />}
+        />
+        <Route
+          path={`/:lng/downloads/categories/*`}
+          element={<DownloadCategory windowSize={windowSize} />}
+        />
+        <Route
+          path={`/:lng/downloads/categories/files/:id`}
+          element={<DownloadFiles windowSize={windowSize} />}
         />
 
         <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />

@@ -3,6 +3,7 @@ import classes from "./PortfolioSidebar.module.css";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const isAncestorOfActive = (item, activeFilterName) => {
   if (!item.children || item.children.length === 0) {
@@ -41,6 +42,8 @@ const PortfolioSidebar = ({
   const [openCategories, setOpenCategories] = useState({});
   const lng = useSelector((state) => state.localeStore.lng);
 
+  const navigate = useNavigate();
+
   const findItemById = useCallback((nodes, id) => {
     for (const node of nodes) {
       if (String(node.id) === String(id)) {
@@ -56,8 +59,6 @@ const PortfolioSidebar = ({
     return null;
   }, []);
 
-  // Effect for initial load and when categories change.
-  // It synchronizes the component state with the URL's query parameter.
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryId = urlParams.get("category");
@@ -136,6 +137,10 @@ const PortfolioSidebar = ({
       >
         <div className={classes.menuLinkWrapper}>
           <a
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(`?category=${item.id}`);
+            }}
             href={`?category=${item.id}`}
             className={`${classes.menuLink} ${
               isActive || isParentOfActive ? classes.active : ""

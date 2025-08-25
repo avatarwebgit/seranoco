@@ -1203,3 +1203,39 @@ export const getPorlfolioCategories = async () => {
   const result = await response.json();
   return { response, result };
 };
+
+export const getInitialDownloadCategories = async () => {
+  const response = await fetch(`${baseUrl}/downloads/categories`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getDownloadCategoriesById = async (id) => {
+  const response = await fetch(`${baseUrl}/downloads/categories/${id}/sub`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const getDownloadFiles = async (id) => {
+  const response = await fetch(`${baseUrl}/downloads/categories/${id}/files`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};

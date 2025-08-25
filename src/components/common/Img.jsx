@@ -3,7 +3,7 @@ import { Skeleton } from '@mui/material';
 import { useState } from 'react';
 import classes from './Img.module.css';
 const Img = ({ src, alt, className }) => {
- const [isLoading, setIsLoading] = useState(true);
+ const [isLoading, setIsLoading] = useState(false);
 
  return (
   <div className={`${classes.img} ${className}`}>

@@ -262,7 +262,7 @@ const Portfolio = ({ windowSize }) => {
                     )}
                   </>
                 ) : (
-                  <p></p>
+                  <div className={classes.notItem}>{t("noPortfolioItem")}</div>
                 )}
               </main>
             </div>

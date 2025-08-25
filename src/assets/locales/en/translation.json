@@ -166,7 +166,7 @@
 
   "signup": {
     "sign_up": "Signup",
-    "state":"State",
+    "state": "State",
     "fname": "First Name",
     "lname": "Last Name",
     "uname": "User Name",
@@ -318,8 +318,8 @@
     "type": "Stone Type",
     "material": "Stone Type",
     "pcs": "PCS",
-    "download_pdf":"Download PDF",
-    "generating_pdf":"Generating PDF"
+    "download_pdf": "Download PDF",
+    "generating_pdf": "Generating PDF"
   },
 
   "continue": "Continue",
@@ -347,9 +347,12 @@
   "apply": "Apply",
   "portfolio": "Portfolio",
   "our_portfolio": "Our portfolio",
+  "noPortfolioItem": "There is no item in the portfolio category yet please come back later.",
+
   "artist": "Artist",
   "idea": "Idea",
   "nickname": "Nickname",
+
   "titles": {
     "home": "Home",
     "shopByColor": "Shop by Color",
@@ -373,11 +376,14 @@
     "filtersColor": "Filter by Color - {{name}}",
     "filtersShape": "Filter by Shape - {{name}}",
     "notFound": "Page Not Found",
-    "information": "Information"
+    "information": "Information",
+    "download_categories": "Download Categories",
+    "download_files": "Download Files",
+    "downloaded": "Downloaded"
   },
   "send": "Send",
-  "notFoundMessage":"We're sorry, but the page you were looking for could not be found. It might have been removed, had its name changed, or is temporarily unavailable.",
+  "notFoundMessage": "We're sorry, but the page you were looking for could not be found. It might have been removed, had its name changed, or is temporarily unavailable.",
   "backToHome": "Return to Homepage",
   "notFoundTitle": "Page Not Found",
-  "filters":"Filters"
+  "filters": "Filters"
 }
