@@ -143,21 +143,20 @@ const FilterByShape = ({ windowSize }) => {
     const firstMatchingSlideIndex = colorData.findIndex(
       (slide) => slide.group_id === groupId
     );
-    console.log(firstMatchingSlideIndex)
     if (sliderRef.current && firstMatchingSlideIndex) {
-      sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
+      sliderRef?.current?.swiper?.slideTo(firstMatchingSlideIndex);
     }
-    if (gridSliderRef?.current && firstMatchingSlideIndex) {
-      if (!isSmallPage) {
-        gridSliderRef?.current.swiper.slideTo(
-          Math.round(firstMatchingSlideIndex / 8)
-        );
-      } else {
-        gridSliderRef?.current.swiper.slideTo(
-          Math.round(firstMatchingSlideIndex / 4)
-        );
-      }
-    }
+    // if (gridSliderRef?.current && firstMatchingSlideIndex) {
+    //   if (!isSmallPage) {
+    //     gridSliderRef?.current.swiper.slideTo(
+    //       Math.round(firstMatchingSlideIndex / 8)
+    //     );
+    //   } else {
+    //     gridSliderRef?.current.swiper.slideTo(
+    //       Math.round(firstMatchingSlideIndex / 4)
+    //     );
+    //   }
+    // }
   };
 
   const handleCheckboxChange = (e, slideId, slide) => {
@@ -233,35 +232,26 @@ const FilterByShape = ({ windowSize }) => {
     return shapesData?.sort((a, b) => a.priority - b.priority);
   }, [shapesData]);
 
-  const handleShapeClick = async (e, id) => {
-    setSelectedSizesObject([]);
-    setSelectedIds([]);
-    setChunkedData([]);
-    setTableData([]);
-    setIsTableDataLoading(true);
-    setIsLoading(true);
-    setIsLoadingSizes(true);
-    try {
-      //   const allProductsRes = await getPaginatedProductsByShape(
-      //     id,
-      //     page,
-      //     ItemsPerPage,
-      //   );
-      //   if (allProductsRes.response.ok) {
-      //
-      //     setProductDetails(allProductsRes.result.data.products.data);
-      //     setLastPage(allProductsRes.result.data.products.last_page);
-      //     setPage(allProductsRes.result.data.products.current_page);
-      //
-      //   }
-    } catch (error) {
-      if (error.name !== "AbortError") {
-        console.error("Fetch error:", error);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ const handleShapeClick = async (e, id) => {
+   if (abortControllerRef.current) {
+     abortControllerRef.current.abort();
+   }
+  //  if (dataAbortRef.current) {
+  //    dataAbortRef.current.abort();
+  //  }
+
+   abortControllerRef.current = new AbortController();
+   dataAbortRef.current = new AbortController();
+
+   setSelectedSizesObject([]);
+   setSelectedIds([]);
+   setChunkedData([]);
+   setTableData([]);
+   setIsTableDataLoading(true);
+   setIsLoading(true);
+   setIsLoadingSizes(true);
+   setShapeFormEntries(id); 
+ };
 
   useEffect(() => {
     if (selectedIds.length > 0) {
@@ -336,11 +326,14 @@ const FilterByShape = ({ windowSize }) => {
 
   useEffect(() => {
     if (shapeFormEntries) {
-      dataAbortRef.current.abort();
-      dataAbortRef.current = new AbortController();
-      getInitialSizes(shapeFormEntries, {
-        signal: dataAbortRef.current.signal,
-      });
+      try {
+     
+        getInitialSizes(shapeFormEntries, {
+          signal: dataAbortRef.current.signal,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [shapeFormEntries]);
 
@@ -528,7 +521,6 @@ const FilterByShape = ({ windowSize }) => {
                             description={elem.description}
                             onClick={(e) => {
                               handleShapeClick(e, elem.id);
-                              setShapeFormEntries(elem.id);
                             }}
                             isSelected={shapeFormEntries}
                           />

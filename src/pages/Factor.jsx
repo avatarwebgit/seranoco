@@ -281,10 +281,10 @@ const FactorFooter = React.memo(({ t }) => {
       <tr>
         <td colSpan="7" className={classes.signatureColumn}>
           <p>{t("factor.Buyers_Stamp_and_Signature")}</p>
-          <img src={stamp} alt="" width={100} height={100} />
         </td>
         <td colSpan="6" className={classes.signatureColumn}>
           <p>{t("factor.Shops_Stamp_and_Signature")}</p>
+          <img src={stamp} alt="" width={100} height={100} />
         </td>
       </tr>
     </tfoot>
