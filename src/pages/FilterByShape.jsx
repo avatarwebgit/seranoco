@@ -232,26 +232,23 @@ const FilterByShape = ({ windowSize }) => {
     return shapesData?.sort((a, b) => a.priority - b.priority);
   }, [shapesData]);
 
- const handleShapeClick = async (e, id) => {
-   if (abortControllerRef.current) {
-     abortControllerRef.current.abort();
-   }
-  //  if (dataAbortRef.current) {
-  //    dataAbortRef.current.abort();
-  //  }
+  const handleShapeClick = async (e, id) => {
+    setSelectedSizesObject([]);
+    setSelectedIds([]);
+    setChunkedData([]);
+    setTableData([]);
+    setShapeFormEntries(id);
+    setIsTableDataLoading(true);
 
-   abortControllerRef.current = new AbortController();
-   dataAbortRef.current = new AbortController();
-
-   setSelectedSizesObject([]);
-   setSelectedIds([]);
-   setChunkedData([]);
-   setTableData([]);
-   setIsTableDataLoading(true);
-   setIsLoading(true);
-   setIsLoadingSizes(true);
-   setShapeFormEntries(id); 
- };
+    try {
+      await getInitialSizes(id);
+      await handleFetchTableData(id, [], 1, 1000);
+    } catch (error) {
+      if (error.name !== "AbortError") console.error(error);
+    } finally {
+      setIsTableDataLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (selectedIds.length > 0) {
@@ -327,7 +324,6 @@ const FilterByShape = ({ windowSize }) => {
   useEffect(() => {
     if (shapeFormEntries) {
       try {
-     
         getInitialSizes(shapeFormEntries, {
           signal: dataAbortRef.current.signal,
         });
@@ -426,30 +422,28 @@ const FilterByShape = ({ windowSize }) => {
     scrollToTarget(productsWrapperRef);
   };
 
-  const handleFetchTableData = async (
-    shpaId,
-    colorIds,
-    page,
-    per_page,
-    signal
-  ) => {
-    abortControllerRef.current.abort();
-    abortControllerRef.current = new AbortController();
+  const handleFetchTableData = async (shapeId, colorIds, page, per_page) => {
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     setIsTableDataLoading(true);
+
     try {
       const serverRes = await getProductsByShape(
-        shpaId,
+        shapeId,
         colorIds,
         page,
         per_page,
-        { signal: abortControllerRef.current.signal }
+        { signal: controller.signal }
       );
 
       if (serverRes.response.ok) {
         setRawTableData(serverRes.result.data);
       }
     } catch (error) {
-      // console.error('Error fetching products: ', error);
+      if (error.name !== "AbortError") {
+        console.error("Fetch table error:", error);
+      }
     } finally {
       setIsTableDataLoading(false);
     }
