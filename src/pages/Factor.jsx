@@ -206,7 +206,7 @@ const FactorSummory = React.memo(
                 </>
               ) : (
                 <>
-                  {Math.round(detailsData.order.total_amount * 10) / 10}{" "}
+                  {Math.round(detailsData.order.total_amount * 10) / 10}
                   {t("m_unit")}
                 </>
               )}
@@ -216,10 +216,9 @@ const FactorSummory = React.memo(
         <tr className={classes.summaryRow}>
           <td colSpan="5"></td>
 
-          <td colSpan="1" className={classes.summaryLabel}>
-            {t("factor.club")}
-          </td>
-          <td colSpan="6"></td>
+          <td colSpan="1" className={classes.summaryLabel}></td>
+          <td colSpan="4"> </td>
+          <td colSpan="2"> {t("factor.club")}</td>
           <td className={classes.summaryValue}>
             {lng === "fa" ? detailsData.wallet_fa : detailsData.wallet_en}
             &nbsp;{t("m_unit")}
@@ -228,10 +227,9 @@ const FactorSummory = React.memo(
         <tr className={classes.summaryRow}>
           <td colSpan="5"></td>
 
-          <td colSpan="1" className={classes.summaryLabel}>
-            {t("factor.shipping")}
-          </td>
-          <td colSpan="6"></td>
+          <td colSpan="1" className={classes.summaryLabel}></td>
+          <td colSpan="4"></td>
+          <td colSpan="2"> {t("factor.shipping")}</td>
           <td className={classes.summaryValue}>{shippingCost}</td>
         </tr>
         <tr className={classes.summaryRow}>
@@ -241,10 +239,9 @@ const FactorSummory = React.memo(
             colSpan="1"
             className={classes.summaryLabel}
             style={{ fontWeight: "bold" }}
-          >
-            {t("orders.total_payment")}
-          </td>
-          <td colSpan="6"></td>
+          ></td>
+          <td colSpan="4"></td>
+          <td colSpan="2">{t("orders.total_payment")}</td>
 
           <td className={classes.summaryValue}>
             <strong>
@@ -279,12 +276,12 @@ const FactorFooter = React.memo(({ t }) => {
   return (
     <tfoot className={`${classes.invoiceFooterContainer} print-fo`}>
       <tr>
-        <td colSpan="7" className={classes.signatureColumn}>
-          <p>{t("factor.Buyers_Stamp_and_Signature")}</p>
-        </td>
         <td colSpan="6" className={classes.signatureColumn}>
           <p>{t("factor.Shops_Stamp_and_Signature")}</p>
           <img src={stamp} alt="" width={100} height={100} />
+        </td>
+        <td colSpan="7" className={classes.signatureColumn}>
+          <p>{t("factor.Buyers_Stamp_and_Signature")}</p>
         </td>
       </tr>
     </tfoot>

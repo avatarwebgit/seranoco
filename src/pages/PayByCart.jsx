@@ -18,10 +18,7 @@ import Calendar from "react-calendar/dist/cjs/Calendar.js";
 
 import { formatNumber, notify } from "../utils/helperFunctions";
 
-import {
-      ArrowBackIosNew,
-      Send
-} from "@mui/icons-material";
+import { ArrowBackIosNew, Send } from "@mui/icons-material";
 import { nanoid } from "nanoid";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { sendcardPaymentData } from "../services/api";
@@ -363,8 +360,8 @@ const PayByCart = ({ widnowSize }) => {
                   type="submit"
                   endIcon={
                     <Send
-                      sx={{ rotate: "-45deg", mt: "-5px" }}
-                      fontSize="10px"
+                      sx={{ rotate: "-45deg", mt: "-5px", ml: "8px" }}
+                      fontSize="15px"
                     />
                   }
                   sx={{
@@ -384,7 +381,9 @@ const PayByCart = ({ widnowSize }) => {
                   to={`/${lng}/precheckout`}
                 >
                   بازگشت به سبد خرید
-                  <ArrowBackIosNew fontSize="8px" />
+                  <ArrowBackIosNew
+                    sx={{ fontSize: "15px", mx: "10px", mr: 0 }}
+                  />
                 </Link>
               </div>
             </div>
