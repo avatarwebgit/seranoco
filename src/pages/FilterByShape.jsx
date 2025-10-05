@@ -55,6 +55,7 @@ import "swiper/css/scrollbar";
 import "../styles/carousel.css";
 
 import classes from "./FilterByShape.module.css";
+
 const FilterByShape = ({ windowSize }) => {
   const { data: shapesData, isLoading: isLoadingShapes, isError } = useShapes();
   const { data: fetchedColorData, isLoading: isLoadingColors } = useColors();
@@ -95,6 +96,8 @@ const FilterByShape = ({ windowSize }) => {
   const productsWrapperRef = useRef();
   const abortControllerRef = useRef(new AbortController());
   const dataAbortRef = useRef(new AbortController());
+  // Add dedicated abort controller for table data requests
+  const tableDataAbortRef = useRef(new AbortController());
 
   const { t } = useTranslation();
 
@@ -146,17 +149,6 @@ const FilterByShape = ({ windowSize }) => {
     if (sliderRef.current && firstMatchingSlideIndex) {
       sliderRef?.current?.swiper?.slideTo(firstMatchingSlideIndex);
     }
-    // if (gridSliderRef?.current && firstMatchingSlideIndex) {
-    //   if (!isSmallPage) {
-    //     gridSliderRef?.current.swiper.slideTo(
-    //       Math.round(firstMatchingSlideIndex / 8)
-    //     );
-    //   } else {
-    //     gridSliderRef?.current.swiper.slideTo(
-    //       Math.round(firstMatchingSlideIndex / 4)
-    //     );
-    //   }
-    // }
   };
 
   const handleCheckboxChange = (e, slideId, slide) => {
@@ -233,6 +225,10 @@ const FilterByShape = ({ windowSize }) => {
   }, [shapesData]);
 
   const handleShapeClick = async (e, id) => {
+    // Cancel any ongoing table data requests
+    tableDataAbortRef.current.abort();
+    tableDataAbortRef.current = new AbortController();
+
     setSelectedSizesObject([]);
     setSelectedIds([]);
     setChunkedData([]);
@@ -242,7 +238,9 @@ const FilterByShape = ({ windowSize }) => {
 
     try {
       await getInitialSizes(id);
-      await handleFetchTableData(id, [], 1, 1000);
+      await handleFetchTableData(id, [], 1, 1000, {
+        signal: tableDataAbortRef.current.signal,
+      });
     } catch (error) {
       if (error.name !== "AbortError") console.error(error);
     } finally {
@@ -334,11 +332,17 @@ const FilterByShape = ({ windowSize }) => {
   }, [shapeFormEntries]);
 
   useEffect(() => {
+    // Cancel previous table data request when selectedIds change
+    tableDataAbortRef.current.abort();
+    tableDataAbortRef.current = new AbortController();
+
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
+
     handleFetchTableData(shapeFormEntries, selectedIds, 1, 1000, {
-      signal: abortControllerRef.current.signal,
+      signal: tableDataAbortRef.current.signal,
     });
+
     const getSizes = async () => {
       const serverRes = await getFilteredSizes(
         selectedIds,
@@ -422,10 +426,13 @@ const FilterByShape = ({ windowSize }) => {
     scrollToTarget(productsWrapperRef);
   };
 
-  const handleFetchTableData = async (shapeId, colorIds, page, per_page) => {
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
+  const handleFetchTableData = async (
+    shapeId,
+    colorIds,
+    page,
+    per_page,
+    options = {}
+  ) => {
     setIsTableDataLoading(true);
 
     try {
@@ -434,7 +441,7 @@ const FilterByShape = ({ windowSize }) => {
         colorIds,
         page,
         per_page,
-        { signal: controller.signal }
+        options
       );
 
       if (serverRes.response.ok) {
