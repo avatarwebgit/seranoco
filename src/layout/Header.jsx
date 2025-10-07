@@ -370,10 +370,18 @@ const Header = ({ windowSize }) => {
 
                 return (
                   <div className={classes.header_btn_wrapper} key={nanoid()}>
+                    {console.log(elem)}
                     {elem.url ? (
                       <Link
                         className={classes.header_btn}
-                        style={{ color: isHomePage ? "#000000" : "#ffffff" }}
+                        style={{
+                          color:
+                            elem.label === "SALE"
+                              ? "#D32F2F"
+                              : isHomePage
+                              ? "#000000"
+                              : "#ffffff",
+                        }}
                         target={"_blank"}
                         href={elem.url}
                         to={elem.url}

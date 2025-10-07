@@ -468,6 +468,7 @@ const Factor = () => {
         setIsGeneratingPdf(false);
       });
   };
+
   if (!detailsData) {
     return (
       <div className={classes.loader_wrapper}>

@@ -68,6 +68,7 @@ const FilterLinks = ({ className }) => {
               href={"new-products"}
             />
             {linkData.map((elem) => {
+              console.log(elem)
               return (
                 <Link
                   href={
