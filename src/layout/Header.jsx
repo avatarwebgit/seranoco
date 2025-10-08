@@ -370,7 +370,6 @@ const Header = ({ windowSize }) => {
 
                 return (
                   <div className={classes.header_btn_wrapper} key={nanoid()}>
-                    {console.log(elem)}
                     {elem.url ? (
                       <Link
                         className={classes.header_btn}

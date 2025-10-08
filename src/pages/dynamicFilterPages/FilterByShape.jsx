@@ -67,10 +67,9 @@ const FilterByShape = ({ windowSize }) => {
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [currentActiveGroupColor, setCurrentActiveGroupColor] = useState(null);
-  const [sortedColors, setSortedColors] = useState([]);
-  const [sortedGroupColors, setSortedGroupColors] = useState([]);
   const [isSmallPage, setIsSmallPage] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(5);
+  const [swiperKey, setSwiperKey] = useState(0); // Add key to force Swiper remount
 
   const [tableData, setTableData] = useState([]);
   const [chunkedData, setChunkedData] = useState([]);
@@ -115,13 +114,11 @@ const FilterByShape = ({ windowSize }) => {
     setDimensionEntries(formEntries);
 
     if (formEntries[elem.id]) {
-      // Checked
       setSelectedSizesObject((prev) => {
         if (prev.find((p) => p.id === elem.id)) return prev;
         return [...prev, elem];
       });
     } else {
-      // Unchecked
       setSelectedSizesObject((prev) => prev.filter((p) => p.id !== elem.id));
     }
   };
@@ -151,7 +148,6 @@ const FilterByShape = ({ windowSize }) => {
     setProductDetails([]);
     dispatch(productDetailActions.reset());
     scrollToTarget(formRef, 200);
-    // Additions:
     setSelectedSizesObject([]);
     setTableData([]);
     setChunkedData([]);
@@ -159,10 +155,38 @@ const FilterByShape = ({ windowSize }) => {
 
   const handleShapeClick = (e, id) => {
     setShapeFormEntries(id);
-    // Reset other filters when shape changes for a clean slate
     setDimensionEntries({});
     setSelectedIds([]);
   };
+
+  // FIXED: Use useMemo for sorted data instead of useEffect
+  const sortedGroupColors = useMemo(() => {
+    if (!groupColors || groupColors.length === 0) return [];
+    return [...groupColors].sort((a, b) => a.priority - b.priority);
+  }, [groupColors]);
+
+  const sortedColors = useMemo(() => {
+    if (!colorData || colorData.length === 0 || sortedGroupColors.length === 0)
+      return [];
+
+    return [...colorData].sort((a, b) => {
+      const groupA = sortedGroupColors.find((group) => group.id === a.group_id);
+      const groupB = sortedGroupColors.find((group) => group.id === b.group_id);
+
+      if (!groupA || !groupB) return 0;
+
+      if (groupA.priority === groupB.priority) {
+        return a.priority - b.priority;
+      }
+
+      return groupA.priority - groupB.priority;
+    });
+  }, [colorData, sortedGroupColors]);
+
+  // Force Swiper to remount when colors change
+  useEffect(() => {
+    setSwiperKey((prev) => prev + 1);
+  }, [sortedColors, sortedGroupColors]);
 
   // Initial data load
   useEffect(() => {
@@ -206,38 +230,12 @@ const FilterByShape = ({ windowSize }) => {
     return () => controller.abort();
   }, [categoryId, dispatch, t]);
 
-  // Sort colors and groups whenever they are updated
-  useEffect(() => {
-    if (colorData && groupColors) {
-      const sortedGroupColorsP = groupColors.sort(
-        (a, b) => a.priority - b.priority
-      );
-      setSortedGroupColors(sortedGroupColorsP);
-      setSortedColors(
-        colorData.sort((a, b) => {
-          const groupA = sortedGroupColorsP.find(
-            (group) => group.id === a.group_id
-          );
-          const groupB = sortedGroupColorsP.find(
-            (group) => group.id === b.group_id
-          );
-
-          if (groupA.priority === groupB.priority) {
-            return a.priority - b.priority;
-          }
-
-          return groupA.priority - b.priority;
-        })
-      );
-    }
-  }, [groupColors, colorData]);
-
   // Set initial active color group
   useEffect(() => {
     if (sortedGroupColors.length > 0 && currentActiveGroupColor === null) {
-      handleThumbClick(sortedGroupColors[0].id);
+      setCurrentActiveGroupColor(sortedGroupColors[0].id);
     }
-  }, [sortedGroupColors]);
+  }, [sortedGroupColors, currentActiveGroupColor]);
 
   // Central filtering logic
   const applyFilters = useCallback(
@@ -267,13 +265,24 @@ const FilterByShape = ({ windowSize }) => {
           currentPage,
           ItemsPerPage
         );
-
         if (response.ok && result.success) {
+          console.log(result);
           setProductDetails(result.data || []);
           setShapesData(result.shapes || []);
           setColorData(result.colors || []);
           setSizeData(result.sizes || []);
           setGroupColors(result.group_colors || []);
+
+          // Maintain or reset active group color
+          if (result.group_colors && result.group_colors.length > 0) {
+            const stillExists = result.group_colors.find(
+              (g) => g.id === currentActiveGroupColor
+            );
+            if (!stillExists) {
+              setCurrentActiveGroupColor(result.group_colors[0].id);
+            }
+          }
+
           setLastPage(result.pagination?.last_page || 1);
           setPage(result.pagination?.current_page || 1);
           setError(null);
@@ -289,10 +298,16 @@ const FilterByShape = ({ windowSize }) => {
         setIsFilteredProductsLoading(false);
       }
     },
-    [categoryId, selectedIds, shapeFormEntries, dimensionEntries, ItemsPerPage]
+    [
+      categoryId,
+      selectedIds,
+      shapeFormEntries,
+      dimensionEntries,
+      ItemsPerPage,
+      currentActiveGroupColor,
+    ]
   );
 
-  // Effect to trigger filtering when selections change
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -301,7 +316,6 @@ const FilterByShape = ({ windowSize }) => {
     applyFilters(1);
   }, [shapeFormEntries, selectedIds, dimensionEntries, applyFilters]);
 
-  // Pagination handler
   const handlePaginationChange = (e, value) => {
     applyFilters(value);
     scrollToTarget(productsWrapperRef);
@@ -355,7 +369,7 @@ const FilterByShape = ({ windowSize }) => {
     if (shapeFormEntries) {
       handleFetchTableData(shapeFormEntries, selectedIds, 1, 1000);
     } else {
-      setTableData([]); // Clear table if shape is deselected (e.g., via reset)
+      setTableData([]);
     }
   }, [shapeFormEntries, selectedIds]);
 
@@ -448,13 +462,13 @@ const FilterByShape = ({ windowSize }) => {
           </Card>
         )}
 
-        {shapeFormEntries && (
+        {shapeFormEntries && sortedColors.length > 0 && (
           <>
             <Divider text={"Colors"} />
             <Card
               className={`${classes.size_wrapper} ${classes.colors_wrapper}`}
             >
-              {colorData?.length > 9 && (
+              {sortedColors.length > 9 && (
                 <>
                   <button
                     className={classes.prev_btn}
@@ -472,17 +486,17 @@ const FilterByShape = ({ windowSize }) => {
                   </button>
                 </>
               )}
-              {colorData.length > 0 && (
+              {sortedColors.length > 0 && (
                 <div
                   className={classes.total_color}
                   dir={lng === "fa" ? "rtl" : "ltr"}
                 >
-                  {t("alvailable_colors", { count: colorData.length })}
+                  {t("alvailable_colors", { count: sortedColors.length })}
                 </div>
               )}
-              <Divider className={classes.color_divider} text={t("colors")} />
 
               <Swiper
+                key={swiperKey}
                 modules={[Navigation, Thumbs, Pagination]}
                 className={classes.swiper}
                 spaceBetween={isSmallPage ? 5 : 8}
@@ -496,7 +510,7 @@ const FilterByShape = ({ windowSize }) => {
                 }}
               >
                 {sortedColors.map((slide, index) => (
-                  <SwiperSlide key={index} className={classes.slide}>
+                  <SwiperSlide key={slide.id} className={classes.slide}>
                     <div>
                       <label
                         htmlFor={slide.id}
@@ -534,7 +548,7 @@ const FilterByShape = ({ windowSize }) => {
               <div className={classes.thumbnail_container}>
                 {sortedGroupColors.map((slide, index) => (
                   <div
-                    key={index}
+                    key={slide.id}
                     className={`${classes.thumbnail} ${
                       currentActiveGroupColor === slide.id &&
                       classes.thumbnail_active

@@ -543,23 +543,28 @@ const FilterCategory = ({ windowSize }) => {
 
         <Card className={classes.multi_select_wrapper}>
           <form ref={formRef} className={classes.grid_form}>
-            {shapesData &&
-              shapesData
-                .sort((a, b) => a.priority - b.priority)
-                .map((elem, i) => (
-                  <div key={elem.id}>
-                    {elem.image && (
-                      <CustomSelect
-                        title={`${i}`}
-                        src={elem.image}
-                        id={elem.id}
-                        description={elem.description}
-                        onClick={(e) => handleShapeClick(e, elem.id)}
-                        isSelected={shapeFormEntries}
-                      />
-                    )}
-                  </div>
-                ))}
+            {shapesData.length > 0 ? (
+              <>
+                {shapesData
+                  .sort((a, b) => a.priority - b.priority)
+                  .map((elem, i) => (
+                    <div key={elem.id}>
+                      {elem.image && (
+                        <CustomSelect
+                          title={`${i}`}
+                          src={elem.image}
+                          id={elem.id}
+                          description={elem.description}
+                          onClick={(e) => handleShapeClick(e, elem.id)}
+                          isSelected={shapeFormEntries}
+                        />
+                      )}
+                    </div>
+                  ))}
+              </>
+            ) : (
+              <p>{t("no_shape")}</p>
+            )}
           </form>
         </Card>
 

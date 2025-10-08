@@ -35,13 +35,13 @@ const FilterLinks = ({ className }) => {
   }, []);
 
   const handleReturnRoute = (filterType, alias) => {
-    switch (filterType) {
+    switch (String(filterType)) {
       case "color":
         return `special/${alias}`;
       case "shape":
-        return `filters/color/${alias}`;
-      case "size":
         return `filters/shape/${alias}`;
+      case "size":
+        return `filters/color/${alias}`;
       default:
         return;
     }
@@ -68,7 +68,6 @@ const FilterLinks = ({ className }) => {
               href={"new-products"}
             />
             {linkData.map((elem) => {
-              console.log(elem)
               return (
                 <Link
                   href={

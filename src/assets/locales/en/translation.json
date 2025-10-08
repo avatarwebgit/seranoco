@@ -16,7 +16,8 @@
   "caption": "Description",
 
   "seranoco": "Seranoco",
-
+  "no_colors":"No colors please select other shapes",
+  "no_shapes":"No shapes please select other colors",
   "shop_now": "SHOP NOW",
   "login": "Login",
   "home": "Home",
