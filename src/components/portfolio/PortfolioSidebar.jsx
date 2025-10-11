@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
-import classes from "./PortfolioSidebar.module.css";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import classes from "./PortfolioSidebar.module.css";
 
 const isAncestorOfActive = (item, activeFilterName) => {
   if (!item.children || item.children.length === 0) {
@@ -41,6 +42,7 @@ const PortfolioSidebar = ({
 }) => {
   const [openCategories, setOpenCategories] = useState({});
   const lng = useSelector((state) => state.localeStore.lng);
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -146,7 +148,7 @@ const PortfolioSidebar = ({
               isActive || isParentOfActive ? classes.active : ""
             }`}
           >
-            {item.title}
+            {lng === "fa" ? item.title_fa : item.title}
           </a>
           {hasSubCategories && (
             <button
@@ -189,7 +191,7 @@ const PortfolioSidebar = ({
       className={`${classes.sidebar} ${isPlain ? classes.plain : ""}`}
       dir={lng === "fa" ? "rtl" : "ltr"}
     >
-      <h2 className={classes.sidebarTitle}>Categories</h2>
+      <h2 className={classes.sidebarTitle}>{t("portfolio")}</h2>
       <nav>
         <ul className={classes.menu}>
           {categories.map((category) => renderMenuItem(category))}

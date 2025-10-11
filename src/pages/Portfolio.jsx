@@ -21,47 +21,6 @@ import {
 } from "../services/api";
 import classes from "./Portfolio.module.css";
 
-const mockCategoriesData = [
-  {
-    id: 1,
-    name: "Interior Design",
-    subCategories: [
-      {
-        id: 11,
-        name: "Residential",
-        subCategories: [
-          { id: 111, name: "Kitchens" },
-          { id: 112, name: "Living Rooms" },
-        ],
-      },
-      {
-        id: 12,
-        name: "Commercial",
-        subCategories: [
-          { id: 121, name: "Offices" },
-          { id: 122, name: "Retail Spaces" },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Architecture",
-    subCategories: [
-      { id: 21, name: "Modern" },
-      { id: 22, name: "Classic" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Branding",
-  },
-  {
-    id: 4,
-    name: "Web Development",
-  },
-];
-
 const Portfolio = ({ windowSize }) => {
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get("category");
@@ -85,7 +44,6 @@ const Portfolio = ({ windowSize }) => {
       try {
         const isFa = i18n.language === "fa";
 
-        // First, always fetch categories
         const categoriesRes = await getPorlfolioCategories();
         const rawCategories = categoriesRes.result;
 
@@ -107,14 +65,11 @@ const Portfolio = ({ windowSize }) => {
         setCategories(categoryTree);
         setActiveFilter(allCategoryString);
 
-        // Now fetch portfolios based on categoryId
         let rawPortfolios;
         if (categoryId) {
-          // Fetch portfolios by specific category
           const portfolioRes = await getPortfoliosByCategory(categoryId);
           rawPortfolios = portfolioRes.result;
-
-          // Set active filter to the selected category
+          console.log(rawPortfolios);
           const selectedCategory = processedCategories.find(
             (cat) => cat.id === parseInt(categoryId)
           );
@@ -122,13 +77,11 @@ const Portfolio = ({ windowSize }) => {
             setActiveFilter(selectedCategory.name);
           }
         } else {
-          // Fetch all portfolios
           const portfolioRes = await getPorlfolios();
           rawPortfolios = portfolioRes.result;
           setActiveFilter(allCategoryString);
         }
 
-        // Process the portfolios
         const processedPortfolios = rawPortfolios.map((item) => ({
           id: item.id,
           slug: item.alias,
@@ -137,7 +90,6 @@ const Portfolio = ({ windowSize }) => {
           category_id: item.category_id,
           category: categoryNameMap.get(item.category_id) || "Uncategorized",
         }));
-
         setPortfolioItems(processedPortfolios);
       } catch (error) {
         console.error("Failed to fetch portfolio data:", error);
@@ -201,7 +153,6 @@ const Portfolio = ({ windowSize }) => {
             dir={lng === "fa" ? "rtl" : "ltr"}
           >
             <div className={classes.contentWrapper}>
-              {/* --- Sticky Sidebar for Desktop --- */}
               <div className={classes.sidebarWrapper}>
                 <PortfolioSidebar
                   categories={categories}
@@ -224,46 +175,32 @@ const Portfolio = ({ windowSize }) => {
                     <span>{t("filters", "Filters")}</span>
                   </button>
                 </div>
+                {useEffect(() => {
+                  console.log(portfolioItems, loading);
+                }, [portfolioItems, loading])}
 
-                {portfolioItems.length > 0 ? (
-                  <>
-                    {loading ? (
-                      <div className={classes.portfolioGrid}>
-                        {[...Array(6)].map((_, index) => (
-                          <Skeleton
-                            key={index}
-                            variant="rectangular"
-                            className={classes.portfolioCardSkeleton}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className={classes.portfolioGrid}>
-                        {filteredItems.map((item) => (
-                          <Link
-                            to={`/${lng}/portfolio/${item.slug}`}
-                            key={item.id}
-                            className={classes.portfolioCard}
-                            target="_blank"
-                          >
-                            <img
-                              src={item.images[0]}
-                              alt={item.title}
-                              className={classes.cardImage}
-                            />
-                            <div className={classes.cardOverlay}>
-                              <h3 className={classes.cardTitle}>
-                                {item.title}
-                              </h3>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className={classes.notItem}>{t("noPortfolioItem")}</div>
-                )}
+                <div className={classes.portfolioGrid}>
+                  {portfolioItems.map((item) => {
+                    console.log(item);
+                    return (
+                      <Link
+                        to={`/${lng}/portfolio/${item.slug}`}
+                        key={item.id}
+                        className={classes.portfolioCard}
+                        target="_blank"
+                      >
+                        <img
+                          src={item.images[0]}
+                          alt={item.title}
+                          className={classes.cardImage}
+                        />
+                        <div className={classes.cardOverlay}>
+                          <h3 className={classes.cardTitle}>{item.title}</h3>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               </main>
             </div>
           </div>
@@ -271,7 +208,6 @@ const Portfolio = ({ windowSize }) => {
       </Body>
       <Footer windowSize={windowSize} />
 
-      {/* --- Mobile Sidebar --- */}
       <div
         className={`${classes.mobileSidebarOverlay} ${
           isMobileSidebarOpen ? classes.open : ""
