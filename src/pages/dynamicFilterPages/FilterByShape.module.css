@@ -13,6 +13,10 @@
   /* margin-top: 3rem !important; */
 }
 
+.loading_body {
+  margin-top: 2rem;
+}
+
 .grid_form {
   display: flex;
   flex-wrap: wrap;
@@ -196,7 +200,6 @@
   font-size: 0.5rem;
   padding: 1rem 2.5rem;
 }
-
 
 .color_divider {
   margin-top: 0;

@@ -392,7 +392,7 @@ const FilterByShape = ({ windowSize }) => {
       <div className={classes.main}>
         <BannerCarousel />
         <Header windowSize={windowSize} />
-        <Body>
+        <Body className={classes.loading_body}>
           <LoadingSpinner />
         </Body>
         <Footer />
@@ -596,7 +596,7 @@ const FilterByShape = ({ windowSize }) => {
               </button>
             </Card>
 
-            <Card className={classes.size_wrapper}>
+            {/* <Card className={classes.size_wrapper}>
               {chunkedData.length > 1 && (
                 <>
                   <button
@@ -643,7 +643,7 @@ const FilterByShape = ({ windowSize }) => {
                   })}
                 </Swiper>
               )}
-            </Card>
+            </Card> */}
 
             <Card
               className={classes.products_result_wrapper}
@@ -658,7 +658,7 @@ const FilterByShape = ({ windowSize }) => {
                 }}
               >
                 <InputLabel
-                  sx={{ fontSize: ".8rem" }}
+                  sx={{ fontSize: ".6rem" }}
                   id="items-per-page-label"
                 >
                   {t("items_per_page")}
