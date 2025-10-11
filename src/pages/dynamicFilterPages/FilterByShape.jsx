@@ -268,12 +268,11 @@ const FilterByShape = ({ windowSize }) => {
         if (response.ok && result.success) {
           console.log(result);
           setProductDetails(result.data || []);
-          setShapesData(result.shapes || []);
+          // setShapesData(result.shapes || []);
           setColorData(result.colors || []);
           setSizeData(result.sizes || []);
           setGroupColors(result.group_colors || []);
 
-          // Maintain or reset active group color
           if (result.group_colors && result.group_colors.length > 0) {
             const stillExists = result.group_colors.find(
               (g) => g.id === currentActiveGroupColor

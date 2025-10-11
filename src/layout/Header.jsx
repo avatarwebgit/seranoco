@@ -375,7 +375,7 @@ const Header = ({ windowSize }) => {
                         className={classes.header_btn}
                         style={{
                           color:
-                            elem.label === "SALE"
+                            i === 0
                               ? "#D32F2F"
                               : isHomePage
                               ? "#000000"
