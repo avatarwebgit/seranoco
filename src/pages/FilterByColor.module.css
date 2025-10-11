@@ -1,5 +1,6 @@
 .main {
   height: fit-content;
+  min-height: 100vh;
 }
 .divider_start {
   /* margin-top: 8rem; */
@@ -213,6 +214,10 @@
 .color_divider {
   margin-top: 0;
   width: 90%;
+}
+
+.loading_body {
+  margin-top: 2rem;
 }
 
 @media only screen and (max-width: 480px) {

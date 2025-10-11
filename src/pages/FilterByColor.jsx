@@ -416,6 +416,20 @@ const FilterByShape = ({ windowSize }) => {
     }
   }, [memoizedTableData]);
 
+  
+    if (isLoadingColors) {
+      return (
+        <div className={classes.main}>
+          <BannerCarousel />
+          <Header windowSize={windowSize} />
+          <Body className={classes.loading_body}>
+            <LoadingSpinner />
+          </Body>
+          <Footer />
+        </div>
+      );
+    }
+
   return (
     <div className={classes.main}>
       <BannerCarousel />

@@ -266,7 +266,6 @@ const FilterByShape = ({ windowSize }) => {
           ItemsPerPage
         );
         if (response.ok && result.success) {
-          console.log(result);
           setProductDetails(result.data || []);
           // setShapesData(result.shapes || []);
           setColorData(result.colors || []);
@@ -381,11 +380,19 @@ const FilterByShape = ({ windowSize }) => {
     }
   }, [tableData]);
 
-  const memoizedShapeData = useMemo(
-    () => shapesData?.sort((a, b) => a.priority - b.priority),
-    [shapesData]
-  );
+  const memoizedShapeData = useMemo(() => {
+    if (!shapesData) return [];
+    const sorted = [...shapesData].sort((a, b) => a.priority - b.priority);
+    return sorted;
+  }, [shapesData]);
+
   const memoizedProducts = useMemo(() => productDetails, [productDetails]);
+
+  useEffect(() => {
+    if (memoizedShapeData && memoizedShapeData.length > 0) {
+      handleShapeClick(null, memoizedShapeData.at(0).id);
+    }
+  }, [memoizedShapeData]);
 
   if (isLoading) {
     return (
