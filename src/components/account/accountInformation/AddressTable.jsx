@@ -17,6 +17,7 @@ import {
   addAddress,
   getCitiesByState,
   getStatesByCountry,
+  useUser,
 } from "../../../services/api";
 import classes from "./AddressTable.module.css";
 const AddressTable = ({ formData, refetch }) => {
@@ -104,7 +105,7 @@ const AddressTable = ({ formData, refetch }) => {
 
   useEffect(() => {
     if (parsedData) {
-      getStates(parsedData.Country.id);
+      getStates(parsedData?.Country?.id);
       setphoneCode(98);
     }
 
@@ -271,7 +272,7 @@ const AddressTable = ({ formData, refetch }) => {
                     <InputAdornment position="start">
                       {parsedData && parsedData.length !== 0 && (
                         <Flag
-                          code={parsedData.Country.iso2}
+                          code={parsedData?.Country?.iso2 || "IR"}
                           style={{ width: "20px", height: "auto" }}
                         />
                       )}
