@@ -17,6 +17,7 @@ import { verifyOTP } from "../../services/api";
 import { notify } from "../../utils/helperFunctions";
 import classes from "./OTP.module.css";
 const OTP = () => {
+  console.log("otp");
   const [signupValues, setSignupValues] = useState(null);
   const [otpValue, setOtpValue] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState(0); // Initialize with 0
@@ -32,8 +33,9 @@ const OTP = () => {
     if (e) e.preventDefault();
     const payload = otp || otpValue;
     const code = payload.join("");
-    if (code && signupInfo.phonenumber) {
-      handleVerifyOTP(code, signupInfo.phonenumber);
+    console.log(code, signupInfo.phoneNumber);
+    if (code && signupInfo.phoneNumber) {
+      handleVerifyOTP(code, signupInfo.phoneNumber);
     }
   };
 

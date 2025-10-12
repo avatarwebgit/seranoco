@@ -22,6 +22,8 @@ import classes from "./OTP.module.css";
 const OTP_TIMEOUT_MS = 2 * 60 * 1000;
 
 const OTP = () => {
+    console.log('loginotp');
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const lng = useSelector((state) => state.localeStore.lng);

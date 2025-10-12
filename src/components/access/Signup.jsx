@@ -139,37 +139,33 @@ const Signup = () => {
     return () => controller.abort();
   }, [selectedCountry]);
 
-  // Fetch cities when country changes
-  useEffect(() => {
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
+useEffect(() => {
+  const controller = new AbortController();
+  abortControllerRef.current = controller;
 
-    if (selectedState?.id) {
-      const fetchCities = async () => {
-        try {
-          const serverRes = await getCitiesByState(
-            selectedState.id,
-            controller.signal
-          );
-          if (serverRes.response.ok) {
-            setCityData(serverRes.result.data);
-          }
-        } catch (error) {
-          if (error.name !== "AbortError") {
-            console.error("Failed to fetch cities:", error);
-          }
+  if (selectedState?.id) {
+    const fetchCities = async () => {
+      try {
+        const serverRes = await getCitiesByState(
+          selectedState.id,
+          controller.signal
+        );
+        if (serverRes.response.ok) {
+          setCityData(serverRes.result.data);
         }
-      };
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Failed to fetch cities:", error);
+        }
+      }
+    };
 
-      fetchCities();
-      setFormValues((prev) => ({
-        ...prev,
-        phoneCode: `+${selectedState.phonecode || ""}`,
-      }));
-    }
+    fetchCities();
+    // Phone code should only come from the country, not the state
+  }
 
-    return () => controller.abort();
-  }, [selectedState]);
+  return () => controller.abort();
+}, [selectedState]);
 
   const handleInputChange = (field) => (e) => {
     setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
