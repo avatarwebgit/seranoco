@@ -279,7 +279,7 @@ const Login = () => {
 
             <div className={classes.oneclick_login_wrapper}>
               <div className={classes.google_login_wrapper}>
-                <GoogleLogin onSuccess={handleGoogleLogin}></GoogleLogin>
+                <GoogleLogin onSuccess={handleGoogleLogin} ></GoogleLogin>
               </div>
               <div
                 className={classes.google_login_wrapper}
