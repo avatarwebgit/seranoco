@@ -369,7 +369,7 @@ const Factor = () => {
       ?.cloneNode(true);
     const footer = originalTable.querySelector("tfoot").cloneNode(true);
 
-    const ROWS_PER_PAGE = 10;
+    const ROWS_PER_PAGE = 15;
     const productRows = Array.from(body.querySelectorAll("tr"));
     const totalPages = Math.ceil(productRows.length / ROWS_PER_PAGE);
 

@@ -15,7 +15,7 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: #333;
   margin: 0 0 1.5rem 0;
   line-height: 1.2;
@@ -70,6 +70,10 @@
 :global(.swiper-button-next),
 :global(.swiper-button-prev) {
   color: #000;
+  height: 100%;
+  width: 100px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .thumbsSwiper :global(.swiper-slide) {
@@ -117,7 +121,7 @@
   line-height: 175%;
 }
 
-.short_description *{
+.short_description * {
   font-size: 16px;
   line-height: 175%;
 }
@@ -176,7 +180,7 @@
   }
 
   .title {
-    text-align: start;
+    text-align: center;
     margin-bottom: 2rem;
   }
 

@@ -11,6 +11,7 @@ const initialState = {
   allAddresses: [],
   selectedAddress: [],
   paymentMethod: "",
+  deliveryMethod: null,
   temporaryCart: JSON.parse(localStorage.getItem("temporaryCart")) || [],
 };
 
@@ -199,6 +200,12 @@ const cartSlice = createSlice({
     },
     setPaymentMethod(state, action) {
       state.paymentMethod = action.payload;
+    },
+    setDeliveryMethod(state, action) {
+      state.deliveryMethod = action.payload;
+    },
+    resetDeliveryMethod(state) {
+      state.deliveryMethod = null;
     },
     setTotalPrice(state, action) {
       state.totalPrice = action.payload;

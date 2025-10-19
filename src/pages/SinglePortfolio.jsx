@@ -1,13 +1,14 @@
 import { Skeleton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import "swiper/css/scrollbar";
+import { FreeMode, Navigation, Scrollbar, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Lightbox from "yet-another-react-lightbox";
@@ -21,8 +22,8 @@ import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 
 import { useSelector } from "react-redux";
-import classes from "./SinglePortfolio.module.css";
 import { getSinglePortfolio } from "../services/api";
+import classes from "./SinglePortfolio.module.css";
 
 const SinglePortfolio = ({ windowSize }) => {
   const { t } = useTranslation();
@@ -30,9 +31,9 @@ const SinglePortfolio = ({ windowSize }) => {
 
   const lng = useSelector((state) => state.localeStore.lng);
 
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [portfolioItem, setPortfolioItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [imagesLoaded, setImagesLoaded] = useState([]);
   const [slidesForLightbox, setslidesForLightbox] = useState([]);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -62,8 +63,7 @@ const SinglePortfolio = ({ windowSize }) => {
 
   useEffect(() => {
     if (portfolioItem) {
-      setImagesLoaded([...portfolioItem.images]);
-      console.log([...portfolioItem.images]);
+      setImagesLoaded(new Array(portfolioItem.images.length).fill(false));
       setslidesForLightbox(portfolioItem.images.map((src) => ({ src })));
     } else {
       setImagesLoaded([]);
@@ -85,6 +85,11 @@ const SinglePortfolio = ({ windowSize }) => {
     setLightboxIndex(index);
     setIsLightboxOpen(true);
   };
+
+  const memoizedImages = useMemo(
+    () => portfolioItem?.images || [],
+    [portfolioItem]
+  );
 
   return (
     <section className={classes.main}>
@@ -178,32 +183,49 @@ const SinglePortfolio = ({ windowSize }) => {
               className={classes.pageContainer}
               dir={lng === "fa" ? "rtl" : "ltr"}
             >
-              <h1 className={classes.title}>{portfolioItem.title}</h1>
+              <h1 className={classes.title}>
+                {lng === "fa" ? portfolioItem.title : portfolioItem.title_en}
+              </h1>
 
               {/* --- GALLERY SECTION --- */}
               <div className={classes.gallerySection}>
                 {/* Thumbnail Swiper */}
                 <div className={classes.thumbnailGallery}>
                   <Swiper
+                    modules={[FreeMode, Navigation, Thumbs, Scrollbar]}
                     onSwiper={setThumbsSwiper}
                     spaceBetween={10}
                     slidesPerView={"auto"}
                     freeMode={true}
                     watchSlidesProgress={true}
-                    modules={[FreeMode, Navigation, Thumbs]}
+                    scrollbar={{
+                      draggable: true,
+                      dragSize: 24,
+                    }}
                     className={classes.thumbsSwiper}
                     breakpoints={{
+                      0: {
+                        direction: "horizontal",
+                        slidesPerView: 3,
+                        scrollbar: {
+                          dragSize: 50,
+                        },
+                      },
                       992: {
                         direction: "vertical",
                         spaceBetween: 15,
                         slidesPerView: 3,
+                        scrollbar: {
+                          dragSize: 24,
+                        },
                       },
                     }}
                   >
-                    {portfolioItem.images.map((image, index) => (
+                    {memoizedImages.map((image, index) => (
                       <SwiperSlide
                         key={index}
                         className={classes.thumbnailSlide}
+                        style={{ position: "relative" }}
                       >
                         {!imagesLoaded[index] && (
                           <Skeleton
@@ -215,6 +237,7 @@ const SinglePortfolio = ({ windowSize }) => {
                               left: 0,
                               width: "100%",
                               height: "100%",
+                              zIndex: 1,
                             }}
                           />
                         )}
@@ -223,11 +246,12 @@ const SinglePortfolio = ({ windowSize }) => {
                           alt={`${portfolioItem.title} thumbnail ${index + 1}`}
                           onLoad={() => handleImageLoad(index)}
                           style={{
-                            visibility: imagesLoaded[index]
-                              ? "visible"
-                              : "hidden",
+                            display: "block",
                             width: "100%",
+                            height: "100%",
                             objectFit: "cover",
+                            opacity: imagesLoaded[index] ? 1 : 0,
+                            transition: "opacity 0.3s ease",
                           }}
                         />
                       </SwiperSlide>
@@ -240,16 +264,17 @@ const SinglePortfolio = ({ windowSize }) => {
                   <Swiper
                     spaceBetween={10}
                     navigation={true}
-                    thumbs={{
-                      swiper:
-                        thumbsSwiper && !thumbsSwiper.destroyed
-                          ? thumbsSwiper
-                          : null,
+                    onSlideChange={(swiper) => {
+                      // Force thumbnail swiper to scroll to active slide
+                      if (thumbsSwiper && !thumbsSwiper.destroyed) {
+                        thumbsSwiper.slideTo(swiper.activeIndex, 300);
+                      }
                     }}
+                    thumbs={{ swiper: thumbsSwiper }}
                     modules={[FreeMode, Navigation, Thumbs]}
                     className={classes.mainSwiper}
                   >
-                    {portfolioItem.images.map((image, index) => (
+                    {memoizedImages.map((image, index) => (
                       <SwiperSlide
                         key={index}
                         onClick={() => openLightbox(index)}
@@ -295,7 +320,7 @@ const SinglePortfolio = ({ windowSize }) => {
                     <strong>{t("information")}</strong>
                   </center>
                   <div
-                  className={classes.short_description}
+                    className={classes.short_description}
                     dangerouslySetInnerHTML={{
                       __html:
                         lng === "fa"

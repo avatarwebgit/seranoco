@@ -1240,3 +1240,15 @@ export const getDownloadFiles = async (id) => {
   const result = await response.json();
   return { response, result };
 };
+
+export const getDeliveryMethods = async () => {
+  const response = await fetch(`${baseUrl}/get/delivery_methods`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};

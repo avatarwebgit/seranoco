@@ -110,6 +110,7 @@
   "code": "Code",
   "load_more": "Load More ...",
   "profile": {
+    "delivery":"Delivery method",
     "update": "Update",
     "update_ok": "Updated account information successfully.",
     "update_err": "Threr was and error updating account information please try again later.",

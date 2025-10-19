@@ -20,6 +20,7 @@ import {
   getCitiesByState,
   getStatesByCountry,
   useAllCountries,
+  getDeliveryMethods,
 } from "../../services/api";
 import { cartActions } from "../../store/store";
 import { notify } from "../../utils/helperFunctions";
@@ -57,6 +58,9 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
   const dispatch = useDispatch();
   const lng = useSelector((state) => state.localeStore.lng);
   const token = useSelector((state) => state.userStore.token);
+  const selectedDeliveryMethod = useSelector(
+    (state) => state.cartStore.deliveryMethod
+  );
   const formRef = useRef();
 
   const {
@@ -73,6 +77,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
     Address: "",
     postalCode: "",
   });
+
   const [selectedState, setSelectedState] = useState(null);
   const [stateData, setStateData] = useState([]);
   const [selectedCity, setSelectedCity] = useState(null);
@@ -80,10 +85,14 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [phoneCode, setPhoneCode] = useState("");
   const [isError, setIsError] = useState(false);
+  const [deliveryMethods, setDeliveryMethods] = useState(null);
+  const [isLoadingDeliveryMethods, setisLoadingDeliveryMethods] =
+    useState(true);
 
   const [addressOptions, setAddressOptions] = useState([]);
   const [isLoadingOptions, setIsLoadingOptions] = useState(true);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   const getStates = async (param) => {
     const serverRes = await getStatesByCountry(param);
@@ -144,13 +153,15 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
     loadAddresses();
   }, [token]);
 
-  // Update selected address in Redux when it changes
+  // Update validation status when address or payment method changes
   useEffect(() => {
-    if (selectedAddress) {
+    if (selectedAddress && selectedDeliveryMethod) {
       dispatch(cartActions.setSelectedAddress(selectedAddress.id));
       isDataValid(true);
+    } else {
+      isDataValid(false);
     }
-  }, [selectedAddress, dispatch, isDataValid]);
+  }, [selectedAddress, selectedDeliveryMethod, dispatch, isDataValid]);
 
   const handleInputChange = (field) => (e) => {
     setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
@@ -239,198 +250,263 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
     );
   };
 
+  const handleGetDeliveryMethods = async () => {
+    try {
+    } catch (error) {
+    } finally {
+    }
+    const { response, result } = await getDeliveryMethods();
+    if (response.ok) {
+      setDeliveryMethods(result.data);
+    }
+  };
+
+  const handleSetSeletedDeliveryMethod = (id) => {
+    dispatch(cartActions.setDeliveryMethod(id));
+  };
+
+  useEffect(() => {
+    handleGetDeliveryMethods();
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedDeliveryMethod);
+  }, [selectedDeliveryMethod]);
+
   return (
     <div className={classes.main}>
-      <Autocomplete
-        id="address-autocomplete"
-        disablePortal
-        size="medium"
-        sx={{ ...inputStyles, width: "100%", mb: "2rem" }}
-        options={addressOptions}
-        loading={isLoadingOptions}
-        value={selectedAddress}
-        onChange={(_, newValue) => setSelectedAddress(newValue)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={t("profile.address")}
-            placeholder={
-              isLoadingOptions
-                ? t("profile.loading_addresses")
-                : addressOptions.length === 0
-                ? t("profile.no_addresses")
-                : ""
-            }
-          />
-        )}
-      />
+      {/* Address Column */}
+      <div>
+        <Autocomplete
+          id="address-autocomplete"
+          disablePortal
+          size="medium"
+          sx={{ ...inputStyles, width: "100%", mb: "2rem" }}
+          options={addressOptions}
+          loading={isLoadingOptions}
+          value={selectedAddress}
+          onChange={(_, newValue) => setSelectedAddress(newValue)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={t("profile.address")}
+              placeholder={
+                isLoadingOptions
+                  ? t("profile.loading_addresses")
+                  : addressOptions.length === 0
+                  ? t("profile.no_addresses")
+                  : ""
+              }
+            />
+          )}
+        />
 
-      <Accordion sx={{ boxShadow: "none" }}>
-        <AccordionSummary
-          expandIcon={<Add fontSize="small" />}
-          aria-controls="address-content"
-          id="address-header"
-        >
-          <Typography
-            component="span"
-            style={{ fontSize: ".7rem", fontWeight: "bold" }}
-            variant="h1"
+        <Accordion sx={{ boxShadow: "none" }}>
+          <AccordionSummary
+            expandIcon={<Add fontSize="small" />}
+            aria-controls="address-content"
+            id="address-header"
           >
-            {t("profile.add_add")}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <form ref={formRef} onSubmit={handleSubmit} className={classes.form}>
-            <FormControl fullWidth>
-              <div className={classes.input_wrapper}>
-                <TextField
-                  id="signup-firstname-input"
-                  name="firstname"
-                  label={`${t("pc.receiver")} ${t("signup.fname")}`}
-                  value={formValues.firstname}
-                  onChange={handleInputChange("firstname")}
-                  error={isError && !formValues.firstname}
-                  size="medium"
-                  sx={inputStyles}
-                />
-                <TextField
-                  id="signup-lastname-input"
-                  name="lastname"
-                  label={`${t("pc.receiver")} ${t("signup.lname")}`}
-                  value={formValues.lastname}
-                  onChange={handleInputChange("lastname")}
-                  error={isError && !formValues.lastname}
-                  size="medium"
-                  sx={inputStyles}
-                />
-              </div>
-              <div className={classes.input_wrapper}>
-                <Autocomplete
-                  id="country-autocomplete"
-                  sx={{ width: "49%" }}
-                  options={countryData || []}
-                  value={selectedCountry}
-                  onChange={(_, newValue) => setSelectedCountry(newValue)}
-                  getOptionLabel={(option) => option.label || ""}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("signup.country")}
-                      error={isError && !selectedCountry}
-                      size="medium"
-                      sx={{ ...inputStyles, width: "100%" }}
-                    />
-                  )}
-                  loading={isLoadingAllCountries}
-                />
-
-                <Autocomplete
-                  id="state-autocomplete"
-                  sx={{ width: "49%" }}
-                  options={stateData || []}
-                  value={selectedState}
-                  onChange={(_, newValue) => setSelectedState(newValue)}
-                  getOptionLabel={(option) => option.label || ""}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("signup.state")}
-                      error={isError && !selectedCountry}
-                      size="medium"
-                      sx={{ ...inputStyles, width: "100%" }}
-                    />
-                  )}
-                  loading={isLoadingAllCountries}
-                />
-              </div>
-
-              <Autocomplete
-                id="city-autocomplete"
-                options={cityData || []}
-                value={selectedCity}
-                onChange={(_, newValue) => setSelectedCity(newValue)}
-                filterOptions={filterExactMatch}
-                getOptionLabel={(option) => option.label || ""}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={t("signup.city")}
-                    error={isError && !selectedCity}
-                    size="medium"
-                    sx={{ ...inputStyles, width: "49%" }}
-                  />
-                )}
-              />
-
-              <div className={classes.input_wrapper}>
-                <span className={classes.phone_wrapper}>
-                  <TextField
-                    id="phone-code-input"
-                    value={`+${phoneCode}`}
-                    size="medium"
-                    sx={{ ...inputStyles, width: "30%" }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          {selectedCountry?.alias && (
-                            <Flag
-                              code={selectedCountry.alias}
-                              style={{ width: "20px", height: "auto" }}
-                            />
-                          )}
-                        </InputAdornment>
-                      ),
-                    }}
-                    placeholder="+"
-                    disabled
-                  />
-                  <TextField
-                    id="phone-number-input"
-                    label={t("signup.pnumber")}
-                    value={formValues.secondaryPhoneN}
-                    onChange={handlePhoneNumberChange}
-                    error={isError && !formValues.secondaryPhoneN}
-                    size="medium"
-                    sx={{ ...inputStyles, width: "68%" }}
-                  />
-                </span>
-                <TextField
-                  id="signup-postalcode-input"
-                  name="postalcode"
-                  label={t("pc.postalcode")}
-                  value={formValues.postalCode}
-                  onChange={handlePostalCodeChange}
-                  error={isError && !formValues.postalCode}
-                  size="medium"
-                  sx={inputStyles}
-                />
-              </div>
-              <TextField
-                id="signup-address-input"
-                name="address"
-                label={t("signup.adress")}
-                value={formValues.Address}
-                onChange={handleInputChange("Address")}
-                error={isError && !formValues.Address}
-                size="medium"
-                sx={{ ...inputStyles, width: "100%" }}
-              />
-            </FormControl>
-            <div
-              className={classes.error_text}
-              style={{
-                direction: lng === "fa" ? "rtl" : "ltr",
-                opacity: isError ? 1 : 0,
-              }}
+            <Typography
+              component="span"
+              style={{ fontSize: ".7rem", fontWeight: "bold" }}
+              variant="h1"
             >
-              {t("signup.fillout")}
-            </div>
-            <Button variant="contained" type="submit" className={classes.btn}>
-              {t("pc.submit")}
-            </Button>
-          </form>
-        </AccordionDetails>
-      </Accordion>
+              {t("profile.add_add")}
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className={classes.form}
+            >
+              <FormControl fullWidth>
+                <div className={classes.input_wrapper}>
+                  <TextField
+                    id="signup-firstname-input"
+                    name="firstname"
+                    label={`${t("pc.receiver")} ${t("signup.fname")}`}
+                    value={formValues.firstname}
+                    onChange={handleInputChange("firstname")}
+                    error={isError && !formValues.firstname}
+                    size="medium"
+                    sx={inputStyles}
+                  />
+                  <TextField
+                    id="signup-lastname-input"
+                    name="lastname"
+                    label={`${t("pc.receiver")} ${t("signup.lname")}`}
+                    value={formValues.lastname}
+                    onChange={handleInputChange("lastname")}
+                    error={isError && !formValues.lastname}
+                    size="medium"
+                    sx={inputStyles}
+                  />
+                </div>
+                <div className={classes.input_wrapper}>
+                  <Autocomplete
+                    id="country-autocomplete"
+                    sx={{ width: "49%" }}
+                    options={countryData || []}
+                    value={selectedCountry}
+                    onChange={(_, newValue) => setSelectedCountry(newValue)}
+                    getOptionLabel={(option) => option.label || ""}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={t("signup.country")}
+                        error={isError && !selectedCountry}
+                        size="medium"
+                        sx={{ ...inputStyles, width: "100%" }}
+                      />
+                    )}
+                    loading={isLoadingAllCountries}
+                  />
+
+                  <Autocomplete
+                    id="state-autocomplete"
+                    sx={{ width: "49%" }}
+                    options={stateData || []}
+                    value={selectedState}
+                    onChange={(_, newValue) => setSelectedState(newValue)}
+                    getOptionLabel={(option) => option.label || ""}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={t("signup.state")}
+                        error={isError && !selectedCountry}
+                        size="medium"
+                        sx={{ ...inputStyles, width: "100%" }}
+                      />
+                    )}
+                    loading={isLoadingAllCountries}
+                  />
+                </div>
+
+                <Autocomplete
+                  id="city-autocomplete"
+                  options={cityData || []}
+                  value={selectedCity}
+                  onChange={(_, newValue) => setSelectedCity(newValue)}
+                  filterOptions={filterExactMatch}
+                  getOptionLabel={(option) => option.label || ""}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={t("signup.city")}
+                      error={isError && !selectedCity}
+                      size="medium"
+                      sx={{ ...inputStyles, width: "49%" }}
+                    />
+                  )}
+                />
+
+                <div className={classes.input_wrapper}>
+                  <span className={classes.phone_wrapper}>
+                    <TextField
+                      id="phone-code-input"
+                      value={`+${phoneCode}`}
+                      size="medium"
+                      sx={{ ...inputStyles, width: "30%" }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            {selectedCountry?.alias && (
+                              <Flag
+                                code={selectedCountry.alias}
+                                style={{ width: "20px", height: "auto" }}
+                              />
+                            )}
+                          </InputAdornment>
+                        ),
+                      }}
+                      placeholder="+"
+                      disabled
+                    />
+                    <TextField
+                      id="phone-number-input"
+                      label={t("signup.pnumber")}
+                      value={formValues.secondaryPhoneN}
+                      onChange={handlePhoneNumberChange}
+                      error={isError && !formValues.secondaryPhoneN}
+                      size="medium"
+                      sx={{ ...inputStyles, width: "68%" }}
+                    />
+                  </span>
+                  <TextField
+                    id="signup-postalcode-input"
+                    name="postalcode"
+                    label={t("pc.postalcode")}
+                    value={formValues.postalCode}
+                    onChange={handlePostalCodeChange}
+                    error={isError && !formValues.postalCode}
+                    size="medium"
+                    sx={inputStyles}
+                  />
+                </div>
+                <TextField
+                  id="signup-address-input"
+                  name="address"
+                  label={t("signup.adress")}
+                  value={formValues.Address}
+                  onChange={handleInputChange("Address")}
+                  error={isError && !formValues.Address}
+                  size="medium"
+                  sx={{ ...inputStyles, width: "100%" }}
+                />
+              </FormControl>
+              <div
+                className={classes.error_text}
+                style={{
+                  direction: lng === "fa" ? "rtl" : "ltr",
+                  opacity: isError ? 1 : 0,
+                }}
+              >
+                {t("signup.fillout")}
+              </div>
+              <Button variant="contained" type="submit" className={classes.btn}>
+                {t("pc.submit")}
+              </Button>
+            </form>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+
+      {/* Payment Column */}
+      <div style={{ width: "100%" }} dir={lng === "fa" ? "rtl" : "ltr"}>
+        <Typography
+          variant="h6"
+          component="h2"
+          sx={{ fontWeight: "bold", mb: 2 }}
+        >
+          {t("profile.delivery")}
+        </Typography>
+        <div className={classes.payment_options_wrapper}>
+          {deliveryMethods &&
+            deliveryMethods.map((method) => (
+              <div
+                key={method.id}
+                className={`${classes.payment_option} ${
+                  selectedDeliveryMethod === method.id ? classes.selected : ""
+                }`}
+                onClick={() => handleSetSeletedDeliveryMethod(method.id)}
+                role="button"
+                tabIndex={0}
+                aria-pressed={selectedDeliveryMethod === method.id}
+              >
+                <img
+                  src={method.image}
+                  alt={method?.alt}
+                  className={classes.payment_image}
+                />
+                <Typography variant="caption" className={classes.payment_name}>
+                  {method.name}
+                </Typography>
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
 };

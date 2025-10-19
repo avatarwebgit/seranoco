@@ -1,71 +1,111 @@
 @import url(../../styles/variables.css);
 
 .main {
- width: 70%;
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: flex-start;
 }
 
 .form {
- width: 100%;
+  width: 100%;
 }
 
 .input_wrapper {
- display: flex;
- width: 100%;
- align-items: center;
- justify-content: space-between;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .phone_wrapper {
- width: 49%;
- display: flex;
- align-items: center;
- justify-content: space-between;
+  width: 49%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .btn {
- background-color: var(--primary) !important;
- margin-top: 10px;
+  background-color: var(--primary) !important;
+  margin-top: 10px;
 }
 
 .error_text {
- font-size: 10px;
- color: red;
- width: 100%;
+  font-size: 10px;
+  color: red;
+  width: 100%;
 }
 
 .location_wrapper {
- display: flex;
- width: 100%;
- justify-content: space-between;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.payment_options_wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.payment_option {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  height: 90px;
+  box-sizing: border-box;
+}
+
+.payment_option:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.payment_option.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.payment_image {
+  max-width: 60px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.payment_name {
+  font-size: 0.75rem;
+  color: #333;
+  margin: 0 10px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .main {
+    grid-template-columns: 1fr;
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .main {
+    width: 100%;
+  }
+  .phone_wrapper {
+    width: 100%;
+  }
 }
 
 @media only screen and (max-width: 480px) {
- .main {
-  width: 100%;
- }
- .phone_wrapper {
-  width: 100%;
- }
-}
-
-@media only screen and (min-width: 481px) and (max-width: 768px) {
- .main {
-  width: 100%;
- }
- .phone_wrapper {
-  width: 100%;
- }
-}
-
-@media only screen and (min-width: 769px) and (max-width: 1024px) {
-}
-
-@media only screen and (min-width: 1025px) and (max-width: 1200px) {
-}
-
-@media only screen and (min-width: 1201px) {
+  .payment_options_wrapper {
+    grid-template-columns: 1fr;
+  }
 }

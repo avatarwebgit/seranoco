@@ -15,9 +15,8 @@ import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 
 import {
-  getOrderStatusDetail,
   getPayments,
-  sendCouponStatus,
+  sendCouponStatus
 } from "../services/api";
 
 import {

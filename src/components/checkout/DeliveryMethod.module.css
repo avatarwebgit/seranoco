@@ -1,0 +1,61 @@
+.methodCard {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
+
+.methodCard:hover {
+  border-color: #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.methodCard.selected {
+  border-color: #000;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+}
+
+.iconWrapper {
+  margin-right: 1rem;
+  color: #333;
+}
+
+.iconWrapper svg {
+  width: 40px;
+  height: 40px;
+}
+
+.details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #222;
+}
+
+.time {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.cost {
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #222;
+}
+
+[dir="rtl"] .iconWrapper {
+  margin-right: 0;
+  margin-left: 1rem;
+}
