@@ -155,7 +155,8 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
 
   // Update validation status when address or payment method changes
   useEffect(() => {
-    if (selectedAddress && selectedDeliveryMethod) {
+    if (selectedAddress) {
+      //&& selectedDeliveryMethod
       dispatch(cartActions.setSelectedAddress(selectedAddress.id));
       isDataValid(true);
     } else {
@@ -474,7 +475,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
       </div>
 
       {/* Payment Column */}
-      <div style={{ width: "100%" }} dir={lng === "fa" ? "rtl" : "ltr"}>
+      {/* <div style={{ width: "100%" }} dir={lng === "fa" ? "rtl" : "ltr"}>
         <Typography
           variant="h6"
           component="h2"
@@ -482,7 +483,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
         >
           {t("profile.delivery")}
         </Typography>
-        <div className={classes.payment_options_wrapper}>
+         <div className={classes.payment_options_wrapper}>
           {deliveryMethods &&
             deliveryMethods.map((method) => (
               <div
@@ -505,8 +506,8 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
                 </Typography>
               </div>
             ))}
-        </div>
-      </div>
+        </div> 
+      </div> */}
     </div>
   );
 };
