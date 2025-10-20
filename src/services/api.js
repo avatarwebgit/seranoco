@@ -807,18 +807,18 @@ export const sendShoppingCart = async (
   return { response, result };
 };
 
-export const getShoppingCart = async (token, options) => {
-  const response = await fetch(`${baseUrl}/cart`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `bearer ${token}`,
-    },
-    ...options,
-  });
-  const result = await response.json();
-  return { response, result };
-};
+// export const getShoppingCart = async (token, options) => {
+//   const response = await fetch(`${baseUrl}/cart`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `bearer ${token}`,
+//     },
+//     ...options,
+//   });
+//   const result = await response.json();
+//   return { response, result };
+// };
 
 export const removeShoppingCart = async (token, product_id, variation_id) => {
   const response = await fetch(`${baseUrl}/cart/remove`, {
@@ -1253,13 +1253,19 @@ export const getDeliveryMethods = async () => {
   return { response, result };
 };
 
-export const getCartPrice = async () => {
+export const getShoppingCart = async (
+  token,
+  address_id,
+  delivery_method_id
+) => {
   const response = await fetch(`${baseUrl}/cart/user`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "bearer " + token,
     },
+    body: JSON.stringify({ address_id, delivery_method_id }),
   });
   const result = await response.json();
   return { response, result };

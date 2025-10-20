@@ -206,7 +206,7 @@ const Portfolio = ({ windowSize }) => {
                             className={classes.portfolioCard}
                           >
                             <img
-                              src={null}
+                              src={item.image || null}
                               alt={item.title}
                               className={classes.cardImage}
                             />

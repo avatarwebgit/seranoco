@@ -1,34 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
- Accordion,
- AccordionDetails,
- AccordionSummary,
- Typography,
-} from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
 import { Add } from '@mui/icons-material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
-import Card from '../components/filters_page/Card';
-import Body from '../components/filters_page/Body';
-import Breadcrumbs from '../components/common/Breadcrumbs';
+import AccountInformaion from '../components/account/AccountInformaion';
 import { CustomButton } from '../components/account/CustomButton';
 import OrderStatus from '../components/account/OrderStatus';
-import AccountInformaion from '../components/account/AccountInformaion';
 import Ticket from '../components/account/Ticket';
-import Contact from '../components/account/Contact';
+import Breadcrumbs from '../components/common/Breadcrumbs';
+import Body from '../components/filters_page/Body';
+import Card from '../components/filters_page/Card';
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
 
 import { userActions } from '../store/store';
 
-import { useUser, getOrders, getOrdersStatus } from '../services/api';
+import { useUser } from '../services/api';
 
-import classes from './Profile.module.css';
-import Favorites from '../components/account/Favorites';
-import MobileProfile from './MobileProfile';
 import { useLocation } from 'react-router-dom';
+import Favorites from '../components/account/Favorites';
 import Transactions from '../components/account/Transactions';
+import MobileProfile from './MobileProfile';
+import classes from './Profile.module.css';
 const Profile = ({ windowSize }) => {
  const [selectedButtonId, setSelectedButtonId] = useState(null);
  const [selectedContent, setSelectedContent] = useState(null);

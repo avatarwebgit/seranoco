@@ -21,6 +21,7 @@ import {
   getStatesByCountry,
   useAllCountries,
   getDeliveryMethods,
+  getShoppingCart,
 } from "../../services/api";
 import { cartActions } from "../../store/store";
 import { notify } from "../../utils/helperFunctions";
@@ -153,16 +154,39 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
     loadAddresses();
   }, [token]);
 
-  // Update validation status when address or payment method changes
+  const fetchCartPrice = async (address_id, delivery_method_id) => {
+    const { response, result } = await getShoppingCart(
+      token,
+      address_id,
+      delivery_method_id
+    );
+    if (lng === "fa") {
+      dispatch(cartActions.setTotalPrice(result.cart_total_fa.total_price));
+      dispatch(
+        cartActions.setTotalPriceAfterDiscout(
+          result.cart_total_fa.total_sale_price
+        )
+      );
+    } else {
+      dispatch(cartActions.setTotalPrice(result.cart_total.total_price));
+      dispatch(
+        cartActions.setTotalPriceAfterDiscout(
+          result.cart_total.total_sale_price
+        )
+      );
+    }
+  };
+
   useEffect(() => {
     if (selectedAddress) {
       //&& selectedDeliveryMethod
+      fetchCartPrice(selectedAddress.id, selectedDeliveryMethod);
       dispatch(cartActions.setSelectedAddress(selectedAddress.id));
       isDataValid(true);
     } else {
       isDataValid(false);
     }
-  }, [selectedAddress, selectedDeliveryMethod, dispatch, isDataValid]);
+  }, [selectedAddress, selectedDeliveryMethod, dispatch]);
 
   const handleInputChange = (field) => (e) => {
     setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
@@ -212,7 +236,6 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
     }
 
     try {
-      // Add new address
       const response = await addAddress(
         token,
         `${formValues.firstname} ${formValues.lastname}`,
@@ -223,7 +246,6 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
       );
 
       if (response.response.ok) {
-        // Refresh addresses after successful addition
         const addressesRes = await getAllAddresses(token);
         if (addressesRes.response.ok) {
           const formattedOptions = addressesRes.result.address.map(
@@ -269,10 +291,6 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
   useEffect(() => {
     handleGetDeliveryMethods();
   }, []);
-
-  useEffect(() => {
-    console.log(selectedDeliveryMethod);
-  }, [selectedDeliveryMethod]);
 
   return (
     <div className={classes.main}>
@@ -483,7 +501,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
         >
           {t("profile.delivery")}
         </Typography>
-         <div className={classes.payment_options_wrapper}>
+        <div className={classes.payment_options_wrapper}>
           {deliveryMethods &&
             deliveryMethods.map((method) => (
               <div
@@ -506,7 +524,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
                 </Typography>
               </div>
             ))}
-        </div> 
+        </div>
       </div> */}
     </div>
   );

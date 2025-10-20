@@ -14,10 +14,7 @@ import Card from "../components/filters_page/Card";
 import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 
-import {
-  getPayments,
-  sendCouponStatus
-} from "../services/api";
+import { getCartPrice, getPayments, sendCouponStatus } from "../services/api";
 
 import {
   Button,
@@ -271,19 +268,21 @@ const PreCheckout = ({ windowSize }) => {
                         <>
                           {lng !== "fa"
                             ? cart.totalPriceAfterDiscount.toFixed(2)
-                            : (
-                                cart.totalPriceAfterDiscount * euro
-                              ).toLocaleString("fa-IR")}
+                            : Intl.NumberFormat("fa-IR").format(
+                                cart.totalPriceAfterDiscount
+                              )}
                           &nbsp;
                           {t("m_unit")}
                         </>
                       ) : (
                         <>
                           {lng !== "fa"
-                            ? cart?.totalPrice?.toFixed(2)
-                            : Math.round(
-                                cart.totalPrice * cart.euro
-                              ).toLocaleString("fa-IR")}
+                            ? cart.totalPrice.toFixed(2)
+                            : Intl.NumberFormat("fa-IR").format(
+                                cart.totalPrice
+                              )}
+                          &nbsp;
+                          {t("m_unit")}
                           &nbsp;
                           {t("m_unit")}
                         </>
@@ -305,14 +304,16 @@ const PreCheckout = ({ windowSize }) => {
               </Button>
             )}
             {step === 2 && <PaymentMethod dataProps={paymentMethods} />}
-            {step>=1&&<Button
-              className={classes.step_btn_back}
-              onClick={() => setStep(step > 0 ? step - 1 : 0)}
-              variant="text"
-              size="large"
-            >
-              {t("pc.pstep")}
-            </Button>}
+            {step >= 1 && (
+              <Button
+                className={classes.step_btn_back}
+                onClick={() => setStep(step > 0 ? step - 1 : 0)}
+                variant="text"
+                size="large"
+              >
+                {t("pc.pstep")}
+              </Button>
+            )}
           </div>
         </Card>
       </Body>

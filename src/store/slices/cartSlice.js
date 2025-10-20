@@ -9,9 +9,9 @@ const initialState = {
   finalPayment: 0,
   euro: 0,
   allAddresses: [],
-  selectedAddress: [],
-  paymentMethod: "",
+  selectedAddress: null,
   deliveryMethod: null,
+  paymentMethod: "",
   temporaryCart: JSON.parse(localStorage.getItem("temporaryCart")) || [],
 };
 
@@ -197,6 +197,9 @@ const cartSlice = createSlice({
     },
     setSelectedAddress(state, action) {
       state.selectedAddress = action.payload;
+    },
+    resetSelectedAddress(state, action) {
+      state.selectedAddress = null;
     },
     setPaymentMethod(state, action) {
       state.paymentMethod = action.payload;
