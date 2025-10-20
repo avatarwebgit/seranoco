@@ -1,4 +1,4 @@
-import { Skeleton } from "@mui/material";
+import { IconButton, Skeleton } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -24,6 +24,7 @@ import Header from "../layout/Header";
 import { useSelector } from "react-redux";
 import { getSinglePortfolio } from "../services/api";
 import classes from "./SinglePortfolio.module.css";
+import { KeyboardDoubleArrowDown } from "@mui/icons-material";
 
 const SinglePortfolio = ({ windowSize }) => {
   const { t } = useTranslation();
@@ -32,14 +33,29 @@ const SinglePortfolio = ({ windowSize }) => {
   const lng = useSelector((state) => state.localeStore.lng);
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [mainSwiper, setMainSwiper] = useState(null);
   const [portfolioItem, setPortfolioItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState([]);
   const [slidesForLightbox, setslidesForLightbox] = useState([]);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const [isSwiperReady, setIsSwiperReady] = useState(false);
 
   const navigate = useNavigate();
+
+  const thumbnailNextBtnRef = useRef(null);
+  const thumbnailPrevBtnRef = useRef(null);
+  const mainSwiperRef = useRef(null);
+  const thumbSwiperRef = useRef(null);
+
+  useEffect(() => {
+    console.log(mainSwiperRef.current, thumbSwiperRef.current);
+    if (mainSwiperRef.current && thumbSwiperRef.current) {
+      setIsSwiperReady(true);
+    }
+  }, [lng]);
 
   useEffect(() => {
     const fetchData = async (slug) => {
@@ -60,6 +76,34 @@ const SinglePortfolio = ({ windowSize }) => {
       fetchData(alias);
     }
   }, [alias]);
+
+  useEffect(() => {
+    let intervalId;
+    let firstTimeoutId;
+
+    if (thumbsSwiper && !hasUserInteracted) {
+      firstTimeoutId = setTimeout(() => {
+        thumbsSwiper?.slideNext(900);
+
+        setTimeout(() => {
+          thumbsSwiper?.slidePrev(900);
+        }, 1300);
+
+        intervalId = setInterval(() => {
+          thumbsSwiper?.slideNext(900);
+
+          setTimeout(() => {
+            thumbsSwiper?.slidePrev(900);
+          }, 1300);
+        }, 8000);
+      }, 3000);
+    }
+
+    return () => {
+      clearTimeout(firstTimeoutId);
+      clearInterval(intervalId);
+    };
+  }, [thumbsSwiper, hasUserInteracted]);
 
   useEffect(() => {
     if (portfolioItem) {
@@ -90,6 +134,12 @@ const SinglePortfolio = ({ windowSize }) => {
     () => portfolioItem?.images || [],
     [portfolioItem]
   );
+
+  const handleUserInteraction = () => {
+    if (!hasUserInteracted) {
+      setHasUserInteracted(true);
+    }
+  };
 
   return (
     <section className={classes.main}>
@@ -188,131 +238,216 @@ const SinglePortfolio = ({ windowSize }) => {
               </h1>
 
               {/* --- GALLERY SECTION --- */}
-              <div className={classes.gallerySection}>
-                {/* Thumbnail Swiper */}
-                <div className={classes.thumbnailGallery}>
-                  <Swiper
-                    modules={[FreeMode, Navigation, Thumbs, Scrollbar]}
-                    onSwiper={setThumbsSwiper}
-                    spaceBetween={10}
-                    slidesPerView={"auto"}
-                    freeMode={true}
-                    watchSlidesProgress={true}
-                    scrollbar={{
-                      draggable: true,
-                      dragSize: 24,
-                    }}
-                    className={classes.thumbsSwiper}
-                    breakpoints={{
-                      0: {
-                        direction: "horizontal",
-                        slidesPerView: 3,
-                        scrollbar: {
-                          dragSize: 50,
+              {
+                <div className={classes.gallerySection}>
+                  {/* Thumbnail Swiper */}
+                  <div className={classes.thumbnailGallery}>
+                    <Swiper
+                      key={`${lng}`}
+                      modules={[Navigation, Thumbs, Scrollbar]}
+                      onSwiper={setThumbsSwiper}
+                      spaceBetween={10}
+                      slidesPerView={"auto"}
+                      onTouchStart={handleUserInteraction}
+                      onClick={handleUserInteraction}
+                      watchSlidesProgress={true}
+                      scrollbar={{
+                        draggable: true,
+                        dragSize: 50,
+                      }}
+                      className={classes.thumbsSwiper}
+                      breakpoints={{
+                        0: {
+                          direction: "horizontal",
+                          slidesPerView: 3,
+                          scrollbar: {
+                            dragSize: 50,
+                          },
                         },
-                      },
-                      992: {
-                        direction: "vertical",
-                        spaceBetween: 15,
-                        slidesPerView: 3,
-                        scrollbar: {
-                          dragSize: 24,
+                        992: {
+                          direction: "vertical",
+                          spaceBetween: 15,
+                          slidesPerView: 3,
+                          scrollbar: {
+                            dragSize: 24,
+                          },
                         },
-                      },
-                    }}
-                  >
-                    {memoizedImages.map((image, index) => (
-                      <SwiperSlide
-                        key={index}
-                        className={classes.thumbnailSlide}
-                        style={{ position: "relative" }}
-                      >
-                        {!imagesLoaded[index] && (
-                          <Skeleton
-                            variant="rectangular"
-                            animation="wave"
-                            style={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              width: "100%",
-                              height: "100%",
-                              zIndex: 1,
-                            }}
-                          />
-                        )}
-                        <img
-                          src={image}
-                          alt={`${portfolioItem.title} thumbnail ${index + 1}`}
-                          onLoad={() => handleImageLoad(index)}
-                          style={{
-                            display: "block",
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            opacity: imagesLoaded[index] ? 1 : 0,
-                            transition: "opacity 0.3s ease",
-                          }}
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </div>
-
-                {/* Main Image Swiper */}
-                <div className={classes.mainImageContainer}>
-                  <Swiper
-                    spaceBetween={10}
-                    navigation={true}
-                    onSlideChange={(swiper) => {
-                      // Force thumbnail swiper to scroll to active slide
-                      if (thumbsSwiper && !thumbsSwiper.destroyed) {
-                        thumbsSwiper.slideTo(swiper.activeIndex, 300);
-                      }
-                    }}
-                    thumbs={{ swiper: thumbsSwiper }}
-                    modules={[FreeMode, Navigation, Thumbs]}
-                    className={classes.mainSwiper}
-                  >
-                    {memoizedImages.map((image, index) => (
-                      <SwiperSlide
-                        key={index}
-                        onClick={() => openLightbox(index)}
-                      >
-                        {!imagesLoaded[index] && (
-                          <Skeleton
-                            variant="rectangular"
-                            animation="wave"
-                            style={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              height: "500px",
-                              width: "100%",
-                              objectFit: "cover",
-                            }}
-                          />
-                        )}
-                        <center>
+                      }}
+                    >
+                      {memoizedImages.map((image, index) => (
+                        <SwiperSlide
+                          key={index}
+                          className={classes.thumbnailSlide}
+                          style={{ position: "relative" }}
+                        >
+                          {!imagesLoaded[index] && (
+                            <Skeleton
+                              variant="rectangular"
+                              animation="wave"
+                              style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                zIndex: 1,
+                              }}
+                            />
+                          )}
                           <img
                             src={image}
-                            alt={`${portfolioItem.title} image ${index + 1}`}
+                            alt={`${portfolioItem.title} thumbnail ${
+                              index + 1
+                            }`}
                             onLoad={() => handleImageLoad(index)}
                             style={{
-                              visibility: imagesLoaded[index]
-                                ? "visible"
-                                : "hidden",
-                              height: "500px",
+                              display: "block",
                               width: "100%",
+                              height: "100%",
                               objectFit: "cover",
+                              opacity: imagesLoaded[index] ? 1 : 0,
+                              transition: "opacity 0.3s ease",
                             }}
                           />
-                        </center>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                    <IconButton
+                      ref={thumbnailPrevBtnRef}
+                      sx={{
+                        background: "#fff",
+                      }}
+                      style={{
+                        left: lng === "fa" ? "5%" : "auto",
+                        right: lng !== "fa" ? "5%" : "auto",
+                      }}
+                      className={classes.navigation_button_prev}
+                      onTouchStart={() => {
+                        handleUserInteraction();
+                      }}
+                      onClick={() => {
+                        handleUserInteraction();
+                        mainSwiper?.slidePrev();
+                      }}
+                    >
+                      <KeyboardDoubleArrowDown
+                        sx={{ transform: "rotate(180deg)", fill: "black" }}
+                      />
+                    </IconButton>
+                    <IconButton
+                      ref={thumbnailNextBtnRef}
+                      sx={{
+                        background: "#fff",
+                      }}
+                      style={{
+                        left: lng === "fa" ? "5%" : "auto",
+                        right: lng !== "fa" ? "5%" : "auto",
+                      }}
+                      className={classes.navigation_button_next}
+                      onTouchStart={() => {
+                        handleUserInteraction();
+                      }}
+                      onClick={() => {
+                        handleUserInteraction();
+                        mainSwiper?.slideNext();
+                      }}
+                    >
+                      <KeyboardDoubleArrowDown sx={{ fill: "black" }} />
+                    </IconButton>
+                  </div>
+
+                  {/* Main Image Swiper */}
+                  <div className={classes.mainImageContainer}>
+                    <Swiper
+                      key={`${lng}`}
+                      onSwiper={setMainSwiper}
+                      spaceBetween={10}
+                      onSlideChange={(swiper) => {
+                        if (thumbsSwiper && !thumbsSwiper.destroyed) {
+                          thumbsSwiper?.slideTo(swiper.activeIndex, 300);
+                        }
+                      }}
+                      thumbs={{
+                        swiper:
+                          thumbsSwiper && !thumbsSwiper.destroyed
+                            ? thumbsSwiper
+                            : null,
+                      }}
+                      modules={[FreeMode, Thumbs]}
+                      className={classes.mainSwiper}
+                    >
+                      {memoizedImages.map((image, index) => (
+                        <SwiperSlide
+                          key={index}
+                          onClick={() => openLightbox(index)}
+                        >
+                          {!imagesLoaded[index] && (
+                            <Skeleton
+                              variant="rectangular"
+                              animation="wave"
+                              style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                height: "500px",
+                                width: "100%",
+                                objectFit: "cover",
+                              }}
+                            />
+                          )}
+                          <center>
+                            <img
+                              src={image}
+                              alt={`${portfolioItem.title} image ${index + 1}`}
+                              onLoad={() => handleImageLoad(index)}
+                              style={{
+                                visibility: imagesLoaded[index]
+                                  ? "visible"
+                                  : "hidden",
+                                height: "500px",
+                                width: "100%",
+                                objectFit: "cover",
+                              }}
+                            />
+                          </center>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                    <IconButton
+                      ref={thumbnailPrevBtnRef}
+                      className={classes.main_button_prev}
+                      sx={{ background: "#fff" }}
+                      onTouchStart={() => {
+                        handleUserInteraction();
+                      }}
+                      onClick={() => {
+                        handleUserInteraction();
+                        mainSwiper?.slidePrev();
+                      }}
+                    >
+                      <KeyboardDoubleArrowDown
+                        sx={{ transform: "rotate(-90deg)", fill: "black" }}
+                      />
+                    </IconButton>
+                    <IconButton
+                      ref={thumbnailNextBtnRef}
+                      className={classes.main_button_next}
+                      sx={{ background: "#fff" }}
+                      onTouchStart={() => {
+                        handleUserInteraction();
+                      }}
+                      onClick={() => {
+                        handleUserInteraction();
+                        mainSwiper?.slideNext();
+                      }}
+                    >
+                      <KeyboardDoubleArrowDown
+                        sx={{ transform: "rotate(90deg)", fill: "black" }}
+                      />
+                    </IconButton>
+                  </div>
                 </div>
-              </div>
+              }
 
               <div className={classes.contentSection}>
                 <div className={classes.metaInfo}>

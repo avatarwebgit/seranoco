@@ -24,6 +24,7 @@ import classes from "./Portfolio.module.css";
 const Portfolio = ({ windowSize }) => {
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get("category");
+  console.log(categoryId);
 
   const lng = useSelector((state) => state.localeStore.lng);
 
@@ -59,17 +60,16 @@ const Portfolio = ({ windowSize }) => {
         }));
 
         const categoryTree = [
-          { name: allCategoryString },
+          // { name: allCategoryString },
           ...processedCategories,
         ];
         setCategories(categoryTree);
-        setActiveFilter(allCategoryString);
+        // setActiveFilter(allCategoryString);
 
         let rawPortfolios;
         if (categoryId) {
           const portfolioRes = await getPortfoliosByCategory(categoryId);
           rawPortfolios = portfolioRes.result;
-          console.log(rawPortfolios);
           const selectedCategory = processedCategories.find(
             (cat) => cat.id === parseInt(categoryId)
           );
@@ -79,7 +79,7 @@ const Portfolio = ({ windowSize }) => {
         } else {
           const portfolioRes = await getPorlfolios();
           rawPortfolios = portfolioRes.result;
-          setActiveFilter(allCategoryString);
+          // setActiveFilter(allCategoryString);
         }
 
         const processedPortfolios = rawPortfolios.map((item) => ({
@@ -175,31 +175,49 @@ const Portfolio = ({ windowSize }) => {
                     <span>{t("filters", "Filters")}</span>
                   </button>
                 </div>
-                {useEffect(() => {
-                  console.log(portfolioItems, loading);
-                }, [portfolioItems, loading])}
-
                 <div className={classes.portfolioGrid}>
-                  {portfolioItems.map((item) => {
-                    console.log(item);
-                    return (
-                      <Link
-                        to={`/${lng}/portfolio/${item.slug}`}
-                        key={item.id}
-                        className={classes.portfolioCard}
-                        target="_blank"
-                      >
-                        <img
-                          src={item.images[0]}
-                          alt={item.title}
-                          className={classes.cardImage}
-                        />
-                        <div className={classes.cardOverlay}>
-                          <h3 className={classes.cardTitle}>{item.title}</h3>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                  {categoryId
+                    ? portfolioItems.map((item) => {
+                        return (
+                          <Link
+                            to={`/${lng}/portfolio/${item.slug}`}
+                            key={item.id}
+                            className={classes.portfolioCard}
+                            target="_blank"
+                          >
+                            <img
+                              src={item.images[0]}
+                              alt={item.title}
+                              className={classes.cardImage}
+                            />
+                            <div className={classes.cardOverlay}>
+                              <h3 className={classes.cardTitle}>
+                                {lng === "fa" ? item.title_fa : item.title}
+                              </h3>
+                            </div>
+                          </Link>
+                        );
+                      })
+                    : categories.map((item) => {
+                        return (
+                          <Link
+                            to={`/${lng}/portfolio?category=${item.id}`}
+                            key={item.id}
+                            className={classes.portfolioCard}
+                          >
+                            <img
+                              src={null}
+                              alt={item.title}
+                              className={classes.cardImage}
+                            />
+                            <div className={classes.cardOverlay}>
+                              <h3 className={classes.cardTitle}>
+                                {lng === "fa" ? item.title_fa : item.title}
+                              </h3>
+                            </div>
+                          </Link>
+                        );
+                      })}
                 </div>
               </main>
             </div>

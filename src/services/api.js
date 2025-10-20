@@ -1252,3 +1252,15 @@ export const getDeliveryMethods = async () => {
   const result = await response.json();
   return { response, result };
 };
+
+export const getCartPrice = async () => {
+  const response = await fetch(`${baseUrl}/cart/user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return { response, result };
+};

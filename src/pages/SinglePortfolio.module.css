@@ -33,6 +33,32 @@
   height: 100%;
 }
 
+.thumbsSwiper {
+  position: relative;
+}
+
+.navigation_button_prev,
+.navigation_button_next {
+  position: absolute !important;
+  right: 0;
+}
+
+.main_button_prev,
+.main_button_next {
+  position: absolute !important;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.main_button_prev {
+  right: 0%;
+}
+
+.main_button_next {
+  left: 0%;
+}
+
 .mainSwiper :global(.swiper-slide) img,
 .thumbsSwiper :global(.swiper-slide) img {
   display: block;
@@ -41,6 +67,10 @@
 .mainSwiper :global(.swiper-slide),
 .thumbsSwiper :global(.swiper-slide) {
   position: relative;
+}
+
+:global(.swiper-scrollbar) {
+  width: 8px !important;
 }
 
 .mainSwiper :global(.swiper-slide) {
@@ -55,6 +85,7 @@
   margin-bottom: 1rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   order: -1;
+  position: relative;
 }
 
 .mainSwiper {
@@ -65,15 +96,24 @@
 .thumbnailGallery {
   margin: 0;
   width: 100%;
+  position: relative;
 }
 
-:global(.swiper-button-next),
-:global(.swiper-button-prev) {
+.navigation_button_prev,
+.navigation_button_next {
+  position: absolute !important;
   color: #000;
-  height: 100%;
-  width: 100px;
-  top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scale(0.7);
+  z-index: 10;
+}
+
+
+.navigation_button_next {
+  top: 80%;
+}
+
+.navigation_button_prev {
+  top: 20%;
 }
 
 .thumbsSwiper :global(.swiper-slide) {
@@ -209,6 +249,7 @@
     order: 0;
     aspect-ratio: auto;
     height: 500px;
+    position: relative;
   }
 
   .contentSection {
