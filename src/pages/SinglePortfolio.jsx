@@ -24,7 +24,7 @@ import Header from "../layout/Header";
 import { useSelector } from "react-redux";
 import { getSinglePortfolio } from "../services/api";
 import classes from "./SinglePortfolio.module.css";
-import { KeyboardDoubleArrowDown } from "@mui/icons-material";
+import { KeyboardArrowDown } from "@mui/icons-material";
 
 const SinglePortfolio = ({ windowSize }) => {
   const { t } = useTranslation();
@@ -42,11 +42,9 @@ const SinglePortfolio = ({ windowSize }) => {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const [isSwiperReady, setIsSwiperReady] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const navigate = useNavigate();
-
-  const mainSwiperRef = useRef(null);
-  const thumbSwiperRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async (slug) => {
@@ -303,46 +301,52 @@ const SinglePortfolio = ({ windowSize }) => {
                         </SwiperSlide>
                       ))}
                     </Swiper>
-                    <IconButton
-                      sx={{
-                        background: "#fff",
-                      }}
-                      style={{
-                        left: lng === "fa" ? "5%" : "auto",
-                        right: lng !== "fa" ? "5%" : "auto",
-                      }}
-                      className={classes.navigation_button_prev}
-                      onTouchStart={() => {
-                        handleUserInteraction();
-                      }}
-                      onClick={() => {
-                        handleUserInteraction();
-                        mainSwiper?.slidePrev();
-                      }}
-                    >
-                      <KeyboardDoubleArrowDown
-                        sx={{ transform: "rotate(180deg)", fill: "black" }}
-                      />
-                    </IconButton>
-                    <IconButton
-                      sx={{
-                        background: "#fff",
-                      }}
-                      style={{
-                        left: lng === "fa" ? "5%" : "auto",
-                        right: lng !== "fa" ? "5%" : "auto",
-                      }}
-                      className={classes.navigation_button_next}
-                      onTouchStart={() => {
-                        handleUserInteraction();
-                      }}
-                      onClick={() => {
-                        handleUserInteraction();
-                        mainSwiper?.slideNext();
-                      }}
-                    >
-                      <KeyboardDoubleArrowDown sx={{ fill: "black" }} />
-                    </IconButton>
+                    {currentIndex > 0 && (
+                      <IconButton
+                        sx={{
+                          background: "#fff",
+                          borderRadius: "10%",
+                        }}
+                        style={{
+                          left: lng === "fa" ? "5%" : "auto",
+                          right: lng !== "fa" ? "5%" : "auto",
+                        }}
+                        className={classes.navigation_button_prev}
+                        onTouchStart={() => {
+                          handleUserInteraction();
+                        }}
+                        onClick={() => {
+                          handleUserInteraction();
+                          mainSwiper?.slidePrev();
+                        }}
+                      >
+                        <KeyboardArrowDown
+                          sx={{ transform: "rotate(180deg)", fill: "black" }}
+                        />
+                      </IconButton>
+                    )}
+                    {currentIndex < memoizedImages.length - 1 && (
+                      <IconButton
+                        sx={{
+                          background: "#fff",
+                          borderRadius: "10%",
+                        }}
+                        style={{
+                          left: lng === "fa" ? "5%" : "auto",
+                          right: lng !== "fa" ? "5%" : "auto",
+                        }}
+                        className={classes.navigation_button_next}
+                        onTouchStart={() => {
+                          handleUserInteraction();
+                        }}
+                        onClick={() => {
+                          handleUserInteraction();
+                          mainSwiper?.slideNext();
+                        }}
+                      >
+                        <KeyboardArrowDown sx={{ fill: "black" }} />
+                      </IconButton>
+                    )}
                   </div>
 
                   {/* Main Image Swiper */}
@@ -352,6 +356,7 @@ const SinglePortfolio = ({ windowSize }) => {
                       onSwiper={setMainSwiper}
                       spaceBetween={10}
                       onSlideChange={(swiper) => {
+                        setCurrentIndex(swiper.activeIndex);
                         if (thumbsSwiper && !thumbsSwiper.destroyed) {
                           thumbsSwiper?.slideTo(swiper.activeIndex, 300);
                         }
@@ -402,36 +407,40 @@ const SinglePortfolio = ({ windowSize }) => {
                         </SwiperSlide>
                       ))}
                     </Swiper>
-                    <IconButton
-                      className={classes.main_button_prev}
-                      sx={{ background: "#fff" }}
-                      onTouchStart={() => {
-                        handleUserInteraction();
-                      }}
-                      onClick={() => {
-                        handleUserInteraction();
-                        mainSwiper?.slidePrev();
-                      }}
-                    >
-                      <KeyboardDoubleArrowDown
-                        sx={{ transform: "rotate(-90deg)", fill: "black" }}
-                      />
-                    </IconButton>
-                    <IconButton
-                      className={classes.main_button_next}
-                      sx={{ background: "#fff" }}
-                      onTouchStart={() => {
-                        handleUserInteraction();
-                      }}
-                      onClick={() => {
-                        handleUserInteraction();
-                        mainSwiper?.slideNext();
-                      }}
-                    >
-                      <KeyboardDoubleArrowDown
-                        sx={{ transform: "rotate(90deg)", fill: "black" }}
-                      />
-                    </IconButton>
+                    {currentIndex > 0 && (
+                      <IconButton
+                        className={classes.main_button_prev}
+                        sx={{ background: "#fff", borderRadius: "10%" }}
+                        onTouchStart={() => {
+                          handleUserInteraction();
+                        }}
+                        onClick={() => {
+                          handleUserInteraction();
+                          mainSwiper?.slidePrev();
+                        }}
+                      >
+                        <KeyboardArrowDown
+                          sx={{ transform: "rotate(90deg)", fill: "black" }}
+                        />
+                      </IconButton>
+                    )}
+                    {currentIndex < memoizedImages.length - 1 && (
+                      <IconButton
+                        className={classes.main_button_next}
+                        sx={{ background: "#fff", borderRadius: "10%" }}
+                        onTouchStart={() => {
+                          handleUserInteraction();
+                        }}
+                        onClick={() => {
+                          handleUserInteraction();
+                          mainSwiper?.slideNext();
+                        }}
+                      >
+                        <KeyboardArrowDown
+                          sx={{ transform: "rotate(-90deg)", fill: "black" }}
+                        />
+                      </IconButton>
+                    )}
                   </div>
                 </div>
               }

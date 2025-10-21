@@ -52,11 +52,11 @@
 }
 
 .main_button_prev {
-  right: 0%;
+  left: 0%;
 }
 
 .main_button_next {
-  left: 0%;
+  right: 0%;
 }
 
 .mainSwiper :global(.swiper-slide) img,
@@ -106,7 +106,6 @@
   transform: translateY(-50%) scale(0.7);
   z-index: 10;
 }
-
 
 .navigation_button_next {
   top: 80%;
