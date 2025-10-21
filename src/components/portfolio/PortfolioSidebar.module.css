@@ -14,10 +14,11 @@
 }
 
 .sidebarTitle {
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 100;
   border-bottom: 1px solid #eee;
   color: #333;
+  margin-bottom: 1rem;
 }
 
 .menu,
@@ -113,4 +114,8 @@
   font-weight: 400;
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
+}
+
+.dn {
+  display: none !important;
 }

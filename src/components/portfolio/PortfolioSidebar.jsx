@@ -37,6 +37,7 @@ const PortfolioSidebar = ({
   categories,
   activeFilter,
   onFilterChange,
+  isHidden,
   isPlain = false,
   loading = false,
 }) => {
@@ -101,7 +102,7 @@ const PortfolioSidebar = ({
 
   if (loading) {
     return (
-      <aside className={`${classes.sidebar} ${isPlain ? classes.plain : ""}`}>
+      <aside className={`${classes.sidebar} ${isPlain ? classes.plain : ""} ${isHidden?classes.dn:''}`}>
         <h2 className={classes.sidebarTitle}>
           <Skeleton width="80%" />
         </h2>
@@ -188,7 +189,9 @@ const PortfolioSidebar = ({
 
   return (
     <aside
-      className={`${classes.sidebar} ${isPlain ? classes.plain : ""}`}
+      className={`${classes.sidebar} ${isPlain ? classes.plain : ""}  ${
+        isHidden ? classes.dn : ""
+      }`}
       dir={lng === "fa" ? "rtl" : "ltr"}
     >
       <h2 className={classes.sidebarTitle}>{t("portfolio")}</h2>

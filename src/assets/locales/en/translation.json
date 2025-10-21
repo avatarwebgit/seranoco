@@ -16,8 +16,8 @@
   "caption": "Description",
 
   "seranoco": "Seranoco",
-  "no_colors":"No colors please select other shapes",
-  "no_shapes":"No shapes please select other colors",
+  "no_colors": "No colors please select other shapes",
+  "no_shapes": "No shapes please select other colors",
   "shop_now": "SHOP NOW",
   "login": "Login",
   "home": "Home",
@@ -110,7 +110,7 @@
   "code": "Code",
   "load_more": "Load More ...",
   "profile": {
-    "delivery":"Delivery method",
+    "delivery": "Delivery method",
     "update": "Update",
     "update_ok": "Updated account information successfully.",
     "update_err": "Threr was and error updating account information please try again later.",
@@ -387,5 +387,10 @@
   "notFoundMessage": "We're sorry, but the page you were looking for could not be found. It might have been removed, had its name changed, or is temporarily unavailable.",
   "backToHome": "Return to Homepage",
   "notFoundTitle": "Page Not Found",
-  "filters": "Filters"
+  "filters": "Filters",
+
+  "portfolio_in": {
+    "information": "Information",
+    "description": "Description"
+  }
 }

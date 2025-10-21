@@ -448,7 +448,7 @@ const SinglePortfolio = ({ windowSize }) => {
               <div className={classes.contentSection}>
                 <div className={classes.metaInfo}>
                   <center>
-                    <strong>{t("information")}</strong>
+                    <strong>{t("portfolio_in.information")}</strong>
                   </center>
                   <div
                     className={classes.short_description}
@@ -460,15 +460,20 @@ const SinglePortfolio = ({ windowSize }) => {
                     }}
                   />
                 </div>
-                <p
-                  className={classes.description}
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      lng === "fa"
-                        ? portfolioItem.description || ""
-                        : portfolioItem.description_en || "",
-                  }}
-                ></p>
+                <div>
+                  <center>
+                    <strong>{t("portfolio_in.description")}</strong>
+                  </center>
+                  <p
+                    className={classes.description}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        lng === "fa"
+                          ? portfolioItem.description || ""
+                          : portfolioItem.description_en || "",
+                    }}
+                  ></p>
+                </div>
               </div>
             </div>
           )}

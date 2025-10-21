@@ -18,7 +18,7 @@
 }
 
 .pageTitle {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: #333;
   font-weight: 700;
   margin: 0;
@@ -215,6 +215,13 @@
     align-items: flex-start;
   }
 
+  .contentWrapper.initial {
+    display: grid;
+    grid-template-columns: 0px 1fr;
+    gap: 2.5rem;
+    align-items: flex-start;
+  }
+
   .sidebarWrapper {
     display: block;
     position: sticky;
@@ -244,4 +251,8 @@
   .portfolioGrid {
     grid-template-columns: 1fr;
   }
+}
+
+.dn {
+  display: none;
 }

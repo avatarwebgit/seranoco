@@ -57,7 +57,7 @@ const Portfolio = ({ windowSize }) => {
         const processedCategories = rawCategories.map((cat) => ({
           id: cat.id,
           name: cat.title,
-          children: cat.children || [], 
+          children: cat.children || [],
           ...cat,
         }));
 
@@ -82,7 +82,7 @@ const Portfolio = ({ windowSize }) => {
             setPortfolioItems(childItems);
             setActiveFilter(selectedCategory.name);
             setLoading(false);
-            return; 
+            return;
           }
 
           const portfolioRes = await getPortfoliosByCategory(categoryId);
@@ -182,13 +182,18 @@ const Portfolio = ({ windowSize }) => {
             className={classes.portfolioContainer}
             dir={lng === "fa" ? "rtl" : "ltr"}
           >
-            <div className={classes.contentWrapper}>
+            <div
+              className={` ${
+                !categoryId ? classes.initial : classes.contentWrapper
+              }`}
+            >
               <div className={classes.sidebarWrapper}>
                 <PortfolioSidebar
                   categories={categories}
                   activeFilter={activeFilter}
                   onFilterChange={setActiveFilter}
                   loading={loading}
+                  isHidden={categoryId ? false : true}
                 />
               </div>
 
@@ -196,14 +201,14 @@ const Portfolio = ({ windowSize }) => {
               <main className={classes.mainContent}>
                 <div className={classes.pageHeader}>
                   <h1 className={classes.pageTitle}>{t("our_portfolio")}</h1>
-                  <button
+                  {/* <button
                     className={classes.mobileFilterTrigger}
                     onClick={() => setIsMobileSidebarOpen(true)}
                     aria-label="Open filters"
                   >
                     <FilterListIcon />
                     <span>{t("filters", "Filters")}</span>
-                  </button>
+                  </button> */}
                 </div>
                 <div className={classes.portfolioGrid}>
                   {loading &&
@@ -216,6 +221,7 @@ const Portfolio = ({ windowSize }) => {
                             width="100%"
                             height={250}
                             sx={{ borderRadius: 1 }}
+                            key={i}
                           />
                         </div>
                       );
@@ -237,9 +243,10 @@ const Portfolio = ({ windowSize }) => {
                                 alt={item.title}
                                 className={classes.cardImage}
                               />
+                              {console.log(item)}
                               <div className={classes.cardOverlay}>
                                 <h3 className={classes.cardTitle}>
-                                  {lng === "fa" ? item.title_fa : item.title}
+                                  {lng === "fa" ? item.title : item.title}
                                 </h3>
                               </div>
                             </Link>
