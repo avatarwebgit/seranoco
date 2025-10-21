@@ -24,7 +24,6 @@ import classes from "./Portfolio.module.css";
 const Portfolio = ({ windowSize }) => {
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get("category");
-  console.log(categoryId);
 
   const lng = useSelector((state) => state.localeStore.lng);
 
@@ -42,36 +41,33 @@ const Portfolio = ({ windowSize }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setPortfolioItems([]);
+
       try {
         const isFa = i18n.language === "fa";
 
-        // 1️⃣ Fetch categories
         const categoriesRes = await getPorlfolioCategories();
         const rawCategories = categoriesRes.result;
 
-        // Build quick lookup for category titles
         const categoryNameMap = new Map();
         rawCategories.forEach((cat) => {
           categoryNameMap.set(cat.id, cat.title);
         });
 
-        // Add children support (if API already provides children, skip this step)
         const processedCategories = rawCategories.map((cat) => ({
           id: cat.id,
           name: cat.title,
-          children: cat.children || [], // depends on API structure
+          children: cat.children || [], 
           ...cat,
         }));
 
         setCategories(processedCategories);
 
-        // 2️⃣ If a category is selected
         if (categoryId) {
           const selectedCategory = processedCategories.find(
             (cat) => cat.id === parseInt(categoryId)
           );
 
-          // ✅ If category has children, show children instead of fetching portfolios
           if (selectedCategory && selectedCategory.children?.length > 0) {
             const childItems = selectedCategory.children.map((child) => ({
               ...child,
@@ -85,10 +81,10 @@ const Portfolio = ({ windowSize }) => {
             }));
             setPortfolioItems(childItems);
             setActiveFilter(selectedCategory.name);
-            return; // Stop here (don't fetch portfolios yet)
+            setLoading(false);
+            return; 
           }
 
-          // ✅ Otherwise, fetch portfolios for this leaf category
           const portfolioRes = await getPortfoliosByCategory(categoryId);
           const rawPortfolios = portfolioRes.result;
 
@@ -105,7 +101,6 @@ const Portfolio = ({ windowSize }) => {
           setPortfolioItems(processedPortfolios);
           setActiveFilter(selectedCategory?.name || allCategoryString);
         } else {
-          // 3️⃣ No category selected → load all portfolios
           const portfolioRes = await getPorlfolios();
           const rawPortfolios = portfolioRes.result;
 
@@ -120,10 +115,10 @@ const Portfolio = ({ windowSize }) => {
           }));
 
           setPortfolioItems(processedPortfolios);
-          // setActiveFilter(allCategoryString); // Uncomment if needed
         }
       } catch (error) {
         console.error("Failed to fetch portfolio data:", error);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -133,8 +128,8 @@ const Portfolio = ({ windowSize }) => {
   }, [i18n.language, allCategoryString, categoryId]);
 
   useEffect(() => {
-    console.log(portfolioItems);
-  }, [portfolioItems]);
+    console.log(loading);
+  }, [loading]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -211,10 +206,23 @@ const Portfolio = ({ windowSize }) => {
                   </button>
                 </div>
                 <div className={classes.portfolioGrid}>
-                  {categoryId
+                  {loading &&
+                    Array.from({ length: 6 }).map((_, i) => {
+                      return (
+                        <div className={classes.portfolioCard}>
+                          <Skeleton
+                            variant="rectangular"
+                            animation="wave"
+                            width="100%"
+                            height={250}
+                            sx={{ borderRadius: 1 }}
+                          />
+                        </div>
+                      );
+                    })}
+                  {!loading && categoryId
                     ? portfolioItems.map((item) => {
-                        const hasChildren =
-                          item.children && item.children.length > 0;
+                        const hasChildren = item.children;
 
                         if (!hasChildren) {
                           return (

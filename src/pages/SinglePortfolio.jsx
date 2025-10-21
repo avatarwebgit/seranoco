@@ -45,17 +45,8 @@ const SinglePortfolio = ({ windowSize }) => {
 
   const navigate = useNavigate();
 
-  const thumbnailNextBtnRef = useRef(null);
-  const thumbnailPrevBtnRef = useRef(null);
   const mainSwiperRef = useRef(null);
   const thumbSwiperRef = useRef(null);
-
-  useEffect(() => {
-    console.log(mainSwiperRef.current, thumbSwiperRef.current);
-    if (mainSwiperRef.current && thumbSwiperRef.current) {
-      setIsSwiperReady(true);
-    }
-  }, [lng]);
 
   useEffect(() => {
     const fetchData = async (slug) => {
@@ -313,7 +304,6 @@ const SinglePortfolio = ({ windowSize }) => {
                       ))}
                     </Swiper>
                     <IconButton
-                      ref={thumbnailPrevBtnRef}
                       sx={{
                         background: "#fff",
                       }}
@@ -335,7 +325,6 @@ const SinglePortfolio = ({ windowSize }) => {
                       />
                     </IconButton>
                     <IconButton
-                      ref={thumbnailNextBtnRef}
                       sx={{
                         background: "#fff",
                       }}
@@ -414,7 +403,6 @@ const SinglePortfolio = ({ windowSize }) => {
                       ))}
                     </Swiper>
                     <IconButton
-                      ref={thumbnailPrevBtnRef}
                       className={classes.main_button_prev}
                       sx={{ background: "#fff" }}
                       onTouchStart={() => {
@@ -430,7 +418,6 @@ const SinglePortfolio = ({ windowSize }) => {
                       />
                     </IconButton>
                     <IconButton
-                      ref={thumbnailNextBtnRef}
                       className={classes.main_button_next}
                       sx={{ background: "#fff" }}
                       onTouchStart={() => {
