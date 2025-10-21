@@ -45,52 +45,83 @@ const Portfolio = ({ windowSize }) => {
       try {
         const isFa = i18n.language === "fa";
 
+        // 1️⃣ Fetch categories
         const categoriesRes = await getPorlfolioCategories();
         const rawCategories = categoriesRes.result;
 
+        // Build quick lookup for category titles
         const categoryNameMap = new Map();
         rawCategories.forEach((cat) => {
           categoryNameMap.set(cat.id, cat.title);
         });
 
+        // Add children support (if API already provides children, skip this step)
         const processedCategories = rawCategories.map((cat) => ({
           id: cat.id,
           name: cat.title,
+          children: cat.children || [], // depends on API structure
           ...cat,
         }));
 
-        const categoryTree = [
-          // { name: allCategoryString },
-          ...processedCategories,
-        ];
-        setCategories(categoryTree);
-        // setActiveFilter(allCategoryString);
+        setCategories(processedCategories);
 
-        let rawPortfolios;
+        // 2️⃣ If a category is selected
         if (categoryId) {
-          const portfolioRes = await getPortfoliosByCategory(categoryId);
-          rawPortfolios = portfolioRes.result;
           const selectedCategory = processedCategories.find(
             (cat) => cat.id === parseInt(categoryId)
           );
-          if (selectedCategory) {
-            setActiveFilter(selectedCategory.name);
-          }
-        } else {
-          const portfolioRes = await getPorlfolios();
-          rawPortfolios = portfolioRes.result;
-          // setActiveFilter(allCategoryString);
-        }
 
-        const processedPortfolios = rawPortfolios.map((item) => ({
-          id: item.id,
-          slug: item.alias,
-          title: isFa && item.title ? item.title : item.title_en || item.title,
-          images: [item.image],
-          category_id: item.category_id,
-          category: categoryNameMap.get(item.category_id) || "Uncategorized",
-        }));
-        setPortfolioItems(processedPortfolios);
+          // ✅ If category has children, show children instead of fetching portfolios
+          if (selectedCategory && selectedCategory.children?.length > 0) {
+            const childItems = selectedCategory.children.map((child) => ({
+              ...child,
+              slug: child.alias,
+              title:
+                isFa && child.title
+                  ? child.title
+                  : child.title_en || child.title,
+              image: child.image,
+              images: [child.image],
+            }));
+            setPortfolioItems(childItems);
+            setActiveFilter(selectedCategory.name);
+            return; // Stop here (don't fetch portfolios yet)
+          }
+
+          // ✅ Otherwise, fetch portfolios for this leaf category
+          const portfolioRes = await getPortfoliosByCategory(categoryId);
+          const rawPortfolios = portfolioRes.result;
+
+          const processedPortfolios = rawPortfolios.map((item) => ({
+            id: item.id,
+            slug: item.alias,
+            title:
+              isFa && item.title ? item.title : item.title_en || item.title,
+            images: [item.image],
+            category_id: item.category_id,
+            category: categoryNameMap.get(item.category_id) || "Uncategorized",
+          }));
+
+          setPortfolioItems(processedPortfolios);
+          setActiveFilter(selectedCategory?.name || allCategoryString);
+        } else {
+          // 3️⃣ No category selected → load all portfolios
+          const portfolioRes = await getPorlfolios();
+          const rawPortfolios = portfolioRes.result;
+
+          const processedPortfolios = rawPortfolios.map((item) => ({
+            id: item.id,
+            slug: item.alias,
+            title:
+              isFa && item.title ? item.title : item.title_en || item.title,
+            images: [item.image],
+            category_id: item.category_id,
+            category: categoryNameMap.get(item.category_id) || "Uncategorized",
+          }));
+
+          setPortfolioItems(processedPortfolios);
+          // setActiveFilter(allCategoryString); // Uncomment if needed
+        }
       } catch (error) {
         console.error("Failed to fetch portfolio data:", error);
       } finally {
@@ -100,6 +131,10 @@ const Portfolio = ({ windowSize }) => {
 
     fetchData();
   }, [i18n.language, allCategoryString, categoryId]);
+
+  useEffect(() => {
+    console.log(portfolioItems);
+  }, [portfolioItems]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -178,15 +213,38 @@ const Portfolio = ({ windowSize }) => {
                 <div className={classes.portfolioGrid}>
                   {categoryId
                     ? portfolioItems.map((item) => {
+                        const hasChildren =
+                          item.children && item.children.length > 0;
+
+                        if (!hasChildren) {
+                          return (
+                            <Link
+                              to={`/${lng}/portfolio/${item.slug}`}
+                              key={item.id}
+                              className={classes.portfolioCard}
+                              target="_blank"
+                            >
+                              <img
+                                src={item.images[0]}
+                                alt={item.title}
+                                className={classes.cardImage}
+                              />
+                              <div className={classes.cardOverlay}>
+                                <h3 className={classes.cardTitle}>
+                                  {lng === "fa" ? item.title_fa : item.title}
+                                </h3>
+                              </div>
+                            </Link>
+                          );
+                        }
                         return (
                           <Link
-                            to={`/${lng}/portfolio/${item.slug}`}
+                            to={`/${lng}/portfolio?category=${item.id}`}
                             key={item.id}
                             className={classes.portfolioCard}
-                            target="_blank"
                           >
                             <img
-                              src={item.images[0]}
+                              src={item.image || null}
                               alt={item.title}
                               className={classes.cardImage}
                             />
