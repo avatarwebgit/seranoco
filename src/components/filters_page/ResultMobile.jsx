@@ -4,11 +4,7 @@ import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { sendShoppingCart } from "../../services/api";
-import {
-  accesModalActions,
-  cartActions,
-  drawerActions,
-} from "../../store/store";
+import { cartActions, drawerActions } from "../../store/store";
 
 import { formatNumber, notify } from "../../utils/helperFunctions";
 
@@ -16,14 +12,17 @@ import classes from "./ResultMobile.module.css";
 const ResultMobile = ({ dataProps }) => {
   const [data, setData] = useState(null);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const lng = useSelector((state) => state.localeStore.lng);
-  const cart = useSelector((state) => state.cartStore);
   const token = useSelector((state) => state.userStore.token);
   const euro = useSelector((state) => state.cartStore.euro);
+
+  useEffect(() => {
+    console.log(lng);
+  }, [lng]);
 
   useEffect(() => {
     if (dataProps) {
@@ -83,92 +82,81 @@ const ResultMobile = ({ dataProps }) => {
               <div className={classes.left_side}>
                 <span className={classes.name_wrapper}>
                   <p className={classes.name}>
+                    {console.log(!lng === "fa")}
                     {!lng === "fa" ? el.name : el.name_fa}
                   </p>
                 </span>
-                <span className={classes.details}>
-                  <span className={classes.text_wrapper}>
-                    <p className={classes.detail_text}>{t("type")}</p>
-                    <p className={classes.detail_text}>{t("size")}</p>
-                    <p className={classes.detail_text}>{t("color")}</p>
-                    <p className={classes.detail_text}>{t("details")}</p>
-                    <p className={classes.detail_text}>{t("country")}</p>
-                    <p className={classes.detail_text}>
-                      {t("price")}&nbsp;1{t("1_pcs")} / {t("m_unit")}
-                    </p>
-                  </span>
-                  <span className={classes.value_wrapper}>
-                    <p className={classes.detail_text}>
-                      {el?.details || "none"}
-                    </p>
-                    <p className={classes.detail_text}>{el?.size || "none"}</p>
-                    <p className={classes.detail_text}>
-                      {lng === "fa"
-                        ? colorAttr.name_fa
-                        : colorAttr.name || "none"}
-                    </p>
-                    <p className={classes.detail_text}>
-                      {lng === "fa"
-                        ? detailAttr.name_fa
-                        : detailAttr.name || "none"}
-                    </p>
-                    <p className={classes.detail_text}>
-                      {el?.country || "none"}
-                    </p>
-                    <p className={classes.detail_text}>
-                      <div className={classes.price_wrapper}>
-                        {lng !== "fa" ? (
-                          <>
-                            {+el.percent_sale_price !== 0 && (
-                              <span className={classes.prev_price}>
-                                <p
-                                  style={{
-                                    textDecoration: "line-through",
-                                    fontSize: ".5rem",
-                                  }}
-                                >
-                                  {el.price}
-                                  {t("m_unit")}
-                                </p>{" "}
-                                <p className={classes.off_text}>
-                                  {el.percent_sale_price}%
-                                </p>
-                              </span>
-                            )}
+                <table className={classes.details_table}>
+                  <tbody>
+                    <tr>
+                      <td className={classes.detail_label}>{t("type")}</td>
+                      <td className={classes.detail_value}>
+                        {el?.details || "none"}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className={classes.detail_label}>{t("size")}</td>
+                      <td className={classes.detail_value}>
+                        {el?.size || "none"}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className={classes.detail_label}>{t("color")}</td>
+                      <td className={classes.detail_value}>
+                        {lng === "fa"
+                          ? colorAttr.name_fa
+                          : colorAttr.name || "none"}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className={classes.detail_label}>{t("details")}</td>
+                      <td className={classes.detail_value}>
+                        {lng === "fa"
+                          ? detailAttr.name_fa
+                          : detailAttr.name || "none"}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className={classes.detail_label}>{t("country")}</td>
+                      <td className={classes.detail_value}>
+                        {el?.country || "none"}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className={classes.detail_label}>
+                        {t("price")}&nbsp;1{t("1_pcs")} / {t("m_unit")}
+                      </td>
+                      <td className={classes.detail_value}>
+                        <div className={classes.price_wrapper}>
+                          {+el.percent_sale_price !== 0 && (
+                            <span className={classes.prev_price}>
+                              <p
+                                style={{
+                                  textDecoration: "line-through",
+                                  fontSize: ".5rem",
+                                }}
+                              >
+                                {lng !== "fa" ? el.price : el?.price * euro}{" "}
+                                {t("m_unit")}
+                              </p>
+                              <p className={classes.off_text}>
+                                {el.percent_sale_price}%
+                              </p>
+                            </span>
+                          )}
+                          <p className={classes.current_price}>
+                            {lng !== "fa"
+                              ? `${el.sale_price} €`
+                              : `${formatNumber(
+                                  el.sale_price * euro
+                                )} تومان (€${el.sale_price})`}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
 
-                            <p className={classes.current_price}>
-                              {el.sale_price}&nbsp;€
-                            </p>
-                          </>
-                        ) : (
-                          <>
-                            {+el.percent_sale_price !== 0 && (
-                              <span className={classes.prev_price}>
-                                <p
-                                  style={{
-                                    textDecoration: "line-through",
-                                    fontSize: ".5rem",
-                                  }}
-                                >
-                                  {el?.price * euro} {t("m_unit")}
-                                </p>{" "}
-                                <p className={classes.off_text}>
-                                  {el.percent_sale_price}%
-                                </p>
-                              </span>
-                            )}
-
-                            <p className={classes.current_price}>
-                              {formatNumber(el.sale_price * euro)}
-                              تومان (&nbsp;€&nbsp;
-                              {el.sale_price} )
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    </p>
-                  </span>
-                </span>
                 {token ? (
                   <button
                     className={classes.shop_btn}

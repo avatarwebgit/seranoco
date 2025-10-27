@@ -181,7 +181,6 @@ const FilterByShape = ({ windowSize }) => {
       setColorData(fetchedColorData?.data.colors);
       setGroupColors(fetchedColorData?.data.group_colors);
     }
-
   }, [fetchedColorData]);
 
   useEffect(() => {
@@ -198,7 +197,7 @@ const FilterByShape = ({ windowSize }) => {
           const groupB = sortedGroupColorsP.find(
             (group) => group.id === b.group_id
           );
-          console.log(groupA, groupB)
+          console.log(groupA, groupB);
           if (groupA.priority === groupB.priority) {
             return a.priority - b.priority;
           }
@@ -411,24 +410,24 @@ const FilterByShape = ({ windowSize }) => {
 
   useEffect(() => {
     if (memoizedTableData.length > 0) {
-      const chunks = chunkData(memoizedTableData, 9);
+      let itemsCount = isSmallPage ? 4 : 9;
+      const chunks = chunkData(memoizedTableData, itemsCount);
       setChunkedData(chunks);
     }
   }, [memoizedTableData]);
 
-  
-    if (isLoadingColors) {
-      return (
-        <div className={classes.main}>
-          <BannerCarousel />
-          <Header windowSize={windowSize} />
-          <Body className={classes.loading_body}>
-            <LoadingSpinner />
-          </Body>
-          <Footer />
-        </div>
-      );
-    }
+  if (isLoadingColors) {
+    return (
+      <div className={classes.main}>
+        <BannerCarousel />
+        <Header windowSize={windowSize} />
+        <Body className={classes.loading_body}>
+          <LoadingSpinner />
+        </Body>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className={classes.main}>
