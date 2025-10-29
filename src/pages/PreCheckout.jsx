@@ -269,7 +269,7 @@ const PreCheckout = ({ windowSize }) => {
                           {lng !== "fa"
                             ? cart.totalPriceAfterDiscount.toFixed(2)
                             : Intl.NumberFormat("fa-IR").format(
-                                cart.totalPriceAfterDiscount
+                                cart.totalPriceAfterDiscount * euro
                               )}
                           &nbsp;
                           {t("m_unit")}
@@ -279,7 +279,7 @@ const PreCheckout = ({ windowSize }) => {
                           {lng !== "fa"
                             ? cart.totalPrice.toFixed(2)
                             : Intl.NumberFormat("fa-IR").format(
-                                cart.totalPrice
+                                cart.totalPrice * euro
                               )}
                           &nbsp;
                           {t("m_unit")}

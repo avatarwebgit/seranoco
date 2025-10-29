@@ -21,10 +21,6 @@ const ResultMobile = ({ dataProps }) => {
   const euro = useSelector((state) => state.cartStore.euro);
 
   useEffect(() => {
-    console.log(lng);
-  }, [lng]);
-
-  useEffect(() => {
     if (dataProps) {
       setData(dataProps);
     }
@@ -82,7 +78,6 @@ const ResultMobile = ({ dataProps }) => {
               <div className={classes.left_side}>
                 <span className={classes.name_wrapper}>
                   <p className={classes.name}>
-                    {console.log(!lng === "fa")}
                     {!lng === "fa" ? el.name : el.name_fa}
                   </p>
                 </span>
