@@ -250,10 +250,10 @@ const Products = ({ windowSize }) => {
 
   const handleSendShoppingCart = async (el) => {
     const isInCart =
-      cartProducts.find((p) => p.variation_id === el.variation_id) || null;
+      cartProducts.find((p) => p.variation_id === +variation) || null;
 
     if (isInCart) {
-      return notify("product exists");
+      return notify(t("product.exist"));
     }
 
     const serverRes = await sendShoppingCart(
@@ -756,9 +756,9 @@ const Products = ({ windowSize }) => {
                       variant="contained"
                       size="large"
                       className={classes.addtocart}
-                      onClick={() =>
-                        handleSendShoppingCart(detailsData.product)
-                      }
+                      onClick={() => {
+                        handleSendShoppingCart(detailsData.product);
+                      }}
                     >
                       <Shop
                         style={{

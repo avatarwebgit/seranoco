@@ -227,7 +227,8 @@
     "err": "Product Not Added To Favorites Please Try Again.",
     "remove": "Remove From Wish List",
     "remove_ow": "Remove",
-    "total_height": "Total Height"
+    "total_height": "Total Height",
+    "exist": "Product already exists in your cart."
   },
 
   "cu": {

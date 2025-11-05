@@ -17,6 +17,7 @@ const ResultRow = ({ dataProp }) => {
   const lng = useSelector((state) => state.localeStore.lng);
   const token = useSelector((state) => state.userStore.token);
   const euro = useSelector((state) => state.cartStore.euro);
+  const cartProducts = useSelector((state) => state.cartStore.products);
 
   // State
   const [data, setData] = useState(null);
@@ -68,6 +69,13 @@ const ResultRow = ({ dataProp }) => {
     if (!token) {
       dispatch(accesModalActions.login());
       return;
+    }
+
+    const isInCart =
+      cartProducts.find((p) => p.variation_id === +variationId) || null;
+
+    if (isInCart) {
+      return notify(t("product.exist"));
     }
 
     try {

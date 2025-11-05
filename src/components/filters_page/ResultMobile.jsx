@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { sendShoppingCart } from "../../services/api";
-import { cartActions, drawerActions } from "../../store/store";
+import {
+  accesModalActions,
+  cartActions,
+  drawerActions,
+} from "../../store/store";
 
 import { formatNumber, notify } from "../../utils/helperFunctions";
 
@@ -19,6 +23,7 @@ const ResultMobile = ({ dataProps }) => {
   const lng = useSelector((state) => state.localeStore.lng);
   const token = useSelector((state) => state.userStore.token);
   const euro = useSelector((state) => state.cartStore.euro);
+  const cartProducts = useSelector((state) => state.cartStore.products);
 
   useEffect(() => {
     if (dataProps) {
@@ -27,6 +32,16 @@ const ResultMobile = ({ dataProps }) => {
   }, [dataProps]);
 
   const handleSendShoppingCart = async (el, variation, quantity) => {
+    if (!token) {
+      dispatch(accesModalActions.login());
+      return;
+    }
+    const isInCart =
+      cartProducts.find((p) => p.variation_id === +variation) || null;
+
+    if (isInCart) {
+      return notify(t("product.exist"));
+    }
     try {
       const serverRes = await sendShoppingCart(
         token,
