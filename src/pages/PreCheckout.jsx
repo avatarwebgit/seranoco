@@ -164,19 +164,15 @@ const PreCheckout = ({ windowSize }) => {
                   {step !== 2 ? (
                     <span className={classes.amont}>
                       {lng !== "fa"
-                        ? card?.totalPrice?.toFixed(2)
-                        : (+card?.totalPrice * card.euro).toLocaleString(
-                            "fa-IR"
-                          )}
+                        ? card?.productPrice
+                        : (+card?.productPrice * euro).toLocaleString("fa-IR")}
                       &nbsp;{t("m_unit")}
                     </span>
                   ) : (
                     <span className={classes.amont}>
                       {lng !== "fa"
-                        ? card?.finalPayment.toFixed(2)
-                        : (+card?.finalPayment * card.euro).toLocaleString(
-                            "fa-IR"
-                          )}
+                        ? card?.productPrice
+                        : (+card?.productPrice * euro).toLocaleString("fa-IR")}
                       &nbsp;{t("m_unit")}
                     </span>
                   )}
@@ -249,6 +245,38 @@ const PreCheckout = ({ windowSize }) => {
                 </span>
               </div>
             )}
+
+            {step > 0 && (
+              <div
+                className={classes.total_wrapper}
+                style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
+              >
+                <span className={classes.title}>{t("pc.delivery_price")}</span>
+
+                <span className={classes.amont}>
+                  {isLoading ? (
+                    <Skeleton
+                      variant="text"
+                      animation="wave"
+                      sx={{ width: "100px", height: "25px" }}
+                    />
+                  ) : (
+                    <>
+                      <>
+                        {lng !== "fa"
+                          ? cart.deliveryPrice.toFixed(2)
+                          : Intl.NumberFormat("fa-IR").format(
+                              cart.deliveryPrice * euro
+                            )}
+                        &nbsp;
+                        {t("m_unit")}
+                      </>
+                    </>
+                  )}
+                </span>
+              </div>
+            )}
+
             <div
               className={classes.total_wrapper}
               style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
@@ -267,9 +295,16 @@ const PreCheckout = ({ windowSize }) => {
                       {walletStatus ? (
                         <>
                           {lng !== "fa"
-                            ? cart.totalPriceAfterDiscount.toFixed(2)
+                            ? (
+                                cart.productPrice -
+                                walletBalance -
+                                cart.deliveryPrice
+                              ).toFixed(2)
                             : Intl.NumberFormat("fa-IR").format(
-                                cart.totalPriceAfterDiscount * euro
+                                (cart.productPrice -
+                                  walletBalance -
+                                  cart.deliveryPrice) *
+                                  euro
                               )}
                           &nbsp;
                           {t("m_unit")}
@@ -277,12 +312,12 @@ const PreCheckout = ({ windowSize }) => {
                       ) : (
                         <>
                           {lng !== "fa"
-                            ? cart.totalPrice.toFixed(2)
+                            ? (cart.productPrice - cart.deliveryPrice).toFixed(
+                                2
+                              )
                             : Intl.NumberFormat("fa-IR").format(
-                                cart.totalPrice * euro
+                                cart.productPrice * euro - cart.deliveryPrice
                               )}
-                          &nbsp;
-                          {t("m_unit")}
                           &nbsp;
                           {t("m_unit")}
                         </>
@@ -292,6 +327,7 @@ const PreCheckout = ({ windowSize }) => {
                 </span>
               )}
             </div>
+
             {step < 2 && (
               <Button
                 className={classes.step_btn}

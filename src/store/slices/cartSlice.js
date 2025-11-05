@@ -4,6 +4,8 @@ const initialState = {
   products: [],
   totalFeeBeforeDiscounts: 0,
   totalPrice: 0,
+  productPrice: 0,
+  deliveryPrice: 0,
   totalPriceAfterDiscount: 0,
   finalCart: [],
   finalPayment: 0,
@@ -21,7 +23,7 @@ const cartSlice = createSlice({
   reducers: {
     set(state, action) {
       state.products = action.payload;
-      state.totalPrice = state.products.reduce((total, product) => {
+      state.productPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -39,7 +41,7 @@ const cartSlice = createSlice({
       ) {
         state.products.push(action.payload);
       }
-      state.totalPrice = state.products.reduce((total, product) => {
+      state.productPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -62,7 +64,7 @@ const cartSlice = createSlice({
         "temporaryCart",
         JSON.stringify(state.temporaryCart)
       );
-      state.totalPrice = state.temporaryCart.reduce((total, product) => {
+      state.productPrice = state.temporaryCart.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -81,7 +83,7 @@ const cartSlice = createSlice({
         "temporaryCart",
         JSON.stringify(state.temporaryCart)
       );
-      state.totalPrice = state.temporaryCart.reduce((total, product) => {
+      state.productPrice = state.temporaryCart.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -96,7 +98,7 @@ const cartSlice = createSlice({
       state.products = state.products.filter(
         (el) => +el.variation_id !== +action.payload.variation_id
       );
-      state.totalPrice = state.products.reduce((total, product) => {
+      state.productPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -114,7 +116,7 @@ const cartSlice = createSlice({
       if (product) {
         product.selected_quantity += 1;
       }
-      state.totalPrice = state.products.reduce((total, product) => {
+      state.productPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -134,7 +136,7 @@ const cartSlice = createSlice({
         product.selected_quantity = action.payload.quantity;
       }
 
-      state.totalPrice = state.products.reduce((total, product) => {
+      state.productPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -152,7 +154,7 @@ const cartSlice = createSlice({
       if (product && product.selected_quantity > 0) {
         product.selected_quantity -= 1;
       }
-      state.totalPrice = state.products.reduce((total, product) => {
+      state.productPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -164,7 +166,7 @@ const cartSlice = createSlice({
     },
 
     calculateTotalPrice(state) {
-      state.totalPrice = state.products.reduce((total, product) => {
+      state.productPrice = state.products.reduce((total, product) => {
         return total + product.selected_quantity * product.sale_price;
       }, 0);
       state.totalFeeBeforeDiscounts = state.products.reduce(
@@ -173,6 +175,14 @@ const cartSlice = createSlice({
         },
         0
       );
+    },
+
+    setProductPrice(state, action) {
+      state.productPrice = action.payload;
+    },
+
+    setDeliveryMethodPrice(state, action) {
+      state.deliveryPrice = action.payload;
     },
 
     setTotalPriceBeforeDiscout(state, action) {
@@ -187,7 +197,7 @@ const cartSlice = createSlice({
       state.finalCart = state.products.filter(
         (el) => el.selected_quantity !== 0
       );
-      state.finalPayment = state.totalPrice;
+      state.finalPayment = state.productPrice;
     },
     setEuro(state, action) {
       state.euro = action.payload;
@@ -211,7 +221,7 @@ const cartSlice = createSlice({
       state.deliveryMethod = null;
     },
     setTotalPrice(state, action) {
-      state.totalPrice = action.payload;
+      state.productPrice = action.payload;
     },
   },
 });

@@ -807,7 +807,7 @@ export const sendShoppingCart = async (
   return { response, result };
 };
 
-// export const getShoppingCart = async (token, options) => {
+// export const getNewCart = async (token, address_id, delivery_method_id ,options) => {
 //   const response = await fetch(`${baseUrl}/cart`, {
 //     method: "GET",
 //     headers: {

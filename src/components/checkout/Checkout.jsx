@@ -26,6 +26,7 @@ import {
 import { cartActions } from "../../store/store";
 import { notify } from "../../utils/helperFunctions";
 import classes from "./Checkout.module.css";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const inputStyles = {
   mb: "0.5rem",
@@ -160,26 +161,18 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
       address_id,
       delivery_method_id
     );
-    if (lng === "fa") {
-      dispatch(cartActions.setTotalPrice(result.cart_total_fa.total_price));
-      dispatch(
-        cartActions.setTotalPriceAfterDiscout(
-          result.cart_total_fa.total_sale_price
-        )
-      );
-    } else {
-      dispatch(cartActions.setTotalPrice(result.cart_total.total_price));
-      dispatch(
-        cartActions.setTotalPriceAfterDiscout(
-          result.cart_total.total_sale_price
-        )
-      );
-    }
+
+    dispatch(cartActions.setProductPrice(result.cart_total.total_price));
+    const deliveryPrice = result.cart_total.delivery_price;
+    dispatch(
+      cartActions.setDeliveryMethodPrice(
+        typeof deliveryPrice === "number" ? deliveryPrice : 0
+      )
+    );
   };
 
   useEffect(() => {
-    if (selectedAddress) {
-      //&& selectedDeliveryMethod
+    if (selectedAddress && selectedDeliveryMethod) {
       fetchCartPrice(selectedAddress.id, selectedDeliveryMethod);
       dispatch(cartActions.setSelectedAddress(selectedAddress.id));
       isDataValid(true);
@@ -275,12 +268,16 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
 
   const handleGetDeliveryMethods = async () => {
     try {
+      setisLoadingDeliveryMethods(true);
+      const { response, result } = await getDeliveryMethods();
+      if (response.ok) {
+        setDeliveryMethods(result.data);
+      }
     } catch (error) {
+      console.log(error);
+      setisLoadingDeliveryMethods(false);
     } finally {
-    }
-    const { response, result } = await getDeliveryMethods();
-    if (response.ok) {
-      setDeliveryMethods(result.data);
+      setisLoadingDeliveryMethods(false);
     }
   };
 
@@ -295,7 +292,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
   return (
     <div className={classes.main}>
       {/* Address Column */}
-      <div>
+      <div style={{ margin: "auto" }}>
         <Autocomplete
           id="address-autocomplete"
           disablePortal
@@ -493,39 +490,46 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
       </div>
 
       {/* Payment Column */}
-      {/* <div style={{ width: "100%" }} dir={lng === "fa" ? "rtl" : "ltr"}>
+      <div style={{ width: "100%" }} dir={lng === "fa" ? "rtl" : "ltr"}>
         <Typography
           variant="h6"
           component="h2"
-          sx={{ fontWeight: "bold", mb: 2 }}
+          sx={{ fontWeight: "bold", mb: 2, fontSize: "1rem" }}
         >
           {t("profile.delivery")}
         </Typography>
-        <div className={classes.payment_options_wrapper}>
-          {deliveryMethods &&
-            deliveryMethods.map((method) => (
-              <div
-                key={method.id}
-                className={`${classes.payment_option} ${
-                  selectedDeliveryMethod === method.id ? classes.selected : ""
-                }`}
-                onClick={() => handleSetSeletedDeliveryMethod(method.id)}
-                role="button"
-                tabIndex={0}
-                aria-pressed={selectedDeliveryMethod === method.id}
-              >
-                <img
-                  src={method.image}
-                  alt={method?.alt}
-                  className={classes.payment_image}
-                />
-                <Typography variant="caption" className={classes.payment_name}>
-                  {method.name}
-                </Typography>
-              </div>
-            ))}
-        </div>
-      </div> */}
+        {isLoadingDeliveryMethods ? (
+          <LoadingSpinner />
+        ) : (
+          <div className={classes.payment_options_wrapper}>
+            {deliveryMethods &&
+              deliveryMethods.map((method) => (
+                <div
+                  key={method.id}
+                  className={`${classes.payment_option} ${
+                    selectedDeliveryMethod === method.id ? classes.selected : ""
+                  }`}
+                  onClick={() => handleSetSeletedDeliveryMethod(method.id)}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={selectedDeliveryMethod === method.id}
+                >
+                  <img
+                    src={method.image}
+                    alt={method?.alt}
+                    className={classes.payment_image}
+                  />
+                  <Typography
+                    variant="caption"
+                    className={classes.payment_name}
+                  >
+                    {method.name}
+                  </Typography>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
