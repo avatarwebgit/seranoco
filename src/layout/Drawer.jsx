@@ -170,6 +170,12 @@ const Drawer = () => {
     }
   }, [cart.totalPrice, walletBalance, walletStatus]);
 
+  useEffect(() => {
+    console.log(cart);
+    console.log(walletBalance)
+  }, [cart])
+  
+
   return (
     <div
       className={`${styles.main} ${!isRTL ? styles.main_rtl : styles.main_ltr}`}
@@ -372,16 +378,14 @@ const Drawer = () => {
             ) : (
               <div className={styles.payment_amount}>
                 <h3 className={styles.payment_title}>{t("payment")}:</h3>
-                {walletStatus ? (
+                  {!walletStatus ? (
                   <>
-                    {cart.totalPrice && walletBalance && (
+                    {cart.productPrice && walletBalance && (
                       <>
                         {!isRTL
                           ? cart.totalPriceAfterDiscount.toFixed(2)
-                          : formatNumber(
-                              Math.round(
-                                cart.totalPriceAfterDiscount * cart.euro
-                              )
+                          : Intl.NumberFormat("fa-IR").format(
+                              Math.max(0, cart.productPrice * cart.euro)
                             )}
                       </>
                     )}
@@ -390,7 +394,12 @@ const Drawer = () => {
                   <>
                     {!isRTL
                       ? cart?.totalPrice?.toFixed(2)
-                      : formatNumber(Math.round(cart.totalPrice * cart.euro))}
+                      : Intl.NumberFormat("fa-IR").format(
+                          Math.max(
+                            0,
+                            (cart.productPrice - walletBalance) * cart.euro
+                          )
+                        )}
                   </>
                 )}
                 &nbsp;{t("m_unit")}

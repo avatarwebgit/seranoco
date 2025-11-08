@@ -301,10 +301,13 @@ const PreCheckout = ({ windowSize }) => {
                                 cart.deliveryPrice
                               ).toFixed(2)
                             : Intl.NumberFormat("fa-IR").format(
-                                (cart.productPrice -
-                                  walletBalance -
-                                  cart.deliveryPrice) *
-                                  euro
+                                Math.max(
+                                  0,
+                                  (cart.productPrice -
+                                    walletBalance -
+                                    cart.deliveryPrice) *
+                                    euro
+                                )
                               )}
                           &nbsp;
                           {t("m_unit")}
@@ -316,7 +319,11 @@ const PreCheckout = ({ windowSize }) => {
                                 2
                               )
                             : Intl.NumberFormat("fa-IR").format(
-                                cart.productPrice * euro - cart.deliveryPrice
+                                Math.max(
+                                  0,
+                                  (cart.productPrice - cart.deliveryPrice) *
+                                    euro
+                                )
                               )}
                           &nbsp;
                           {t("m_unit")}
@@ -339,6 +346,7 @@ const PreCheckout = ({ windowSize }) => {
                 {t("pc.nstep")}
               </Button>
             )}
+
             {step === 2 && <PaymentMethod dataProps={paymentMethods} />}
             {step >= 1 && (
               <Button
