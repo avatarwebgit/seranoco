@@ -141,13 +141,24 @@ const FilterByShape = ({ windowSize }) => {
     }
   };
 
-  const handleThumbClick = (groupId) => {
+  const handleThumbClick = (groupId, index) => {
     setCurrentActiveGroupColor(groupId);
+
+    // Navigate color slider
     const firstMatchingSlideIndex = colorData.findIndex(
       (slide) => slide.group_id === groupId
     );
-    if (sliderRef.current && firstMatchingSlideIndex) {
-      sliderRef?.current?.swiper?.slideTo(firstMatchingSlideIndex);
+    if (
+      sliderRef.current &&
+      firstMatchingSlideIndex !== -1 &&
+      firstMatchingSlideIndex !== undefined
+    ) {
+      sliderRef.current.swiper.slideTo(firstMatchingSlideIndex);
+    }
+
+    // Navigate grid slider if needed
+    if (gridSliderRef.current && index !== undefined) {
+      gridSliderRef.current.swiper.slideTo(index);
     }
   };
 
@@ -641,7 +652,7 @@ const FilterByShape = ({ windowSize }) => {
                               src={slide.image}
                               className={classes.slider_thumb_img}
                               alt=""
-                              onClick={() => handleThumbClick(slide.id)}
+                              onClick={() => handleThumbClick(slide.id, index)}
                               loading="lazy"
                             />
                           </div>
