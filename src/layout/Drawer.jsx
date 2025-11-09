@@ -172,9 +172,8 @@ const Drawer = () => {
 
   useEffect(() => {
     console.log(cart);
-    console.log(walletBalance)
-  }, [cart])
-  
+    console.log(walletBalance);
+  }, [cart]);
 
   return (
     <div
