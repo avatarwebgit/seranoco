@@ -377,31 +377,45 @@ const Drawer = () => {
             ) : (
               <div className={styles.payment_amount}>
                 <h3 className={styles.payment_title}>{t("payment")}:</h3>
-                {!walletStatus ? (
-                  <>
-                    {cart.productPrice && walletBalance && (
+                <div
+                  className={styles.total_wrapper}
+                  style={{ direction: lng === "fa" ? "rtl" : "ltr" }}
+                >
+                  <span className={styles.amont}>
+                    {isLoadingData ? (
+                      <Skeleton
+                        variant="text"
+                        animation="wave"
+                        sx={{ width: "100px", height: "25px" }}
+                      />
+                    ) : (
                       <>
-                        {!isRTL
-                          ? cart.productPrice.toFixed(2)
-                          : Intl.NumberFormat("fa-IR").format(
-                              Math.max(0, cart.productPrice * +cart.euro)
-                            )}
+                        {walletStatus ? (
+                          <>
+                            {lng !== "fa"
+                              ? (cart.productPrice - walletBalance).toFixed(2)
+                              : Intl.NumberFormat("fa-IR").format(
+                                  (cart.productPrice - walletBalance) *
+                                    cart.euro
+                                )}
+                            &nbsp;
+                            {t("m_unit")}
+                          </>
+                        ) : (
+                          <>
+                            {lng !== "fa"
+                              ? cart.productPrice.toFixed(2)
+                              : Intl.NumberFormat("fa-IR").format(
+                                  cart.productPrice * cart.euro
+                                )}
+                            &nbsp;
+                            {t("m_unit")}
+                          </>
+                        )}
                       </>
                     )}
-                  </>
-                ) : (
-                  <>
-                    {!isRTL
-                      ? cart?.totalPrice?.toFixed(2)
-                      : Intl.NumberFormat("fa-IR").format(
-                          Math.max(
-                            0,
-                            (cart.productPrice - walletBalance) * +cart.euro
-                          )
-                        )}
-                  </>
-                )}
-                &nbsp;{t("m_unit")}
+                  </span>
+                </div>
               </div>
             )}
           </div>

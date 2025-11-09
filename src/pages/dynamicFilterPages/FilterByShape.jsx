@@ -159,7 +159,6 @@ const FilterByShape = ({ windowSize }) => {
     setSelectedIds([]);
   };
 
-  // FIXED: Use useMemo for sorted data instead of useEffect
   const sortedGroupColors = useMemo(() => {
     if (!groupColors || groupColors.length === 0) return [];
     return [...groupColors].sort((a, b) => a.priority - b.priority);
@@ -182,6 +181,10 @@ const FilterByShape = ({ windowSize }) => {
       return groupA.priority - groupB.priority;
     });
   }, [colorData, sortedGroupColors]);
+
+  useEffect(() => {
+    console.log(sortedColors);
+  }, [sortedColors]);
 
   // Force Swiper to remount when colors change
   useEffect(() => {
