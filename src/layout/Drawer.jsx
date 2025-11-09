@@ -377,6 +377,7 @@ const Drawer = () => {
             ) : (
               <div className={styles.payment_amount}>
                 <h3 className={styles.payment_title}>{t("payment")}:</h3>
+                {console.log(cart)}
                 {!walletStatus ? (
                   <>
                     {cart.productPrice && walletBalance && (
