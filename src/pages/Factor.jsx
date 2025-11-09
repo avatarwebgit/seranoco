@@ -112,10 +112,14 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
         <th>{t("factor.Unit_Weight")}</th>
         <th>{t("factor.Total_Weight")}</th>
         <th>{t("factor.Quantity_Amount")}</th>
-        <th>{t("factor.Unit_Price")}</th>
+        <th>
+          {t("factor.Unit_Price")}({t("m_unit")})
+        </th>
         <th>{t("availability")}</th>
         <th>{t("factor.off")}</th>
-        <th>{t("factor.Total_Amount")}</th>
+        <th>
+          {t("factor.Total_Amount")}({t("m_unit")})
+        </th>
       </tr>
     </thead>
   );
@@ -141,9 +145,10 @@ const ProductItem = React.memo(({ product, index, lng, t, euro }) => {
           : `${prod.sale_price}`}
       </td>
       <td>
-        {!prod.variation.is_not_available
+        {console.log(prod)}
+        {!prod.variation.is_not_available && prod.variation.quality <= 0
           ? t("available")
-          : t("newpage.newpage")}
+          : t("byorder")}
       </td>
       <td style={{ color: "red" }}>---</td>
       <td>
@@ -195,7 +200,9 @@ const FactorSummory = React.memo(
           <td className={classes.summaryValue}>
             {totalQuantity}&nbsp;{t("factor.pcs")}
           </td>
-          <td colSpan="4"></td>
+          <td colSpan="1"></td>
+          <td colSpan="1">{t('coupon') }</td>
+          <td colSpan="2"></td>
           <td className={classes.summaryValue}>
             <strong>
               {lng === "fa" ? (
