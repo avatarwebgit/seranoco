@@ -235,7 +235,7 @@ const Drawer = () => {
                   {cart.totalFeeBeforeDiscounts && !isRTL
                     ? cart?.totalFeeBeforeDiscounts?.toFixed(2)
                     : formatNumber(
-                        Math.round(cart.totalFeeBeforeDiscounts * cart.euro)
+                        Math.round(cart.totalFeeBeforeDiscounts * +cart.euro)
                       )}
                   &nbsp;
                   {t("m_unit")}
@@ -264,7 +264,7 @@ const Drawer = () => {
                       <span dir="ltr">
                         {!isRTL
                           ? walletBalance
-                          : formatNumber(walletBalance * cart.euro)}
+                          : formatNumber(walletBalance * +cart.euro)}
                       </span>
                       &nbsp;
                       {t("m_unit")}
@@ -377,7 +377,6 @@ const Drawer = () => {
             ) : (
               <div className={styles.payment_amount}>
                 <h3 className={styles.payment_title}>{t("payment")}:</h3>
-                {console.log(cart)}
                 {!walletStatus ? (
                   <>
                     {cart.productPrice && walletBalance && (
@@ -385,7 +384,7 @@ const Drawer = () => {
                         {!isRTL
                           ? cart.productPrice.toFixed(2)
                           : Intl.NumberFormat("fa-IR").format(
-                              Math.max(0, cart.productPrice * cart.euro)
+                              Math.max(0, cart.productPrice * +cart.euro)
                             )}
                       </>
                     )}
@@ -397,7 +396,7 @@ const Drawer = () => {
                       : Intl.NumberFormat("fa-IR").format(
                           Math.max(
                             0,
-                            (cart.productPrice - walletBalance) * cart.euro
+                            (cart.productPrice - walletBalance) * +cart.euro
                           )
                         )}
                   </>
