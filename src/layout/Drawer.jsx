@@ -378,12 +378,12 @@ const Drawer = () => {
             ) : (
               <div className={styles.payment_amount}>
                 <h3 className={styles.payment_title}>{t("payment")}:</h3>
-                  {!walletStatus ? (
+                {!walletStatus ? (
                   <>
                     {cart.productPrice && walletBalance && (
                       <>
                         {!isRTL
-                          ? cart.totalPriceAfterDiscount.toFixed(2)
+                          ? cart.productPrice.toFixed(2)
                           : Intl.NumberFormat("fa-IR").format(
                               Math.max(0, cart.productPrice * cart.euro)
                             )}
