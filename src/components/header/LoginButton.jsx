@@ -67,10 +67,12 @@ const LoginButton = () => {
               style={{
                 display: "flex",
                 alignItems: "center",
+                justifyContent:'center',
                 color: "#000",
                 textDecoration: "none",
                 fontSize: ".6rem",
                 padding: "3px 10px",
+                gap:".5rem"
               }}
             >
               <AccountCircle sx={{ fontSize: "20px", marginRight: "8px" }} />
@@ -89,6 +91,7 @@ const LoginButton = () => {
                 textDecoration: "none",
                 fontSize: ".6rem",
                 padding: "3px 10px",
+                gap:".5rem"
               }}
             >
               <Grading sx={{ fontSize: "20px", marginRight: "8px" }} />
@@ -106,6 +109,7 @@ const LoginButton = () => {
               textDecoration: "none",
               fontSize: ".6rem",
               padding: "3px 10px",
+              gap:".5rem"
             }}
           >
             <Logout sx={{ fontSize: "20px", marginRight: "8px" }} />

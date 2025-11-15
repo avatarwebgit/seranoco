@@ -26,23 +26,58 @@ const TableGrid = ({
 
   const lng = useSelector((state) => state.localeStore.lng);
 
+  console.log(selectedSizeProp, sizeData);
+
+
   useEffect(() => {
     setIsLoading(isLoadingData);
     if (dataProp) {
-      console.log(dataProp)
       setData(dataProp);
       if (selectedSizeProp.length > 0) {
         setSizeData(
-          selectedSizeProp.sort(
-            (a, b) =>
-              +a.description.split(" ").at(0) - +b.description.split(" ").at(0)
-          )
+          selectedSizeProp.sort((a, b) => {
+            const sizeA = parseSizeDescription(a.description);
+            const sizeB = parseSizeDescription(b.description);
+            return compareSizeArrays(sizeA, sizeB);
+          })
         );
       } else if (selectedSizeProp.length === 0 && sizeProp.length > 0) {
-        setSizeData(sizeProp);
+        setSizeData(
+          sizeProp.sort((a, b) => {
+            const sizeA = parseSizeDescription(a.description);
+            const sizeB = parseSizeDescription(b.description);
+            return compareSizeArrays(sizeA, sizeB);
+          })
+        );
       }
     }
   }, [dataProp, selectedSizeProp, sizeProp, isLoadingData]);
+
+  // Function to parse the size description into an array of numbers for comparison
+  const parseSizeDescription = (description) => {
+    // Remove non-numeric characters (e.g., 'mm', 'x', etc.) and split by 'x' or space
+    const numericValues = description
+      .replace(/[^\d\.x]/g, "") // Remove non-numeric characters except for numbers and 'x'
+      .split("x") // Split by 'x' if it's a multi-component size
+      .map((value) => parseFloat(value.trim())) // Convert to float
+      .filter((value) => !isNaN(value)); // Remove any NaN values
+
+    return numericValues;
+  };
+
+  // Function to compare two size arrays numerically
+  const compareSizeArrays = (sizeA, sizeB) => {
+    const maxLength = Math.max(sizeA.length, sizeB.length);
+    for (let i = 0; i < maxLength; i++) {
+      const aVal = sizeA[i] || 0; // Default to 0 if the size array is shorter
+      const bVal = sizeB[i] || 0;
+      if (aVal !== bVal) {
+        return aVal - bVal; // Sort in ascending order
+      }
+    }
+    return 0; // If sizes are equal
+  };
+
 
   useEffect(() => {
     if (isSmall) {
