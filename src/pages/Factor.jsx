@@ -185,7 +185,7 @@ const FactorProducts = React.memo(({ detailsData, t, lng, euro }) => {
 });
 
 const FactorSummory = React.memo(
-  ({ detailsData, t, lng, totalWeight, totalQuantity, shippingCost }) => {
+  ({ detailsData, t, lng, totalWeight, totalQuantity, shippingCost=0 }) => {
     return (
       <tbody className={`${classes.summarySection} summarySection`}>
         <tr className={classes.summaryRow}>
@@ -519,7 +519,7 @@ const Factor = () => {
             lng={lng}
             totalWeight={totalWeight}
             totalQuantity={totalQuantity}
-            shippingCost={detailsData.shipping || 0}
+            shippingCost={detailsData.order.delivery_amount}
           />
           <FactorFooter t={t} />
         </table>
