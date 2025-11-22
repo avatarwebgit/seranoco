@@ -1,0 +1,56 @@
+
+@import url(../../styles/variables.css);
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-grey-3);
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  background-color: #ffffff;
+  border-radius: 10px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-black);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--color-grey-1);
+  margin: 0;
+}
+
+@media only screen and (max-width: 480px) {
+  .title {
+    font-size: 1.1rem;
+  }
+  .subtitle {
+    font-size: 0.85rem;
+  }
+  .content {
+    gap: 1.5rem;
+  }
+}
