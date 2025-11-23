@@ -1,10 +1,16 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Loading from "./layout/Loading";
-import { cartActions } from "./store/store";
+import { cartActions, localeActions } from "./store/store";
 import Titlemanager from "./utils/TitleManager";
 
 import Drawer from "./layout/Drawer";
@@ -14,7 +20,8 @@ import "./App.css";
 
 import i18next from "i18next";
 import FavoritesDrawer from "./layout/FavoritesDrawer";
-import { useBasicInformation } from "./services/api";
+import { useBasicInformation, usePages } from "./services/api";
+import { useTranslation } from "react-i18next";
 function App() {
   const [windowSize, setWindowSize] = useState(() => {
     const width = window.innerWidth;
@@ -55,10 +62,19 @@ function App() {
     import("./pages/dynamicFilterPages/FilterByShape")
   );
 
+  // payment pages
+
+  const Zarinpal = React.lazy(() => import("./pages/paymentGateways/Zarinpal"));
+
   const lng = useSelector((state) => state.localeStore.lng);
   const token = useSelector((state) => state.userStore.token);
 
   const { data: basicData } = useBasicInformation();
+
+  const location = useLocation();
+  const { i18n } = useTranslation();
+  const pathSegments = location.pathname.split("/");
+  const urlLng = pathSegments[1];
 
   const dispatch = useDispatch();
 
@@ -92,6 +108,19 @@ function App() {
       window.removeEventListener("resize", () => setWindowSize(calculeSize));
     };
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    if (urlLng && i18n.language !== urlLng) {
+      i18n.changeLanguage(urlLng);
+      if (urlLng === "fa") {
+        dispatch(localeActions.fa());
+      } else {
+        dispatch(localeActions.en());
+      }
+    }
+  }, [location.search, i18n, urlLng]);
 
   useEffect(() => {
     document.body.className = lng === "fa" ? "fa" : "en";
@@ -249,6 +278,15 @@ function App() {
         <Route
           path={`/:lng/downloads/categories/files/:id`}
           element={<DownloadFiles windowSize={windowSize} />}
+        />
+
+        <Route
+          path={`/:lng/zarinpal`}
+          element={<Zarinpal windowSize={windowSize} />}
+        />
+        <Route
+          path={`/:lng/zarinpal/*`}
+          element={<Zarinpal windowSize={windowSize} />}
         />
 
         <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />

@@ -667,7 +667,8 @@ export const sendCartPrice = async (
   address_id,
   payment_method,
   amount,
-  use_wallet
+  use_wallet,
+  delivery_method_id
 ) => {
   const response = await fetch(`${baseUrl}/payment`, {
     method: "POST",
@@ -675,7 +676,13 @@ export const sendCartPrice = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ address_id, payment_method, amount, use_wallet }),
+    body: JSON.stringify({
+      address_id,
+      payment_method,
+      amount,
+      use_wallet,
+      delivery_method_id,
+    }),
   });
   const result = await response.json();
   return { response, result };
@@ -1266,6 +1273,20 @@ export const getShoppingCart = async (
       Authorization: "bearer " + token,
     },
     body: JSON.stringify({ address_id, delivery_method_id }),
+  });
+  const result = await response.json();
+  return { response, result };
+};
+
+export const sendPaymentRedirectStatus = async (token, name, data) => {
+  const response = await fetch(`${baseUrl}/payment-verify/${name}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "bearer " + token,
+    },
+    body: JSON.stringify(data),
   });
   const result = await response.json();
   return { response, result };

@@ -182,10 +182,6 @@ const FilterByShape = ({ windowSize }) => {
     });
   }, [colorData, sortedGroupColors]);
 
-  useEffect(() => {
-    console.log(sortedColors);
-  }, [sortedColors]);
-
   // Force Swiper to remount when colors change
   useEffect(() => {
     setSwiperKey((prev) => prev + 1);

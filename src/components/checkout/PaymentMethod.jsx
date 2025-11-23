@@ -36,21 +36,45 @@ const PaymentMethod = ({ dataProps }) => {
         cart.selectedAddress,
         id,
         cart.finalPayment,
-        walletStatus
+        walletStatus,
+        cart.deliveryMethod
       );
     } catch {
     } finally {
     }
   };
 
-  const sendData = async (token, address, method, amount, use_wallet) => {
+  const sendData = async (
+    token,
+    address,
+    method,
+    amount,
+    use_wallet,
+    delivery_method_id
+  ) => {
     const serverRes = await sendCartPrice(
       token,
       address,
       method,
       amount,
-      use_wallet
+      use_wallet,
+      delivery_method_id
     );
+
+    if (serverRes.result.success && serverRes.result.redirect_uri) {
+      let url = serverRes.result.redirect_uri;
+
+      if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + url;
+      }
+
+      window.location.href = url;
+      return;
+    }
+
+    if (!serverRes.result.success) {
+      return;
+    }
 
     const handleNavToAcc = (activeAccordion, activeButton) => {
       navigate(`/${lng}/myaccount`, {

@@ -353,6 +353,8 @@
   "portfolio": "Portfolio",
   "our_portfolio": "Our portfolio",
   "noPortfolioItem": "There is no item in the portfolio category yet please come back later.",
+  "zarinpal_wait":"Please wait for the process to complete...",
+  "zarinpal_warning":"Do not close or refresh this window.",
 
   "artist": "Artist",
   "idea": "Idea",
