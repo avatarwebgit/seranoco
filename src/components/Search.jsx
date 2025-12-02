@@ -143,6 +143,7 @@ const Search = ({ isHomePage, isMobile }) => {
             setSearchQuery("");
             setSearchTerm("");
             setResultDetail([]);
+            setIsFullSize(false);
           }}
         >
           <Close fontSize="10px" />
