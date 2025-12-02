@@ -269,7 +269,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
   const handleGetDeliveryMethods = async () => {
     try {
       setisLoadingDeliveryMethods(true);
-      const { response, result } = await getDeliveryMethods();
+      const { response, result } = await getDeliveryMethods(lng);
       if (response.ok) {
         setDeliveryMethods(result.data);
       }
@@ -287,7 +287,7 @@ const Checkout = ({ isDataValid, sendOrderData }) => {
 
   useEffect(() => {
     handleGetDeliveryMethods();
-  }, []);
+  }, [lng]);
 
   return (
     <div className={classes.main}>

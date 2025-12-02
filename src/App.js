@@ -175,8 +175,8 @@ function App() {
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
-        <Route path={"/"} element={<Navigate to={`/${lng}`} replace />} />
-        <Route path={` `} element={<Navigate to={`/${lng}`} replace />} />
+        <Route path={"/"} element={<Navigate to={`/en`} replace />} />
+        <Route path={` `} element={<Navigate to={`/en`} replace />} />
         <Route
           path={`/:lng/shopByColor`}
           element={<FilterByColor windowSize={windowSize} />}

@@ -651,11 +651,12 @@ export const getAllNewProducts = async (
   return { response, result };
 };
 
-export const getPayments = async (token) => {
+export const getPayments = async (token,lng) => {
   const response = await fetch(`${baseUrl}/get/payments`, {
     method: "GET",
     headers: {
       Authorization: `bearer ${token}`,
+      "Accept-Language": `${lng}`,
     },
   });
   const result = await response.json();
@@ -1248,12 +1249,13 @@ export const getDownloadFiles = async (id) => {
   return { response, result };
 };
 
-export const getDeliveryMethods = async () => {
+export const getDeliveryMethods = async ( lng ) => {
   const response = await fetch(`${baseUrl}/get/delivery_methods`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "Accept-Language": `${lng}`,
     },
   });
   const result = await response.json();

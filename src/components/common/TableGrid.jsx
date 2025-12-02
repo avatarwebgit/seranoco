@@ -26,11 +26,12 @@ const TableGrid = ({
 
   const lng = useSelector((state) => state.localeStore.lng);
 
-  console.log(selectedSizeProp, sizeData);
-
+  // console.log(selectedSizeProp, sizeData);
 
   useEffect(() => {
     setIsLoading(isLoadingData);
+    setSizeData([]);
+
     if (dataProp) {
       setData(dataProp);
       if (selectedSizeProp.length > 0) {
@@ -51,6 +52,8 @@ const TableGrid = ({
         );
       }
     }
+    console.log(sizeProp);
+    console.log(sizeData);
   }, [dataProp, selectedSizeProp, sizeProp, isLoadingData]);
 
   // Function to parse the size description into an array of numbers for comparison
@@ -77,7 +80,6 @@ const TableGrid = ({
     }
     return 0; // If sizes are equal
   };
-
 
   useEffect(() => {
     if (isSmall) {

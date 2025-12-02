@@ -83,7 +83,7 @@ const PreCheckout = ({ windowSize }) => {
   const dispatch = useDispatch();
 
   const p = async () => {
-    const serverRes = await getPayments(token);
+    const serverRes = await getPayments(token, lng);
     if (serverRes.response.ok) {
       setPaymentMethods(serverRes.result.data);
     }

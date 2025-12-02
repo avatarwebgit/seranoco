@@ -184,6 +184,7 @@ const FilterByShape = ({ windowSize }) => {
   useEffect(() => {
     document.title = t("shop_by_shape");
     dispatch(productDetailActions.reset());
+    handleShapeClick("", 46);
   }, []);
 
   //api call
@@ -249,9 +250,9 @@ const FilterByShape = ({ windowSize }) => {
 
     try {
       await getInitialSizes(id);
-      await handleFetchTableData(id, [], 1, 1000, {
-        signal: tableDataAbortRef.current.signal,
-      });
+      // await handleFetchTableData(id, [], 1, 1000, {
+      //   signal: tableDataAbortRef.current.signal,
+      // });
     } catch (error) {
       if (error.name !== "AbortError") console.error(error);
     } finally {
@@ -697,7 +698,6 @@ const FilterByShape = ({ windowSize }) => {
               )}
             </>
           )}
-          {console.log(isTableDataLoading)}
           <Card className={`${classes.table_wrapper}`}>
             {isTableDataLoading ? (
               <LoadingSpinner />
