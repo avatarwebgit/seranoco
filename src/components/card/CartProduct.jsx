@@ -35,6 +35,9 @@ const CartProduct = (data) => {
     setVariationPrice(serverRes.result.product.sale_price);
     setVariation(serverRes.result);
     setQuantity(e.selected_quantity);
+    if (!token) {
+      setQuantity(1);
+    }
   };
 
   useEffect(() => {
@@ -64,7 +67,9 @@ const CartProduct = (data) => {
       notify(t("orders.ok"));
       dispatch(drawerActions.open());
       dispatch(cartActions.setTotalPrice(serverRes.result.total_price));
-      dispatch(cartActions.setTotalPriceBeforeDiscout(serverRes.result.total_price));
+      dispatch(
+        cartActions.setTotalPriceBeforeDiscout(serverRes.result.total_price)
+      );
     } catch (err) {
       if (err.name !== "AbortError") {
         console.error(err);
@@ -86,10 +91,9 @@ const CartProduct = (data) => {
         notify(t("orders.error"));
       }
     } else {
-      // Guest user - remove from temporary cart
       dispatch(
         cartActions.removeFromTemporaryCart({
-          variation_id: variation.product.variation_id,
+          variation_id: data.data.variation_id,
         })
       );
       notify(t("orders.successfull"));
@@ -116,7 +120,7 @@ const CartProduct = (data) => {
                 {t("color")}: {productData.color}
               </span>
               <span className={classes.size}>
-                {t("pc.size")}: {productData.size}
+                {t("pc.size")}: {productData.size || data.data.size}
               </span>
               <span className={classes.price}>
                 {t("price")}:

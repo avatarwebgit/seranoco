@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { sendShoppingCart } from "../../services/api";
-import { accesModalActions, drawerActions } from "../../store/store";
+import {
+  accesModalActions,
+  cartActions,
+  drawerActions,
+} from "../../store/store";
 import { formatNumber, notify } from "../../utils/helperFunctions";
 import classes from "./ResultRow.module.css";
 
@@ -181,10 +185,12 @@ const ResultRow = ({ dataProp }) => {
       return (
         <button
           className={classes.login_btn}
-          onClick={() => dispatch(accesModalActions.login())}
+          onClick={() => {
+            dispatch(cartActions.addToTemporaryCart(item));
+            dispatch(drawerActions.open());
+          }}
         >
-          {t("login")}
-          <Lock sx={{ width: "17px", height: "17px" }} />
+          {isOutOfStock ? t("addtoorder") : t("add_to_card")}
         </button>
       );
     }

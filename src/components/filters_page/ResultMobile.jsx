@@ -32,7 +32,9 @@ const ResultMobile = ({ dataProps }) => {
   }, [dataProps]);
 
   const handleSendShoppingCart = async (el, variation, quantity) => {
+    console.log("first");
     if (!token) {
+      console.log("sec");
       dispatch(accesModalActions.login());
       return;
     }
@@ -60,7 +62,8 @@ const ResultMobile = ({ dataProps }) => {
   };
 
   const handleAddToTemporaryCard = (el, variation, quantity) => {
-    cartActions.addToTemporaryCart(el.id, +variation, quantity);
+    dispatch(cartActions.addToTemporaryCart(el));
+    dispatch(drawerActions.open());
   };
 
   return (

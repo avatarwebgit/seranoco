@@ -76,6 +76,7 @@ const cartSlice = createSlice({
     },
 
     removeFromTemporaryCart(state, action) {
+      console.log(action)
       state.temporaryCart = state.temporaryCart.filter(
         (el) => +el.variation_id !== +action.payload.variation_id
       );
