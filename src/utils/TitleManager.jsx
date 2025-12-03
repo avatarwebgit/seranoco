@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 // Route → Title mapping
 const routeTitles = {
   "/:lng": (params, t) => t("titles.home"),
+  "/": (params, t) => t("titles.home"),
   "/:lng/shopByColor": (params, t) => t("titles.shopByColor"),
   "/:lng/shopByShape": (params, t) => t("titles.shopByShape"),
   "/:lng/categories": (params, t) => t("titles.categories"),
