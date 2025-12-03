@@ -186,8 +186,14 @@ const ResultRow = ({ dataProp }) => {
         <button
           className={classes.login_btn}
           onClick={() => {
-            dispatch(cartActions.addToTemporaryCart(item));
-            dispatch(drawerActions.open());
+            dispatch(
+              cartActions.setPendingItem({
+                id: item.id,
+                variation_id: +item.variation_id,
+                quantity: quantity || 1,
+              })
+            );
+            dispatch(accesModalActions.login());
           }}
         >
           {isOutOfStock ? t("addtoorder") : t("add_to_card")}

@@ -281,15 +281,13 @@ const Products = ({ windowSize }) => {
 
   const handleAddToTemporaryCard = (el) => {
     dispatch(
-      cartActions.addToTemporaryCart({
-        ...el,
-        selected_quantity: quantity,
-        euro_price: euro,
-        variation_id: variation,
-        variation: { quantity: el.quantity },
+      cartActions.setPendingItem({
+        id: el.id,
+        variation_id: +variation,
+        quantity: +quantity,
       })
     );
-    dispatch(drawerActions.open());
+    dispatch(accesModalActions.login());
   };
 
   return (

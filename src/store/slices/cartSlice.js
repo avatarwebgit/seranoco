@@ -15,6 +15,7 @@ const initialState = {
   deliveryMethod: null,
   paymentMethod: "",
   temporaryCart: JSON.parse(localStorage.getItem("temporaryCart")) || [],
+  pendingItem: null,
 };
 
 const cartSlice = createSlice({
@@ -32,6 +33,14 @@ const cartSlice = createSlice({
         },
         0
       );
+    },
+
+    setPendingItem(state, action) {
+      state.pendingItem = action.payload;
+    },
+
+    clearPendingItem(state) {
+      state.pendingItem = null;
     },
     add(state, action) {
       if (
@@ -76,7 +85,7 @@ const cartSlice = createSlice({
     },
 
     removeFromTemporaryCart(state, action) {
-      console.log(action)
+      console.log(action);
       state.temporaryCart = state.temporaryCart.filter(
         (el) => +el.variation_id !== +action.payload.variation_id
       );

@@ -22,13 +22,14 @@ import classes from "./OTP.module.css";
 const OTP_TIMEOUT_MS = 2 * 60 * 1000;
 
 const OTP = () => {
-    console.log('loginotp');
+  console.log("loginotp");
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const lng = useSelector((state) => state.localeStore.lng);
   const cellphone = useSelector((state) => state.accessModalStore.mobileNo);
   const temporaryCart = useSelector((state) => state.cartStore.temporaryCart);
+  const pendingItem = useSelector((state) => state.cartStore.pendingItem);
   const euro = useSelector((state) => state.cartStore.euro);
 
   const [signupValues, setSignupValues] = useState(null);
@@ -115,7 +116,24 @@ const OTP = () => {
       dispatch(userActions.setUser(serverRes.result.user));
       dispatch(userActions.set(serverRes.result.token));
       dispatch(accesModalActions.close());
-      if (temporaryCart?.length > 0) {
+
+      if (pendingItem) {
+        try {
+          const res = await sendShoppingCart(
+            serverRes.result.token,
+            pendingItem.id,
+            pendingItem.variation_id,
+            pendingItem.quantity
+          );
+          if (res.response.ok) {
+            dispatch(cartActions.clearPendingItem());
+            notify(t("orders.ok"));
+            dispatch(drawerActions.open());
+          }
+        } catch (error) {
+          console.error("Error adding pending item:", error);
+        }
+      } else if (temporaryCart?.length > 0) {
         try {
           await Promise.all(
             temporaryCart.map((item) =>
@@ -132,7 +150,6 @@ const OTP = () => {
       } else {
         dispatch(drawerActions.open());
       }
-      dispatch(drawerActions.open());
     } catch (error) {
       console.error("OTP verification failed:", error);
       notify(t("trylater"));
@@ -213,8 +230,7 @@ const OTP = () => {
                   className={classes.login_btn}
                   onClick={handleResendOTP}
                   disabled={isLoading}
-                       sx={{ margin: "0 !important" }}
-
+                  sx={{ margin: "0 !important" }}
                 >
                   {t("otp.resend")}
                 </Button>

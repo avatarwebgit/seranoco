@@ -62,8 +62,14 @@ const ResultMobile = ({ dataProps }) => {
   };
 
   const handleAddToTemporaryCard = (el, variation, quantity) => {
-    dispatch(cartActions.addToTemporaryCart(el));
-    dispatch(drawerActions.open());
+    dispatch(
+      cartActions.setPendingItem({
+        id: el.id,
+        variation_id: +variation,
+        quantity: quantity,
+      })
+    );
+    dispatch(accesModalActions.login());
   };
 
   return (

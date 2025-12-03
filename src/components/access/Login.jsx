@@ -43,6 +43,7 @@ const Login = () => {
   const { t } = useTranslation();
   const lng = useSelector((state) => state.localeStore.lng);
   const temporaryCart = useSelector((state) => state.cartStore.temporaryCart);
+  const pendingItem = useSelector((state) => state.cartStore.pendingItem);
   const euro = useSelector((state) => state.cartStore.euro);
 
   const inputStyles = {
@@ -98,9 +99,9 @@ const Login = () => {
     dispatch(accesModalActions.mobile());
   };
 
-  const handleSendShoppingCart = async (el) => {
+  const handleSendShoppingCart = async (el, userToken) => {
     const serverRes = await sendShoppingCart(
-      token,
+      userToken || token,
       +el.id,
       +el.variation_id,
       +el.selected_quantity
@@ -140,7 +141,23 @@ const Login = () => {
           })
         );
 
-        if (temporaryCart?.length > 0) {
+        if (pendingItem) {
+          try {
+            const res = await sendShoppingCart(
+              serverRes.result.token,
+              pendingItem.id,
+              pendingItem.variation_id,
+              pendingItem.quantity
+            );
+            if (res.response.ok) {
+              dispatch(cartActions.clearPendingItem());
+              notify(t("orders.ok"));
+              dispatch(drawerActions.open());
+            }
+          } catch (error) {
+            console.error("Error adding pending item:", error);
+          }
+        } else if (temporaryCart?.length > 0) {
           try {
             await Promise.all(
               temporaryCart.map((item) =>
@@ -279,7 +296,7 @@ const Login = () => {
 
             <div className={classes.oneclick_login_wrapper}>
               <div className={classes.google_login_wrapper}>
-                <GoogleLogin onSuccess={handleGoogleLogin} ></GoogleLogin>
+                <GoogleLogin onSuccess={handleGoogleLogin}></GoogleLogin>
               </div>
               <div
                 className={classes.google_login_wrapper}
