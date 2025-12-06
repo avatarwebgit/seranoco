@@ -186,6 +186,22 @@ function App() {
     window.location.replace("/en");
   }
 
+  useEffect(() => {
+    const pathSegments = location.pathname.split("/");
+    const urlLang = pathSegments[1];
+
+    // Check if URL language doesn't match store language
+    if (urlLang && urlLang !== lng && (urlLang === "en" || urlLang === "fa")) {
+      // Replace the URL language with the current store language
+      const newPath = location.pathname.replace(`/${urlLang}`, `/${lng}`);
+      window.history.replaceState(
+        null,
+        "",
+        newPath + location.search + location.hash
+      );
+    }
+  }, [location.pathname, lng]);
+
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
