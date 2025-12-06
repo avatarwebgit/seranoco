@@ -22,6 +22,41 @@ import i18next from "i18next";
 import FavoritesDrawer from "./layout/FavoritesDrawer";
 import { useBasicInformation, usePages } from "./services/api";
 import { useTranslation } from "react-i18next";
+
+const Home = React.lazy(() => import("./pages/Home"));
+const FilterByColor = React.lazy(() => import("./pages/FilterByColor"));
+const FilterByShape = React.lazy(() => import("./pages/FilterByShape"));
+const Products = React.lazy(() => import("./pages/Products"));
+const Profile = React.lazy(() => import("./pages/Profile"));
+const PreCheckout = React.lazy(() => import("./pages/PreCheckout"));
+const PayByCart = React.lazy(() => import("./pages/PayByCart"));
+const New = React.lazy(() => import("./pages/New"));
+const Special = React.lazy(() => import("./pages/SpecialStones"));
+const Categories = React.lazy(() => import("./pages/Categories"));
+const SubCategory = React.lazy(() => import("./pages/SubCategory"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
+const ContactUs = React.lazy(() => import("./pages/ContactUs"));
+const Blog = React.lazy(() => import("./pages/Blog"));
+const SingleBlog = React.lazy(() => import("./pages/SingleBlog"));
+const Page = React.lazy(() => import("./pages/AdminPanelPage"));
+const Factor = React.lazy(() => import("./pages/Factor"));
+const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
+const ProductsFilter = React.lazy(() => import("./pages/ProductsFilter"));
+const Portfolio = React.lazy(() => import("./pages/Portfolio"));
+const SinglePortfolio = React.lazy(() => import("./pages/SinglePortfolio"));
+const DownloadCategory = React.lazy(() => import("./pages/PdfCategories"));
+const DownloadFiles = React.lazy(() => import("./pages/PdfDownloads"));
+const DynamicFilterByColor = React.lazy(() =>
+  import("./pages/dynamicFilterPages/FilterByColor")
+);
+const DynamicFilterByShape = React.lazy(() =>
+  import("./pages/dynamicFilterPages/FilterByShape")
+);
+
+// payment pages
+
+const Zarinpal = React.lazy(() => import("./pages/paymentGateways/Zarinpal"));
+
 function App() {
   const [windowSize, setWindowSize] = useState(() => {
     const width = window.innerWidth;
@@ -31,40 +66,6 @@ function App() {
     if (width > 1024 && width <= 1200) return "l";
     if (width > 1200) return "xl";
   });
-
-  const Home = React.lazy(() => import("./pages/Home"));
-  const FilterByColor = React.lazy(() => import("./pages/FilterByColor"));
-  const FilterByShape = React.lazy(() => import("./pages/FilterByShape"));
-  const Products = React.lazy(() => import("./pages/Products"));
-  const Profile = React.lazy(() => import("./pages/Profile"));
-  const PreCheckout = React.lazy(() => import("./pages/PreCheckout"));
-  const PayByCart = React.lazy(() => import("./pages/PayByCart"));
-  const New = React.lazy(() => import("./pages/New"));
-  const Special = React.lazy(() => import("./pages/SpecialStones"));
-  const Categories = React.lazy(() => import("./pages/Categories"));
-  const SubCategory = React.lazy(() => import("./pages/SubCategory"));
-  const NotFound = React.lazy(() => import("./pages/NotFound"));
-  const ContactUs = React.lazy(() => import("./pages/ContactUs"));
-  const Blog = React.lazy(() => import("./pages/Blog"));
-  const SingleBlog = React.lazy(() => import("./pages/SingleBlog"));
-  const Page = React.lazy(() => import("./pages/AdminPanelPage"));
-  const Factor = React.lazy(() => import("./pages/Factor"));
-  const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
-  const ProductsFilter = React.lazy(() => import("./pages/ProductsFilter"));
-  const Portfolio = React.lazy(() => import("./pages/Portfolio"));
-  const SinglePortfolio = React.lazy(() => import("./pages/SinglePortfolio"));
-  const DownloadCategory = React.lazy(() => import("./pages/PdfCategories"));
-  const DownloadFiles = React.lazy(() => import("./pages/PdfDownloads"));
-  const DynamicFilterByColor = React.lazy(() =>
-    import("./pages/dynamicFilterPages/FilterByColor")
-  );
-  const DynamicFilterByShape = React.lazy(() =>
-    import("./pages/dynamicFilterPages/FilterByShape")
-  );
-
-  // payment pages
-
-  const Zarinpal = React.lazy(() => import("./pages/paymentGateways/Zarinpal"));
 
   const lng = useSelector((state) => state?.localeStore?.lng || "en");
   const token = useSelector((state) => state?.userStore?.token || null);
@@ -102,10 +103,12 @@ function App() {
       }
     };
 
-    window.addEventListener("resize", () => setWindowSize(calculeSize));
+    const handleResize = () => setWindowSize(calculeSize());
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", () => setWindowSize(calculeSize));
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
