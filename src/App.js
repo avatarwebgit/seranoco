@@ -190,9 +190,8 @@ function App() {
     const pathSegments = location.pathname.split("/");
     const urlLang = pathSegments[1];
 
-    // Check if URL language doesn't match store language
     if (urlLang && urlLang !== lng && (urlLang === "en" || urlLang === "fa")) {
-      // Replace the URL language with the current store language
+      i18n.changeLanguage(urlLang);
       const newPath = location.pathname.replace(`/${urlLang}`, `/${lng}`);
       window.history.replaceState(
         null,
