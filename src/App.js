@@ -66,8 +66,8 @@ function App() {
 
   const Zarinpal = React.lazy(() => import("./pages/paymentGateways/Zarinpal"));
 
-  const lng = useSelector((state) => state.localeStore.lng);
-  const token = useSelector((state) => state.userStore.token);
+  const lng = useSelector((state) => state?.localeStore?.lng || "en");
+  const token = useSelector((state) => state?.userStore?.token || null);
 
   const { data: basicData } = useBasicInformation();
 
@@ -165,18 +165,29 @@ function App() {
     };
   }, [lng]);
 
-  window.addEventListener("storage", (event) => {
-    if (event.key === "persist:root") {
-      window.location.reload();
-    }
-  });
+  useEffect(() => {
+    const handleStorage = (event) => {
+      if (event.key === "persist:root") {
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
+
+  if (window.location.pathname === "/") {
+    window.location.replace("/en");
+  }
 
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
-        <Route path={"/"} element={<Navigate to={`/en`} replace />} />
-        <Route path={` `} element={<Navigate to={`/en`} replace />} />
+        {/* <Route path="/" element={<Navigate to="/en" replace />} /> */}
         <Route
           path={`/:lng/shopByColor`}
           element={<FilterByColor windowSize={windowSize} />}
@@ -246,7 +257,6 @@ function App() {
           path={`/:lng/factor/:id`}
           element={<Factor windowSize={windowSize} />}
         />
-
         <Route
           path={`/:lng/reset-password`}
           element={<ResetPassword windowSize={windowSize} />}
@@ -279,7 +289,6 @@ function App() {
           path={`/:lng/downloads/categories/files/:id`}
           element={<DownloadFiles windowSize={windowSize} />}
         />
-
         <Route
           path={`/:lng/zarinpal`}
           element={<Zarinpal windowSize={windowSize} />}
@@ -288,7 +297,6 @@ function App() {
           path={`/:lng/zarinpal/*`}
           element={<Zarinpal windowSize={windowSize} />}
         />
-
         <Route path={`/*`} element={<NotFound windowSize={windowSize} />} />
       </Routes>
 
@@ -312,7 +320,6 @@ function App() {
 }
 
 export default App;
-
 
 // 55555555555@emaily.pro
 // 0000000000

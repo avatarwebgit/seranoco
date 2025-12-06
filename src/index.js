@@ -40,7 +40,7 @@ persistQueryClient({
 });
 
 const RootComponent = () => {
-  const lng = useSelector((state) => state.localeStore.lng);
+  const lng = useSelector((state) => state.localeStore.lng) || "en";
 
   const rtlCache = createCache({
     key: lng === "fa" ? "muirtl" : "muiltr",
@@ -61,7 +61,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<Loading />} persistor={persistor}>
         <BrowserRouter>
           <PersistQueryClientProvider
             client={queryClient}
