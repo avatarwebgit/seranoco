@@ -651,7 +651,7 @@ export const getAllNewProducts = async (
   return { response, result };
 };
 
-export const getPayments = async (token,lng) => {
+export const getPayments = async (token, lng) => {
   const response = await fetch(`${baseUrl}/get/payments`, {
     method: "GET",
     headers: {
@@ -724,7 +724,13 @@ export const addAddress = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ title, tel, address, city_id, postal_code }),
+    body: JSON.stringify({
+      title,
+      cellphone: tel,
+      address,
+      city_id,
+      postal_code,
+    }),
   });
   const result = await response.json();
   return { response, result };
@@ -1249,7 +1255,7 @@ export const getDownloadFiles = async (id) => {
   return { response, result };
 };
 
-export const getDeliveryMethods = async ( lng ) => {
+export const getDeliveryMethods = async (lng) => {
   const response = await fetch(`${baseUrl}/get/delivery_methods`, {
     method: "GET",
     headers: {

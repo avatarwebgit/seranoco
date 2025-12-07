@@ -23,6 +23,9 @@ import classes from "./AddressTable.module.css";
 const AddressTable = ({ formData, refetch }) => {
   const lng = useSelector((state) => state.localeStore.lng);
   const token = useSelector((state) => state.userStore.token);
+  const user = useSelector((state) => state.userStore.user);
+
+  console.log(user);
 
   const inputStyles = {
     mb: "0.5rem",
