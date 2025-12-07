@@ -382,8 +382,7 @@ const Header = ({ windowSize }) => {
                               : "#ffffff",
                         }}
                         target={"_blank"}
-                        href={elem.url}
-                        to={elem.url}
+                        to={`/${lng}/${elem.url}`}
                         key={nanoid()}
                       >
                         {elem.label}
@@ -421,7 +420,7 @@ const Header = ({ windowSize }) => {
                                           {el.url ? (
                                             <Link
                                               className={classes.mega_title}
-                                              to={el.url.replace(/^\/[a-z]{2}/, `/${lng}`)}
+                                              to={`/${lng}/${el.url}`}
                                               target="_blank"
                                             >
                                               {el.label}

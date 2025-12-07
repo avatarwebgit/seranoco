@@ -49,20 +49,6 @@ const persistedReducer = persistReducer(
  combineReducers(rootReducer),
 );
 
-const loggerMiddleware = (store) => (next) => (action) => {
-  console.log("🔵 Dispatching action:", action.type);
-  console.log("📦 Action payload:", action.payload);
-  console.log("📊 State before:", store.getState());
-
-  const result = next(action);
-
-  console.log("📊 State after:", store.getState());
-  console.log("---");
-
-  return result;
-};
-
-
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -70,7 +56,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(loggerMiddleware),
+    }),
 });
 
 export const localeActions = localeSlice.actions;

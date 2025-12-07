@@ -131,7 +131,6 @@ function App() {
 
   useEffect(() => {
     if (basicData) {
-      console.log(basicData);
       dispatch(cartActions?.setEuro(basicData?.data[0]?.price_euro));
     }
   }, [basicData]);
@@ -186,26 +185,10 @@ function App() {
     window.location.replace("/en");
   }
 
-  useEffect(() => {
-    const pathSegments = location.pathname.split("/");
-    const urlLang = pathSegments[1];
-
-    if (urlLang && urlLang !== lng && (urlLang === "en" || urlLang === "fa")) {
-      i18n.changeLanguage(urlLang);
-      const newPath = location.pathname.replace(`/${urlLang}`, `/${lng}`);
-      window.history.replaceState(
-        null,
-        "",
-        newPath + location.search + location.hash
-      );
-    }
-  }, [location.pathname, lng]);
-
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path={`/:lng`} element={<Home windowSize={windowSize} />} />
-        {/* <Route path="/" element={<Navigate to="/en" replace />} /> */}
         <Route
           path={`/:lng/shopByColor`}
           element={<FilterByColor windowSize={windowSize} />}
