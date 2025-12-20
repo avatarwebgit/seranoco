@@ -264,7 +264,6 @@ const AccountInformaion = () => {
                   {addressData.map((el) => (
                     <Wrapper>
                       <Accordion key={el.id} sx={{ boxShadow: "none" }}>
-                        {/* Ensure each Accordion has a unique key */}
                         <AccordionSummary
                           expandIcon={<Add fontSize="small" />}
                           aria-controls={`${el.id}-content`}

@@ -25,8 +25,6 @@ const AddressTable = ({ formData, refetch }) => {
   const token = useSelector((state) => state.userStore.token);
   const user = useSelector((state) => state.userStore.user);
 
-  console.log(user);
-
   const inputStyles = {
     mb: "0.5rem",
     width: "49%",
@@ -153,8 +151,9 @@ const AddressTable = ({ formData, refetch }) => {
           Address,
           selectedCity.id,
           postalCode
-        );
-        refetch();
+        ).then(() => {
+          refetch();
+        });
         notify(t("profile.suc_add_add"));
         resetInput();
       } catch (error) {
