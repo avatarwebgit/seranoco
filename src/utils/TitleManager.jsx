@@ -4,8 +4,6 @@ import { useLocation, matchPath } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-
-
 // Route → Title mapping
 const routeTitles = {
   "/:lng": (params, t) => t("titles.home"),
@@ -21,6 +19,7 @@ const routeTitles = {
   "/:lng/precheckout": (params, t) => t("titles.precheckout"),
   "/:lng/order/pay/:id": (params, t) =>
     t("titles.payByCart", { id: params.id }),
+  "/:lng/order/pay-foreign": (params, t) => t("titles.payByCartForeign"),
   "/:lng/new-products": (params, t) => t("titles.newProducts"),
   "/:lng/contact-us": (params, t) => t("titles.contactUs"),
   "/:lng/special/:id": (params, t) => t("titles.special", { name: params.id }),
@@ -31,8 +30,10 @@ const routeTitles = {
   "/:lng/factor/:id": (params, t) => t("titles.factor", { id: params.id }),
   "/:lng/reset-password": (params, t) => t("titles.resetPassword"),
   "/:lng/portfolio": (params, t) => t("titles.portfolio"),
-  "/:lng/downloads/categories/*": (params, t) => t("titles.download_categories"),
-  "/:lng/downloads/categories/files/:id": (params, t) => t("titles.download_files"),
+  "/:lng/downloads/categories/*": (params, t) =>
+    t("titles.download_categories"),
+  "/:lng/downloads/categories/files/:id": (params, t) =>
+    t("titles.download_files"),
   "/:lng/portfolio/:id": (params, t) =>
     t("titles.singlePortfolio", { title: params.id }),
   "/:lng/filters/color/:id": (params, t) =>
@@ -47,7 +48,6 @@ export default function TitleManager() {
   const { t } = useTranslation();
   const lng = useSelector((state) => state.localeStore.lng);
 
-    
   const DEFAULT_TITLE = t("seranoco");
   const TITLE_SEPARATOR = " - ";
 

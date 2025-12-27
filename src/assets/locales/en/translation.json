@@ -10,7 +10,7 @@
   "header_button_9": "button 9",
   "header_button_10": "button 10",
 
-  "delivered_to":"Delivered to",
+  "delivered_to": "Delivered to",
 
   "validation": "Validations",
 
@@ -58,6 +58,7 @@
   "country": "Country Of Origin",
   "agta": "AGTA",
   "price": "Price",
+  "price/pc": "Price/1 Pc",
   "quantity": "Quantity",
   "total_price": "Total Price",
   "add_to_card": "Add To Card",
@@ -355,8 +356,8 @@
   "portfolio": "Portfolio",
   "our_portfolio": "Our portfolio",
   "noPortfolioItem": "There is no item in the portfolio category yet please come back later.",
-  "zarinpal_wait":"Please wait for the process to complete...",
-  "zarinpal_warning":"Do not close or refresh this window.",
+  "zarinpal_wait": "Please wait for the process to complete...",
+  "zarinpal_warning": "Do not close or refresh this window.",
 
   "artist": "Artist",
   "idea": "Idea",
@@ -369,6 +370,7 @@
     "categories": "Categories",
     "subcategory": "Subcategory - {{name}}",
     "products": "Product - {{name}}",
+    "payByCartForeign": "International Bank Transfer",
     "profile": "My Account",
     "precheckout": "Checkout",
     "payByCart": "Pay by Card - Order {{id}}",
@@ -399,5 +401,15 @@
   "portfolio_in": {
     "information": "Information",
     "description": "Description"
+  },
+  "pay_foreign": {
+    "instruction": "Please kindly transfer the invoice amount to the following bank account:",
+    "iban": "IBAN",
+    "bic": "BIC / SWIFT",
+    "acc_name": "Account Name",
+    "followup": "After completing the transfer, please send the payment receipt to seranojewelry@gmail.com or via WhatsApp to +39 392 052 8656.",
+    "thanks": "Thank you for your cooperation.",
+    "copy": "Copy",
+    "copied": "Copied!"
   }
 }

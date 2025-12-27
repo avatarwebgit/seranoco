@@ -9,11 +9,13 @@ import { sendCartPrice } from "../../services/api";
 import { notify } from "../../utils/helperFunctions";
 
 import classes from "./PaymentMethod.module.css";
+import LoadingSpinner from "../common/LoadingSpinner";
 const PaymentMethod = ({ dataProps }) => {
   const lng = useSelector((state) => state.localeStore.lng);
   const cart = useSelector((state) => state.cartStore);
   const token = useSelector((state) => state.userStore.token);
   const walletStatus = useSelector((state) => state.walletStore.useWallet);
+  const [requestLoading, setRequestLoading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ const PaymentMethod = ({ dataProps }) => {
 
   const handleSetPaymentMethod = async (id) => {
     dispatch(cartActions.setPaymentMethod(id));
+    setRequestLoading(true);
     try {
       const serverRes = await sendData(
         token,
@@ -40,7 +43,9 @@ const PaymentMethod = ({ dataProps }) => {
         cart.deliveryMethod
       );
     } catch {
+      setRequestLoading(false);
     } finally {
+      setRequestLoading(false);
     }
   };
 
@@ -83,7 +88,9 @@ const PaymentMethod = ({ dataProps }) => {
     };
 
     if (serverRes.response.ok && method === 10) {
-      navigate(`/fa/order/pay/${serverRes.result.order.id}`);
+      lng === "fa"
+        ? navigate(`/fa/order/pay/${serverRes.result.order.id}`)
+        : navigate(`/${lng}/order/wire-transfer`);
       notify(t("order_ok"));
     } else if (serverRes.response.ok && method !== 10) {
       handleNavToAcc(1, 0);
@@ -133,6 +140,9 @@ const PaymentMethod = ({ dataProps }) => {
                       />
                     </div>
                     {lng === "fa" ? el.title : el.title_en}
+                    {requestLoading && (
+                      <span>{<LoadingSpinner size={15} />}</span>
+                    )}
                   </button>
                 </>
               )}

@@ -51,9 +51,7 @@ const ShoppingCart = ({ setIsLoading }) => {
           <td className={classes.td}>{t("pc.image")}</td>
           <td className={classes.td}>{t("pc.color")}</td>
           <td className={classes.td}>{t("pc.size")}</td>
-          <td className={classes.td}>
-            {t("pc.price")}/{t("1_pcs")}
-          </td>
+          <td className={classes.td}>{t("price/pc")}</td>
           <td className={classes.td}>{t("quantity")}</td>
           <td className={classes.td}>{t("pc.advance")}</td>
           <td className={classes.td}>

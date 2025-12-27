@@ -63,6 +63,7 @@
   "country": "  ساخت",
   "agta": "AGTA",
   "price": "قیمت",
+  "price/pc": "قیمت یک عدد",
   "quantity": "مقدار",
   "total_price": "قیمت کل",
   "add_to_card": "اضافه کردن",
@@ -369,6 +370,7 @@
     "home": "صفحه اصلی",
     "shopByColor": "خرید بر اساس رنگ",
     "shopByShape": "خرید بر اساس شکل",
+    "payByCartForeign": "پرداخت حواله ارزی",
     "categories": "دسته‌بندی‌ها",
     "subcategory": "زیر دسته - {{name}}",
     "products": "محصول - {{name}}",
@@ -402,5 +404,16 @@
   "portfolio_in": {
     "description": "توضیحات",
     "information": "مشخصات پروژه"
+  },
+
+  "pay_foreign": {
+    "instruction": "لطفاً مبلغ فاکتور را به حساب بانکی زیر واریز نمایید:",
+    "iban": "IBAN",
+    "bic": "BIC / SWIFT",
+    "acc_name": "نام صاحب حساب",
+    "followup": "پس از تکمیل انتقال، لطفاً رسید پرداخت را به ایمیل seranojewelry@gmail.com یا از طریق واتس‌اپ به شماره +39 392 052 8656 ارسال نمایید.",
+    "thanks": "از همکاری شما سپاسگزاریم.",
+    "copy": "کپی",
+    "copied": "کپی شد!"
   }
 }

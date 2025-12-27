@@ -314,38 +314,6 @@ const ResultRow = ({ dataProp }) => {
                 ? renderPrice(item.sale_price)
                 : renderPriceWithOff(item)}
             </td>
-
-            {/* Quantity Controls */}
-            {/* <td className={classes.detail_text}>
-       <div className={classes.quantity_controls}>
-        <p className={classes.totoal_quantity}>
-         {quantities[item.variation_id] || 0}
-        </p>
-        <span className={classes.button_wrapper}>
-         <IconButton
-          className={classes.action_btn}
-          onClick={() => handleAddQuantity(item)}
-          disabled={item.quantity === 0}>
-          <Plus width={20} height={20} />
-         </IconButton>
-         <IconButton
-          className={classes.action_btn}
-          onClick={() => handleReduceQuantity(item)}
-          disabled={!quantities[item.variation_id]}>
-          <Minus width={20} height={20} />
-         </IconButton>
-        </span>
-       </div>
-      </td> */}
-
-            {/* Total Price */}
-            {/* <td
-       className={classes.detail_text}
-       style={{ direction: lng === 'fa' ? 'rtl' : 'ltr' }}>
-       {renderTotalPrice(item.variation_id, item.price)}
-      </td> */}
-
-            {/* Action Button */}
             <td>
               <center>{renderActionButton(item)}</center>
             </td>

@@ -30,6 +30,7 @@ const Products = React.lazy(() => import("./pages/Products"));
 const Profile = React.lazy(() => import("./pages/Profile"));
 const PreCheckout = React.lazy(() => import("./pages/PreCheckout"));
 const PayByCart = React.lazy(() => import("./pages/PayByCart"));
+const PayByCartForeign = React.lazy(() => import("./pages/PayByCartForeign"));
 const New = React.lazy(() => import("./pages/New"));
 const Special = React.lazy(() => import("./pages/SpecialStones"));
 const Categories = React.lazy(() => import("./pages/Categories"));
@@ -234,6 +235,14 @@ function App() {
           }
         />
         <Route
+          path={`/:lng/order/wire-transfer`}
+          element={
+            <RequireAuth>
+              <PayByCartForeign windowSize={windowSize} />
+            </RequireAuth>
+          }
+        />
+        <Route
           path={`/:lng/new-products`}
           element={<New windowSize={windowSize} />}
         />
@@ -321,6 +330,3 @@ function App() {
 }
 
 export default App;
-
-// 55555555555@emaily.pro
-// 0000000000
