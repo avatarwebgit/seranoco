@@ -150,8 +150,8 @@ const ProductItem = React.memo(({ product, index, lng, t, euro }) => {
       </td>
       <td>
         {!prod.variation.is_not_available && prod.variation.quantity <= 0
-          ? t("available")
-          : t("byorder")}
+          ? t("byorder")
+          : t("available")}
       </td>
       <td style={{ color: "red" }}>---</td>
       <td>
