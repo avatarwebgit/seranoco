@@ -295,18 +295,24 @@ const PreCheckout = ({ windowSize }) => {
                       {walletStatus ? (
                         <>
                           {lng !== "fa"
-                            ? (
-                                cart.productPrice -
-                                walletBalance +
-                                cart.deliveryPrice
-                              ).toFixed(2)
-                            : Intl.NumberFormat("fa-IR").format(
-                                Math.max(
-                                  0,
-                                  (cart.productPrice -
-                                    walletBalance +
-                                    cart.deliveryPrice) *
-                                    euro
+                            ? Math.max(
+                                0,
+                                (
+                                  cart.productPrice -
+                                  walletBalance +
+                                  cart.deliveryPrice
+                                ).toFixed(2)
+                              )
+                            : Math.max(
+                                0,
+                                Intl.NumberFormat("fa-IR").format(
+                                  Math.max(
+                                    0,
+                                    (cart.productPrice -
+                                      walletBalance +
+                                      cart.deliveryPrice) *
+                                      euro
+                                  )
                                 )
                               )}
                           &nbsp;

@@ -68,7 +68,9 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
       <tr className={classes.header_information}>
         <td colSpan="13">
           {t("factor.Address")}
-          {detailsData.address.address}
+          <span dir={lng === "fa" ? "rtl" : "ltr"}>
+            {`${detailsData.address.City} ${detailsData.address.address} تحویل آقای ${detailsData.address.title} شد`}
+          </span>
         </td>
       </tr>
       <tr>
@@ -185,7 +187,7 @@ const FactorProducts = React.memo(({ detailsData, t, lng, euro }) => {
 });
 
 const FactorSummory = React.memo(
-  ({ detailsData, t, lng, totalWeight, totalQuantity, shippingCost=0 }) => {
+  ({ detailsData, t, lng, totalWeight, totalQuantity, shippingCost = 0 }) => {
     return (
       <tbody className={`${classes.summarySection} summarySection`}>
         <tr className={classes.summaryRow}>
@@ -200,7 +202,7 @@ const FactorSummory = React.memo(
             {totalQuantity}&nbsp;{t("factor.pcs")}
           </td>
           <td colSpan="1"></td>
-          <td colSpan="1">{t('coupon') }</td>
+          <td colSpan="1">{t("coupon")}</td>
           <td colSpan="2"></td>
           <td className={classes.summaryValue}>
             <strong>
