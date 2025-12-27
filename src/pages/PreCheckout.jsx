@@ -303,16 +303,13 @@ const PreCheckout = ({ windowSize }) => {
                                   cart.deliveryPrice
                                 ).toFixed(2)
                               )
-                            : Math.max(
-                                0,
-                                Intl.NumberFormat("fa-IR").format(
-                                  Math.max(
-                                    0,
-                                    (cart.productPrice -
-                                      walletBalance +
-                                      cart.deliveryPrice) *
-                                      euro
-                                  )
+                            : Intl.NumberFormat("fa-IR").format(
+                                Math.max(
+                                  0,
+                                  (cart.productPrice -
+                                    walletBalance +
+                                    cart.deliveryPrice) *
+                                    euro
                                 )
                               )}
                           &nbsp;
