@@ -473,6 +473,7 @@ const FilterByShape = ({ windowSize }) => {
             <Card
               className={`${classes.size_wrapper} ${classes.colors_wrapper}`}
             >
+              {console.log(sortedColors)}
               {sortedColors.length > 9 && (
                 <>
                   <button

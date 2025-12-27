@@ -393,10 +393,16 @@ const Drawer = () => {
                         {walletStatus ? (
                           <>
                             {lng !== "fa"
-                              ? (cart.productPrice - walletBalance).toFixed(2)
+                              ? Math.max(
+                                  0,
+                                  (cart.productPrice - walletBalance).toFixed(2)
+                                )
                               : Intl.NumberFormat("fa-IR").format(
-                                  (cart.productPrice - walletBalance) *
-                                    cart.euro
+                                  Math.max(
+                                    0,
+                                    (cart.productPrice - walletBalance) *
+                                      cart.euro
+                                  )
                                 )}
                             &nbsp;
                             {t("m_unit")}
@@ -404,9 +410,12 @@ const Drawer = () => {
                         ) : (
                           <>
                             {lng !== "fa"
-                              ? cart.productPrice.toFixed(2)
-                              : Intl.NumberFormat("fa-IR").format(
-                                  cart.productPrice * cart.euro
+                              ? Math.max(0, cart.productPrice.toFixed(2))
+                              : Math.max(
+                                  0,
+                                  Intl.NumberFormat("fa-IR").format(
+                                    cart.productPrice * cart.euro
+                                  )
                                 )}
                             &nbsp;
                             {t("m_unit")}
