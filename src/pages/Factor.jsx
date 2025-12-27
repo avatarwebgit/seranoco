@@ -69,7 +69,9 @@ const FactorHeader = React.memo(({ detailsData, storeData, t, lng }) => {
         <td colSpan="13">
           {t("factor.Address")}
           <span dir={lng === "fa" ? "rtl" : "ltr"}>
-            {`${detailsData.address.City} ${detailsData.address.address} تحویل آقای ${detailsData.address.title} شد`}
+            {`${detailsData.address.City} ${detailsData.address.address} ${t(
+              "delivered_to"
+            )}  ${detailsData.address.title} `}
           </span>
         </td>
       </tr>
