@@ -231,7 +231,7 @@ const ResultRow = ({ dataProp }) => {
           <th className={classes.title_text}>{t("signle_shape")}</th>
           <th className={classes.title_text}>{t("size")}</th>
           <th className={classes.title_text}>{t("color")}</th>
-          <th className={classes.title_text}>{t("details")}</th>
+          <th className={classes.title_text}>{t("details_stone")}</th>
           <th className={classes.title_text}>{t("country")}</th>
           <th className={classes.title_text}>
             {t("price")}&nbsp;1{t("1_pcs")} / {t("m_unit")}

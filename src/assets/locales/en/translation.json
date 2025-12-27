@@ -46,6 +46,7 @@
   "shape": "Shapes",
   "type": "Stone Type",
   "details": "Details",
+  "details_stone": "Details",
   "color": "Color",
   "size": "Size (mm)",
   "weight": "Ct Weight",

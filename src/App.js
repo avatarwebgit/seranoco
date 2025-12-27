@@ -318,7 +318,7 @@ function App() {
       <ToastContainer
         theme="dark"
         className={"toast"}
-        autoClose={5000}
+        autoClose={3000}
         newestOnTop={true}
         closeButton={false}
         rtl={lng === "fa" ? true : false}

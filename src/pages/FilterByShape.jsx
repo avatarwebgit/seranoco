@@ -171,7 +171,6 @@ const FilterByShape = ({ windowSize }) => {
   };
 
   const handleResetSelections = () => {
-    setShapeFormEntries("");
     setDimensionEntries([]);
     setSelectedIds([]);
     setTableData([]);
@@ -179,6 +178,7 @@ const FilterByShape = ({ windowSize }) => {
     setSizeData([]);
     dispatch(productDetailActions.reset());
     scrollToTarget(formRef, 200);
+    handleShapeClick("", 46);
   };
 
   useEffect(() => {
